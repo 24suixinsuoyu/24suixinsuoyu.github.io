@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1. InputStream 中常见的方法有哪些">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 文件基本技术（二）：二进制文件和字节流">
+<meta property="og:url" content="http://24suixinsuoyu.com/2020/05/11/Java-%E6%96%87%E4%BB%B6%E5%9F%BA%E6%9C%AC%E6%8A%80%E6%9C%AF%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6%E5%92%8C%E5%AD%97%E8%8A%82%E6%B5%81/index.html">
+<meta property="og:site_name" content="隋钟元’s Blog">
+<meta property="og:description" content="1. InputStream 中常见的方法有哪些">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-11T12:24:33.000Z">
+<meta property="article:modified_time" content="2020-05-13T08:38:12.000Z">
+<meta property="article:author" content="隋钟元">
+<meta property="article:tag" content="文件基本技术">
+<meta property="article:tag" content="二进制文件和字节流">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://24suixinsuoyu.com/2020/05/11/Java-%E6%96%87%E4%BB%B6%E5%9F%BA%E6%9C%AC%E6%8A%80%E6%9C%AF%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6%E5%92%8C%E5%AD%97%E8%8A%82%E6%B5%81/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Java 文件基本技术（二）：二进制文件和字节流 | 隋钟元’s Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">隋钟元’s Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-university"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th-list"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-english">
+
+    <a href="/english/" rel="section"><i class="fa fa-fw fa-graduation-cap"></i>英语</a>
+
+  </li>
+        <li class="menu-item menu-item-life">
+
+    <a href="/life/" rel="section"><i class="fa fa-fw fa-balance-scale"></i>生活</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/" rel="section"><i class="fa fa-fw fa-user-circle-o"></i>简历</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/commonweal/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/24suixinsuoyu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/05/11/Java-%E6%96%87%E4%BB%B6%E5%9F%BA%E6%9C%AC%E6%8A%80%E6%9C%AF%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6%E5%92%8C%E5%AD%97%E8%8A%82%E6%B5%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="隋钟元">
+      <meta itemprop="description" content="技术创造价值">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="隋钟元’s Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java 文件基本技术（二）：二进制文件和字节流
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-11 20:24:33" itemprop="dateCreated datePublished" datetime="2020-05-11T20:24:33+08:00">2020-05-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-13 16:38:12" itemprop="dateModified" datetime="2020-05-13T16:38:12+08:00">2020-05-13</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E3%80%8AJava-%E7%BC%96%E7%A8%8B%E7%9A%84%E9%80%BB%E8%BE%91%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《Java 编程的逻辑》</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="1-InputStream-中常见的方法有哪些"><a href="#1-InputStream-中常见的方法有哪些" class="headerlink" title="1. InputStream 中常见的方法有哪些"></a>1. InputStream 中常见的方法有哪些</h4><a id="more"></a>
+
+<ul>
+<li><p>基本方法：</p>
+  <figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="function"><span class="keyword">int</span> <span class="title">read</span><span class="params">()</span> <span class="keyword">throws</span> IOException</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">int</span> <span class="title">read</span><span class="params">(<span class="keyword">byte</span>[] b)</span> <span class="keyword">throws</span> IOException</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">int</span> <span class="title">read</span><span class="params">(<span class="keyword">byte</span> b[], <span class="keyword">int</span> off, <span class="keyword">int</span> len)</span> <span class="keyword">throws</span> IOException</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">close</span><span class="params">()</span> <span class="keyword">throws</span> IOException</span>; <span class="comment">//流读取结束后，关闭，释放相关资源</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>高级方法：</p>
+  <figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">long</span> <span class="title">skip</span><span class="params">()</span> <span class="keyword">throws</span> IOException</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">int</span> <span class="title">available</span><span class="params">()</span> <span class="keyword">throws</span> IOException</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="function"><span class="keyword">void</span> <span class="title">mark</span><span class="params">(<span class="keyword">int</span> readlimit)</span></span>;</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">boolean</span> <span class="title">markSupported</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="function"><span class="keyword">void</span> <span class="title">reset</span><span class="params">()</span> <span class="keyword">throws</span> IOException</span>;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="2-OutputStream-中常见方法有哪些"><a href="#2-OutputStream-中常见方法有哪些" class="headerlink" title="2. OutputStream 中常见方法有哪些"></a>2. OutputStream 中常见方法有哪些</h4><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="function"><span class="keyword">void</span> <span class="title">write</span><span class="params">(<span class="keyword">int</span> b)</span> <span class="keyword">throws</span> IOException</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">write</span><span class="params">(<span class="keyword">byte</span> b[])</span> <span class="keyword">throws</span> IOException</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">write</span><span class="params">(<span class="keyword">byte</span> b[], <span class="keyword">int</span> off, <span class="keyword">int</span> len)</span> <span class="keyword">throws</span> IOException</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">flush</span><span class="params">()</span> <span class="keyword">throws</span> IOException</span>; <span class="comment">//将缓冲而未实际写入的数据进行实际写入</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">close</span><span class="params">()</span> <span class="keyword">throws</span> IOException</span>; <span class="comment">//一般会先调用 flush() 方法，然后再释放流占用的系统资源</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-将字符串-“hello-123-老隋”-写到文件-hello-txt-中"><a href="#3-将字符串-“hello-123-老隋”-写到文件-hello-txt-中" class="headerlink" title="3. 将字符串 “hello, 123, 老隋” 写到文件 hello.txt 中"></a>3. 将字符串 “hello, 123, 老隋” 写到文件 hello.txt 中</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">OutputStream output = <span class="keyword">new</span> <span class="constructor">FileOutputStream(<span class="string">"hello.txt"</span>)</span>;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    String data = <span class="string">"hello, 123, 老隋"</span>;</span><br><span class="line">    byte<span class="literal">[]</span> <span class="built_in">bytes</span> = data.get<span class="constructor">Bytes(Charset.<span class="params">forName</span>(<span class="string">"UTF-8"</span>)</span>);</span><br><span class="line">    output.write(<span class="built_in">bytes</span>);</span><br><span class="line">&#125; finally &#123;</span><br><span class="line">    output.close<span class="literal">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-接上题，将上面写入的文件-“hello-txt”-读到内存并输出"><a href="#4-接上题，将上面写入的文件-“hello-txt”-读到内存并输出" class="headerlink" title="4. 接上题，将上面写入的文件 “hello.txt” 读到内存并输出"></a>4. 接上题，将上面写入的文件 “hello.txt” 读到内存并输出</h4><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">InputStream input = <span class="built_in">new</span> FileInputStream("hello.txt");</span><br><span class="line">try &#123;</span><br><span class="line">    //方式一：假定一次 <span class="keyword">read</span> 调用就读到了所有内容，且假定字节长度不超过 <span class="number">1024</span></span><br><span class="line">    byte[] buf = <span class="built_in">new</span> byte[<span class="number">1024</span>];</span><br><span class="line">    <span class="type">int</span> bytesRead = <span class="keyword">input</span>.<span class="keyword">read</span>(buf);</span><br><span class="line"></span><br><span class="line">    //方式二：为了确保读到所有内容，可以逐个字节读取直到文件结束</span><br><span class="line">    <span class="type">int</span> b = <span class="number">-1</span>;</span><br><span class="line">    <span class="type">int</span> bytesRead = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>((b=<span class="keyword">input</span>.<span class="keyword">read</span>()) != <span class="number">-1</span>) &#123;</span><br><span class="line">        buf[bytesRead++] = (byte)b;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //方式三：在没有缓冲的情况下逐个字节读取性能很低，可以使用批量读入且确保读到结尾。</span><br><span class="line">    //不过，这还是假定文件内容长度不超过一个固定的数字 <span class="number">1024</span>。如果不确定文件内容的长度，但不希望一次性分配过大的 byte 数组，又希望将文件内容全部读入，可以借助 ByteArrayOutputStream</span><br><span class="line">    byte[] buf = <span class="built_in">new</span> byte[<span class="number">1024</span>];</span><br><span class="line">    <span class="type">int</span> <span class="keyword">off</span> = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> bytesRead = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>((bytesRead = <span class="keyword">input</span>.<span class="keyword">read</span>(buf, <span class="keyword">off</span>, <span class="number">1024</span>-<span class="keyword">off</span>)) != <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="keyword">off</span> += bytesRead;</span><br><span class="line">    &#125;</span><br><span class="line">    String data = <span class="built_in">new</span> String(buf, <span class="number">0</span>, <span class="keyword">off</span>, "UTF-8");</span><br><span class="line"></span><br><span class="line">    //方式四：使用 ByteArrayOutputStream，改进上面读写文件代码，确保将所有文件内容读入</span><br><span class="line">    InputStream input = <span class="built_in">new</span> FileInputStream("hello.txt);</span><br><span class="line">    try &#123;</span><br><span class="line">        ByteArrayOutputStream output = new ByteArrayOutputSteam();</span><br><span class="line">        byte[] buf = new byte[1024];</span><br><span class="line">        int bytesRead = 0;</span><br><span class="line">        while((bytesRead = input.read(buf)) != -1) &#123;</span><br><span class="line">            output.write(buf, 0, bytesRead);</span><br><span class="line">        &#125;</span><br><span class="line">        String data = output.toString("UTF<span class="number">-8</span>);</span><br><span class="line">        <span class="keyword">System</span>.<span class="keyword">out</span>.println(data);</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        <span class="keyword">input</span>.<span class="keyword">close</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    String data = <span class="built_in">new</span> String(buf, <span class="number">0</span>, bytesRead, "UTF-8");</span><br><span class="line">    <span class="keyword">System</span>.<span class="keyword">out</span>.println(data);</span><br><span class="line">&#125; finally &#123;</span><br><span class="line">    <span class="keyword">input</span>.<span class="keyword">close</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-保存一个学生列表到文件中"><a href="#5-保存一个学生列表到文件中" class="headerlink" title="5. 保存一个学生列表到文件中"></a>5. 保存一个学生列表到文件中</h4><figure class="highlight zephir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//学生类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span> </span>&#123;</span><br><span class="line">    String name;</span><br><span class="line">    <span class="keyword">int</span> age;</span><br><span class="line">    <span class="keyword">double</span> score;</span><br><span class="line">    <span class="comment">//省略构造方法和 getter/setter 方法</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//学生列表内容</span></span><br><span class="line"><span class="keyword">List</span>&lt;Student&gt; students = Arrays.asList(<span class="keyword">new</span> Student[] &#123;<span class="keyword">new</span> Student(<span class="string">"张三"</span>, <span class="number">18</span>, <span class="number">80.9</span>d), <span class="keyword">new</span> Student(<span class="string">"李四"</span>, <span class="number">17</span>, <span class="number">67.5</span>d)&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">//将该列表内容写到文件 students.dat 中</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> void writeStudents(<span class="keyword">List</span>&lt;Student&gt; students) throws IOException &#123;</span><br><span class="line">    DataOutputStream output = <span class="keyword">new</span> DataOutputStream(<span class="keyword">new</span> FileOutputSteam(<span class="string">"students.dat));</span></span><br><span class="line"><span class="string">    try &#123;</span></span><br><span class="line"><span class="string">        output.writeInt(students.size());</span></span><br><span class="line"><span class="string">        for(Student s : students) &#123;</span></span><br><span class="line"><span class="string">            output.writeUTF(s.getName());</span></span><br><span class="line"><span class="string">            output.writeInt(s.getAge());</span></span><br><span class="line"><span class="string">            output.writeDouble(s.getScore());</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">    &#125; finally &#123;</span></span><br><span class="line"><span class="string">        output.close();</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="6-接上题，从文件中读进内存"><a href="#6-接上题，从文件中读进内存" class="headerlink" title="6. 接上题，从文件中读进内存"></a>6. 接上题，从文件中读进内存</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public static List&lt;Student&gt; read<span class="constructor">Students()</span> throws IOException &#123;</span><br><span class="line">    DataInputStream input = <span class="keyword">new</span> <span class="constructor">DataInputStream(<span class="params">new</span> FileInputStream(<span class="string">"students.dat"</span>)</span>);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="built_in">int</span> size = input.read<span class="constructor">Int()</span>;</span><br><span class="line">        List&lt;Student&gt; students = <span class="keyword">new</span> ArrayList&lt;Student&gt; (size);</span><br><span class="line">        for(<span class="built_in">int</span> i=<span class="number">0</span>; i&lt;size; i++) &#123;</span><br><span class="line">            Student s = <span class="keyword">new</span> <span class="constructor">Student()</span>;</span><br><span class="line">            s.set<span class="constructor">Name(<span class="params">input</span>.<span class="params">readUTF</span>()</span>);</span><br><span class="line">            s.set<span class="constructor">Age(<span class="params">input</span>.<span class="params">readInt</span>()</span>);</span><br><span class="line">            s.set<span class="constructor">Score(<span class="params">input</span>.<span class="params">readDouble</span>()</span>);</span><br><span class="line">            student.add(s);</span><br><span class="line">        &#125;</span><br><span class="line">        return students;</span><br><span class="line">    &#125; finallly &#123;</span><br><span class="line">        input.close<span class="literal">()</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>分析：使用 <code>DataInputStream/DataOutputStream</code> 读写对象，非常灵活，但比较麻烦，所以 Java 提供了<strong>序列化机制</strong>。</li>
+</ul>
+<h4 id="7-复制输入流的内容到输出流"><a href="#7-复制输入流的内容到输出流" class="headerlink" title="7. 复制输入流的内容到输出流"></a>7. 复制输入流的内容到输出流</h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">copy</span><span class="params">(InputStream input, OutputStream output)</span> throws IOException </span>&#123;</span><br><span class="line">    <span class="keyword">byte</span>[] buf = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">    <span class="keyword">int</span> bytesRead = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>((bytesRead = input.<span class="built_in">read</span>(buf)) != <span class="number">-1</span>) &#123;</span><br><span class="line">        output.<span class="built_in">write</span>(buf, <span class="number">0</span>, bytesRead);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//实际上，在 Java 9 中，InputStream 类增加了一个方法 transferTo()，可以实现相同的功能，实现是类似的</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">transferTo</span><span class="params">(OutputStream out)</span> throws IOException </span>&#123;</span><br><span class="line">    Object.requireNonNull(out, <span class="string">"out"</span>);</span><br><span class="line">    <span class="keyword">long</span> transferred = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">byte</span>[] <span class="built_in">buffer</span> = <span class="keyword">new</span> <span class="keyword">byte</span>[DEFAULT_BUFFER_SIZE]; <span class="comment">// buf 大小是 8192</span></span><br><span class="line">    <span class="keyword">int</span> <span class="built_in">read</span>;</span><br><span class="line">    <span class="keyword">while</span>((<span class="built_in">read</span> = <span class="keyword">this</span>.<span class="built_in">read</span>(<span class="built_in">buffer</span>, <span class="number">0</span>, DEFAULT_BUFFER_SIZE)) &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">        out.<span class="built_in">write</span>(<span class="built_in">buffer</span>, <span class="number">0</span>, <span class="built_in">read</span>);</span><br><span class="line">        transferred += <span class="built_in">read</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> transferred;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//将文件读入字节数组</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">byte</span>[] readFileToByteArray(<span class="keyword">String</span> fileName) throws IOException &#123;</span><br><span class="line">    InputStream input = <span class="keyword">new</span> FileInputStream(fileName);</span><br><span class="line">    ByteArrayOutputStream output = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        copy(intpu, output);</span><br><span class="line">        <span class="keyword">return</span> output.toByteArray();</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        input.<span class="built_in">close</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//将字节数组写到文件</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">writeByteArrayToFile</span><span class="params">(<span class="keyword">String</span> fileName, <span class="keyword">byte</span>[] data)</span> throws IOException </span>&#123;</span><br><span class="line">    OutputStream output = <span class="keyword">new</span> FileOutputStream(fileName);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        output.<span class="built_in">write</span>(data);</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        output.<span class="built_in">close</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;margin-top:80px">-------------------- 本文结束<i class="fa fa-paw"></i>感谢您的阅读 --------------------</div>
+    
+</div>
+      
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>隋钟元
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://24suixinsuoyu.com/2020/05/11/Java-%E6%96%87%E4%BB%B6%E5%9F%BA%E6%9C%AC%E6%8A%80%E6%9C%AF%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6%E5%92%8C%E5%AD%97%E8%8A%82%E6%B5%81/" title="Java 文件基本技术（二）：二进制文件和字节流">http://24suixinsuoyu.com/2020/05/11/Java-文件基本技术（二）：二进制文件和字节流/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E6%96%87%E4%BB%B6%E5%9F%BA%E6%9C%AC%E6%8A%80%E6%9C%AF/" rel="tag"><i class="fa fa-tag"></i> 文件基本技术</a>
+              <a href="/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6%E5%92%8C%E5%AD%97%E8%8A%82%E6%B5%81/" rel="tag"><i class="fa fa-tag"></i> 二进制文件和字节流</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/11/Java-%E6%96%87%E4%BB%B6%E5%9F%BA%E6%9C%AC%E6%8A%80%E6%9C%AF%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E6%96%87%E4%BB%B6%E6%A6%82%E8%BF%B0/" rel="prev" title="Java 文件基本技术（一）：文件概述">
+      <i class="fa fa-chevron-left"></i> Java 文件基本技术（一）：文件概述
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/11/Java-%E6%96%87%E4%BB%B6%E5%9F%BA%E6%9C%AC%E6%8A%80%E6%9C%AF%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E6%96%87%E6%9C%AC%E6%96%87%E4%BB%B6%E5%92%8C%E5%AD%97%E7%AC%A6%E6%B5%81/" rel="next" title="Java 文件基本技术（三）：文本文件和字符流">
+      Java 文件基本技术（三）：文本文件和字符流 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-InputStream-中常见的方法有哪些"><span class="nav-text">1. InputStream 中常见的方法有哪些</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-OutputStream-中常见方法有哪些"><span class="nav-text">2. OutputStream 中常见方法有哪些</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-将字符串-“hello-123-老隋”-写到文件-hello-txt-中"><span class="nav-text">3. 将字符串 “hello, 123, 老隋” 写到文件 hello.txt 中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-接上题，将上面写入的文件-“hello-txt”-读到内存并输出"><span class="nav-text">4. 接上题，将上面写入的文件 “hello.txt” 读到内存并输出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-保存一个学生列表到文件中"><span class="nav-text">5. 保存一个学生列表到文件中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-接上题，从文件中读进内存"><span class="nav-text">6. 接上题，从文件中读进内存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-复制输入流的内容到输出流"><span class="nav-text">7. 复制输入流的内容到输出流</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="隋钟元"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">隋钟元</p>
+  <div class="site-description" itemprop="description">技术创造价值</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">157</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">188</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:24suixinsuoyu@gmail.com" title="E-Mail → mailto:24suixinsuoyu@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/24suixinsuoyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;24suixinsuoyu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/24sxsy" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;24sxsy" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/guolin_blog" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;guolin_blog" rel="noopener" target="_blank">郭霖</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/lmj623565791/" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;lmj623565791&#x2F;" rel="noopener" target="_blank">鸿洋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.520monkey.com/" title="http:&#x2F;&#x2F;www.520monkey.com&#x2F;" rel="noopener" target="_blank">姜维</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://daimajia.com/" title="https:&#x2F;&#x2F;daimajia.com&#x2F;" rel="noopener" target="_blank">代码家</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://kmxz.net/" title="https:&#x2F;&#x2F;kmxz.net&#x2F;" rel="noopener" target="_blank">孔祥舟</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yangwenbo.com/" title="http:&#x2F;&#x2F;yangwenbo.com&#x2F;" rel="noopener" target="_blank">杨文博</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">隋钟元</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">479k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">7:15</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+

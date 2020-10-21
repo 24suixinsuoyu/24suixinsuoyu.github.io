@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1. 【强制】好的单元测试必须遵守 AIR 原则">
+<meta property="og:type" content="article">
+<meta property="og:title" content="单元测试">
+<meta property="og:url" content="http://24suixinsuoyu.com/2020/09/01/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/index.html">
+<meta property="og:site_name" content="隋钟元’s Blog">
+<meta property="og:description" content="1. 【强制】好的单元测试必须遵守 AIR 原则">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-31T18:04:19.000Z">
+<meta property="article:modified_time" content="2020-09-03T06:36:06.000Z">
+<meta property="article:author" content="隋钟元">
+<meta property="article:tag" content="单元测试">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://24suixinsuoyu.com/2020/09/01/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>单元测试 | 隋钟元’s Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">隋钟元’s Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-university"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th-list"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-english">
+
+    <a href="/english/" rel="section"><i class="fa fa-fw fa-graduation-cap"></i>英语</a>
+
+  </li>
+        <li class="menu-item menu-item-life">
+
+    <a href="/life/" rel="section"><i class="fa fa-fw fa-balance-scale"></i>生活</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/" rel="section"><i class="fa fa-fw fa-user-circle-o"></i>简历</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/commonweal/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/24suixinsuoyu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/09/01/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="隋钟元">
+      <meta itemprop="description" content="技术创造价值">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="隋钟元’s Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          单元测试
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-09-01 02:04:19" itemprop="dateCreated datePublished" datetime="2020-09-01T02:04:19+08:00">2020-09-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-03 14:36:06" itemprop="dateModified" datetime="2020-09-03T14:36:06+08:00">2020-09-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E3%80%8A%E9%98%BF%E9%87%8C-Java-%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%EF%BC%88%E5%B5%A9%E5%B1%B1%E7%89%88%EF%BC%89%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《阿里 Java 开发手册（嵩山版）》</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="1-【强制】好的单元测试必须遵守-AIR-原则"><a href="#1-【强制】好的单元测试必须遵守-AIR-原则" class="headerlink" title="1. 【强制】好的单元测试必须遵守 AIR 原则"></a>1. 【强制】好的单元测试必须遵守 AIR 原则</h4><a id="more"></a>
+
+<ul>
+<li><strong>说明</strong>：单元测试在线上运行时，感觉像空气（AIR）一样感觉不到，但在测试质量的保障上，却是非常关键的。好的单元测试宏观上来说，具有自动化、独立性、可重复执行的特点<ol>
+<li><strong>A</strong>: Automatic（自动化）</li>
+<li><strong>I</strong>: Independent（独立性）</li>
+<li><strong>R</strong>: Repeatable（可重复）</li>
+</ol>
+</li>
+</ul>
+<h4 id="2-【强制】单元测试应该是全自动执行的，并且非交互式的。测试用例通常是被定期执行的，执行过程必须完全自动化才有意义。输出结果需要人工检查的测试不是一个好的单元测试。单元测试中不准使用-System-out-来进行人肉验证，必须使用-assert-来验证"><a href="#2-【强制】单元测试应该是全自动执行的，并且非交互式的。测试用例通常是被定期执行的，执行过程必须完全自动化才有意义。输出结果需要人工检查的测试不是一个好的单元测试。单元测试中不准使用-System-out-来进行人肉验证，必须使用-assert-来验证" class="headerlink" title="2. 【强制】单元测试应该是全自动执行的，并且非交互式的。测试用例通常是被定期执行的，执行过程必须完全自动化才有意义。输出结果需要人工检查的测试不是一个好的单元测试。单元测试中不准使用 System.out 来进行人肉验证，必须使用 assert 来验证"></a>2. 【强制】单元测试应该是全自动执行的，并且非交互式的。测试用例通常是被定期执行的，执行过程必须完全自动化才有意义。输出结果需要人工检查的测试不是一个好的单元测试。单元测试中不准使用 System.out 来进行人肉验证，必须使用 assert 来验证</h4><h4 id="3-【强制】保持单元测试的独立性。为了保证单元测试稳定可靠且便于维护，单元测试用例之间决不能互相调用，也不能依赖执行的先后次序"><a href="#3-【强制】保持单元测试的独立性。为了保证单元测试稳定可靠且便于维护，单元测试用例之间决不能互相调用，也不能依赖执行的先后次序" class="headerlink" title="3. 【强制】保持单元测试的独立性。为了保证单元测试稳定可靠且便于维护，单元测试用例之间决不能互相调用，也不能依赖执行的先后次序"></a>3. 【强制】保持单元测试的独立性。为了保证单元测试稳定可靠且便于维护，单元测试用例之间决不能互相调用，也不能依赖执行的先后次序</h4><ul>
+<li><strong>反例</strong>：method2 需要依赖 method1 的执行，将执行结果作为 method2 的输入</li>
+</ul>
+<h4 id="4-【强制】单元测试是可以重复执行的，不能收到外界环境的影响"><a href="#4-【强制】单元测试是可以重复执行的，不能收到外界环境的影响" class="headerlink" title="4. 【强制】单元测试是可以重复执行的，不能收到外界环境的影响"></a>4. 【强制】单元测试是可以重复执行的，不能收到外界环境的影响</h4><ul>
+<li><strong>说明</strong>：单元测试通常会被放到持续集成中，每次有代码 check in 时单元测试都会被执行。如果单测对外部环境（网络、服务、中间件等）有依赖，容易导致持续集成机制的不可用</li>
+<li><strong>正例</strong>：为了不受外界环境影响，要求设计代码时就把 SUT 的依赖改成注入，在测试时用 spring 这样的 ID 框架注入一个本地（内存）实现或者 Mock 实现</li>
+</ul>
+<h4 id="5-【强制】对于单元测试，要保证测试粒度足够小，有助于精确定位问题。单测粒度至多是类级别，一般是方法级别"><a href="#5-【强制】对于单元测试，要保证测试粒度足够小，有助于精确定位问题。单测粒度至多是类级别，一般是方法级别" class="headerlink" title="5. 【强制】对于单元测试，要保证测试粒度足够小，有助于精确定位问题。单测粒度至多是类级别，一般是方法级别"></a>5. 【强制】对于单元测试，要保证测试粒度足够小，有助于精确定位问题。单测粒度至多是类级别，一般是方法级别</h4><ul>
+<li><strong>说明</strong>：只有测试粒度小才能在出错时尽快定位到出错位置。单测不负责检查跨类或者跨系统的交互逻辑，那是集成测试的领域</li>
+</ul>
+<h4 id="6-【强制】核心业务、核心应用、核心模块的增量代码确保单元测试通过"><a href="#6-【强制】核心业务、核心应用、核心模块的增量代码确保单元测试通过" class="headerlink" title="6. 【强制】核心业务、核心应用、核心模块的增量代码确保单元测试通过"></a>6. 【强制】核心业务、核心应用、核心模块的增量代码确保单元测试通过</h4><ul>
+<li><strong>说明</strong>：新增代码及时补充单元测试，如果新增代码影响了原有单元测试，请及时修正</li>
+</ul>
+<h4 id="7-【强制】单元测试代码必须写在如下工程目录：src-test-java，不允许写在业务代码目录下"><a href="#7-【强制】单元测试代码必须写在如下工程目录：src-test-java，不允许写在业务代码目录下" class="headerlink" title="7. 【强制】单元测试代码必须写在如下工程目录：src/test/java，不允许写在业务代码目录下"></a>7. 【强制】单元测试代码必须写在如下工程目录：src/test/java，不允许写在业务代码目录下</h4><ul>
+<li><strong>说明</strong>：源码编译时会跳过此目录，而单元测试框架默认是扫描此目录</li>
+</ul>
+<h4 id="8-【推荐】单元测试的基本目标：语句覆盖率达到-70-；核心模块的语句覆盖率和分支覆盖率都要达到-100"><a href="#8-【推荐】单元测试的基本目标：语句覆盖率达到-70-；核心模块的语句覆盖率和分支覆盖率都要达到-100" class="headerlink" title="8. 【推荐】单元测试的基本目标：语句覆盖率达到 70%；核心模块的语句覆盖率和分支覆盖率都要达到 100%"></a>8. 【推荐】单元测试的基本目标：语句覆盖率达到 70%；核心模块的语句覆盖率和分支覆盖率都要达到 100%</h4><ul>
+<li><strong>说明</strong>：在工程规约的应用分层中提到的 DAO 层，Manager 层，可重用度高的 Service，都应该进行单元测试</li>
+</ul>
+<h4 id="9-【推荐】编写单元测试代码遵守-BCDE-原则，以保证被测试模块的交付质量"><a href="#9-【推荐】编写单元测试代码遵守-BCDE-原则，以保证被测试模块的交付质量" class="headerlink" title="9. 【推荐】编写单元测试代码遵守 BCDE 原则，以保证被测试模块的交付质量"></a>9. 【推荐】编写单元测试代码遵守 BCDE 原则，以保证被测试模块的交付质量</h4><ol>
+<li><strong>B</strong>: Border，边界值测试，包括循环边界、特殊取值、特殊时间点、数据顺序等</li>
+<li><strong>C</strong>: Correct，正确的输入，并得到预期的结果</li>
+<li><strong>D</strong>: Design，与设计文档相结合，来编写单元测试</li>
+<li><strong>E</strong>: Error，强制错误信息输入（如：非法数据、异常流程、业务允许外等），并得到预期的结果</li>
+</ol>
+<h4 id="10-【推荐】对于数据库相关的查询、更新、删除等操作，不能假设数据库里的数据是存在的，或者直接操作数据库把数据插入进去，请使用程序插入或者导入数据的方式来准备数据"><a href="#10-【推荐】对于数据库相关的查询、更新、删除等操作，不能假设数据库里的数据是存在的，或者直接操作数据库把数据插入进去，请使用程序插入或者导入数据的方式来准备数据" class="headerlink" title="10. 【推荐】对于数据库相关的查询、更新、删除等操作，不能假设数据库里的数据是存在的，或者直接操作数据库把数据插入进去，请使用程序插入或者导入数据的方式来准备数据"></a>10. 【推荐】对于数据库相关的查询、更新、删除等操作，不能假设数据库里的数据是存在的，或者直接操作数据库把数据插入进去，请使用程序插入或者导入数据的方式来准备数据</h4><ul>
+<li><strong>反例</strong>：删除某一行数据的单元测试，在数据库中，先直接手动增加一行作为删除目标，但是这一行新增数据并不符合业务插入规则，导致测试结果异常</li>
+</ul>
+<h4 id="11-【推荐】和数据库相关的单元测试，可以设定自动回滚机制，不给数据库造成脏数据。或者对单元测试产生的数据有明确的前后缀标识"><a href="#11-【推荐】和数据库相关的单元测试，可以设定自动回滚机制，不给数据库造成脏数据。或者对单元测试产生的数据有明确的前后缀标识" class="headerlink" title="11. 【推荐】和数据库相关的单元测试，可以设定自动回滚机制，不给数据库造成脏数据。或者对单元测试产生的数据有明确的前后缀标识"></a>11. 【推荐】和数据库相关的单元测试，可以设定自动回滚机制，不给数据库造成脏数据。或者对单元测试产生的数据有明确的前后缀标识</h4><ul>
+<li><strong>正例</strong>：在阿里巴巴企业智能事业部的内部单元测试中，使用 <code>ENTERPRISE_INTELLIGENCE_UNIT_TEST_</code> 的前缀来标识单元测试相关代码</li>
+</ul>
+<h4 id="12-【推荐】对于不可测的代码在适当的时机做必要的重构，使代码变得可测，避免为了达到测试要求而书写不规范测试代码"><a href="#12-【推荐】对于不可测的代码在适当的时机做必要的重构，使代码变得可测，避免为了达到测试要求而书写不规范测试代码" class="headerlink" title="12. 【推荐】对于不可测的代码在适当的时机做必要的重构，使代码变得可测，避免为了达到测试要求而书写不规范测试代码"></a>12. 【推荐】对于不可测的代码在适当的时机做必要的重构，使代码变得可测，避免为了达到测试要求而书写不规范测试代码</h4><h4 id="13-在设计评审阶段，开发人员需要和测试人员一起确定单元测试范围，单元测试最好覆盖所有测试用例（UC）"><a href="#13-在设计评审阶段，开发人员需要和测试人员一起确定单元测试范围，单元测试最好覆盖所有测试用例（UC）" class="headerlink" title="13. 在设计评审阶段，开发人员需要和测试人员一起确定单元测试范围，单元测试最好覆盖所有测试用例（UC）"></a>13. 在设计评审阶段，开发人员需要和测试人员一起确定单元测试范围，单元测试最好覆盖所有测试用例（UC）</h4><h4 id="14-【推荐】单元测试作为一种质量保障手段，在项目提测前完成单元测试，不建议项目发布后补充单元测试用例"><a href="#14-【推荐】单元测试作为一种质量保障手段，在项目提测前完成单元测试，不建议项目发布后补充单元测试用例" class="headerlink" title="14. 【推荐】单元测试作为一种质量保障手段，在项目提测前完成单元测试，不建议项目发布后补充单元测试用例"></a>14. 【推荐】单元测试作为一种质量保障手段，在项目提测前完成单元测试，不建议项目发布后补充单元测试用例</h4><h4 id="15-【参考】为了更方便地进行单元测试，业务代码应避免以下情况"><a href="#15-【参考】为了更方便地进行单元测试，业务代码应避免以下情况" class="headerlink" title="15. 【参考】为了更方便地进行单元测试，业务代码应避免以下情况"></a>15. 【参考】为了更方便地进行单元测试，业务代码应避免以下情况</h4><ol>
+<li>构造方法中做的事情过多</li>
+<li>存在过多的全局变量和静态方法</li>
+<li>存在过多的外部依赖</li>
+<li>存在过多的条件语句</li>
+</ol>
+<ul>
+<li><strong>说明</strong>：多层条件语句建议使用卫语句、策略模式、状态模式等方式重构</li>
+</ul>
+<h4 id="16-【参考】不要对单元测试存在如下误解"><a href="#16-【参考】不要对单元测试存在如下误解" class="headerlink" title="16. 【参考】不要对单元测试存在如下误解"></a>16. 【参考】不要对单元测试存在如下误解</h4><ol>
+<li>那是测试同学干的事情。本文是开发手册，凡是本文内容都是与开发同学强相关的</li>
+<li>单元测试代码是多余的。系统的整体功能与各单元部件的测试正常与否是强相关的</li>
+<li>单元测试代码不需要维护。一年半载后，那么单元测试几乎处于废弃状态</li>
+<li>单元测试与线上故障没有辩证关系。好的单元测试能够最大限度地规避线上故障</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;margin-top:80px">-------------------- 本文结束<i class="fa fa-paw"></i>感谢您的阅读 --------------------</div>
+    
+</div>
+      
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>隋钟元
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://24suixinsuoyu.com/2020/09/01/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" title="单元测试">http://24suixinsuoyu.com/2020/09/01/单元测试/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" rel="tag"><i class="fa fa-tag"></i> 单元测试</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/09/01/%E5%BC%82%E5%B8%B8%E6%97%A5%E5%BF%97%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E6%97%A5%E5%BF%97%E8%A7%84%E7%BA%A6/" rel="prev" title="异常日志（三）：日志规约">
+      <i class="fa fa-chevron-left"></i> 异常日志（三）：日志规约
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/09/01/%E5%AE%89%E5%85%A8%E8%A7%84%E7%BA%A6/" rel="next" title="安全规约">
+      安全规约 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-【强制】好的单元测试必须遵守-AIR-原则"><span class="nav-text">1. 【强制】好的单元测试必须遵守 AIR 原则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-【强制】单元测试应该是全自动执行的，并且非交互式的。测试用例通常是被定期执行的，执行过程必须完全自动化才有意义。输出结果需要人工检查的测试不是一个好的单元测试。单元测试中不准使用-System-out-来进行人肉验证，必须使用-assert-来验证"><span class="nav-text">2. 【强制】单元测试应该是全自动执行的，并且非交互式的。测试用例通常是被定期执行的，执行过程必须完全自动化才有意义。输出结果需要人工检查的测试不是一个好的单元测试。单元测试中不准使用 System.out 来进行人肉验证，必须使用 assert 来验证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-【强制】保持单元测试的独立性。为了保证单元测试稳定可靠且便于维护，单元测试用例之间决不能互相调用，也不能依赖执行的先后次序"><span class="nav-text">3. 【强制】保持单元测试的独立性。为了保证单元测试稳定可靠且便于维护，单元测试用例之间决不能互相调用，也不能依赖执行的先后次序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-【强制】单元测试是可以重复执行的，不能收到外界环境的影响"><span class="nav-text">4. 【强制】单元测试是可以重复执行的，不能收到外界环境的影响</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-【强制】对于单元测试，要保证测试粒度足够小，有助于精确定位问题。单测粒度至多是类级别，一般是方法级别"><span class="nav-text">5. 【强制】对于单元测试，要保证测试粒度足够小，有助于精确定位问题。单测粒度至多是类级别，一般是方法级别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-【强制】核心业务、核心应用、核心模块的增量代码确保单元测试通过"><span class="nav-text">6. 【强制】核心业务、核心应用、核心模块的增量代码确保单元测试通过</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-【强制】单元测试代码必须写在如下工程目录：src-test-java，不允许写在业务代码目录下"><span class="nav-text">7. 【强制】单元测试代码必须写在如下工程目录：src&#x2F;test&#x2F;java，不允许写在业务代码目录下</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-【推荐】单元测试的基本目标：语句覆盖率达到-70-；核心模块的语句覆盖率和分支覆盖率都要达到-100"><span class="nav-text">8. 【推荐】单元测试的基本目标：语句覆盖率达到 70%；核心模块的语句覆盖率和分支覆盖率都要达到 100%</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-【推荐】编写单元测试代码遵守-BCDE-原则，以保证被测试模块的交付质量"><span class="nav-text">9. 【推荐】编写单元测试代码遵守 BCDE 原则，以保证被测试模块的交付质量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-【推荐】对于数据库相关的查询、更新、删除等操作，不能假设数据库里的数据是存在的，或者直接操作数据库把数据插入进去，请使用程序插入或者导入数据的方式来准备数据"><span class="nav-text">10. 【推荐】对于数据库相关的查询、更新、删除等操作，不能假设数据库里的数据是存在的，或者直接操作数据库把数据插入进去，请使用程序插入或者导入数据的方式来准备数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-【推荐】和数据库相关的单元测试，可以设定自动回滚机制，不给数据库造成脏数据。或者对单元测试产生的数据有明确的前后缀标识"><span class="nav-text">11. 【推荐】和数据库相关的单元测试，可以设定自动回滚机制，不给数据库造成脏数据。或者对单元测试产生的数据有明确的前后缀标识</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-【推荐】对于不可测的代码在适当的时机做必要的重构，使代码变得可测，避免为了达到测试要求而书写不规范测试代码"><span class="nav-text">12. 【推荐】对于不可测的代码在适当的时机做必要的重构，使代码变得可测，避免为了达到测试要求而书写不规范测试代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-在设计评审阶段，开发人员需要和测试人员一起确定单元测试范围，单元测试最好覆盖所有测试用例（UC）"><span class="nav-text">13. 在设计评审阶段，开发人员需要和测试人员一起确定单元测试范围，单元测试最好覆盖所有测试用例（UC）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-【推荐】单元测试作为一种质量保障手段，在项目提测前完成单元测试，不建议项目发布后补充单元测试用例"><span class="nav-text">14. 【推荐】单元测试作为一种质量保障手段，在项目提测前完成单元测试，不建议项目发布后补充单元测试用例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#15-【参考】为了更方便地进行单元测试，业务代码应避免以下情况"><span class="nav-text">15. 【参考】为了更方便地进行单元测试，业务代码应避免以下情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#16-【参考】不要对单元测试存在如下误解"><span class="nav-text">16. 【参考】不要对单元测试存在如下误解</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="隋钟元"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">隋钟元</p>
+  <div class="site-description" itemprop="description">技术创造价值</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">157</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">188</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:24suixinsuoyu@gmail.com" title="E-Mail → mailto:24suixinsuoyu@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/24suixinsuoyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;24suixinsuoyu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/24sxsy" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;24sxsy" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/guolin_blog" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;guolin_blog" rel="noopener" target="_blank">郭霖</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/lmj623565791/" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;lmj623565791&#x2F;" rel="noopener" target="_blank">鸿洋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.520monkey.com/" title="http:&#x2F;&#x2F;www.520monkey.com&#x2F;" rel="noopener" target="_blank">姜维</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://daimajia.com/" title="https:&#x2F;&#x2F;daimajia.com&#x2F;" rel="noopener" target="_blank">代码家</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://kmxz.net/" title="https:&#x2F;&#x2F;kmxz.net&#x2F;" rel="noopener" target="_blank">孔祥舟</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yangwenbo.com/" title="http:&#x2F;&#x2F;yangwenbo.com&#x2F;" rel="noopener" target="_blank">杨文博</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">隋钟元</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">479k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">7:15</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+

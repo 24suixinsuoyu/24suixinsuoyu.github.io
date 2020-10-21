@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1. 继承的强大表现在哪">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 类的继承（四）：为什么说继承是把双刃剑">
+<meta property="og:url" content="http://24suixinsuoyu.com/2020/04/15/Java-%E7%B1%BB%E7%9A%84%E7%BB%A7%E6%89%BF%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AF%B4%E7%BB%A7%E6%89%BF%E6%98%AF%E6%8A%8A%E5%8F%8C%E5%88%83%E5%89%91/index.html">
+<meta property="og:site_name" content="隋钟元’s Blog">
+<meta property="og:description" content="1. 继承的强大表现在哪">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-15T11:49:06.000Z">
+<meta property="article:modified_time" content="2020-04-15T12:20:52.000Z">
+<meta property="article:author" content="隋钟元">
+<meta property="article:tag" content="类的继承">
+<meta property="article:tag" content="为什么说继承是把双刃剑">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://24suixinsuoyu.com/2020/04/15/Java-%E7%B1%BB%E7%9A%84%E7%BB%A7%E6%89%BF%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AF%B4%E7%BB%A7%E6%89%BF%E6%98%AF%E6%8A%8A%E5%8F%8C%E5%88%83%E5%89%91/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Java 类的继承（四）：为什么说继承是把双刃剑 | 隋钟元’s Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">隋钟元’s Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-university"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th-list"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-english">
+
+    <a href="/english/" rel="section"><i class="fa fa-fw fa-graduation-cap"></i>英语</a>
+
+  </li>
+        <li class="menu-item menu-item-life">
+
+    <a href="/life/" rel="section"><i class="fa fa-fw fa-balance-scale"></i>生活</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/" rel="section"><i class="fa fa-fw fa-user-circle-o"></i>简历</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/commonweal/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/24suixinsuoyu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/04/15/Java-%E7%B1%BB%E7%9A%84%E7%BB%A7%E6%89%BF%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AF%B4%E7%BB%A7%E6%89%BF%E6%98%AF%E6%8A%8A%E5%8F%8C%E5%88%83%E5%89%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="隋钟元">
+      <meta itemprop="description" content="技术创造价值">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="隋钟元’s Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java 类的继承（四）：为什么说继承是把双刃剑
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-04-15 19:49:06 / 修改时间：20:20:52" itemprop="dateCreated datePublished" datetime="2020-04-15T19:49:06+08:00">2020-04-15</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E3%80%8AJava-%E7%BC%96%E7%A8%8B%E7%9A%84%E9%80%BB%E8%BE%91%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《Java 编程的逻辑》</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="1-继承的强大表现在哪"><a href="#1-继承的强大表现在哪" class="headerlink" title="1. 继承的强大表现在哪"></a>1. 继承的强大表现在哪</h4><a id="more"></a>
+
+<ul>
+<li>继承<strong>广泛应用</strong>于各种 Java API、框架和类库之中。</li>
+<li>一方面它们内部大量使用继承，另一方面它们设计了良好的<strong>框架结构</strong>，提供了大量基类和基础公共代码。</li>
+<li>使用者可以使用继承，重写适当方法<strong>进行定制</strong>，就可以简单方便地实现强大的功能。</li>
+</ul>
+<h4 id="2-继承为什么会有破坏力（相对而言）"><a href="#2-继承为什么会有破坏力（相对而言）" class="headerlink" title="2. 继承为什么会有破坏力（相对而言）"></a>2. 继承为什么会有破坏力（相对而言）</h4><ul>
+<li>继承可能破坏封装。</li>
+<li><strong>封装可以说是程序设计的第一原则</strong>。</li>
+<li>继承可能没有反映出 is-a 的关系。</li>
+</ul>
+<h4 id="3-怎样理解封装"><a href="#3-怎样理解封装" class="headerlink" title="3. 怎样理解封装"></a>3. 怎样理解封装</h4><ul>
+<li><strong>封装就是隐藏实现细节，提供简化接口</strong>。</li>
+<li>使用者只需要关注怎么用而不需要关注内部是怎么实现的。实现细节可以随时修改，而不影响使用者。方法是封装，类也是封装。<strong>通过封装，才能在更高的层次上考虑和解决问题</strong>。</li>
+<li>可以说，<strong>封装是程序设计的第一原则</strong>，没有封装，代码之间会到处存在着实现细节的依赖，则构建和维护复杂的程序是难以想象的，可阅读性和可维护性就会变得很差。</li>
+</ul>
+<h4 id="4-怎样理解继承可能破坏封装"><a href="#4-怎样理解继承可能破坏封装" class="headerlink" title="4. 怎样理解继承可能破坏封装"></a>4. 怎样理解继承可能破坏封装</h4><ul>
+<li>因为<strong>子类和父类之间可能存在着实现细节的依赖</strong>。子类在继承父类的时候，往往不得不关注父类的实现细节，而父类在修改其内部实现的时候，如果不考虑子类，也往往会影响到子类。如果子类不知道父类方法的实现细节，它就不能正确地进行扩展。</li>
+<li><strong>子类和父类之间是细节依赖</strong>，子类扩展父类，但仅仅知道父类能做什么还是不够的，还需要知道父类是怎么做的，而父类的实现细节也不能随便修改，否则可能影响子类。</li>
+<li>更具体地说，<strong>子类需要知道父类的可重写方法之间的依赖关系</strong>，而且这个依赖关系，父类不能随意改变。但即使这个依赖关系不变，封装还是可能因为细节修改而被破坏。</li>
+<li><strong>父类不能随意增加公开方法</strong>，因为给父类增加就是给所有子类增加，而子类可能必须要重写该方法才能确保方法的正确性。</li>
+<li><strong>总结</strong>：<strong>对于子类而言</strong>，通过继承实现是没有安全保障的，因为父类修改内部实现细节，它的功能就可能会被破坏；<strong>对于父类而言</strong>，让子类继承和重写方法，就可能丧失随意修改内部实现的自由。</li>
+</ul>
+<h4 id="5-为什么说继承可能没有反映is-a-关系"><a href="#5-为什么说继承可能没有反映is-a-关系" class="headerlink" title="5. 为什么说继承可能没有反映is-a 关系"></a>5. 为什么说继承可能没有反映is-a 关系</h4><ul>
+<li><strong>继承关系是被设计用来反映 is-a 关系的</strong>，子类是父类的一种，子类对象也属于父类，父类的属性和行为也适用于子类。</li>
+<li>但现实中，<strong>设计完全符合 is-a 关系的继承关系是困难的</strong>。在 is-a 关系中，重写方法时，子类不应该改变父类预期的行为，但是这是没有办法约束的。</li>
+<li><strong>继承是应该被当做 is-a 关系使用的，但是，Java 并没有办法约束</strong>。父类有的属性和行为，子类并不一定都适用，子类还可以重写方法，实现与父类预期完全不一样的行为。</li>
+<li>对于<strong>通过父类引用操作子类对象（多态）</strong>的程序而言，它是把对象当作父类对象来看待的，期望对象符合父类中声明的属性和行为。如果不符合，则有可能会造成混乱，代码可维护性变差。</li>
+</ul>
+<h4 id="6-继承既强大又有破坏性，那怎么办"><a href="#6-继承既强大又有破坏性，那怎么办" class="headerlink" title="6. 继承既强大又有破坏性，那怎么办"></a>6. 继承既强大又有破坏性，那怎么办</h4><ul>
+<li><strong>避免使用</strong>继承。</li>
+<li><strong>正确使用</strong>继承。</li>
+</ul>
+<h4 id="7-怎样避免使用继承"><a href="#7-怎样避免使用继承" class="headerlink" title="7. 怎样避免使用继承"></a>7. 怎样避免使用继承</h4><ul>
+<li>使用 <strong><code>final</code></strong> 关键字。</li>
+<li>优先使用<strong>组合</strong>而非继承。</li>
+<li>使用<strong>接口</strong>。</li>
+</ul>
+<h4 id="8-final-关键字对于继承关系的影响"><a href="#8-final-关键字对于继承关系的影响" class="headerlink" title="8. final 关键字对于继承关系的影响"></a>8. final 关键字对于继承关系的影响</h4><ul>
+<li><strong><code>final</code> 方法不能被重写，<code>final</code> 类不能被继承，<code>final</code> 变量（常量）不能被重新赋值</strong>。</li>
+<li>给方法加 <code>final</code> 修饰符，父类就保留了随意修改这个方法内部实现的自由，使用这个方法的程序也可以确保其行为是符合父类声明的。</li>
+<li>给类加 <code>final</code> 修饰符，父类就保留了随意修改这个类实现的自由，使用者也可以放心地使用它，而不用担心一个父类引用的变量，实际指向的却是一个完全不符合预期行为的子类对象。</li>
+</ul>
+<h4 id="9-使用组合而非继承的优劣是"><a href="#9-使用组合而非继承的优劣是" class="headerlink" title="9. 使用组合而非继承的优劣是"></a>9. 使用组合而非继承的优劣是</h4><ul>
+<li>使用组合可以抵挡父类变化对子类的影响，从而保护子类，<strong>应该优先使用组合</strong>。</li>
+<li><strong>组合的问题是，子类对象不能被当作基类对象来统一处理了，解决方法是使用接口</strong>。</li>
+</ul>
+<h4 id="10-怎样正确使用继承呢"><a href="#10-怎样正确使用继承呢" class="headerlink" title="10. 怎样正确使用继承呢"></a>10. 怎样正确使用继承呢</h4><ul>
+<li><p><strong>基类是别人写的，我们写子类</strong>。基类主要是 Java API、其他框架或类库中的类，在这种情况下，我们主要通过扩展基类实现自定义行为，这种情况下需要注意的是：</p>
+<ul>
+<li>重写方法不要改变预期的行为。</li>
+<li>阅读文档说明，理解可重写方法的实现机制，尤其是方法之间的依赖关系。</li>
+<li>在基类修改的情况下，阅读其修改说明，相应修改子类。</li>
+</ul>
+</li>
+<li><p><strong>我们写基类，别人写子类</strong>。我们写基类给别人用，在这种情况下，需要注意的是：</p>
+<ul>
+<li>使用继承反映真正的 is-a 关系，只将真正公共的部分放到基类。</li>
+<li>对不希望被重写的公开方法添加 final 修饰符。</li>
+<li>写文档，说明可重写方法的实现机制，为子类提供指导，告诉子类应该如何重写。</li>
+<li>在基类修改可能影响子类时，写修改说明。</li>
+</ul>
+</li>
+<li><p><strong>基类、子类都是我们写的</strong>。我们既写基类也写子类：</p>
+<ul>
+<li>关于基类，注意事项和第 2种场景类似。</li>
+<li>关于子类，注意事项和第 1 种场景类似。</li>
+<li>不过程序都由我们控制，要求可以适当放松一些。</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;margin-top:80px">-------------------- 本文结束<i class="fa fa-paw"></i>感谢您的阅读 --------------------</div>
+    
+</div>
+      
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>隋钟元
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://24suixinsuoyu.com/2020/04/15/Java-%E7%B1%BB%E7%9A%84%E7%BB%A7%E6%89%BF%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AF%B4%E7%BB%A7%E6%89%BF%E6%98%AF%E6%8A%8A%E5%8F%8C%E5%88%83%E5%89%91/" title="Java 类的继承（四）：为什么说继承是把双刃剑">http://24suixinsuoyu.com/2020/04/15/Java-类的继承（四）：为什么说继承是把双刃剑/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E7%B1%BB%E7%9A%84%E7%BB%A7%E6%89%BF/" rel="tag"><i class="fa fa-tag"></i> 类的继承</a>
+              <a href="/tags/%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AF%B4%E7%BB%A7%E6%89%BF%E6%98%AF%E6%8A%8A%E5%8F%8C%E5%88%83%E5%89%91/" rel="tag"><i class="fa fa-tag"></i> 为什么说继承是把双刃剑</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/14/Java-%E7%B1%BB%E7%9A%84%E7%BB%A7%E6%89%BF%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E7%BB%A7%E6%89%BF%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/" rel="prev" title="Java 类的继承（三）：继承实现的基本原理">
+      <i class="fa fa-chevron-left"></i> Java 类的继承（三）：继承实现的基本原理
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/15/Java-%E7%B1%BB%E7%9A%84%E6%89%A9%E5%B1%95%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E6%8E%A5%E5%8F%A3%E7%9A%84%E6%9C%AC%E8%B4%A8/" rel="next" title="Java 类的扩展（一）：接口的本质">
+      Java 类的扩展（一）：接口的本质 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-继承的强大表现在哪"><span class="nav-text">1. 继承的强大表现在哪</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-继承为什么会有破坏力（相对而言）"><span class="nav-text">2. 继承为什么会有破坏力（相对而言）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-怎样理解封装"><span class="nav-text">3. 怎样理解封装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-怎样理解继承可能破坏封装"><span class="nav-text">4. 怎样理解继承可能破坏封装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-为什么说继承可能没有反映is-a-关系"><span class="nav-text">5. 为什么说继承可能没有反映is-a 关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-继承既强大又有破坏性，那怎么办"><span class="nav-text">6. 继承既强大又有破坏性，那怎么办</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-怎样避免使用继承"><span class="nav-text">7. 怎样避免使用继承</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-final-关键字对于继承关系的影响"><span class="nav-text">8. final 关键字对于继承关系的影响</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-使用组合而非继承的优劣是"><span class="nav-text">9. 使用组合而非继承的优劣是</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-怎样正确使用继承呢"><span class="nav-text">10. 怎样正确使用继承呢</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="隋钟元"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">隋钟元</p>
+  <div class="site-description" itemprop="description">技术创造价值</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">157</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">188</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:24suixinsuoyu@gmail.com" title="E-Mail → mailto:24suixinsuoyu@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/24suixinsuoyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;24suixinsuoyu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/24sxsy" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;24sxsy" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/guolin_blog" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;guolin_blog" rel="noopener" target="_blank">郭霖</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/lmj623565791/" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;lmj623565791&#x2F;" rel="noopener" target="_blank">鸿洋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.520monkey.com/" title="http:&#x2F;&#x2F;www.520monkey.com&#x2F;" rel="noopener" target="_blank">姜维</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://daimajia.com/" title="https:&#x2F;&#x2F;daimajia.com&#x2F;" rel="noopener" target="_blank">代码家</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://kmxz.net/" title="https:&#x2F;&#x2F;kmxz.net&#x2F;" rel="noopener" target="_blank">孔祥舟</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yangwenbo.com/" title="http:&#x2F;&#x2F;yangwenbo.com&#x2F;" rel="noopener" target="_blank">杨文博</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">隋钟元</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">479k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">7:15</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+

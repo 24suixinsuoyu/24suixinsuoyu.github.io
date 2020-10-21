@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1. 怎样理解 ThreadLocal">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 同步和协作工具类（五）：理解 ThreadLocal">
+<meta property="og:url" content="http://24suixinsuoyu.com/2020/05/27/Java-%E5%90%8C%E6%AD%A5%E5%92%8C%E5%8D%8F%E4%BD%9C%E5%B7%A5%E5%85%B7%E7%B1%BB%EF%BC%88%E4%BA%94%EF%BC%89%EF%BC%9A%E7%90%86%E8%A7%A3-ThreadLocal/index.html">
+<meta property="og:site_name" content="隋钟元’s Blog">
+<meta property="og:description" content="1. 怎样理解 ThreadLocal">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-27T06:34:40.000Z">
+<meta property="article:modified_time" content="2020-06-01T07:32:24.000Z">
+<meta property="article:author" content="隋钟元">
+<meta property="article:tag" content="同步和协作工具类">
+<meta property="article:tag" content="理解 ThreadLocal">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://24suixinsuoyu.com/2020/05/27/Java-%E5%90%8C%E6%AD%A5%E5%92%8C%E5%8D%8F%E4%BD%9C%E5%B7%A5%E5%85%B7%E7%B1%BB%EF%BC%88%E4%BA%94%EF%BC%89%EF%BC%9A%E7%90%86%E8%A7%A3-ThreadLocal/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Java 同步和协作工具类（五）：理解 ThreadLocal | 隋钟元’s Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">隋钟元’s Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-university"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th-list"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-english">
+
+    <a href="/english/" rel="section"><i class="fa fa-fw fa-graduation-cap"></i>英语</a>
+
+  </li>
+        <li class="menu-item menu-item-life">
+
+    <a href="/life/" rel="section"><i class="fa fa-fw fa-balance-scale"></i>生活</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/" rel="section"><i class="fa fa-fw fa-user-circle-o"></i>简历</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/commonweal/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/24suixinsuoyu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/05/27/Java-%E5%90%8C%E6%AD%A5%E5%92%8C%E5%8D%8F%E4%BD%9C%E5%B7%A5%E5%85%B7%E7%B1%BB%EF%BC%88%E4%BA%94%EF%BC%89%EF%BC%9A%E7%90%86%E8%A7%A3-ThreadLocal/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="隋钟元">
+      <meta itemprop="description" content="技术创造价值">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="隋钟元’s Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java 同步和协作工具类（五）：理解 ThreadLocal
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-27 14:34:40" itemprop="dateCreated datePublished" datetime="2020-05-27T14:34:40+08:00">2020-05-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-01 15:32:24" itemprop="dateModified" datetime="2020-06-01T15:32:24+08:00">2020-06-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E3%80%8AJava-%E7%BC%96%E7%A8%8B%E7%9A%84%E9%80%BB%E8%BE%91%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《Java 编程的逻辑》</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="1-怎样理解-ThreadLocal"><a href="#1-怎样理解-ThreadLocal" class="headerlink" title="1. 怎样理解 ThreadLocal"></a>1. 怎样理解 ThreadLocal</h4><a id="more"></a>
+
+<ul>
+<li>Java 中有一个特殊的概念：<strong>线程本地变量</strong>，这个概念在 Java 中的实现类就是 <strong><code>ThreadLocal</code></strong>，是一个<strong>泛型类</strong>。</li>
+<li>线程本地变量 <code>ThreadLocal</code> 的含义是：<strong>每个线程都有同一个变量的独有拷贝</strong>。</li>
+</ul>
+<h4 id="2-写出下面程序的运行结果并分析"><a href="#2-写出下面程序的运行结果并分析" class="headerlink" title="2. 写出下面程序的运行结果并分析"></a>2. 写出下面程序的运行结果并分析</h4><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">public</span> <span class="keyword">class</span> ThreadLocalBasic &#123;</span><br><span class="line">    static ThreadLocal&lt;<span class="type">Integer</span>&gt; <span class="keyword">local</span> = <span class="built_in">new</span> ThreadLocal&lt;&gt; ();</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">public</span> static <span class="type">void</span> main(String[] args) throws InterruptedException &#123;</span><br><span class="line">        Thread child = <span class="built_in">new</span> Thread() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            <span class="built_in">public</span> <span class="type">void</span> run() &#123;</span><br><span class="line">                <span class="keyword">System</span>.<span class="keyword">out</span>.println("child thread initial: " + <span class="keyword">local</span>.<span class="keyword">get</span>());</span><br><span class="line">                <span class="keyword">local</span>.<span class="keyword">set</span>(<span class="number">200</span>);</span><br><span class="line">                <span class="keyword">System</span>.<span class="keyword">out</span>.println("child thread final: " + <span class="keyword">local</span>.<span class="keyword">get</span>());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">local</span>.<span class="keyword">set</span>(<span class="number">100</span>);</span><br><span class="line">        child.<span class="keyword">start</span>();</span><br><span class="line">        child.<span class="keyword">join</span>();</span><br><span class="line">        <span class="keyword">System</span>.<span class="keyword">out</span>.println("main thread final: " + <span class="keyword">local</span>.<span class="keyword">get</span>());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>结果：</p>
+  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">child thread initial:</span> <span class="literal">null</span></span><br><span class="line"><span class="attr">child thread final:</span> <span class="number">200</span></span><br><span class="line"><span class="attr">main thread final:</span> <span class="number">100</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>分析：</p>
+<ul>
+<li>主线程 <code>main</code> 对线程本地变量 <code>local</code> 的设置对子线程 <code>child</code> 不起作用。</li>
+<li>同样的，子线程 <code>child</code> 对线程本地变量 <code>local</code> 的改变也不会影响主线程 <code>main</code>。</li>
+<li><strong>二者访问的虽然是同一个变量 <code>local</code>，但每个线程都有自己的独立的值</strong>，这就是线程本地变量的含义。</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-ThreadLocal-的主要方法有哪些"><a href="#3-ThreadLocal-的主要方法有哪些" class="headerlink" title="3. ThreadLocal 的主要方法有哪些"></a>3. ThreadLocal 的主要方法有哪些</h4><ul>
+<li><code>ThreadLocal</code> 是一个<strong>泛型类</strong>，接受一个<strong>类型参数 <code>T</code></strong>，它只有一个空的构造方法。</li>
+<li><code>public T get()</code>：<strong>获取值</strong>，如果没有，返回 <code>null</code>。</li>
+<li><code>public void set(T value)</code>：<strong>设置值</strong>。</li>
+<li><code>protected T initialValue()</code>：<strong>提供初始值</strong>，是一个受保护方法，可以通过匿名内部类的方式提供。当调用 <code>get()</code> 方法时，如果之前没有设置过，会调用该方法获取初始值，默认实现是返回 <code>null</code>。</li>
+<li><code>public void remove()</code>：<strong>删掉当前线程对应的值</strong>，如果删掉后，再次调用 <code>get()</code>，会再调用 <code>initialValue()</code> 获取初始值。</li>
+</ul>
+<h4 id="4-线程本地变量-ThreadLocal-的使用场景"><a href="#4-线程本地变量-ThreadLocal-的使用场景" class="headerlink" title="4. 线程本地变量 ThreadLocal 的使用场景"></a>4. 线程本地变量 ThreadLocal 的使用场景</h4><ul>
+<li><strong>日期</strong>处理。</li>
+<li><strong>随机数</strong>。</li>
+<li><strong>上下文</strong>信息。</li>
+</ul>
+<h4 id="5-Java-中的日期和时间操作类-DateFormat-SimpleDateFormat-不是线程安全的，那实现线程安全的方法有哪些"><a href="#5-Java-中的日期和时间操作类-DateFormat-SimpleDateFormat-不是线程安全的，那实现线程安全的方法有哪些" class="headerlink" title="5. Java 中的日期和时间操作类 DateFormat/SimpleDateFormat 不是线程安全的，那实现线程安全的方法有哪些"></a>5. Java 中的日期和时间操作类 DateFormat/SimpleDateFormat 不是线程安全的，那实现线程安全的方法有哪些</h4><ul>
+<li>使用<strong>锁</strong>。</li>
+<li>每次都创建一个<strong>新的对象</strong>。</li>
+<li>更好的方式就是使用<strong>线程本地变量 <code>ThreadLocal</code></strong>。</li>
+</ul>
+<h4 id="6-写一个-ThreadLocal-在日期处理的应用实现线程安全的-Demo"><a href="#6-写一个-ThreadLocal-在日期处理的应用实现线程安全的-Demo" class="headerlink" title="6. 写一个 ThreadLocal 在日期处理的应用实现线程安全的 Demo"></a>6. 写一个 ThreadLocal 在日期处理的应用实现线程安全的 Demo</h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadLocalDateFormat</span> &#123;</span></span><br><span class="line">    <span class="keyword">static</span> ThreadLocal&lt;DateFormat&gt; sdf = <span class="keyword">new</span> ThreadLocal&lt;DateFormat&gt; () &#123; <span class="comment">//ThreadLocal 对象一般都定义为 static，便于引用</span></span><br><span class="line">        @Override</span><br><span class="line">        <span class="keyword">protected</span> DateFormat initialValue() &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd HH:mm:ss"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">String</span> <span class="title">date2String</span><span class="params">(Date date)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sdf.<span class="built_in">get</span>().format(date);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Date <span class="title">string2Date</span><span class="params">(<span class="keyword">String</span> str)</span> throws ParseException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sdf.<span class="built_in">get</span>().parse(str);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-ThreadLocal-在随机数中是怎样应用的"><a href="#7-ThreadLocal-在随机数中是怎样应用的" class="headerlink" title="7. ThreadLocal 在随机数中是怎样应用的"></a>7. ThreadLocal 在随机数中是怎样应用的</h4><ul>
+<li>即使对象是线程安全的，使用 <code>ThreadLocal</code> 也可以<strong>减少竞争</strong>。</li>
+<li><code>Random</code> 是线程安全的，但如果并发访问竞争激烈的话，<strong>性能</strong>会下降。</li>
+<li>所以，Java 并发包提供了类 <strong><code>ThreadLocalRandom</code></strong>，它是 <code>Random</code> 的子类，利用了 <code>ThreadLocal</code>。</li>
+</ul>
+<h4 id="8-ThreadLocal-在上下文信息中的应用"><a href="#8-ThreadLocal-在上下文信息中的应用" class="headerlink" title="8. ThreadLocal 在上下文信息中的应用"></a>8. ThreadLocal 在上下文信息中的应用</h4><ul>
+<li><strong><code>ThreadLocal</code> 的典型用途是提供上下文信息</strong>。</li>
+<li>举个例子：<ul>
+<li>在一个 Web 服务器中，一个线程执行用户的请求，在执行过程中，很多代码都会访问一些<strong>共同的信息</strong>，比如请求信息、用户身份信息、数据库连接、当前事务等。</li>
+<li>它们是线程执行过程中的<strong>全局信息</strong>，如果作为参数在不同代码间传递，代码会很烦琐。这时，使用 <code>ThreadLocal</code> 就很方便，所以被用于各种框架如 <code>Spring</code> 中。</li>
+</ul>
+</li>
+</ul>
+<h4 id="9-写一个使用-ThreadLocal-保存上下文信息的-Demo"><a href="#9-写一个使用-ThreadLocal-保存上下文信息的-Demo" class="headerlink" title="9. 写一个使用 ThreadLocal 保存上下文信息的 Demo"></a>9. 写一个使用 ThreadLocal 保存上下文信息的 Demo</h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RequestContext</span> &#123;</span> </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> ThreadLocal&lt;<span class="keyword">String</span>&gt; localUserId = <span class="keyword">new</span> ThreadLocal&lt;&gt; ();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> ThreadLocal&lt;Request&gt; localRequest = <span class="keyword">new</span> ThreadLocal&lt;&gt; ();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Request</span> &#123;</span></span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">String</span> <span class="title">getCurrentUserId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> localUserId.<span class="built_in">get</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setCurrentUserId</span><span class="params">(<span class="keyword">String</span> userId)</span> </span>&#123;</span><br><span class="line">        localUserId.<span class="built_in">set</span>(userId);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Request <span class="title">getCurrentRequest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> localRequest.<span class="built_in">get</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setCurrentRequest</span><span class="params">(Request request)</span> </span>&#123;</span><br><span class="line">        localRequest.<span class="built_in">set</span>(request);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="10-ThreadLocal-的实现原理"><a href="#10-ThreadLocal-的实现原理" class="headerlink" title="10. ThreadLocal 的实现原理"></a>10. ThreadLocal 的实现原理</h4><ul>
+<li><p>分析源码：</p>
+<ul>
+<li><strong>每个线程都有一个 <code>Map</code></strong>（<code>set()</code> 方法内部会创建一个 <code>map</code>），<strong>类型为 <code>ThreadLocalMap</code></strong>。</li>
+<li><code>ThreadLocalMap</code> 是一个<strong>内部类</strong>，是专门用于 <code>ThreadLocal</code> 的。与一般的 <code>Map</code> 不同，它的<strong>键类型</strong>为 <code>WeakReference&lt;ThreadLocal&gt;</code>，即<strong>弱引用</strong>，便于回收内存。</li>
+<li>对于每个 <code>ThradLocal</code> 对象，调用其 <code>get()/set()</code> 实际上就是<strong>以 <code>ThreadLocal</code> 对象为键读写当前线程的 <code>Map</code></strong>。这样，就实现了<strong>每个线程都有自己的独立副本</strong>的效果。</li>
+</ul>
+</li>
+<li><p>参考文章：</p>
+<ul>
+<li><a href="https://mp.weixin.qq.com/s/vURwBPgVuv4yGT1PeEHxZQ" target="_blank" rel="noopener">一篇文章彻底了解 ThreadLocal 的原理</a></li>
+<li><a href="https://mp.weixin.qq.com/s/SebbO7p2uJHUKQO0Fc6uXQ" target="_blank" rel="noopener">这才是 ThreadLocal 的正确原理与适用场景</a></li>
+<li><a href="https://mp.weixin.qq.com/s/xW7SJBip2vaXKdTziqb0mA" target="_blank" rel="noopener">深入理解ThreadLocal：拨开迷雾，探究本质</a></li>
+</ul>
+</li>
+</ul>
+<h4 id="11-总结一下-Java-并发包中的一些同步协作工具"><a href="#11-总结一下-Java-并发包中的一些同步协作工具" class="headerlink" title="11. 总结一下 Java 并发包中的一些同步协作工具"></a>11. 总结一下 Java 并发包中的一些同步协作工具</h4><ul>
+<li>在<strong>读多写少</strong>的场景中使用 <strong><code>ReentrantReadWriteLock</code></strong> 代替 ReentrantLock，以提高性能。</li>
+<li>使用 <strong><code>Semaphore</code></strong> <strong>限制</strong>对资源的<strong>并发访问数</strong>。</li>
+<li>使用 <strong><code>CountDownLatch</code></strong> 实现<strong>不同角色</strong>线程间的同步。</li>
+<li>使用 <strong><code>CyclicBarrier</code></strong> 实现<strong>同一角色</strong>线程间的协调一致。</li>
+</ul>
+<h4 id="12-简单总结下-ThreadLocal"><a href="#12-简单总结下-ThreadLocal" class="headerlink" title="12. 简单总结下 ThreadLocal"></a>12. 简单总结下 ThreadLocal</h4><ul>
+<li><code>ThreadLocal</code> 使得<strong>每个线程对同一个变量有自己的独立副本</strong>，是实现<strong>线程安全</strong>、<strong>减少竞争</strong>的一种方案。</li>
+<li><code>ThreadLocal</code> 经常用于<strong>存储上下文信息</strong>，避免在不同代码间来回传递，简化代码。</li>
+<li><strong>每个线程都要一个 <code>Map</code></strong>，调用 <code>ThreadLocal</code> 对象的 <code>get()/set()</code> 方法实际上就是以 <code>ThreadLocal</code> 对象为键读写当前线程的该 <code>Map</code>。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;margin-top:80px">-------------------- 本文结束<i class="fa fa-paw"></i>感谢您的阅读 --------------------</div>
+    
+</div>
+      
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>隋钟元
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://24suixinsuoyu.com/2020/05/27/Java-%E5%90%8C%E6%AD%A5%E5%92%8C%E5%8D%8F%E4%BD%9C%E5%B7%A5%E5%85%B7%E7%B1%BB%EF%BC%88%E4%BA%94%EF%BC%89%EF%BC%9A%E7%90%86%E8%A7%A3-ThreadLocal/" title="Java 同步和协作工具类（五）：理解 ThreadLocal">http://24suixinsuoyu.com/2020/05/27/Java-同步和协作工具类（五）：理解-ThreadLocal/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E5%90%8C%E6%AD%A5%E5%92%8C%E5%8D%8F%E4%BD%9C%E5%B7%A5%E5%85%B7%E7%B1%BB/" rel="tag"><i class="fa fa-tag"></i> 同步和协作工具类</a>
+              <a href="/tags/%E7%90%86%E8%A7%A3-ThreadLocal/" rel="tag"><i class="fa fa-tag"></i> 理解 ThreadLocal</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/27/Java-%E5%90%8C%E6%AD%A5%E5%92%8C%E5%8D%8F%E4%BD%9C%E5%B7%A5%E5%85%B7%E7%B1%BB%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E5%BE%AA%E7%8E%AF%E6%A0%85%E6%A0%8F-CyclicBarrier/" rel="prev" title="Java 同步和协作工具类（四）：循环栅栏 CyclicBarrier">
+      <i class="fa fa-chevron-left"></i> Java 同步和协作工具类（四）：循环栅栏 CyclicBarrier
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/27/Java-%E5%B9%B6%E5%8F%91%E6%80%BB%E7%BB%93%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E6%9C%BA%E5%88%B6/" rel="next" title="Java 并发总结（一）：线程安全的机制">
+      Java 并发总结（一）：线程安全的机制 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-怎样理解-ThreadLocal"><span class="nav-text">1. 怎样理解 ThreadLocal</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-写出下面程序的运行结果并分析"><span class="nav-text">2. 写出下面程序的运行结果并分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-ThreadLocal-的主要方法有哪些"><span class="nav-text">3. ThreadLocal 的主要方法有哪些</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-线程本地变量-ThreadLocal-的使用场景"><span class="nav-text">4. 线程本地变量 ThreadLocal 的使用场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-Java-中的日期和时间操作类-DateFormat-SimpleDateFormat-不是线程安全的，那实现线程安全的方法有哪些"><span class="nav-text">5. Java 中的日期和时间操作类 DateFormat&#x2F;SimpleDateFormat 不是线程安全的，那实现线程安全的方法有哪些</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-写一个-ThreadLocal-在日期处理的应用实现线程安全的-Demo"><span class="nav-text">6. 写一个 ThreadLocal 在日期处理的应用实现线程安全的 Demo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-ThreadLocal-在随机数中是怎样应用的"><span class="nav-text">7. ThreadLocal 在随机数中是怎样应用的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-ThreadLocal-在上下文信息中的应用"><span class="nav-text">8. ThreadLocal 在上下文信息中的应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-写一个使用-ThreadLocal-保存上下文信息的-Demo"><span class="nav-text">9. 写一个使用 ThreadLocal 保存上下文信息的 Demo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-ThreadLocal-的实现原理"><span class="nav-text">10. ThreadLocal 的实现原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-总结一下-Java-并发包中的一些同步协作工具"><span class="nav-text">11. 总结一下 Java 并发包中的一些同步协作工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-简单总结下-ThreadLocal"><span class="nav-text">12. 简单总结下 ThreadLocal</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="隋钟元"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">隋钟元</p>
+  <div class="site-description" itemprop="description">技术创造价值</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">157</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">188</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:24suixinsuoyu@gmail.com" title="E-Mail → mailto:24suixinsuoyu@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/24suixinsuoyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;24suixinsuoyu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/24sxsy" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;24sxsy" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/guolin_blog" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;guolin_blog" rel="noopener" target="_blank">郭霖</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/lmj623565791/" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;lmj623565791&#x2F;" rel="noopener" target="_blank">鸿洋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.520monkey.com/" title="http:&#x2F;&#x2F;www.520monkey.com&#x2F;" rel="noopener" target="_blank">姜维</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://daimajia.com/" title="https:&#x2F;&#x2F;daimajia.com&#x2F;" rel="noopener" target="_blank">代码家</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://kmxz.net/" title="https:&#x2F;&#x2F;kmxz.net&#x2F;" rel="noopener" target="_blank">孔祥舟</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yangwenbo.com/" title="http:&#x2F;&#x2F;yangwenbo.com&#x2F;" rel="noopener" target="_blank">杨文博</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">隋钟元</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">479k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">7:15</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+

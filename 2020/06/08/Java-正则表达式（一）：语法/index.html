@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1. 什么是正则表达式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 正则表达式（一）：语法">
+<meta property="og:url" content="http://24suixinsuoyu.com/2020/06/08/Java-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E8%AF%AD%E6%B3%95/index.html">
+<meta property="og:site_name" content="隋钟元’s Blog">
+<meta property="og:description" content="1. 什么是正则表达式">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-06-07T17:59:14.000Z">
+<meta property="article:modified_time" content="2020-06-17T04:07:02.000Z">
+<meta property="article:author" content="隋钟元">
+<meta property="article:tag" content="正则表达式">
+<meta property="article:tag" content="语法">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://24suixinsuoyu.com/2020/06/08/Java-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E8%AF%AD%E6%B3%95/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Java 正则表达式（一）：语法 | 隋钟元’s Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">隋钟元’s Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-university"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th-list"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-english">
+
+    <a href="/english/" rel="section"><i class="fa fa-fw fa-graduation-cap"></i>英语</a>
+
+  </li>
+        <li class="menu-item menu-item-life">
+
+    <a href="/life/" rel="section"><i class="fa fa-fw fa-balance-scale"></i>生活</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/" rel="section"><i class="fa fa-fw fa-user-circle-o"></i>简历</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/commonweal/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/24suixinsuoyu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/06/08/Java-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E8%AF%AD%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="隋钟元">
+      <meta itemprop="description" content="技术创造价值">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="隋钟元’s Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java 正则表达式（一）：语法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-08 01:59:14" itemprop="dateCreated datePublished" datetime="2020-06-08T01:59:14+08:00">2020-06-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-17 12:07:02" itemprop="dateModified" datetime="2020-06-17T12:07:02+08:00">2020-06-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E3%80%8AJava-%E7%BC%96%E7%A8%8B%E7%9A%84%E9%80%BB%E8%BE%91%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《Java 编程的逻辑》</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="1-什么是正则表达式"><a href="#1-什么是正则表达式" class="headerlink" title="1. 什么是正则表达式"></a>1. 什么是正则表达式</h4><a id="more"></a>
+
+<ul>
+<li>正则表达式是<strong>一串字符</strong>，它描述了一个<strong>文本模式</strong>。</li>
+<li>利用它可以方便地<strong>处理文本</strong>，包括文本的查找、替换、验证、切分等。</li>
+</ul>
+<h4 id="2-正则表达式中字符的分类"><a href="#2-正则表达式中字符的分类" class="headerlink" title="2. 正则表达式中字符的分类"></a>2. 正则表达式中字符的分类</h4><ul>
+<li><strong>普通字符</strong>：就是要匹配的字符本身。</li>
+<li><strong>元字符</strong>：有<strong>特殊含义</strong>的字符，这些元字符及其特殊含义构成了正则表达式的语法。</li>
+</ul>
+<h4 id="3-正则表达式的历史是怎样的"><a href="#3-正则表达式的历史是怎样的" class="headerlink" title="3. 正则表达式的历史是怎样的"></a>3. 正则表达式的历史是怎样的</h4><ul>
+<li>正则表达式有一个<strong>比较长的历史</strong>。</li>
+<li>各种与文本处理有关的工具、编辑器和系统<strong>都支持</strong>正则表达式，大部分编程语言<strong>也都支持</strong>正则表达式。</li>
+<li>虽然都叫正则表达式，但由于<strong>历史原因，不同语言、系统和工具的语法不太一样</strong>。</li>
+</ul>
+<h4 id="4-正则表达式中单个字符的语法有哪些"><a href="#4-正则表达式中单个字符的语法有哪些" class="headerlink" title="4. 正则表达式中单个字符的语法有哪些"></a>4. 正则表达式中单个字符的语法有哪些</h4><ul>
+<li>大部分的单个字符就是用字符本身表示的，比如字符 <code>0</code>、<code>3</code>、<code>a</code>、<code>马</code> 等，但有一些单个字符使用多个字符表示，这些字符都以<strong>反斜杠 <code>\</code></strong> 开头，比如：<ul>
+<li><strong>特殊字符</strong>，比如 tab 字符 <code>\t</code>、换行符 <code>\n</code>、回车符 <code>\r</code> 等。</li>
+<li><strong>八进制表示的字符</strong>：以 <strong><code>\0</code></strong> 开头，后跟 <strong>1 ~ 3 位</strong>数字。比如 <code>\0141</code>，对应的是 ASCII 编码为 97 的字符，即字符 <code>a</code>。</li>
+<li><strong>十六进制表示的字符</strong>：以 <strong><code>\x</code></strong> 开头，后跟 <strong>2 位</strong>字符。比如 <code>\x6A</code>，对应的是 ASCII 编码为 106 的字符，即字符 <code>j</code>。</li>
+<li><strong>Unicode 编号表示的字符</strong>：以 <strong><code>\u</code></strong> 开头，后跟 <strong>4 位</strong>字符。比如 <code>\u9A6C</code>，表示的是中文字符：<code>马</code>。这只能表示编号在 <strong>0xFFFF</strong> 以下的字符，如果超出 0xFFFF，使用 <strong><code>\x{...}</code></strong> 形式，比如 <code>\x{1f48e}</code>。</li>
+<li><strong>反斜杠 <code>\</code> 本身</strong>：反斜杠 <code>\</code> 是一个元字符，<strong>如果要匹配它自身，使用两个反斜杠表示</strong>，即 <code>\\</code>。</li>
+<li><strong>元字符本身</strong>：除了 <code>\</code>，正则表达式中还有很多元字符，比如 <code>.</code>、<code>*</code>、<code>?</code>、<code>+</code> 等，<strong>要匹配这些元字符自身，需要在前面加转义字符 <code>\</code></strong>，比如 <code>\.</code>。</li>
+</ul>
+</li>
+</ul>
+<h4 id="5-怎样理解-点号元字符"><a href="#5-怎样理解-点号元字符" class="headerlink" title="5. 怎样理解 . 点号元字符"></a>5. 怎样理解 . 点号元字符</h4><ul>
+<li>点号字符 <strong><code>.</code></strong> 是一个<strong>元字符</strong>，默认模式下，它匹配<strong>除了换行符以外的任意字符</strong>。</li>
+<li>可以指定另外一种匹配模式，一般称为<strong>单行匹配模式</strong>或者<strong>点号匹配模式</strong>。在此模式下，<code>.</code> 匹配任意字符，<strong>包括换行符</strong>。可以有两种方式<strong>指定</strong>匹配模式：<ul>
+<li>一种是<strong>在正则表达式中</strong>，<strong>以 <code>(?s)</code> 开头</strong>，s 表示 single line，即单行匹配模式。比如：<code>(?s)a.f</code>。</li>
+<li>另外一种是<strong>在程序中</strong>指定，在 Java 中，对应的模式常量是 <strong><code>Pattern.DOTALL</code></strong>。</li>
+</ul>
+</li>
+</ul>
+<h4 id="6-怎样理解字符组这个概念"><a href="#6-怎样理解字符组这个概念" class="headerlink" title="6. 怎样理解字符组这个概念"></a>6. 怎样理解字符组这个概念</h4><ul>
+<li><p>在单个字符和任意字符之间，有一个<strong>字符组</strong>的概念，<strong>匹配组中的任意一个字符，用中括号 <code>[]</code> 表示</strong>。</p>
+</li>
+<li><p>比如：<code>[abcd]</code> 匹配 <code>a</code>、<code>b</code>、<code>c</code>、<code>d</code> 中的任意一个字符；<code>[0123456789]</code> 匹配任意一个数字：</p>
+<ul>
+<li><p>为方便表示<strong>连续的</strong>多个字符，字符组中可以使用<strong>连字符 <code>-</code></strong>。比如：<code>[0-9]</code>、<code>[a-z]</code>。</p>
+<ul>
+<li>可以有<strong>多个连续空间</strong>，可以有其他普通字符。比如：<code>[0-9a-zA-Z_]</code>。</li>
+<li><strong>在字符组中，<code>-</code> 是一个元字符</strong>，如果要匹配它自身，可以使用转义，即<code>\-</code>，或者<strong>把它放在字符组的最前面</strong>，比如：<code>[-0-9]</code>。</li>
+</ul>
+</li>
+<li><p>字符组支持<strong>排除</strong>的概念，<strong>在 <code>[</code> 后紧跟一个字符 <code>^</code></strong>。比如：<code>[^abcd]</code>，表示匹配除了 <code>a</code>、<code>b</code>、<code>c</code>、<code>d</code> 以外的任意一个字符；<code>[^0-9]</code> 表示匹配一个非数字字符。</p>
+<ul>
+<li>排除不是不能匹配，而是匹配一个指定字符组以外的字符，<strong>要表达不能匹配的含义，需要使用环视语法</strong>。</li>
+<li><strong><code>^</code> 只有在字符组的开头才是元字符，如果不在开头，就是普通字符</strong>。匹配它自身，比如：<code>[a^b]</code> 就是匹配字符 <code>a</code>，<code>^</code> 或 <code>b</code>。</li>
+</ul>
+</li>
+<li><p><strong>在字符组中，除了 <code>^</code>、<code>-</code>、<code>[]</code>、<code>\</code> 外，其他在字符组的元字符不再具备特殊含义，变成了普通字符</strong>。比如字符 <code>.</code> 和 <code>*</code>，<code>[.*]</code> 就是匹配 <code>.</code> 或者 <code>*</code> 本身。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="7-Java-中预定义的字符组有哪些"><a href="#7-Java-中预定义的字符组有哪些" class="headerlink" title="7. Java 中预定义的字符组有哪些"></a>7. Java 中预定义的字符组有哪些</h4><ul>
+<li><p>有一些特殊的<strong>以 <code>\</code> 开头</strong>的字符，表示一些<strong>预定义的字符组</strong>，比如：</p>
+<ul>
+<li><strong><code>\d</code></strong>：<code>d</code> 表示 digit，匹配一个<strong>数字字符</strong>，等同于 <code>[0-9]</code>。</li>
+<li><strong><code>\w</code></strong>：<code>w</code> 表示 word，匹配一个<strong>单词字符</strong>，等同于 <code>[a-zA-Z_0-9]</code>。</li>
+<li><strong><code>\s</code></strong>：<code>s</code> 表示 space，匹配一个<strong>空白字符</strong>，等同于 <code>[\t\n\x0B\f\r]</code>。</li>
+</ul>
+</li>
+<li><p>它们都有对应的<strong>排除型字符组</strong>，用<strong>大写</strong>表示，即：</p>
+<ul>
+<li><strong><code>\D</code></strong>：匹配一个<strong>非数字字符</strong>，即 <code>[^\d]</code>。</li>
+<li><strong><code>\W</code></strong>：匹配一个<strong>非单词字符</strong>，即 <code>[^\w]</code>。</li>
+<li><strong><code>\S</code></strong>：匹配一个<strong>非空白字符</strong>，即 <code>[^\s]</code>。</li>
+</ul>
+</li>
+</ul>
+<h4 id="8-什么是-POSI-字符组"><a href="#8-什么是-POSI-字符组" class="headerlink" title="8. 什么是 POSI 字符组"></a>8. 什么是 POSI 字符组</h4><ul>
+<li>POSIX 字符组是 <strong>POSIX 标准</strong>定义的一些字符组。</li>
+<li>在 Java 中，这些字符组的形式是 <strong><code>\p{…}</code></strong>。</li>
+</ul>
+<h4 id="9-正则表达式中的量词是什么意思"><a href="#9-正则表达式中的量词是什么意思" class="headerlink" title="9. 正则表达式中的量词是什么意思"></a>9. 正则表达式中的量词是什么意思</h4><ul>
+<li><strong>量词</strong>指的是<strong>指定出现次数的元字符</strong>，有三个常见的元字符：<code>+</code>、<code>*</code>、<code>?</code>：<ul>
+<li><strong><code>+</code></strong>：表示前面字符的<strong>一次或多次</strong>出现。比如 <code>ab+c</code>，既能匹配 <code>abc</code>，也能匹配 <code>abbc</code> 或 <code>abbbc</code>。</li>
+<li><strong><code>*</code></strong>：表示前面字符的<strong>零次或多次</strong>出现。比如 <code>ab*c</code>，既能匹配 <code>abc</code>，也能匹配 <code>ac</code> 或 <code>abbbc</code>。</li>
+<li><strong><code>?</code></strong>：表示前面字符<strong>可能出现、也可能不出现</strong>。比如 <code>ab?c</code>，既能匹配 <code>abc</code>，也能匹配 <code>ac</code>，但不能匹配 <code>abbc</code>。</li>
+</ul>
+</li>
+</ul>
+<h4 id="10-更为通用的表示出现次数的语法是"><a href="#10-更为通用的表示出现次数的语法是" class="headerlink" title="10. 更为通用的表示出现次数的语法是"></a>10. 更为通用的表示出现次数的语法是</h4><ul>
+<li><p><strong><code>{m,n}</code></strong>。</p>
+</li>
+<li><p><strong>逗号左右不能有空格</strong>，表示<strong>出现次数从 m 到 n，包括 m 和 n</strong>；如果 n 没有限制，可以<strong>省略</strong>。；如果 m 和 n 一样，可以写为 <strong><code>{m}</code></strong>。</p>
+<ul>
+<li><code>ab{1,10}c</code>：b 可以出现 1 次到 10 次。</li>
+<li><code>ab{3}c</code>：b 必须出现三次，即只能匹配 <code>abbbc</code>。</li>
+<li><code>ab{1,}c</code>：与 <code>ab+c</code> 一样。</li>
+<li><code>ab{0,}c</code>：与 <code>ab*c</code> 一样。</li>
+<li><code>ab{0,1}c</code>：与 <code>ab?c</code> 一样。</li>
+</ul>
+</li>
+<li><p>另外，<code>?</code>、<code>*</code>、<code>+</code>、<code>{</code> 是<strong>元字符</strong>，如果要匹配这些字符本身，需要<strong>使用 <code>\</code> 转义</strong>。比如：<code>a\*b</code>，匹配字符串 <code>a*b</code>。</p>
+</li>
+<li><p><strong>这些量词出现在字符组中时，不是元字符</strong>，比如：<code>[?*+{]</code> 就是匹配其中一个字符本身。</p>
+</li>
+</ul>
+<h4 id="11-关于量词，它们的默认匹配是贪婪的。这句话的意思是"><a href="#11-关于量词，它们的默认匹配是贪婪的。这句话的意思是" class="headerlink" title="11. 关于量词，它们的默认匹配是贪婪的。这句话的意思是"></a>11. 关于量词，它们的默认匹配是贪婪的。这句话的意思是</h4><ul>
+<li>看个例子，正则表达式是：<strong><code>&lt;a&gt;.*&lt;/a&gt;</code></strong>，如果要处理的字符串是：<code>&lt;a&gt;first&lt;/a&gt;&lt;a&gt;second&lt;/a&gt;</code>（目的是想得到两个匹配，一个匹配：<code>&lt;a&gt;first&lt;/a&gt;</code>，另一个匹配：<code>&lt;a&gt;second&lt;/a&gt;</code>）。</li>
+<li>但<strong>默认情况</strong>下，得到的结果却只有一个匹配，匹配所有内容：<ul>
+<li>这是因为 <code>.*</code> 可以匹配第一个 <code>&lt;a&gt;</code> 和最后一个 <code>&lt;/a&gt;</code> 之间的所有字符。<strong>只要能匹配，<code>.*</code> 就尽量往后匹配，它是贪婪的</strong>。</li>
+<li>如果希望在碰到<strong>第一个匹配</strong>时就停止的话，应该使用<strong>懒惰量词</strong>：<strong>在量词的后面加一个符号 <code>?</code></strong>。将表达式改为：<code>&lt;a&gt;.*?&lt;/a&gt;</code> 就能得到期望的结果。</li>
+<li><strong>所有量词都有对应的懒惰形式</strong>，比如：<code>x??</code>、<code>x*?</code>、<code>x+?</code>、<code>x{m,n}?</code> 等。</li>
+</ul>
+</li>
+</ul>
+<h4 id="12-怎样理解分组的概念"><a href="#12-怎样理解分组的概念" class="headerlink" title="12. 怎样理解分组的概念"></a>12. 怎样理解分组的概念</h4><ul>
+<li><p><strong>表达式</strong>可以用小括号 <strong><code>()</code></strong> 括起来，表示一个<strong>分组</strong>，比如：<code>a(bc)d</code>，<code>bc</code> 就是一个分组。</p>
+<ul>
+<li>分组可以<strong>嵌套</strong>，比如 <code>a(de(fg))</code>。</li>
+<li>分组默认都有一个<strong>编号</strong>，按照括号的出现顺序，<strong>从 1 开始</strong>，<strong>从左到右依次递增</strong>。比如表达式：<code>a(bc)((de)()fg)</code>，字符串 <code>abcdefg</code> 匹配这个表达式，第一个分组为 <code>bc</code>，第二个分组为 <code>defg</code>，第三个分组为 <code>de</code>，第四个分组为 fg。<strong>分组 0 是一个特殊分组，内容是整个匹配的字符串</strong>，这里是 <code>abcdefg</code>。</li>
+<li>分组匹配的<strong>子字符串</strong>可以在后续访问，好像被捕获了一样，所以默认分组称为<strong>捕获分组</strong>。</li>
+<li>可以对分组<strong>使用量词</strong>，表示分组的出现次数，比如 <code>a(bc)+d</code>，表示 <code>bc</code> 出现一次或多次。</li>
+</ul>
+</li>
+<li><p>中括号 <code>[]</code> 表示匹配其中的一个字符，<strong>小括号 <code>()</code> 和元字符 <code>|</code> 一起，可以表示匹配其中的一个子表达式</strong>。比如：<code>(http|ftp|file)</code> 匹配 <code>http</code> 或 <code>ftp</code> 或 <code>file</code>。<strong>但 <code>|</code> 用于 <code>[]</code> 就不再有特殊含义</strong>，比如：<code>[a|b]</code>，它的含义不是匹配 <code>a</code> 或 <code>b</code>，而是 <code>a</code> 或 <code>|</code> 或 <code>b</code>。</p>
+</li>
+<li><p>在正则表达式中，可以使用<strong>反斜杠 <code>\</code> 加分组编号</strong>引用之前匹配的分组，这称为<strong>回溯引用</strong>。比如：<code>&lt;(\w+)&gt;(.*)&lt;/\1&gt;</code>，<code>\1</code> 匹配之前的第一个分组 <code>(\w+)</code>，这个表达式可以匹配类似如下字符串：<code>&lt;title&gt;bc&lt;/title&gt;</code>。这里，第一个分组是 <code>title</code>。</p>
+</li>
+<li><p>使用数字引用分组，可能容易出现混乱，可以<strong>对分组进行命名</strong>，<strong>通过名字引用</strong>之前的分组。对分组命名的语法是：<strong><code>(?&lt;name&gt;X)</code></strong>，引用分组的语法是 <code>\k&lt;name&gt;</code>。比如，上面的例子可以写为：<code>&lt;(?&lt;tag&gt;\w+)&gt;(.*)&lt;/\k&lt;tag&gt;&gt;</code>。</p>
+</li>
+<li><p>默认分组都称为捕获分组，即分组匹配的内容被捕获了，可以在后续被引用。实现捕获分组有一定的成本，为了提高<strong>性能</strong>，如果分组后续不需要被引用，可以改为<strong>非捕获分组</strong>，语法是：<strong><code>(?:...)</code></strong>。比如：<code>(?:abc|def)</code>。</p>
+</li>
+</ul>
+<h4 id="13-正则表达式中的特殊边界匹配什么意思"><a href="#13-正则表达式中的特殊边界匹配什么意思" class="headerlink" title="13. 正则表达式中的特殊边界匹配什么意思"></a>13. 正则表达式中的特殊边界匹配什么意思</h4><ul>
+<li><p>在正则表达式中，除了可以指定字符需满足什么条件，还可以指定<strong>字符的边界</strong>需满足什么条件，或者说<strong>匹配特定的边界</strong>。常用的<strong>表示特殊边界的元字符</strong>有：<code>^</code>、<code>$</code>、<code>\A</code>、<code>\Z</code>、<code>\z</code> 和 <code>\b</code>。</p>
+<ul>
+<li><strong>默认情况下，<code>^</code> 匹配整个字符串的开始</strong>。比如，<code>^abc</code> 表示整个字符串必须以 <code>abc</code> 开始。</li>
+<li><strong>元字符 <code>^</code> 的含义是，在字符组中它表示排除，但在字符组外，它匹配开始</strong>。比如，<code>^[^abc]</code> 表示以一个不是 <code>a</code>、<code>b</code>、<code>c</code> 的字符开始。</li>
+<li><strong>默认情况下，<code>$</code> 匹配整个字符串的结束</strong>。不过，如果整个字符串<strong>以换行符结束</strong>，<code>$</code> 匹配的是<strong>换行符之前的边界</strong>。比如，<code>abc$</code> 表示整个表达式以 <code>abc</code> 结束，或者以 <code>abc\r\n</code> 或 <code>abc\n</code> 结束。</li>
+</ul>
+</li>
+<li><p>以上 <code>^</code> 和 <code>$</code> 的含义是默认模式下的，可以指定另外一种匹配模式：<strong>多行匹配模式</strong>。在此模式下，会以行为单位进行匹配，<code>^</code> 匹配的是行开始、<code>$</code> 匹配的是行结束。比如，<code>^abc$</code>，字符串是 <code>abc\nabc\r\n</code>，就会有两个匹配。可以有两种方式指定匹配模式：</p>
+<ul>
+<li>一种是<strong>在正则表达式中，以 <code>(?m)</code> 开头</strong>，<code>m</code> 表示 multiline，即多行匹配模式。上面的正则表达式可以写为：<code>(?m)^abc$</code>。</li>
+<li>另一种是<strong>在程序中指定</strong>，在 Java 中，对应的模式常量是 <strong><code>Pattern.MULTILINE</code></strong>。</li>
+</ul>
+</li>
+<li><p><strong>多行匹配模式和单行匹配模式没有关系</strong>。</p>
+<ul>
+<li>单行模式影响的是点号元字符 <code>.</code> 的匹配规则，使得 <code>.</code> 可以匹配换行符。</li>
+<li>多行模式影响的是 <code>^</code> 和 <code>$</code> 的匹配规则，使得它们可以匹配行的开始和结束。</li>
+<li>两个模式可以一起使用。</li>
+</ul>
+</li>
+<li><p><strong><code>\A</code> 与 <code>^</code> 类似</strong>，但不管什么模式，它匹配的总是整个字符串的<strong>开始边界</strong>。</p>
+</li>
+<li><p><strong><code>\Z</code> 和 <code>\z</code> 与 <code>$</code> 类似</strong>，但不管什么模式，它们匹配的总是整个字符串的<strong>结束边界</strong>。</p>
+<ul>
+<li><code>\Z</code> 和 <code>\z</code> 的区别是：如果字符串以换行符结束，<code>\Z</code> 与 <code>$</code> 一样，匹配的是换行符之前的边界，而 <code>\z</code> 匹配的总是结束边界。</li>
+<li>在进行输入验证的时候，为了确保输入最后没有多余的换行符，可以使用 <code>\z</code> 进行匹配。</li>
+</ul>
+</li>
+<li><p><strong><code>\b</code> 匹配的是单词边界</strong>，比如 <code>\bcat\b</code>，匹配的是完整的单词 <code>cat</code>，它不能匹配 <code>category</code>。<code>\b</code> 匹配的不是一个具体的字符，而是一种边界。</p>
+<ul>
+<li>这种边界满足一个要求：<strong>即一边是单词字符，另一边不是单词字符</strong>。在 Java 中，<code>\b</code> 识别的单词字符除了 <code>\w</code>，还包括中文字符。</li>
+<li>边界匹配不同于字符匹配，可以认为，在一个字符串中，<strong>每个字符的两边都是边界</strong>，而上面介绍的这些特殊字符，匹配的都不是字符，而是特定的边界。</li>
+</ul>
+</li>
+</ul>
+<h4 id="14-怎么理解环视边界匹配"><a href="#14-怎么理解环视边界匹配" class="headerlink" title="14. 怎么理解环视边界匹配"></a>14. 怎么理解环视边界匹配</h4><ul>
+<li><p>对于边界匹配，还有一种更为通用的方式，那就是<strong>环视</strong>。</p>
+</li>
+<li><p>环视的字面意思就是左右看看，<strong>需要左右符合一些条件</strong>。本质上，它也是匹配边界，对边界有一些要求，这个要求是针对左边或右边的字符串的。根据要求不同，分为 4 种环视：</p>
+<ul>
+<li><strong>肯定顺序环视</strong>：语法是 <strong><code>(?=...)</code></strong>，要求<strong>右边的字符串匹配指定的表达式</strong>。比如，表达式 <code>abc(?=def)</code>，<code>(?=def)</code> 在字符 <code>c</code> 右面，即匹配 <code>c</code> 右面的边界。对这个边界的要求是：它的右边有 <code>def</code>，比如 <code>abcdef</code>，如果没有，比如 <code>abcd</code>，则不匹配。</li>
+<li><strong>否定顺序环视</strong>：语法是 <strong><code>(?!...)</code></strong>。要求<strong>右边的字符串不能匹配指定的表达式</strong>。比如，表达式 <code>s(?!ing)</code>，匹配一般的 <code>s</code>，但不匹配后面有 <code>ing</code> 的 <code>s</code>。注意：避免与排除型字符组混淆，比如 <code>s[^ing]</code>，<code>s[^ing]</code> 匹配的是两个字符，第一个是 <code>s</code>，第二个是 <code>i</code>、<code>n</code>、<code>g</code> 以外的任意一个字符。</li>
+<li><strong>肯定逆序环视</strong>：语法是 <strong><code>(?&lt;=...)</code></strong>，要求<strong>左边的字符串匹配指定的表达式</strong>。比如，表达式 <code>(?&lt;=\s)abc</code>，<code>(?&lt;=\s)</code> 在字符 <code>a</code> 左边，即匹配 <code>a</code> 左边的边界。对这个边界的要求是：它的左边必须是空白字符。</li>
+<li><strong>否定逆序环视</strong>：语法是 <strong><code>(?&lt;!...)</code></strong>，要求<strong>左边的字符串不能匹配指定的表达式</strong>。比如，表达式 <code>(?&lt;!\w)cat</code>，<code>(?&lt;!\w)</code> 在字符 <code>c</code> 左边，即匹配 <code>c</code> 左边的边界。对这个边界的要求是：它的左边不能是单词字符。</li>
+</ul>
+</li>
+<li><p>环视也使用小括号 <code>()</code>，不过，它不是分组，不占用分组编号。</p>
+<ul>
+<li>这些环视结构也被称为<strong>断言</strong>，断言的对象是边界，边界不占用字符，没有宽度，所以也被称为<strong>零宽度断言</strong>。</li>
+<li>顺序环视也可以出现在左边，逆序环视也可以出现在右边。</li>
+<li>环视匹配的是一个边界，里面的表达式是对这个边界左边或右边字符串的要求，对同一个边界，可以指定多个要求，即写<strong>多个环视</strong>。</li>
+</ul>
+</li>
+</ul>
+<h4 id="15-怎样理解转义字符"><a href="#15-怎样理解转义字符" class="headerlink" title="15. 怎样理解转义字符 \"></a>15. 怎样理解转义字符 \</h4><ul>
+<li><p><strong>字符 <code>\</code> 表示转义</strong>，转义有两种：</p>
+<ul>
+<li><strong>把普通字符转义，使其具备特殊含义</strong>。比如 <code>\t</code>、<code>\n</code>、<code>\d</code>、<code>\w</code>、<code>\b</code>、<code>\A</code> 等 ，即这个转义把普通字符变为了元字符。</li>
+<li><strong>把元字符转义，使其变为普通字符</strong>。比如 <code>\.</code>、<code>\*</code>、<code>\?</code>、<code>\(</code>、<code>\\</code> 等。</li>
+</ul>
+</li>
+<li><p>记住所有的元字符，并在需要的时候进行转义，这是比较困难的。有一个简单的办法：<strong>可以将所有元字符看作普通字符，就是在开始处加上 <code>\Q</code>，在结束处加上 <code>\E</code></strong>。比如，<code>\Q(.*+)\E</code>，<code>\Q</code> 和 <code>\E</code> 之间的所有字符都会被视为普通字符。</p>
+</li>
+<li><p>正则表达式用字符串表示。</p>
+<ul>
+<li>在 Java 中，字符 <code>\</code> 也是字符串语法中的元字符。</li>
+<li>这使得正则表达式中的 <code>\</code>，在 Java 字符串表示中，要用两个 <code>\</code>，即 <code>\\</code>。</li>
+<li>而<strong>要匹配字符 <code>\</code> 本身，在 Java 字符串表示中，要用 4 个 <code>\</code>，即 <code>\\\\</code></strong>。</li>
+</ul>
+</li>
+</ul>
+<h4 id="16-不区分大小写的匹配模式是"><a href="#16-不区分大小写的匹配模式是" class="headerlink" title="16. 不区分大小写的匹配模式是"></a>16. 不区分大小写的匹配模式是</h4><ul>
+<li>指定方式有两种：<ul>
+<li>一种是<strong>在正则表达式开头使用 <code>(?i)</code></strong>，<code>i</code> 为 <code>ignore</code>。比如，<code>(?i)the</code>，既可以匹配 <code>the</code>，也可以匹配 <code>THE</code>，还可以匹配 <code>The</code>。</li>
+<li>还可以<strong>在程序中指定</strong>，Java 中对应的变量是 <strong><code>Pattern.CASE_INSENSITIVE</code></strong>。</li>
+<li>匹配模式间<strong>不是互斥</strong>的关系，它们可以一起使用，<strong>在正则表达式中，可以指定多个模式</strong>，比如 <code>(?smi)</code>。</li>
+</ul>
+</li>
+</ul>
+<h4 id="17-正则表达式语法总结一下"><a href="#17-正则表达式语法总结一下" class="headerlink" title="17. 正则表达式语法总结一下"></a>17. 正则表达式语法总结一下</h4><ul>
+<li><strong>单个字符语法</strong>：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">语法</th>
+<th align="center">解释</th>
+<th align="center">语法</th>
+<th align="center">解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>\r \n \t</code></td>
+<td align="center">特殊字符</td>
+<td align="center"><code>\uhhhh</code></td>
+<td align="center">基本 Unicode 字符，如 \u9A6C （马）</td>
+</tr>
+<tr>
+<td align="center"><code>\0n \0nn \0mnn</code></td>
+<td align="center">八进制字符，如 \0141</td>
+<td align="center"><code>\x{h…h}</code></td>
+<td align="center">增补 Unicode 字符，如 \x{1f48e}</td>
+</tr>
+<tr>
+<td align="center"><code>\xhh</code></td>
+<td align="center">十六进制字符，如 \x6A</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>字符组语法</strong>：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">语法</th>
+<th align="center">解释</th>
+<th align="center">语法</th>
+<th align="center">解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>.</code></td>
+<td align="center">默认模式是换行符外的任意字符，单行模式是任意字符</td>
+<td align="center"><code>[0-9a-z]</code></td>
+<td align="center">0 到 9、a 到 z 的任意一个字符</td>
+</tr>
+<tr>
+<td align="center"><code>[abc]</code></td>
+<td align="center">a、b、c 中的任意一个字符</td>
+<td align="center"><code>[-0-9]</code></td>
+<td align="center">0 到 9 或者连字符 -</td>
+</tr>
+<tr>
+<td align="center"><code>[\^abc]</code></td>
+<td align="center">a、b、c 以外的任意一个字符</td>
+<td align="center"><code>[.* ]</code></td>
+<td align="center">. 或者 *，没有特殊含义</td>
+</tr>
+<tr>
+<td align="center"><code>[a-z&amp;&amp;[\^de]]</code></td>
+<td align="center">a 到 z，但不包括 d 和 e</td>
+<td align="center"><code>\D</code></td>
+<td align="center">[^\d]，非数字字符</td>
+</tr>
+<tr>
+<td align="center"><code>[[abc][def]]</code></td>
+<td align="center">[abcdef]</td>
+<td align="center"><code>\W</code></td>
+<td align="center">[^\w]，非单词字符</td>
+</tr>
+<tr>
+<td align="center"><code>\d</code></td>
+<td align="center">[0-9]</td>
+<td align="center"><code>\S</code></td>
+<td align="center">[^\s]，非空白字符</td>
+</tr>
+<tr>
+<td align="center"><code>\w</code></td>
+<td align="center">[a-zA-Z_0-9]</td>
+<td align="center"><code>\p{…}</code></td>
+<td align="center">POSIX 字符组</td>
+</tr>
+<tr>
+<td align="center"><code>\s</code></td>
+<td align="center">[\t\n\x0B\f\r]</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>量词语法</strong>：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">语法</th>
+<th align="center">解释</th>
+<th align="center">语法</th>
+<th align="center">解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>x?、x??</code></td>
+<td align="center">x 出现 0 次或 1 次，多一个 ? 的为懒惰形式，下同</td>
+<td align="center"><code>x{m,n}、x{m,n}?</code></td>
+<td align="center">x 出现 m 次到 n 次</td>
+</tr>
+<tr>
+<td align="center"><code>x 、x ?</code></td>
+<td align="center">x 出现 0 次或多次</td>
+<td align="center"><code>x{m,}、x{m,}?</code></td>
+<td align="center">x 出现 m 次以上</td>
+</tr>
+<tr>
+<td align="center"><code>x+、x+?</code></td>
+<td align="center">x 出现 1 次或多次</td>
+<td align="center"><code>x{n}、x{n}?</code></td>
+<td align="center">x 出现正好 n 次</td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>分组语法</strong>：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">语法</th>
+<th align="center">解释</th>
+<th align="center">语法</th>
+<th align="center">解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>ab 竖线 cd</code></td>
+<td align="center">匹配 ab 或 cd</td>
+<td align="center"><code>(?\X)</code></td>
+<td align="center">给分组命名，比如 &lt;(?\w+)&gt;，(\w+) 匹配的分组命名为了 tag</td>
+</tr>
+<tr>
+<td align="center"><code>(http 竖线 ftp 竖线 file)</code></td>
+<td align="center">匹配 http、ftp 或 file</td>
+<td align="center"><code>k\</code></td>
+<td align="center">引用命名分组，比如 &lt;(?\w+)&gt;(.* )&lt;/\k&gt;</td>
+</tr>
+<tr>
+<td align="center"><code>a(bc)+d</code></td>
+<td align="center">bc 作为一个分组出现多次</td>
+<td align="center"><code>(?:abc 竖线 def)</code></td>
+<td align="center">分组但不捕获，匹配 abc 或 def</td>
+</tr>
+<tr>
+<td align="center"><code>&lt;(\w+)&gt;(.*)&lt;/\1&gt;    (\w+)</code></td>
+<td align="center">捕获第一个分组，\1 回溯引用该分组</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>边界和环视语法</strong>：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">语法</th>
+<th align="center">解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>^</code></td>
+<td align="center">默认模式是整个字符串的开始边界，多行模式是行的开始边界</td>
+</tr>
+<tr>
+<td align="center"><code>$</code></td>
+<td align="center">默认模式是整个字符串的结束边界，多行模式是行的结束边界，如果结尾是换行符，为换行符之前的边界</td>
+</tr>
+<tr>
+<td align="center"><code>\A</code></td>
+<td align="center">总是匹配整个字符串的开始边界</td>
+</tr>
+<tr>
+<td align="center"><code>\Z</code></td>
+<td align="center">总是匹配整个字符串的结束边界，如果结尾是换行符，匹配换行符之前的边界</td>
+</tr>
+<tr>
+<td align="center"><code>\z</code></td>
+<td align="center">总是匹配整个字符串的结束边界，不管结尾是否是换行符</td>
+</tr>
+<tr>
+<td align="center"><code>\b</code></td>
+<td align="center">匹配单词边界，边界一边是单词字符，另一边不是</td>
+</tr>
+<tr>
+<td align="center"><code>(?=…)</code></td>
+<td align="center">肯定顺序环视，匹配边界，该边界右边的字符串匹配指定表达式</td>
+</tr>
+<tr>
+<td align="center"><code>(?!=…)</code></td>
+<td align="center">否定顺序环视，匹配边界，该边界右边的字符串不能匹配指定表达式</td>
+</tr>
+<tr>
+<td align="center"><code>(?&lt;=…)</code></td>
+<td align="center">肯定逆序环视，匹配边界，该边界左边的字符串匹配指定表达式</td>
+</tr>
+<tr>
+<td align="center"><code>(?&lt;!…)</code></td>
+<td align="center">否定逆序环视，匹配边界，该边界左边的字符串不能匹配指定表达式</td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>匹配模式和转义语法</strong>：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">语法</th>
+<th align="center">解释</th>
+<th align="center">语法</th>
+<th align="center">解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>(?i)</code></td>
+<td align="center">不区分大小写匹配</td>
+<td align="center"><code>[.*^(){}]</code></td>
+<td align="center">在字符组中，大部分元字符没有特殊含义</td>
+</tr>
+<tr>
+<td align="center"><code>(?m)</code></td>
+<td align="center">多行模式，^ 匹配行开始，$ 匹配行结束</td>
+<td align="center"><code>\\</code></td>
+<td align="center">\ 本身</td>
+</tr>
+<tr>
+<td align="center"><code>(?s)</code></td>
+<td align="center">单行模式，. 匹配任意字符，包括换行符</td>
+<td align="center"><code>\Q \E</code></td>
+<td align="center">\Q 到 \E 之间的所有字符视为普通字符</td>
+</tr>
+<tr>
+<td align="center"><code>\. \* \?</code></td>
+<td align="center">转义元字符为普通字符</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;margin-top:80px">-------------------- 本文结束<i class="fa fa-paw"></i>感谢您的阅读 --------------------</div>
+    
+</div>
+      
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>隋钟元
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://24suixinsuoyu.com/2020/06/08/Java-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E8%AF%AD%E6%B3%95/" title="Java 正则表达式（一）：语法">http://24suixinsuoyu.com/2020/06/08/Java-正则表达式（一）：语法/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" rel="tag"><i class="fa fa-tag"></i> 正则表达式</a>
+              <a href="/tags/%E8%AF%AD%E6%B3%95/" rel="tag"><i class="fa fa-tag"></i> 语法</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/06/Java-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6%EF%BC%88%E4%BA%94%EF%BC%89%EF%BC%9A%E8%87%AA%E5%AE%9A%E4%B9%89-ClassLoader-%E7%9A%84%E5%BA%94%E7%94%A8%EF%BC%9A%E7%83%AD%E9%83%A8%E7%BD%B2/" rel="prev" title="Java 类加载机制（五）：自定义 ClassLoader 的应用：热部署">
+      <i class="fa fa-chevron-left"></i> Java 类加载机制（五）：自定义 ClassLoader 的应用：热部署
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/06/08/Java-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9AJava-API/" rel="next" title="Java 正则表达式（二）：Java API">
+      Java 正则表达式（二）：Java API <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-什么是正则表达式"><span class="nav-text">1. 什么是正则表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-正则表达式中字符的分类"><span class="nav-text">2. 正则表达式中字符的分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-正则表达式的历史是怎样的"><span class="nav-text">3. 正则表达式的历史是怎样的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-正则表达式中单个字符的语法有哪些"><span class="nav-text">4. 正则表达式中单个字符的语法有哪些</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-怎样理解-点号元字符"><span class="nav-text">5. 怎样理解 . 点号元字符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-怎样理解字符组这个概念"><span class="nav-text">6. 怎样理解字符组这个概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-Java-中预定义的字符组有哪些"><span class="nav-text">7. Java 中预定义的字符组有哪些</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-什么是-POSI-字符组"><span class="nav-text">8. 什么是 POSI 字符组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-正则表达式中的量词是什么意思"><span class="nav-text">9. 正则表达式中的量词是什么意思</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-更为通用的表示出现次数的语法是"><span class="nav-text">10. 更为通用的表示出现次数的语法是</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-关于量词，它们的默认匹配是贪婪的。这句话的意思是"><span class="nav-text">11. 关于量词，它们的默认匹配是贪婪的。这句话的意思是</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-怎样理解分组的概念"><span class="nav-text">12. 怎样理解分组的概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-正则表达式中的特殊边界匹配什么意思"><span class="nav-text">13. 正则表达式中的特殊边界匹配什么意思</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-怎么理解环视边界匹配"><span class="nav-text">14. 怎么理解环视边界匹配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#15-怎样理解转义字符"><span class="nav-text">15. 怎样理解转义字符 \</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#16-不区分大小写的匹配模式是"><span class="nav-text">16. 不区分大小写的匹配模式是</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#17-正则表达式语法总结一下"><span class="nav-text">17. 正则表达式语法总结一下</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="隋钟元"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">隋钟元</p>
+  <div class="site-description" itemprop="description">技术创造价值</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">157</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">188</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:24suixinsuoyu@gmail.com" title="E-Mail → mailto:24suixinsuoyu@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/24suixinsuoyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;24suixinsuoyu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/24sxsy" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;24sxsy" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/guolin_blog" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;guolin_blog" rel="noopener" target="_blank">郭霖</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/lmj623565791/" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;lmj623565791&#x2F;" rel="noopener" target="_blank">鸿洋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.520monkey.com/" title="http:&#x2F;&#x2F;www.520monkey.com&#x2F;" rel="noopener" target="_blank">姜维</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://daimajia.com/" title="https:&#x2F;&#x2F;daimajia.com&#x2F;" rel="noopener" target="_blank">代码家</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://kmxz.net/" title="https:&#x2F;&#x2F;kmxz.net&#x2F;" rel="noopener" target="_blank">孔祥舟</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yangwenbo.com/" title="http:&#x2F;&#x2F;yangwenbo.com&#x2F;" rel="noopener" target="_blank">杨文博</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">隋钟元</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">479k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">7:15</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+

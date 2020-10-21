@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1. Android 的发展历史大概是怎样的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 详解系统架构">
+<meta property="og:url" content="http://24suixinsuoyu.com/2020/07/02/Android-%E8%AF%A6%E8%A7%A3%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/index.html">
+<meta property="og:site_name" content="隋钟元’s Blog">
+<meta property="og:description" content="1. Android 的发展历史大概是怎样的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ggxuep9al6j30rs0mjjvw.jpg">
+<meta property="article:published_time" content="2020-07-02T01:38:47.000Z">
+<meta property="article:modified_time" content="2020-07-20T15:36:18.000Z">
+<meta property="article:author" content="隋钟元">
+<meta property="article:tag" content="系统架构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ggxuep9al6j30rs0mjjvw.jpg">
+
+<link rel="canonical" href="http://24suixinsuoyu.com/2020/07/02/Android-%E8%AF%A6%E8%A7%A3%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Android 详解系统架构 | 隋钟元’s Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">隋钟元’s Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-university"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th-list"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-english">
+
+    <a href="/english/" rel="section"><i class="fa fa-fw fa-graduation-cap"></i>英语</a>
+
+  </li>
+        <li class="menu-item menu-item-life">
+
+    <a href="/life/" rel="section"><i class="fa fa-fw fa-balance-scale"></i>生活</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/" rel="section"><i class="fa fa-fw fa-user-circle-o"></i>简历</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/commonweal/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/24suixinsuoyu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/07/02/Android-%E8%AF%A6%E8%A7%A3%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="隋钟元">
+      <meta itemprop="description" content="技术创造价值">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="隋钟元’s Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android 详解系统架构
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-02 09:38:47" itemprop="dateCreated datePublished" datetime="2020-07-02T09:38:47+08:00">2020-07-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-20 23:36:18" itemprop="dateModified" datetime="2020-07-20T23:36:18+08:00">2020-07-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E3%80%8AAndroid-%E7%AC%AC%E4%BA%8C%E8%A1%8C%E4%BB%A3%E7%A0%81%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《Android 第二行代码》</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="1-Android-的发展历史大概是怎样的"><a href="#1-Android-的发展历史大概是怎样的" class="headerlink" title="1. Android 的发展历史大概是怎样的"></a>1. Android 的发展历史大概是怎样的</h4><a id="more"></a>
+
+<ul>
+<li>2003 年 10 月，<strong>Andy Rubin</strong> 等人一起创办了 Android 公司。</li>
+<li>2005 年 8 月，<strong>Google</strong> 收购了这家仅仅成立了 22 个月的公司。</li>
+<li><strong>2008 年 9 月</strong>，Google 正式发布了 Android 1.0系统。</li>
+<li><strong>Steve Jobs</strong> 自始至终认为 Android 是一个抄袭 iPhone 的产品，里面剽窃了诸多 iPhone 的创意，并声称不惜发动一场“核大战”一定要毁掉 Android。</li>
+<li>Android 操作系统是基于 <strong>Linux</strong> 开发的，在 2010 年被 Linux 团队从 Linux 内核主线中除名。</li>
+<li>Android 中的应用程序都是使用 Java 语言开发的，<strong>Oracle</strong> 则针对 Android 侵犯 Java 知识产权一事对 Google 提起了高达数十亿美元赔偿的诉讼。</li>
+<li><strong>Andy Rubin</strong> 从 Google 离职，开始了智能手机领域的创业，乔老爷子在世时说他处处模仿自己。</li>
+</ul>
+<h4 id="2-Android-系统架构图"><a href="#2-Android-系统架构图" class="headerlink" title="2. Android 系统架构图"></a>2. Android 系统架构图</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1ggxuep9al6j30rs0mjjvw.jpg" alt="Android 系统架构图"></p>
+<h4 id="3-Android-系统架构是怎样的"><a href="#3-Android-系统架构是怎样的" class="headerlink" title="3. Android 系统架构是怎样的"></a>3. Android 系统架构是怎样的</h4><ul>
+<li><p><strong>Linux 内核层（Linux Kernel）</strong>：</p>
+<ul>
+<li>Android 系统是基于 Linux 内核的，这一层为 Android 设备的各种<strong>硬件</strong>提供了<strong>底层的驱动</strong>，如显示驱动、音频驱动、照相机驱动、蓝牙驱动、WifFi 启动、电源管理等。</li>
+</ul>
+</li>
+<li><p><strong>系统运行库层（Libraries + Android Runtime）</strong>：</p>
+<ul>
+<li>这一层通过一些 <strong>C/C++ 库</strong>来为 Android 系统提供了主要的<strong>特性支持</strong>。如 SQLite 库提供了数据库的支持，OpenGL/ES 库提供了 3D 绘图的支持，Webkit 库提供了浏览器内核的支持等。</li>
+<li>同样在这一层还有 <strong>Android 运行时库</strong>，它主要提供了一些核心库，能够允许开发者使用 Java 语言来编写 Android 应用。</li>
+<li>另外，Andorid 运行时库中还包含了 <strong>Dalvik 虚拟机（5.0 系统之后改为 ART 运行环境）</strong>，它使得每一个 Android 应用都能运行在独立的进程当中，并且拥有一个自己的 Dalvik 虚拟机实例。相较于 Java 虚拟机，Dalvik 是专门为移动设备定制的，它针对手机内存、CPU 性能有限等情况做了优化处理。</li>
+</ul>
+</li>
+<li><p><strong>应用框架层（Application Framework）</strong>：</p>
+<ul>
+<li>这一层主要提供了构建应用程序时可能用到的<strong>各种 API</strong>，Androd 自带的一些核心应用就是使用这些 API 完成的，开发者也可以通过使用这些 API 来构建自己的应用程序。</li>
+</ul>
+</li>
+<li><p><strong>应用层（Applications）</strong>：</p>
+<ul>
+<li>所有安装在手机上的<strong>应用程序</strong>都是属于这一层的，比如系统自带的联系人、短信等程序，或者是从 Google Play 上下载的小游戏，当然还包括开发者自己开发的程序。</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-Android-已发布的版本有哪些"><a href="#4-Android-已发布的版本有哪些" class="headerlink" title="4. Android 已发布的版本有哪些"></a>4. Android 已发布的版本有哪些</h4><table>
+<thead>
+<tr>
+<th align="center">版本号</th>
+<th align="center">系统代号</th>
+<th align="center">API</th>
+<th align="center">市场占有率</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1.5</td>
+<td align="center">Cupcake（纸杯蛋糕）</td>
+<td align="center">2</td>
+<td align="center">0.5%</td>
+</tr>
+<tr>
+<td align="center">1.6</td>
+<td align="center">Donut（甜甜圈）</td>
+<td align="center">4</td>
+<td align="center">0.1%</td>
+</tr>
+<tr>
+<td align="center">2.0-2.1</td>
+<td align="center">Eclair（闪电泡芙）</td>
+<td align="center">6</td>
+<td align="center">0.15%</td>
+</tr>
+<tr>
+<td align="center">2.2</td>
+<td align="center">Froyo（冻酸奶）</td>
+<td align="center">8</td>
+<td align="center">0.2%</td>
+</tr>
+<tr>
+<td align="center">2.3.3-2.3.7</td>
+<td align="center">Gingerbread（姜味饼干）</td>
+<td align="center">10</td>
+<td align="center">1.5%</td>
+</tr>
+<tr>
+<td align="center">3.0-3.1</td>
+<td align="center">Honeycomb（蜂巢）</td>
+<td align="center">12</td>
+<td align="center">1.2%</td>
+</tr>
+<tr>
+<td align="center">4.0.3-4.0.4</td>
+<td align="center">Ice Cream Sandwich（冰淇淋三明治）</td>
+<td align="center">15</td>
+<td align="center">1.3%</td>
+</tr>
+<tr>
+<td align="center">4.1.x</td>
+<td align="center">Jelly Bean （果冻豆）</td>
+<td align="center">16</td>
+<td align="center">5.6%</td>
+</tr>
+<tr>
+<td align="center">4.2.x</td>
+<td align="center">Jelly Bean （果冻豆）</td>
+<td align="center">17</td>
+<td align="center">7.7%</td>
+</tr>
+<tr>
+<td align="center">4.3.x</td>
+<td align="center">Jelly Bean （果冻豆）</td>
+<td align="center">18</td>
+<td align="center">2.3%</td>
+</tr>
+<tr>
+<td align="center">4.4</td>
+<td align="center">KitKat （奇巧巧克力）</td>
+<td align="center">19</td>
+<td align="center">27.7%</td>
+</tr>
+<tr>
+<td align="center">5.0</td>
+<td align="center">Lollipop （棒棒糖）</td>
+<td align="center">21</td>
+<td align="center">13.1%</td>
+</tr>
+<tr>
+<td align="center">5.1</td>
+<td align="center">Lollipop （棒棒糖）</td>
+<td align="center">22</td>
+<td align="center">21.9%</td>
+</tr>
+<tr>
+<td align="center">6.0</td>
+<td align="center">Marshmallow （棉花糖）</td>
+<td align="center">23</td>
+<td align="center">18.7%</td>
+</tr>
+<tr>
+<td align="center">7.0</td>
+<td align="center">Nougat （牛轧糖）</td>
+<td align="center">24</td>
+<td align="center">0.2%</td>
+</tr>
+<tr>
+<td align="center">8.0</td>
+<td align="center">Oatmeal cookie（燕麦饼干）</td>
+<td align="center">25</td>
+<td align="center">0.4%</td>
+</tr>
+</tbody></table>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;margin-top:80px">-------------------- 本文结束<i class="fa fa-paw"></i>感谢您的阅读 --------------------</div>
+    
+</div>
+      
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>隋钟元
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://24suixinsuoyu.com/2020/07/02/Android-%E8%AF%A6%E8%A7%A3%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/" title="Android 详解系统架构">http://24suixinsuoyu.com/2020/07/02/Android-详解系统架构/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/" rel="tag"><i class="fa fa-tag"></i> 系统架构</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/08/Java-%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%EF%BC%88%E4%BA%94%EF%BC%89%EF%BC%9AJava-8-%E7%9A%84%E6%97%A5%E6%9C%9F%E5%92%8C%E6%97%B6%E9%97%B4-API/" rel="prev" title="Java 函数式编程（五）：Java 8 的日期和时间 API">
+      <i class="fa fa-chevron-left"></i> Java 函数式编程（五）：Java 8 的日期和时间 API
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/02/Android-%E8%AF%A6%E8%A7%A3Activity/" rel="next" title="Android 详解Activity">
+      Android 详解Activity <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Android-的发展历史大概是怎样的"><span class="nav-text">1. Android 的发展历史大概是怎样的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Android-系统架构图"><span class="nav-text">2. Android 系统架构图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Android-系统架构是怎样的"><span class="nav-text">3. Android 系统架构是怎样的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-Android-已发布的版本有哪些"><span class="nav-text">4. Android 已发布的版本有哪些</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="隋钟元"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">隋钟元</p>
+  <div class="site-description" itemprop="description">技术创造价值</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">157</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">188</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:24suixinsuoyu@gmail.com" title="E-Mail → mailto:24suixinsuoyu@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/24suixinsuoyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;24suixinsuoyu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/24sxsy" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;24sxsy" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/guolin_blog" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;guolin_blog" rel="noopener" target="_blank">郭霖</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/lmj623565791/" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;lmj623565791&#x2F;" rel="noopener" target="_blank">鸿洋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.520monkey.com/" title="http:&#x2F;&#x2F;www.520monkey.com&#x2F;" rel="noopener" target="_blank">姜维</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://daimajia.com/" title="https:&#x2F;&#x2F;daimajia.com&#x2F;" rel="noopener" target="_blank">代码家</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://kmxz.net/" title="https:&#x2F;&#x2F;kmxz.net&#x2F;" rel="noopener" target="_blank">孔祥舟</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yangwenbo.com/" title="http:&#x2F;&#x2F;yangwenbo.com&#x2F;" rel="noopener" target="_blank">杨文博</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">隋钟元</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">479k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">7:15</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+

@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1. 【强制】定义 GAV 遵从一下规则：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="工程结构（二）：二方库依赖">
+<meta property="og:url" content="http://24suixinsuoyu.com/2020/09/01/%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E4%BA%8C%E6%96%B9%E5%BA%93%E4%BE%9D%E8%B5%96/index.html">
+<meta property="og:site_name" content="隋钟元’s Blog">
+<meta property="og:description" content="1. 【强制】定义 GAV 遵从一下规则：">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-31T18:25:29.000Z">
+<meta property="article:modified_time" content="2020-09-08T08:11:32.000Z">
+<meta property="article:author" content="隋钟元">
+<meta property="article:tag" content="工程结构">
+<meta property="article:tag" content="二方库依赖">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://24suixinsuoyu.com/2020/09/01/%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E4%BA%8C%E6%96%B9%E5%BA%93%E4%BE%9D%E8%B5%96/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>工程结构（二）：二方库依赖 | 隋钟元’s Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">隋钟元’s Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-university"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th-list"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-english">
+
+    <a href="/english/" rel="section"><i class="fa fa-fw fa-graduation-cap"></i>英语</a>
+
+  </li>
+        <li class="menu-item menu-item-life">
+
+    <a href="/life/" rel="section"><i class="fa fa-fw fa-balance-scale"></i>生活</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/" rel="section"><i class="fa fa-fw fa-user-circle-o"></i>简历</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/commonweal/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/24suixinsuoyu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/09/01/%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E4%BA%8C%E6%96%B9%E5%BA%93%E4%BE%9D%E8%B5%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="隋钟元">
+      <meta itemprop="description" content="技术创造价值">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="隋钟元’s Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          工程结构（二）：二方库依赖
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-09-01 02:25:29" itemprop="dateCreated datePublished" datetime="2020-09-01T02:25:29+08:00">2020-09-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-08 16:11:32" itemprop="dateModified" datetime="2020-09-08T16:11:32+08:00">2020-09-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E3%80%8A%E9%98%BF%E9%87%8C-Java-%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%EF%BC%88%E5%B5%A9%E5%B1%B1%E7%89%88%EF%BC%89%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《阿里 Java 开发手册（嵩山版）》</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="1-【强制】定义-GAV-遵从一下规则："><a href="#1-【强制】定义-GAV-遵从一下规则：" class="headerlink" title="1. 【强制】定义 GAV 遵从一下规则："></a>1. 【强制】定义 GAV 遵从一下规则：</h4><a id="more"></a>
+
+<ol>
+<li><p><strong>G</strong>roupID 格式：com.{公司/BU}.业务线 [.子业务线]，最多 4 级</p>
+<ul>
+<li><strong>说明</strong>：{公司/BU}，例如：alibaba/taobao/tmall/aliexpress 等 BU 一级；子业务线可选</li>
+<li><strong>正例</strong>：com.taobao.jstorm 或 com.alibaba.dubbo.register</li>
+</ul>
+</li>
+<li><p><strong>A</strong>rtifactID 格式：产品线名-模块名。语义不重复不遗漏，先到中央仓库去查证一下</p>
+<ul>
+<li><strong>正例</strong>：dubbo-client、fastjson-api、jstorm-tool</li>
+</ul>
+</li>
+<li><p><strong>V</strong>ersion: 详细规定参考下方</p>
+</li>
+</ol>
+<h4 id="2-【强制】二方库版本号命名方式：主版本号-次版本号-修订号"><a href="#2-【强制】二方库版本号命名方式：主版本号-次版本号-修订号" class="headerlink" title="2. 【强制】二方库版本号命名方式：主版本号.次版本号.修订号"></a>2. 【强制】二方库版本号命名方式：主版本号.次版本号.修订号</h4><ol>
+<li>主版本号：产品方向改变，或者大规模 API 不兼容，或者架构不兼容升级</li>
+<li>次版本号：保持相对兼容性，增加主要功能特性，影响范围极小的 API 不兼容修改</li>
+<li>修订号：保持完全兼容性，修复 Bug、新增次要功能特性等</li>
+</ol>
+<ul>
+<li><strong>说明</strong>：注意起始版本号必须为：1.0.0，而不是 0.0.1</li>
+<li><strong>反例</strong>：仓库内某二方库版本号从 1.0.0.0 开始，一直静默升级成 1.0.0.64，完全失去版本的语义信息</li>
+</ul>
+<h4 id="3-【强制】线上应用不要依赖-SNAPSHOT-版本（安全包除外）；正式发布的类库必须先去中央仓库进行查证，使-RELEASE-版本号有延续性，且版本号不允许覆盖升级"><a href="#3-【强制】线上应用不要依赖-SNAPSHOT-版本（安全包除外）；正式发布的类库必须先去中央仓库进行查证，使-RELEASE-版本号有延续性，且版本号不允许覆盖升级" class="headerlink" title="3. 【强制】线上应用不要依赖 SNAPSHOT 版本（安全包除外）；正式发布的类库必须先去中央仓库进行查证，使 RELEASE 版本号有延续性，且版本号不允许覆盖升级"></a>3. 【强制】线上应用不要依赖 SNAPSHOT 版本（安全包除外）；正式发布的类库必须先去中央仓库进行查证，使 RELEASE 版本号有延续性，且版本号不允许覆盖升级</h4><ul>
+<li><strong>说明</strong>：不依赖 SNAPSHOT 版本是保证应用发布的幂等性。另外，也可以加快编译时的打包构建</li>
+</ul>
+<h4 id="4-【强制】二方库的新增或升级，保持除功能点之外的其它-jar-包仲裁结果不变。如果有改变，必须明确评估或验证"><a href="#4-【强制】二方库的新增或升级，保持除功能点之外的其它-jar-包仲裁结果不变。如果有改变，必须明确评估或验证" class="headerlink" title="4. 【强制】二方库的新增或升级，保持除功能点之外的其它 jar 包仲裁结果不变。如果有改变，必须明确评估或验证"></a>4. 【强制】二方库的新增或升级，保持除功能点之外的其它 jar 包仲裁结果不变。如果有改变，必须明确评估或验证</h4><ul>
+<li><strong>说明</strong>：在升级时，进行 dependency:resolve 前后信息比对，如果仲裁结果完全不一致，那么通过 dependency:tree 命令，找出差异点，进行 <code>&lt;exclude&gt;</code> 排除 jar 包</li>
+</ul>
+<h4 id="5-【强制】二方库里可以定义枚举类型，参数可以使用枚举类型，但是接口返回值不允许使用枚举类型或者包含枚举类型的-POJO-对象"><a href="#5-【强制】二方库里可以定义枚举类型，参数可以使用枚举类型，但是接口返回值不允许使用枚举类型或者包含枚举类型的-POJO-对象" class="headerlink" title="5. 【强制】二方库里可以定义枚举类型，参数可以使用枚举类型，但是接口返回值不允许使用枚举类型或者包含枚举类型的 POJO 对象"></a>5. 【强制】二方库里可以定义枚举类型，参数可以使用枚举类型，但是接口返回值不允许使用枚举类型或者包含枚举类型的 POJO 对象</h4><h4 id="6-【强制】依赖于一个二方库群时，必须定义一个统一的版本变量，避免版本号不一致"><a href="#6-【强制】依赖于一个二方库群时，必须定义一个统一的版本变量，避免版本号不一致" class="headerlink" title="6. 【强制】依赖于一个二方库群时，必须定义一个统一的版本变量，避免版本号不一致"></a>6. 【强制】依赖于一个二方库群时，必须定义一个统一的版本变量，避免版本号不一致</h4><ul>
+<li><strong>说明</strong>：依赖 springframework-core,-context,-beans, 它们都是同一个版本，可以定义一个变量来保存版本：${spring.version}，定义依赖的时候，引用该版本</li>
+</ul>
+<h4 id="7-【强制】禁止在子项目的-pom-依赖中出现相同的-GroupId，相同的-ArtifactId，但是不同的-Version"><a href="#7-【强制】禁止在子项目的-pom-依赖中出现相同的-GroupId，相同的-ArtifactId，但是不同的-Version" class="headerlink" title="7. 【强制】禁止在子项目的 pom 依赖中出现相同的 GroupId，相同的 ArtifactId，但是不同的 Version"></a>7. 【强制】禁止在子项目的 pom 依赖中出现相同的 GroupId，相同的 ArtifactId，但是不同的 Version</h4><ul>
+<li><strong>说明</strong>：在本地调试时会使用各子项目指定的版本号，但是合并成一个 war，只能有一个版本号出现在最后的 lib 目录中。曾经出现过线下调试是正确的、发布到线上却出现故障的案例</li>
+</ul>
+<h4 id="8-【推荐】底层基础技术框架、核心数据管理平台、近硬件端系统谨慎引入第三方实现"><a href="#8-【推荐】底层基础技术框架、核心数据管理平台、近硬件端系统谨慎引入第三方实现" class="headerlink" title="8. 【推荐】底层基础技术框架、核心数据管理平台、近硬件端系统谨慎引入第三方实现"></a>8. 【推荐】底层基础技术框架、核心数据管理平台、近硬件端系统谨慎引入第三方实现</h4><h4 id="9-【推荐】所有-pom-文件中的依赖声明放在-lt-dependencies-gt-语句块中，所有版本仲裁放在-lt-dependencyManagement-gt-语句块中"><a href="#9-【推荐】所有-pom-文件中的依赖声明放在-lt-dependencies-gt-语句块中，所有版本仲裁放在-lt-dependencyManagement-gt-语句块中" class="headerlink" title="9. 【推荐】所有 pom 文件中的依赖声明放在 &lt;dependencies&gt; 语句块中，所有版本仲裁放在 &lt;dependencyManagement&gt; 语句块中"></a>9. 【推荐】所有 pom 文件中的依赖声明放在 <code>&lt;dependencies&gt;</code> 语句块中，所有版本仲裁放在 <code>&lt;dependencyManagement&gt;</code> 语句块中</h4><ul>
+<li><strong>说明</strong>：<code>&lt;dependencyManagement&gt;</code> 里只是声明版本，并不实现引入，因此子项目需要显示地声明依赖，version 和 scope 都读取自父 pom。而 <code>&lt;dependencies&gt;</code> 所有声明在主 pom 的 <code>&lt;dependencies&gt;</code> 里的依赖都会自动引入，并默认被所有的子项目继承</li>
+</ul>
+<h4 id="10-【推荐】二方库不要有配置项，最低限度不要再增加配置项"><a href="#10-【推荐】二方库不要有配置项，最低限度不要再增加配置项" class="headerlink" title="10. 【推荐】二方库不要有配置项，最低限度不要再增加配置项"></a>10. 【推荐】二方库不要有配置项，最低限度不要再增加配置项</h4><h4 id="11-【推荐】不要使用不稳定的工具包或者-Utils-类"><a href="#11-【推荐】不要使用不稳定的工具包或者-Utils-类" class="headerlink" title="11. 【推荐】不要使用不稳定的工具包或者 Utils 类"></a>11. 【推荐】不要使用不稳定的工具包或者 Utils 类</h4><ul>
+<li><strong>说明</strong>：不稳定指的是提供方无法做到向下兼容，在编译阶段正常，但在运行时产生异常。因此，尽量使用业界稳定的二方工具包</li>
+</ul>
+<h4 id="12-【参考】为避免应用二方库的依赖冲突问题，二方库发布者应当遵循以下原则"><a href="#12-【参考】为避免应用二方库的依赖冲突问题，二方库发布者应当遵循以下原则" class="headerlink" title="12. 【参考】为避免应用二方库的依赖冲突问题，二方库发布者应当遵循以下原则"></a>12. 【参考】为避免应用二方库的依赖冲突问题，二方库发布者应当遵循以下原则</h4><ol>
+<li><strong>精简可控原则</strong>。移除一切不必要的 API 和依赖，只包含 Service API、必要的领域模型对象、Utils 类、常量、枚举等。如果依赖其它二方库，尽量是 provided 引入，让二方库使用者去依赖具体版本号；无 log 具体实现，只依赖日志框架</li>
+<li><strong>稳定可追溯原则</strong>。每个版本的变化应该被记录，二方库由谁维护，源码在哪里，都需要能方便查到。除非用户主动升级版本，否则公共二方库的行为不应该发生变化</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;margin-top:80px">-------------------- 本文结束<i class="fa fa-paw"></i>感谢您的阅读 --------------------</div>
+    
+</div>
+      
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>隋钟元
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://24suixinsuoyu.com/2020/09/01/%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E4%BA%8C%E6%96%B9%E5%BA%93%E4%BE%9D%E8%B5%96/" title="工程结构（二）：二方库依赖">http://24suixinsuoyu.com/2020/09/01/工程结构（二）：二方库依赖/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84/" rel="tag"><i class="fa fa-tag"></i> 工程结构</a>
+              <a href="/tags/%E4%BA%8C%E6%96%B9%E5%BA%93%E4%BE%9D%E8%B5%96/" rel="tag"><i class="fa fa-tag"></i> 二方库依赖</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/09/01/%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%BA%94%E7%94%A8%E5%88%86%E5%B1%82/" rel="prev" title="工程结构（一）：应用分层">
+      <i class="fa fa-chevron-left"></i> 工程结构（一）：应用分层
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/09/01/%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="next" title="工程结构（三）：服务器">
+      工程结构（三）：服务器 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-【强制】定义-GAV-遵从一下规则："><span class="nav-text">1. 【强制】定义 GAV 遵从一下规则：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-【强制】二方库版本号命名方式：主版本号-次版本号-修订号"><span class="nav-text">2. 【强制】二方库版本号命名方式：主版本号.次版本号.修订号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-【强制】线上应用不要依赖-SNAPSHOT-版本（安全包除外）；正式发布的类库必须先去中央仓库进行查证，使-RELEASE-版本号有延续性，且版本号不允许覆盖升级"><span class="nav-text">3. 【强制】线上应用不要依赖 SNAPSHOT 版本（安全包除外）；正式发布的类库必须先去中央仓库进行查证，使 RELEASE 版本号有延续性，且版本号不允许覆盖升级</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-【强制】二方库的新增或升级，保持除功能点之外的其它-jar-包仲裁结果不变。如果有改变，必须明确评估或验证"><span class="nav-text">4. 【强制】二方库的新增或升级，保持除功能点之外的其它 jar 包仲裁结果不变。如果有改变，必须明确评估或验证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-【强制】二方库里可以定义枚举类型，参数可以使用枚举类型，但是接口返回值不允许使用枚举类型或者包含枚举类型的-POJO-对象"><span class="nav-text">5. 【强制】二方库里可以定义枚举类型，参数可以使用枚举类型，但是接口返回值不允许使用枚举类型或者包含枚举类型的 POJO 对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-【强制】依赖于一个二方库群时，必须定义一个统一的版本变量，避免版本号不一致"><span class="nav-text">6. 【强制】依赖于一个二方库群时，必须定义一个统一的版本变量，避免版本号不一致</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-【强制】禁止在子项目的-pom-依赖中出现相同的-GroupId，相同的-ArtifactId，但是不同的-Version"><span class="nav-text">7. 【强制】禁止在子项目的 pom 依赖中出现相同的 GroupId，相同的 ArtifactId，但是不同的 Version</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-【推荐】底层基础技术框架、核心数据管理平台、近硬件端系统谨慎引入第三方实现"><span class="nav-text">8. 【推荐】底层基础技术框架、核心数据管理平台、近硬件端系统谨慎引入第三方实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-【推荐】所有-pom-文件中的依赖声明放在-lt-dependencies-gt-语句块中，所有版本仲裁放在-lt-dependencyManagement-gt-语句块中"><span class="nav-text">9. 【推荐】所有 pom 文件中的依赖声明放在 &lt;dependencies&gt; 语句块中，所有版本仲裁放在 &lt;dependencyManagement&gt; 语句块中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-【推荐】二方库不要有配置项，最低限度不要再增加配置项"><span class="nav-text">10. 【推荐】二方库不要有配置项，最低限度不要再增加配置项</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-【推荐】不要使用不稳定的工具包或者-Utils-类"><span class="nav-text">11. 【推荐】不要使用不稳定的工具包或者 Utils 类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-【参考】为避免应用二方库的依赖冲突问题，二方库发布者应当遵循以下原则"><span class="nav-text">12. 【参考】为避免应用二方库的依赖冲突问题，二方库发布者应当遵循以下原则</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="隋钟元"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">隋钟元</p>
+  <div class="site-description" itemprop="description">技术创造价值</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">157</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">188</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:24suixinsuoyu@gmail.com" title="E-Mail → mailto:24suixinsuoyu@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/24suixinsuoyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;24suixinsuoyu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/24sxsy" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;24sxsy" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/guolin_blog" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;guolin_blog" rel="noopener" target="_blank">郭霖</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/lmj623565791/" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;lmj623565791&#x2F;" rel="noopener" target="_blank">鸿洋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.520monkey.com/" title="http:&#x2F;&#x2F;www.520monkey.com&#x2F;" rel="noopener" target="_blank">姜维</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://daimajia.com/" title="https:&#x2F;&#x2F;daimajia.com&#x2F;" rel="noopener" target="_blank">代码家</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://kmxz.net/" title="https:&#x2F;&#x2F;kmxz.net&#x2F;" rel="noopener" target="_blank">孔祥舟</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yangwenbo.com/" title="http:&#x2F;&#x2F;yangwenbo.com&#x2F;" rel="noopener" target="_blank">杨文博</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">隋钟元</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">479k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">7:15</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+

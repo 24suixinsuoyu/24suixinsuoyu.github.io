@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1. 信号量类 Semaphore 的作用是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 同步和协作工具类（二）：信号量 Semaphore">
+<meta property="og:url" content="http://24suixinsuoyu.com/2020/05/27/Java-%E5%90%8C%E6%AD%A5%E5%92%8C%E5%8D%8F%E4%BD%9C%E5%B7%A5%E5%85%B7%E7%B1%BB%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E4%BF%A1%E5%8F%B7%E9%87%8F-Semaphore/index.html">
+<meta property="og:site_name" content="隋钟元’s Blog">
+<meta property="og:description" content="1. 信号量类 Semaphore 的作用是">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-27T06:32:19.000Z">
+<meta property="article:modified_time" content="2020-06-01T03:54:36.000Z">
+<meta property="article:author" content="隋钟元">
+<meta property="article:tag" content="同步和协作工具类">
+<meta property="article:tag" content="信号量 Semaphore">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://24suixinsuoyu.com/2020/05/27/Java-%E5%90%8C%E6%AD%A5%E5%92%8C%E5%8D%8F%E4%BD%9C%E5%B7%A5%E5%85%B7%E7%B1%BB%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E4%BF%A1%E5%8F%B7%E9%87%8F-Semaphore/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Java 同步和协作工具类（二）：信号量 Semaphore | 隋钟元’s Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">隋钟元’s Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-university"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th-list"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-english">
+
+    <a href="/english/" rel="section"><i class="fa fa-fw fa-graduation-cap"></i>英语</a>
+
+  </li>
+        <li class="menu-item menu-item-life">
+
+    <a href="/life/" rel="section"><i class="fa fa-fw fa-balance-scale"></i>生活</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/" rel="section"><i class="fa fa-fw fa-user-circle-o"></i>简历</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/commonweal/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/24suixinsuoyu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/05/27/Java-%E5%90%8C%E6%AD%A5%E5%92%8C%E5%8D%8F%E4%BD%9C%E5%B7%A5%E5%85%B7%E7%B1%BB%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E4%BF%A1%E5%8F%B7%E9%87%8F-Semaphore/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="隋钟元">
+      <meta itemprop="description" content="技术创造价值">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="隋钟元’s Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java 同步和协作工具类（二）：信号量 Semaphore
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-27 14:32:19" itemprop="dateCreated datePublished" datetime="2020-05-27T14:32:19+08:00">2020-05-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-01 11:54:36" itemprop="dateModified" datetime="2020-06-01T11:54:36+08:00">2020-06-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E3%80%8AJava-%E7%BC%96%E7%A8%8B%E7%9A%84%E9%80%BB%E8%BE%91%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《Java 编程的逻辑》</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="1-信号量类-Semaphore-的作用是"><a href="#1-信号量类-Semaphore-的作用是" class="headerlink" title="1. 信号量类 Semaphore 的作用是"></a>1. 信号量类 Semaphore 的作用是</h4><a id="more"></a>
+
+<p>　<strong>限制</strong>对资源的<strong>并发</strong>访问数。</p>
+<h4 id="2-信号量类-Semaphore-的使用场景是"><a href="#2-信号量类-Semaphore-的使用场景是" class="headerlink" title="2. 信号量类 Semaphore 的使用场景是"></a>2. 信号量类 Semaphore 的使用场景是</h4><ul>
+<li>现实中，资源往往有多个，但每个同时<strong>只能被一个线程访问</strong>。比如，饭店的饭桌、火车上的卫生间。</li>
+<li>有的单个资源即使可以被并发访问，但并发访问次数多了可能影响<strong>性能</strong>，所以希望限制并发访问的线程数。</li>
+<li>还有，与软件的<strong>授权</strong>和<strong>计费</strong>有关，对不同<strong>等级</strong>的账户，限制不同的最大并发访问数。</li>
+</ul>
+<h4 id="3-Semaphore-的构造方法"><a href="#3-Semaphore-的构造方法" class="headerlink" title="3. Semaphore 的构造方法"></a>3. Semaphore 的构造方法</h4><ul>
+<li><code>public Semaphore(int permits)/public Seamphore(int permits, boolean fair)</code>。</li>
+<li><code>fair</code> 表示公平；<code>permits</code> 表示许可数量。</li>
+</ul>
+<h4 id="4-Semaphore-的主要方法有"><a href="#4-Semaphore-的主要方法有" class="headerlink" title="4. Semaphore 的主要方法有"></a>4. Semaphore 的主要方法有</h4><ul>
+<li><code>public void acquire() throws InterruptedException</code>：阻塞获取许可</li>
+<li><code>public void acquireUninterruptibly()</code>：阻塞获取许可，不响应中断</li>
+<li><code>public void acquire(int permits) throws InterruptedException</code>：批量获取多个许可</li>
+<li><code>public void acquireUninterruptibly(int permits)</code>：批量获取多个，不响应中断</li>
+<li><code>public boolean tryAcquire()</code>：尝试获取</li>
+<li><code>public boolean tryAcquire(int permits, long timeout, TimeUnit unit) throws InterruptedException</code>：限定等待时间获取</li>
+<li><code>public void release()</code>：释放许可</li>
+</ul>
+<h4 id="5-写一个信号量类-Semaphore-的-Demo"><a href="#5-写一个信号量类-Semaphore-的-Demo" class="headerlink" title="5. 写一个信号量类 Semaphore 的 Demo"></a>5. 写一个信号量类 Semaphore 的 Demo</h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AccessControlService</span> &#123;</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAX_PERMITS = <span class="number">100</span>;</span><br><span class="line">    <span class="keyword">private</span> Semaphore permits = <span class="keyword">new</span> Semaphore(MAX_PERMITS, <span class="literal">true</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ConcurrentLimitException</span> <span class="title">extends</span> <span class="title">RuntimeException</span> &#123;</span></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1L</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">login</span><span class="params">(<span class="keyword">String</span> name, <span class="keyword">String</span> password)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!permits.tryAcquire()) &#123;</span><br><span class="line">            <span class="comment">//同时登录用户数超过限制</span></span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ConcurrentLimitException();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//……其他验证</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">logout</span><span class="params">(<span class="keyword">String</span> name)</span> </span>&#123;</span><br><span class="line">        permits.<span class="built_in">release</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="6-如果设置-permits-的数量为-1，那-Semaphore-和一般的锁的区别是"><a href="#6-如果设置-permits-的数量为-1，那-Semaphore-和一般的锁的区别是" class="headerlink" title="6. 如果设置 permits 的数量为 1，那 Semaphore 和一般的锁的区别是"></a>6. 如果设置 permits 的数量为 1，那 Semaphore 和一般的锁的区别是</h4><ul>
+<li><p>一般锁只能由持有锁的线程释放，而 <strong><code>Semaphore</code> 表示的只是一个许可数</strong>，任意线程都可以调用其 <code>release()</code> 方法。</p>
+</li>
+<li><p>主要的锁实现类 <code>ReentrantLock</code> 是可重入的；而 <strong><code>Semaphore</code> 不是可重入的</strong>，每一次的 <code>acquire()</code> 调用都会消耗一个许可。</p>
+</li>
+<li><p>举例，下面程序会<strong>阻塞</strong>在第二个 <code>acquire()</code> 调用，永远都不会输出 <code>acquire</code>：</p>
+  <figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Semaphore permits = new Semaphore(<span class="number">1</span>)<span class="comment">;</span></span><br><span class="line">permits.acquire()<span class="comment">;</span></span><br><span class="line">permits.acquire()<span class="comment">;</span></span><br><span class="line">System.out.println(<span class="string">"acquired"</span>)<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="7-信号量-Semaphore-的基本原理"><a href="#7-信号量-Semaphore-的基本原理" class="headerlink" title="7. 信号量 Semaphore 的基本原理"></a>7. 信号量 Semaphore 的基本原理</h4><ul>
+<li>原理比较简单，也是<strong>基于 AQS 实现</strong>的。</li>
+<li><strong>AQS</strong>：并发工具 <code>ReentrantReadWriteLock</code>、<code>Semaphore</code>、<code>CountDownLatch</code>，它们的实现有很多类似的地方。为了复用代码，Java 提供了一个<strong>抽象类 <code>AbstractQueuedSynchronizer</code>，简称 AQS，简化了并发工具的实现</strong>。</li>
+<li><code>permits</code> 表示共享的锁个数。</li>
+<li><code>acquire()</code> 方法就是检查锁个数是否大于 0，大于则减一，获取成功，否则就等待。</li>
+<li><code>release()</code> 方法就是将锁个数加一，唤醒第一个等待的线程。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;margin-top:80px">-------------------- 本文结束<i class="fa fa-paw"></i>感谢您的阅读 --------------------</div>
+    
+</div>
+      
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>隋钟元
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://24suixinsuoyu.com/2020/05/27/Java-%E5%90%8C%E6%AD%A5%E5%92%8C%E5%8D%8F%E4%BD%9C%E5%B7%A5%E5%85%B7%E7%B1%BB%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E4%BF%A1%E5%8F%B7%E9%87%8F-Semaphore/" title="Java 同步和协作工具类（二）：信号量 Semaphore">http://24suixinsuoyu.com/2020/05/27/Java-同步和协作工具类（二）：信号量-Semaphore/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E5%90%8C%E6%AD%A5%E5%92%8C%E5%8D%8F%E4%BD%9C%E5%B7%A5%E5%85%B7%E7%B1%BB/" rel="tag"><i class="fa fa-tag"></i> 同步和协作工具类</a>
+              <a href="/tags/%E4%BF%A1%E5%8F%B7%E9%87%8F-Semaphore/" rel="tag"><i class="fa fa-tag"></i> 信号量 Semaphore</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/27/Java-%E5%90%8C%E6%AD%A5%E5%92%8C%E5%8D%8F%E4%BD%9C%E5%B7%A5%E5%85%B7%E7%B1%BB%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E8%AF%BB%E5%86%99%E9%94%81-ReentrantReadWriteLock/" rel="prev" title="Java 同步和协作工具类（一）：读写锁 ReentrantReadWriteLock">
+      <i class="fa fa-chevron-left"></i> Java 同步和协作工具类（一）：读写锁 ReentrantReadWriteLock
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/27/Java-%E5%90%8C%E6%AD%A5%E5%92%8C%E5%8D%8F%E4%BD%9C%E5%B7%A5%E5%85%B7%E7%B1%BB%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E5%80%92%E8%AE%A1%E6%97%B6%E9%97%A8%E6%A0%93-CountDownLatch/" rel="next" title="Java 同步和协作工具类（三）：倒计时门栓 CountDownLatch">
+      Java 同步和协作工具类（三）：倒计时门栓 CountDownLatch <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-信号量类-Semaphore-的作用是"><span class="nav-text">1. 信号量类 Semaphore 的作用是</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-信号量类-Semaphore-的使用场景是"><span class="nav-text">2. 信号量类 Semaphore 的使用场景是</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Semaphore-的构造方法"><span class="nav-text">3. Semaphore 的构造方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-Semaphore-的主要方法有"><span class="nav-text">4. Semaphore 的主要方法有</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-写一个信号量类-Semaphore-的-Demo"><span class="nav-text">5. 写一个信号量类 Semaphore 的 Demo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-如果设置-permits-的数量为-1，那-Semaphore-和一般的锁的区别是"><span class="nav-text">6. 如果设置 permits 的数量为 1，那 Semaphore 和一般的锁的区别是</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-信号量-Semaphore-的基本原理"><span class="nav-text">7. 信号量 Semaphore 的基本原理</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="隋钟元"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">隋钟元</p>
+  <div class="site-description" itemprop="description">技术创造价值</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">157</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">188</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:24suixinsuoyu@gmail.com" title="E-Mail → mailto:24suixinsuoyu@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/24suixinsuoyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;24suixinsuoyu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/24sxsy" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;24sxsy" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/guolin_blog" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;guolin_blog" rel="noopener" target="_blank">郭霖</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/lmj623565791/" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;lmj623565791&#x2F;" rel="noopener" target="_blank">鸿洋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.520monkey.com/" title="http:&#x2F;&#x2F;www.520monkey.com&#x2F;" rel="noopener" target="_blank">姜维</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://daimajia.com/" title="https:&#x2F;&#x2F;daimajia.com&#x2F;" rel="noopener" target="_blank">代码家</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://kmxz.net/" title="https:&#x2F;&#x2F;kmxz.net&#x2F;" rel="noopener" target="_blank">孔祥舟</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yangwenbo.com/" title="http:&#x2F;&#x2F;yangwenbo.com&#x2F;" rel="noopener" target="_blank">杨文博</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">隋钟元</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">479k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">7:15</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+

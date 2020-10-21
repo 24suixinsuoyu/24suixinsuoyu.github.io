@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1. 【强制】获取单例对象需要保证线程安全，其中的方法也要保证线程安全">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编程规约（七）：并发处理">
+<meta property="og:url" content="http://24suixinsuoyu.com/2020/08/14/%E7%BC%96%E7%A8%8B%E8%A7%84%E7%BA%A6%EF%BC%88%E4%B8%83%EF%BC%89%EF%BC%9A%E5%B9%B6%E5%8F%91%E5%A4%84%E7%90%86/index.html">
+<meta property="og:site_name" content="隋钟元’s Blog">
+<meta property="og:description" content="1. 【强制】获取单例对象需要保证线程安全，其中的方法也要保证线程安全">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-13T16:54:42.000Z">
+<meta property="article:modified_time" content="2020-08-29T05:50:40.000Z">
+<meta property="article:author" content="隋钟元">
+<meta property="article:tag" content="编程规约">
+<meta property="article:tag" content="并发处理">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://24suixinsuoyu.com/2020/08/14/%E7%BC%96%E7%A8%8B%E8%A7%84%E7%BA%A6%EF%BC%88%E4%B8%83%EF%BC%89%EF%BC%9A%E5%B9%B6%E5%8F%91%E5%A4%84%E7%90%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>编程规约（七）：并发处理 | 隋钟元’s Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">隋钟元’s Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-university"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th-list"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-english">
+
+    <a href="/english/" rel="section"><i class="fa fa-fw fa-graduation-cap"></i>英语</a>
+
+  </li>
+        <li class="menu-item menu-item-life">
+
+    <a href="/life/" rel="section"><i class="fa fa-fw fa-balance-scale"></i>生活</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/" rel="section"><i class="fa fa-fw fa-user-circle-o"></i>简历</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/commonweal/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/24suixinsuoyu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/08/14/%E7%BC%96%E7%A8%8B%E8%A7%84%E7%BA%A6%EF%BC%88%E4%B8%83%EF%BC%89%EF%BC%9A%E5%B9%B6%E5%8F%91%E5%A4%84%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="隋钟元">
+      <meta itemprop="description" content="技术创造价值">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="隋钟元’s Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          编程规约（七）：并发处理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-14 00:54:42" itemprop="dateCreated datePublished" datetime="2020-08-14T00:54:42+08:00">2020-08-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-29 13:50:40" itemprop="dateModified" datetime="2020-08-29T13:50:40+08:00">2020-08-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E3%80%8A%E9%98%BF%E9%87%8C-Java-%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%EF%BC%88%E5%B5%A9%E5%B1%B1%E7%89%88%EF%BC%89%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《阿里 Java 开发手册（嵩山版）》</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="1-【强制】获取单例对象需要保证线程安全，其中的方法也要保证线程安全"><a href="#1-【强制】获取单例对象需要保证线程安全，其中的方法也要保证线程安全" class="headerlink" title="1. 【强制】获取单例对象需要保证线程安全，其中的方法也要保证线程安全"></a>1. 【强制】获取单例对象需要保证线程安全，其中的方法也要保证线程安全</h4><a id="more"></a>
+
+<ul>
+<li>说明：资源驱动类、工具类、单例工厂类都需要注意</li>
+</ul>
+<h4 id="2-【强制】创建线程或线程池时请指定有意义的线程名称，方便出错时回溯"><a href="#2-【强制】创建线程或线程池时请指定有意义的线程名称，方便出错时回溯" class="headerlink" title="2. 【强制】创建线程或线程池时请指定有意义的线程名称，方便出错时回溯"></a>2. 【强制】创建线程或线程池时请指定有意义的线程名称，方便出错时回溯</h4><ul>
+<li><p><strong>正例</strong>：自定义线程工厂，并且根据外部特征进行分组。比如，来自同一机房的调用，把机房编号赋值给 <code>whatFeatureOfGroup</code></p>
+  <figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserThreadFactory</span> <span class="keyword"><span class="keyword">implements</span> <span class="type">ThreadFactory</span></span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> final <span class="keyword">String</span> namePrefix;</span><br><span class="line">	<span class="keyword">private</span> final AtomicInteger nextId = <span class="keyword">new</span> <span class="type">AtomicInteger</span>(<span class="number">1</span>);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 定义线程组名称，在利用 jstack 来排查问题时，非常有帮助</span></span><br><span class="line">	UserThreadFactory(<span class="keyword">String</span> whatFeatureOfGroup) &#123;</span><br><span class="line">		namePrefix = <span class="string">"From UserThreadFactory's "</span> + whatFeatureOfGroup + <span class="string">"-Worker-"</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	@Override</span><br><span class="line">	<span class="keyword">public</span> Thread <span class="keyword">new</span><span class="type">Thread</span>(Runnable task) &#123;</span><br><span class="line">		<span class="keyword">String</span> name = namePrefix + nextId.getAndIncrement();</span><br><span class="line">		Thread thread = <span class="keyword">new</span> <span class="type">Thread</span>(<span class="literal">null</span>, task, name, <span class="number">0</span>, <span class="literal">false</span>);</span><br><span class="line">		System.out.println(thread.getName());</span><br><span class="line">		<span class="keyword">return</span> thread;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="3-【强制】线程资源必须通过线程池提供，不允许在应用中自行显示创建线程"><a href="#3-【强制】线程资源必须通过线程池提供，不允许在应用中自行显示创建线程" class="headerlink" title="3. 【强制】线程资源必须通过线程池提供，不允许在应用中自行显示创建线程"></a>3. 【强制】线程资源必须通过线程池提供，不允许在应用中自行显示创建线程</h4><ul>
+<li><strong>说明</strong>：线程池的好处是减少在创建和销毁线程上所消耗的时间以及系统资源的开销，解决资源不足的问题。如果不使用线程池，有可能造成系统创建大量同类线程而导致消耗完内存或者“过度切换”的问题</li>
+</ul>
+<h4 id="4-【强制】线程池不允许使用-Executors-去创建，而是通过-ThreadPoolExecutor-的方式，这样的处理方式让写的同学更加明确线程池的运行规则，规避资源耗尽的风险"><a href="#4-【强制】线程池不允许使用-Executors-去创建，而是通过-ThreadPoolExecutor-的方式，这样的处理方式让写的同学更加明确线程池的运行规则，规避资源耗尽的风险" class="headerlink" title="4. 【强制】线程池不允许使用 Executors 去创建，而是通过 ThreadPoolExecutor 的方式，这样的处理方式让写的同学更加明确线程池的运行规则，规避资源耗尽的风险"></a>4. 【强制】线程池不允许使用 Executors 去创建，而是通过 ThreadPoolExecutor 的方式，这样的处理方式让写的同学更加明确线程池的运行规则，规避资源耗尽的风险</h4><ul>
+<li><strong>说明</strong>：<code>Executors</code> 返回的线程池对象的弊端如下：<ol>
+<li><code>FixedThreadPool</code> 和 <code>SingleThreadPool</code>: 允许的请求队列长度为 <code>Integer.MAX_VALUE</code>，可能会堆积大量的请求，从而导致 OOM</li>
+<li><code>CachedThreadPool</code>: 允许的创建线程数量为 <code>Integer.MAX_VALUE</code>，可能会创建大量的线程，从而导致 OOM</li>
+</ol>
+</li>
+</ul>
+<h4 id="5-【强制】SimpleDateFormat-是线程不安全的类，一般不要定义为-static-变量，如果定义为static，必须加锁，或者使用-DateUtils-工具类"><a href="#5-【强制】SimpleDateFormat-是线程不安全的类，一般不要定义为-static-变量，如果定义为static，必须加锁，或者使用-DateUtils-工具类" class="headerlink" title="5. 【强制】SimpleDateFormat 是线程不安全的类，一般不要定义为 static 变量，如果定义为static，必须加锁，或者使用 DateUtils 工具类"></a>5. 【强制】SimpleDateFormat 是线程不安全的类，一般不要定义为 static 变量，如果定义为static，必须加锁，或者使用 DateUtils 工具类</h4><ul>
+<li><p><strong>正例</strong>：注意线程安全，使用 <code>DateUtils</code>。亦推荐如下处理：</p>
+  <figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal&lt;DateFormat&gt; df = <span class="keyword">new</span> ThreadLocal&lt;DateFormat&gt; () &#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="keyword">protected</span> <span class="function">DateFormat <span class="title">initialValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>说明</strong>：如果是 JDK8 的应用，可以使用 <code>Instant</code> 代替 <code>Date</code>，<code>LocalDateTime</code> 代替 <code>Calendar</code>，<code>DateTimeFormatter</code> 代替 <code>SimpleDateFormat</code>。官方给出的解释：simple beautiful strong immutable thread-safe</p>
+</li>
+</ul>
+<h4 id="6-【强制】必须回收自定义的-ThreadLocal-变量，尤其在线程池场景下，线程经常会被复用。如果不清理自定义的-ThreadLocal-变量，可能会影响后续业务逻辑和造成内存泄漏等问题。尽量在代理中使用-try-finally-块进行回收"><a href="#6-【强制】必须回收自定义的-ThreadLocal-变量，尤其在线程池场景下，线程经常会被复用。如果不清理自定义的-ThreadLocal-变量，可能会影响后续业务逻辑和造成内存泄漏等问题。尽量在代理中使用-try-finally-块进行回收" class="headerlink" title="6. 【强制】必须回收自定义的 ThreadLocal 变量，尤其在线程池场景下，线程经常会被复用。如果不清理自定义的 ThreadLocal 变量，可能会影响后续业务逻辑和造成内存泄漏等问题。尽量在代理中使用 try-finally 块进行回收"></a>6. 【强制】必须回收自定义的 ThreadLocal 变量，尤其在线程池场景下，线程经常会被复用。如果不清理自定义的 ThreadLocal 变量，可能会影响后续业务逻辑和造成内存泄漏等问题。尽量在代理中使用 try-finally 块进行回收</h4><ul>
+<li><p><strong>正例</strong>：</p>
+  <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">objectThreadLocal.<span class="keyword">set</span>(userInfo);</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">	objectThreadLocal.<span class="keyword">remove</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="7-【强制】高并发时，同步调用应该去考量锁的性能损耗。能用无锁数据结构，就不要用锁；能锁区块，就不要锁整个方法体；能用对象锁，就不要用类锁"><a href="#7-【强制】高并发时，同步调用应该去考量锁的性能损耗。能用无锁数据结构，就不要用锁；能锁区块，就不要锁整个方法体；能用对象锁，就不要用类锁" class="headerlink" title="7. 【强制】高并发时，同步调用应该去考量锁的性能损耗。能用无锁数据结构，就不要用锁；能锁区块，就不要锁整个方法体；能用对象锁，就不要用类锁"></a>7. 【强制】高并发时，同步调用应该去考量锁的性能损耗。能用无锁数据结构，就不要用锁；能锁区块，就不要锁整个方法体；能用对象锁，就不要用类锁</h4><ul>
+<li><strong>说明</strong>：尽可能使加锁的代码块工作量尽可能的小，避免在锁代码块中调用 RPC 方法</li>
+</ul>
+<h4 id="8-【强制】对多个资源、数据库表、对象同时加锁时，需要保持一致的加锁顺序，否则可能会造成死锁"><a href="#8-【强制】对多个资源、数据库表、对象同时加锁时，需要保持一致的加锁顺序，否则可能会造成死锁" class="headerlink" title="8. 【强制】对多个资源、数据库表、对象同时加锁时，需要保持一致的加锁顺序，否则可能会造成死锁"></a>8. 【强制】对多个资源、数据库表、对象同时加锁时，需要保持一致的加锁顺序，否则可能会造成死锁</h4><ul>
+<li><strong>说明</strong>：线程一需要对表 A、B、C 依次全部加锁后才可以进行更新操作，那么线程二的加锁顺序也必须是 A、B、C，否则可能出现死锁</li>
+</ul>
+<h4 id="9-【强制】在使用阻塞等待获取锁的方式中，必须在-try-代码块之外，并且在加锁方法与-try-代码块之间没有任何可能抛出异常的方法调用，避免加锁成功后，在-finally-中无法解锁"><a href="#9-【强制】在使用阻塞等待获取锁的方式中，必须在-try-代码块之外，并且在加锁方法与-try-代码块之间没有任何可能抛出异常的方法调用，避免加锁成功后，在-finally-中无法解锁" class="headerlink" title="9. 【强制】在使用阻塞等待获取锁的方式中，必须在 try 代码块之外，并且在加锁方法与 try 代码块之间没有任何可能抛出异常的方法调用，避免加锁成功后，在 finally 中无法解锁"></a>9. 【强制】在使用阻塞等待获取锁的方式中，必须在 try 代码块之外，并且在加锁方法与 try 代码块之间没有任何可能抛出异常的方法调用，避免加锁成功后，在 finally 中无法解锁</h4><ul>
+<li><p><strong>说明一</strong>：如果在 <code>lock</code> 方法与 <code>try</code> 代码块之间的方法调用抛出异常，那么无法解锁，造成其它线程无法成功获取锁</p>
+</li>
+<li><p><strong>说明二</strong>：如果 <code>lock</code> 方法在 <code>try</code> 代码块之内，可能由于其它方法抛出异常，导致在 <code>finally</code> 代码块中，<code>unlock</code> 对未加锁的对象解锁，它会调用 <code>AQS</code> 的 <code>tryRelease()</code> 方法（取决于具体实现类），抛出 <code>IllegalMonitorStateException</code> 异常</p>
+</li>
+<li><p><strong>说明三</strong>：在 <code>Lock</code> 对象的 <code>lock</code> 方法实现中可能抛出 <code>unchecked</code> 异常，产生的后果与说明二相同</p>
+</li>
+<li><p><strong>正例</strong>：</p>
+  <figure class="highlight cos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Lock</span> <span class="keyword">lock</span> = <span class="keyword">new</span> XxxLock()<span class="comment">;</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="keyword">lock</span>.<span class="keyword">lock</span>()<span class="comment">;</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">	doSomething()<span class="comment">;</span></span><br><span class="line">	doOthers()<span class="comment">;</span></span><br><span class="line">&#125; finally &#123;</span><br><span class="line">	<span class="keyword">lock</span>.unlock()<span class="comment">;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>反例</strong>：</p>
+  <figure class="highlight cos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Lock</span> <span class="keyword">lock</span> = <span class="keyword">new</span> XxxLock()<span class="comment">;</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">	<span class="comment">// 如果此处抛出异常，则直接执行 finally 代码块</span></span><br><span class="line">	doSomething()<span class="comment">;</span></span><br><span class="line">	<span class="comment">// 无论加锁是否成功，finally 代码块都会执行</span></span><br><span class="line">	<span class="keyword">lock</span>.<span class="keyword">lock</span>()<span class="comment">;</span></span><br><span class="line">&#125; finally &#123;</span><br><span class="line">	<span class="keyword">lock</span>.unlock()<span class="comment">;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="10-【强制】在使用尝试机制来获取锁的方式中，进入业务代码块之前，必须先判断当前线程是否持有锁。锁的释放规则与锁的阻塞等待方式相同"><a href="#10-【强制】在使用尝试机制来获取锁的方式中，进入业务代码块之前，必须先判断当前线程是否持有锁。锁的释放规则与锁的阻塞等待方式相同" class="headerlink" title="10. 【强制】在使用尝试机制来获取锁的方式中，进入业务代码块之前，必须先判断当前线程是否持有锁。锁的释放规则与锁的阻塞等待方式相同"></a>10. 【强制】在使用尝试机制来获取锁的方式中，进入业务代码块之前，必须先判断当前线程是否持有锁。锁的释放规则与锁的阻塞等待方式相同</h4><ul>
+<li><p><strong>说明</strong>：<code>Lock</code> 对象的 <code>unlock</code> 方法在执行时，它会调用 <code>AQS</code> 的 <code>tryReleas</code> 方法（取决于具体实现类），如果当前线程不持有锁，则抛出 <code>IllegalMonitorStateException</code> 异常</p>
+</li>
+<li><p><strong>正例</strong>：</p>
+  <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Lock lock = <span class="keyword">new</span> <span class="constructor">XxxLock()</span>;</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line">boolean isLocked = lock.<span class="keyword">try</span><span class="constructor">Lock()</span>;</span><br><span class="line"><span class="keyword">if</span> (isLocked) &#123;</span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		<span class="keyword">do</span><span class="constructor">Something()</span>;</span><br><span class="line">		<span class="keyword">do</span><span class="constructor">Others()</span>;</span><br><span class="line">	&#125; finally &#123;</span><br><span class="line">		lock.unlock<span class="literal">()</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="11-【强制】并发修改同一记录时，避免更新丢失，需要加锁。要么在应用层加锁，要么在缓存加锁，要么在数据库层使用乐观锁，使用-version-作为更新依据"><a href="#11-【强制】并发修改同一记录时，避免更新丢失，需要加锁。要么在应用层加锁，要么在缓存加锁，要么在数据库层使用乐观锁，使用-version-作为更新依据" class="headerlink" title="11. 【强制】并发修改同一记录时，避免更新丢失，需要加锁。要么在应用层加锁，要么在缓存加锁，要么在数据库层使用乐观锁，使用 version 作为更新依据"></a>11. 【强制】并发修改同一记录时，避免更新丢失，需要加锁。要么在应用层加锁，要么在缓存加锁，要么在数据库层使用乐观锁，使用 version 作为更新依据</h4><ul>
+<li><strong>说明</strong>：如果每次访问冲突概率小于 20%，推荐使用乐观锁，否则使用悲观锁。乐观锁的重试次数不得小于 3 次</li>
+</ul>
+<h4 id="12-【强制】多线程并行处理定时任务时，Timer-运行多个-TimeTask-时，只要其中之一没有捕获抛出的异常，其它任务便会自动终止运行，使用-ScheduledExecutorService-则没有这个问题"><a href="#12-【强制】多线程并行处理定时任务时，Timer-运行多个-TimeTask-时，只要其中之一没有捕获抛出的异常，其它任务便会自动终止运行，使用-ScheduledExecutorService-则没有这个问题" class="headerlink" title="12. 【强制】多线程并行处理定时任务时，Timer 运行多个 TimeTask 时，只要其中之一没有捕获抛出的异常，其它任务便会自动终止运行，使用 ScheduledExecutorService 则没有这个问题"></a>12. 【强制】多线程并行处理定时任务时，Timer 运行多个 TimeTask 时，只要其中之一没有捕获抛出的异常，其它任务便会自动终止运行，使用 ScheduledExecutorService 则没有这个问题</h4><h4 id="13-【推荐】资金相关的金融敏感信息，使用悲观锁策略"><a href="#13-【推荐】资金相关的金融敏感信息，使用悲观锁策略" class="headerlink" title="13. 【推荐】资金相关的金融敏感信息，使用悲观锁策略"></a>13. 【推荐】资金相关的金融敏感信息，使用悲观锁策略</h4><ul>
+<li><strong>说明</strong>：乐观锁在获得锁的同时已经完成了更新操作，校验逻辑容易出现漏洞。另外，乐观锁对冲突的解决策略有较复杂的要求，处理不当容易造成系统压力或数据异常，所以资金相关的金融敏感信息不建议使用乐观锁更新</li>
+<li><strong>正例</strong>：悲观锁遵循一锁、二判、三更新、四释放的原则</li>
+</ul>
+<h4 id="14-【推荐】使用-CountDownLatch-进行异步转同步操作，每个线程退出前必须调用-countDown-方法，线程执行代码注意-catch-异常，确保-countDown-方法被执行到，避免主线程无法执行至-await-方法，直到超时才返回结果"><a href="#14-【推荐】使用-CountDownLatch-进行异步转同步操作，每个线程退出前必须调用-countDown-方法，线程执行代码注意-catch-异常，确保-countDown-方法被执行到，避免主线程无法执行至-await-方法，直到超时才返回结果" class="headerlink" title="14. 【推荐】使用 CountDownLatch 进行异步转同步操作，每个线程退出前必须调用 countDown 方法，线程执行代码注意 catch 异常，确保 countDown 方法被执行到，避免主线程无法执行至 await 方法，直到超时才返回结果"></a>14. 【推荐】使用 CountDownLatch 进行异步转同步操作，每个线程退出前必须调用 countDown 方法，线程执行代码注意 catch 异常，确保 countDown 方法被执行到，避免主线程无法执行至 await 方法，直到超时才返回结果</h4><ul>
+<li><strong>说明</strong>：注意，子线程抛出异常堆栈，不能在主线程 <code>try-catch</code> 到</li>
+</ul>
+<h4 id="15-【推荐】避免-Random-实例被多线程使用，虽然共享该实例是线程安全的，但会因竞争同一-seed-导致性能下降"><a href="#15-【推荐】避免-Random-实例被多线程使用，虽然共享该实例是线程安全的，但会因竞争同一-seed-导致性能下降" class="headerlink" title="15. 【推荐】避免 Random 实例被多线程使用，虽然共享该实例是线程安全的，但会因竞争同一 seed 导致性能下降"></a>15. 【推荐】避免 Random 实例被多线程使用，虽然共享该实例是线程安全的，但会因竞争同一 seed 导致性能下降</h4><ul>
+<li><strong>说明</strong>：<code>Random</code> 实例包括 <code>java.util.Random</code> 的实例或者 <code>Math.random()</code> 的方式</li>
+<li><strong>正例</strong>：在 JDK7 之后，可以直接使用 API <code>ThreadLocalRandom</code>，而在 JDK7 之前，需要编码保证每个线程有一个单独的 <code>Random</code> 实例</li>
+</ul>
+<h4 id="16-【推荐】通过双重校验锁（double-checked-locking）（在并发场景下）存在延迟初始化的优化问题隐患（可参考-The-“Double-Checked-Locking-is-Broken”-Declaration）。推荐解决方案中较为简单的一种（适用于-JDK5-及以上版本），将目标属性声明为-volatile-型，比如将-helper-的属性声明修改为-private-volatile-Helper-helper-null"><a href="#16-【推荐】通过双重校验锁（double-checked-locking）（在并发场景下）存在延迟初始化的优化问题隐患（可参考-The-“Double-Checked-Locking-is-Broken”-Declaration）。推荐解决方案中较为简单的一种（适用于-JDK5-及以上版本），将目标属性声明为-volatile-型，比如将-helper-的属性声明修改为-private-volatile-Helper-helper-null" class="headerlink" title="16. 【推荐】通过双重校验锁（double-checked-locking）（在并发场景下）存在延迟初始化的优化问题隐患（可参考 The “Double-Checked Locking is Broken” Declaration）。推荐解决方案中较为简单的一种（适用于 JDK5 及以上版本），将目标属性声明为 volatile 型，比如将 helper 的属性声明修改为 private volatile Helper helper = null;"></a>16. 【推荐】通过双重校验锁（double-checked-locking）（在并发场景下）存在延迟初始化的优化问题隐患（可参考 The “Double-Checked Locking is Broken” Declaration）。推荐解决方案中较为简单的一种（适用于 JDK5 及以上版本），将目标属性声明为 volatile 型，比如将 helper 的属性声明修改为 private volatile Helper helper = null;</h4><ul>
+<li><p><strong>正例</strong>：</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LazyInitDemo</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">volatile</span> Helper helper = <span class="keyword">null</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> Helper <span class="title">getHelper</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (helper == <span class="keyword">null</span>) &#123;</span><br><span class="line">			<span class="keyword">synchronized</span>(<span class="keyword">this</span>) &#123;</span><br><span class="line">				<span class="keyword">if</span> (helper == <span class="keyword">null</span>) &#123; helper = <span class="keyword">new</span> Helper(); &#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> helper;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// other methods and fields...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="17-【参考】volatile-解决多线程内存不可见问题。对于一写多度，是可以解决变量同步问题，但是如果多写，同样无法解决线程安全问题"><a href="#17-【参考】volatile-解决多线程内存不可见问题。对于一写多度，是可以解决变量同步问题，但是如果多写，同样无法解决线程安全问题" class="headerlink" title="17. 【参考】volatile 解决多线程内存不可见问题。对于一写多度，是可以解决变量同步问题，但是如果多写，同样无法解决线程安全问题"></a>17. 【参考】volatile 解决多线程内存不可见问题。对于一写多度，是可以解决变量同步问题，但是如果多写，同样无法解决线程安全问题</h4><ul>
+<li><strong>说明</strong>：如果是 <code>count++</code> 操作，使用如下类实现：<code>AtomicInteger count = new AtomicInteger(); count.addAndGet(1);</code>，如果是 JDK8，推荐使用 <code>LongAdder</code> 对象，比 <code>AtomicLong</code> 性能更好（减少乐观锁的重试次数）</li>
+</ul>
+<h4 id="18-【参考】HashMap-在容量不够进行-resize-时由于高并发可能出现死链，导致-CPU-飙升，在开发过程中注意规避此风险"><a href="#18-【参考】HashMap-在容量不够进行-resize-时由于高并发可能出现死链，导致-CPU-飙升，在开发过程中注意规避此风险" class="headerlink" title="18. 【参考】HashMap 在容量不够进行 resize 时由于高并发可能出现死链，导致 CPU 飙升，在开发过程中注意规避此风险"></a>18. 【参考】HashMap 在容量不够进行 resize 时由于高并发可能出现死链，导致 CPU 飙升，在开发过程中注意规避此风险</h4><h4 id="19-【参考】ThreadLocal-对象使用-static-修饰，ThreadLocal-无法解决共享对象的更新问题"><a href="#19-【参考】ThreadLocal-对象使用-static-修饰，ThreadLocal-无法解决共享对象的更新问题" class="headerlink" title="19. 【参考】ThreadLocal 对象使用 static 修饰，ThreadLocal 无法解决共享对象的更新问题"></a>19. 【参考】ThreadLocal 对象使用 static 修饰，ThreadLocal 无法解决共享对象的更新问题</h4><ul>
+<li><strong>说明</strong>：这个变量是针对一个线程内所有操作共享的，所以设置为静态变量，所有此类实例共享此静态变量。也就是说类第一次被使用时装载，只分配一块存储空间，所有此类的对象（只要是这个线程内定义的）都可以操控这个变量</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;margin-top:80px">-------------------- 本文结束<i class="fa fa-paw"></i>感谢您的阅读 --------------------</div>
+    
+</div>
+      
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>隋钟元
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://24suixinsuoyu.com/2020/08/14/%E7%BC%96%E7%A8%8B%E8%A7%84%E7%BA%A6%EF%BC%88%E4%B8%83%EF%BC%89%EF%BC%9A%E5%B9%B6%E5%8F%91%E5%A4%84%E7%90%86/" title="编程规约（七）：并发处理">http://24suixinsuoyu.com/2020/08/14/编程规约（七）：并发处理/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E7%BC%96%E7%A8%8B%E8%A7%84%E7%BA%A6/" rel="tag"><i class="fa fa-tag"></i> 编程规约</a>
+              <a href="/tags/%E5%B9%B6%E5%8F%91%E5%A4%84%E7%90%86/" rel="tag"><i class="fa fa-tag"></i> 并发处理</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/14/%E7%BC%96%E7%A8%8B%E8%A7%84%E7%BA%A6%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9A%E9%9B%86%E5%90%88%E5%A4%84%E7%90%86/" rel="prev" title="编程规约（六）：集合处理">
+      <i class="fa fa-chevron-left"></i> 编程规约（六）：集合处理
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/08/14/%E7%BC%96%E7%A8%8B%E8%A7%84%E7%BA%A6%EF%BC%88%E5%85%AB%EF%BC%89%EF%BC%9A%E6%8E%A7%E5%88%B6%E8%AF%AD%E5%8F%A5/" rel="next" title="编程规约（八）：控制语句">
+      编程规约（八）：控制语句 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-【强制】获取单例对象需要保证线程安全，其中的方法也要保证线程安全"><span class="nav-text">1. 【强制】获取单例对象需要保证线程安全，其中的方法也要保证线程安全</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-【强制】创建线程或线程池时请指定有意义的线程名称，方便出错时回溯"><span class="nav-text">2. 【强制】创建线程或线程池时请指定有意义的线程名称，方便出错时回溯</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-【强制】线程资源必须通过线程池提供，不允许在应用中自行显示创建线程"><span class="nav-text">3. 【强制】线程资源必须通过线程池提供，不允许在应用中自行显示创建线程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-【强制】线程池不允许使用-Executors-去创建，而是通过-ThreadPoolExecutor-的方式，这样的处理方式让写的同学更加明确线程池的运行规则，规避资源耗尽的风险"><span class="nav-text">4. 【强制】线程池不允许使用 Executors 去创建，而是通过 ThreadPoolExecutor 的方式，这样的处理方式让写的同学更加明确线程池的运行规则，规避资源耗尽的风险</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-【强制】SimpleDateFormat-是线程不安全的类，一般不要定义为-static-变量，如果定义为static，必须加锁，或者使用-DateUtils-工具类"><span class="nav-text">5. 【强制】SimpleDateFormat 是线程不安全的类，一般不要定义为 static 变量，如果定义为static，必须加锁，或者使用 DateUtils 工具类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-【强制】必须回收自定义的-ThreadLocal-变量，尤其在线程池场景下，线程经常会被复用。如果不清理自定义的-ThreadLocal-变量，可能会影响后续业务逻辑和造成内存泄漏等问题。尽量在代理中使用-try-finally-块进行回收"><span class="nav-text">6. 【强制】必须回收自定义的 ThreadLocal 变量，尤其在线程池场景下，线程经常会被复用。如果不清理自定义的 ThreadLocal 变量，可能会影响后续业务逻辑和造成内存泄漏等问题。尽量在代理中使用 try-finally 块进行回收</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-【强制】高并发时，同步调用应该去考量锁的性能损耗。能用无锁数据结构，就不要用锁；能锁区块，就不要锁整个方法体；能用对象锁，就不要用类锁"><span class="nav-text">7. 【强制】高并发时，同步调用应该去考量锁的性能损耗。能用无锁数据结构，就不要用锁；能锁区块，就不要锁整个方法体；能用对象锁，就不要用类锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-【强制】对多个资源、数据库表、对象同时加锁时，需要保持一致的加锁顺序，否则可能会造成死锁"><span class="nav-text">8. 【强制】对多个资源、数据库表、对象同时加锁时，需要保持一致的加锁顺序，否则可能会造成死锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-【强制】在使用阻塞等待获取锁的方式中，必须在-try-代码块之外，并且在加锁方法与-try-代码块之间没有任何可能抛出异常的方法调用，避免加锁成功后，在-finally-中无法解锁"><span class="nav-text">9. 【强制】在使用阻塞等待获取锁的方式中，必须在 try 代码块之外，并且在加锁方法与 try 代码块之间没有任何可能抛出异常的方法调用，避免加锁成功后，在 finally 中无法解锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-【强制】在使用尝试机制来获取锁的方式中，进入业务代码块之前，必须先判断当前线程是否持有锁。锁的释放规则与锁的阻塞等待方式相同"><span class="nav-text">10. 【强制】在使用尝试机制来获取锁的方式中，进入业务代码块之前，必须先判断当前线程是否持有锁。锁的释放规则与锁的阻塞等待方式相同</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-【强制】并发修改同一记录时，避免更新丢失，需要加锁。要么在应用层加锁，要么在缓存加锁，要么在数据库层使用乐观锁，使用-version-作为更新依据"><span class="nav-text">11. 【强制】并发修改同一记录时，避免更新丢失，需要加锁。要么在应用层加锁，要么在缓存加锁，要么在数据库层使用乐观锁，使用 version 作为更新依据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-【强制】多线程并行处理定时任务时，Timer-运行多个-TimeTask-时，只要其中之一没有捕获抛出的异常，其它任务便会自动终止运行，使用-ScheduledExecutorService-则没有这个问题"><span class="nav-text">12. 【强制】多线程并行处理定时任务时，Timer 运行多个 TimeTask 时，只要其中之一没有捕获抛出的异常，其它任务便会自动终止运行，使用 ScheduledExecutorService 则没有这个问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-【推荐】资金相关的金融敏感信息，使用悲观锁策略"><span class="nav-text">13. 【推荐】资金相关的金融敏感信息，使用悲观锁策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-【推荐】使用-CountDownLatch-进行异步转同步操作，每个线程退出前必须调用-countDown-方法，线程执行代码注意-catch-异常，确保-countDown-方法被执行到，避免主线程无法执行至-await-方法，直到超时才返回结果"><span class="nav-text">14. 【推荐】使用 CountDownLatch 进行异步转同步操作，每个线程退出前必须调用 countDown 方法，线程执行代码注意 catch 异常，确保 countDown 方法被执行到，避免主线程无法执行至 await 方法，直到超时才返回结果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#15-【推荐】避免-Random-实例被多线程使用，虽然共享该实例是线程安全的，但会因竞争同一-seed-导致性能下降"><span class="nav-text">15. 【推荐】避免 Random 实例被多线程使用，虽然共享该实例是线程安全的，但会因竞争同一 seed 导致性能下降</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#16-【推荐】通过双重校验锁（double-checked-locking）（在并发场景下）存在延迟初始化的优化问题隐患（可参考-The-“Double-Checked-Locking-is-Broken”-Declaration）。推荐解决方案中较为简单的一种（适用于-JDK5-及以上版本），将目标属性声明为-volatile-型，比如将-helper-的属性声明修改为-private-volatile-Helper-helper-null"><span class="nav-text">16. 【推荐】通过双重校验锁（double-checked-locking）（在并发场景下）存在延迟初始化的优化问题隐患（可参考 The “Double-Checked Locking is Broken” Declaration）。推荐解决方案中较为简单的一种（适用于 JDK5 及以上版本），将目标属性声明为 volatile 型，比如将 helper 的属性声明修改为 private volatile Helper helper &#x3D; null;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#17-【参考】volatile-解决多线程内存不可见问题。对于一写多度，是可以解决变量同步问题，但是如果多写，同样无法解决线程安全问题"><span class="nav-text">17. 【参考】volatile 解决多线程内存不可见问题。对于一写多度，是可以解决变量同步问题，但是如果多写，同样无法解决线程安全问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#18-【参考】HashMap-在容量不够进行-resize-时由于高并发可能出现死链，导致-CPU-飙升，在开发过程中注意规避此风险"><span class="nav-text">18. 【参考】HashMap 在容量不够进行 resize 时由于高并发可能出现死链，导致 CPU 飙升，在开发过程中注意规避此风险</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#19-【参考】ThreadLocal-对象使用-static-修饰，ThreadLocal-无法解决共享对象的更新问题"><span class="nav-text">19. 【参考】ThreadLocal 对象使用 static 修饰，ThreadLocal 无法解决共享对象的更新问题</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="隋钟元"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">隋钟元</p>
+  <div class="site-description" itemprop="description">技术创造价值</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">157</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">188</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:24suixinsuoyu@gmail.com" title="E-Mail → mailto:24suixinsuoyu@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/24suixinsuoyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;24suixinsuoyu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/24sxsy" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;24sxsy" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/guolin_blog" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;guolin_blog" rel="noopener" target="_blank">郭霖</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/lmj623565791/" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;lmj623565791&#x2F;" rel="noopener" target="_blank">鸿洋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.520monkey.com/" title="http:&#x2F;&#x2F;www.520monkey.com&#x2F;" rel="noopener" target="_blank">姜维</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://daimajia.com/" title="https:&#x2F;&#x2F;daimajia.com&#x2F;" rel="noopener" target="_blank">代码家</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://kmxz.net/" title="https:&#x2F;&#x2F;kmxz.net&#x2F;" rel="noopener" target="_blank">孔祥舟</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yangwenbo.com/" title="http:&#x2F;&#x2F;yangwenbo.com&#x2F;" rel="noopener" target="_blank">杨文博</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">隋钟元</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">479k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">7:15</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+

@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1. PriorityQueue 除了用作优先级队列，还有哪些应用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 堆与优先级队列（三）：堆和 PriorityQueue 的应用">
+<meta property="og:url" content="http://24suixinsuoyu.com/2020/05/07/Java-%E5%A0%86%E4%B8%8E%E4%BC%98%E5%85%88%E7%BA%A7%E9%98%9F%E5%88%97%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E5%A0%86%E5%92%8C-PriorityQueue-%E7%9A%84%E5%BA%94%E7%94%A8/index.html">
+<meta property="og:site_name" content="隋钟元’s Blog">
+<meta property="og:description" content="1. PriorityQueue 除了用作优先级队列，还有哪些应用">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-07T03:32:36.000Z">
+<meta property="article:modified_time" content="2020-05-11T09:04:52.000Z">
+<meta property="article:author" content="隋钟元">
+<meta property="article:tag" content="堆与优先级队列">
+<meta property="article:tag" content="堆和 PriorityQueue 的应用">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://24suixinsuoyu.com/2020/05/07/Java-%E5%A0%86%E4%B8%8E%E4%BC%98%E5%85%88%E7%BA%A7%E9%98%9F%E5%88%97%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E5%A0%86%E5%92%8C-PriorityQueue-%E7%9A%84%E5%BA%94%E7%94%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Java 堆与优先级队列（三）：堆和 PriorityQueue 的应用 | 隋钟元’s Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">隋钟元’s Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-university"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th-list"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-english">
+
+    <a href="/english/" rel="section"><i class="fa fa-fw fa-graduation-cap"></i>英语</a>
+
+  </li>
+        <li class="menu-item menu-item-life">
+
+    <a href="/life/" rel="section"><i class="fa fa-fw fa-balance-scale"></i>生活</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/" rel="section"><i class="fa fa-fw fa-user-circle-o"></i>简历</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/commonweal/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/24suixinsuoyu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/05/07/Java-%E5%A0%86%E4%B8%8E%E4%BC%98%E5%85%88%E7%BA%A7%E9%98%9F%E5%88%97%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E5%A0%86%E5%92%8C-PriorityQueue-%E7%9A%84%E5%BA%94%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="隋钟元">
+      <meta itemprop="description" content="技术创造价值">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="隋钟元’s Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java 堆与优先级队列（三）：堆和 PriorityQueue 的应用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-07 11:32:36" itemprop="dateCreated datePublished" datetime="2020-05-07T11:32:36+08:00">2020-05-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-11 17:04:52" itemprop="dateModified" datetime="2020-05-11T17:04:52+08:00">2020-05-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E3%80%8AJava-%E7%BC%96%E7%A8%8B%E7%9A%84%E9%80%BB%E8%BE%91%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《Java 编程的逻辑》</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="1-PriorityQueue-除了用作优先级队列，还有哪些应用"><a href="#1-PriorityQueue-除了用作优先级队列，还有哪些应用" class="headerlink" title="1. PriorityQueue 除了用作优先级队列，还有哪些应用"></a>1. PriorityQueue 除了用作优先级队列，还有哪些应用</h4><a id="more"></a>
+
+<ul>
+<li><strong>求前 K 个最大的元素</strong>：元素个数不确定，数据量可能很大，甚至源源不断到来，但需要知道到目前为止的最大的前 K 个元素。这个问题的<strong>变体</strong>有：<strong>求前 K 个最小的元素</strong>、<strong>求第 K 个最大的元素</strong>、<strong>求第 K 个最小元素</strong>。</li>
+<li><strong>求中值元素</strong>：中值不是平均值，而是排序后中间那个元素的值，同样，数据量可能很大，甚至源源不断到来。</li>
+</ul>
+<h4 id="2-如果所有元素都已知，那么求前-K-个最大元素的思路是"><a href="#2-如果所有元素都已知，那么求前-K-个最大元素的思路是" class="headerlink" title="2. 如果所有元素都已知，那么求前 K 个最大元素的思路是"></a>2. 如果所有元素都已知，那么求前 K 个最大元素的思路是</h4><ul>
+<li><strong>排序</strong>。排序后取最大的 K 个就可以了，排序可以使用 <code>Arrays.sort()</code> 方法，效率为 <code>O(N * log2(N))</code>。不过，如果 K 很小，比如是 1，就是取最大值，对所有元素完全排序是毫无必要的。</li>
+<li><strong>选择</strong>。循环选择 K 次，每次从剩下的元素中选择最大值，这个效率是 <code>O(N * K)</code>，如果 K 的值大于 log2(N)，这个就不如完全排序了。</li>
+</ul>
+<h4 id="3-如果所有元素动态添加，那么求前-K-个最大元素的思路是"><a href="#3-如果所有元素动态添加，那么求前-K-个最大元素的思路是" class="headerlink" title="3. 如果所有元素动态添加，那么求前 K 个最大元素的思路是"></a>3. 如果所有元素动态添加，那么求前 K 个最大元素的思路是</h4><ul>
+<li><strong>思路</strong>：<strong>维护一个长度为 K 的数组</strong>。最前面的 K 个元素就是目前最大的 K 个元素，以后每来一个新元素的时候，都先找数组中的最小值，将新元素与最小值相比。如果小于最小值，则什么都不用变，如果大于最小值，则将最小值替换为新元素（类似于生活中的末尾淘汰）。</li>
+<li>这样，数组中维护的永远是最大的 K 个元素，而且不管源数据有多少，需要的内存开销是固定的，就是长度为 K 的数组。不过，每来一个元素，都需要找最小值，都需要进行 K 此比较，能不能<strong>减少比较次数呢</strong>？</li>
+<li>能。解决方法是使用<strong>最小堆维护这 K 个元素</strong>。最小堆中，根即第一个元素永远都是最小的，新来的元素与根比就可以了。如果小于根，则堆不需要变化，否则用新元素替换根，然后<strong>向下调整</strong>堆即可，调整的效率为 <code>O(log2(K))</code>。这样，<strong>总体的效率就是 <code>O(N * log2(K))</code>，这个效率非常高，而且存储成本也很低</strong>。</li>
+</ul>
+<h4 id="4-求前-K-个最大的元素：TopK"><a href="#4-求前-K-个最大的元素：TopK" class="headerlink" title="4. 求前 K 个最大的元素：TopK"></a>4. 求前 K 个最大的元素：TopK</h4><ul>
+<li><p>代码：</p>
+  <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TopK</span>&lt;E&gt; &#123;</span></span><br><span class="line">    <span class="keyword">private</span> PriorityQueue&lt;E&gt; p;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> k;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TopK</span><span class="params">(<span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.k = k;</span><br><span class="line">        <span class="keyword">this</span>.p = <span class="keyword">new</span> PriorityQueue&lt;&gt; (k);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addAll</span><span class="params">(Collection&lt;? extends E&gt; c)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(E e : c) &#123;</span><br><span class="line">            add(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(E e)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(p.<span class="built_in">size</span>() &lt; k) &#123;</span><br><span class="line">            p.add(e);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        Comparable&lt;? super E&gt; head = (Comparable&lt;? super E&gt;) p.<span class="built_in">peek</span>();</span><br><span class="line">        <span class="keyword">if</span>(head.compareTo(e) &gt; <span class="number">0</span>) &#123; <span class="comment">//小于 TopK 中的最小值，不用变</span></span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//新元素替换掉原来的最小值成为 TopK 之一</span></span><br><span class="line">        p.poll();</span><br><span class="line">        p.add(e);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> &lt;T&gt; T[] toArray(T[] a) &#123;</span><br><span class="line">        <span class="keyword">return</span> p.toArray(a);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> E <span class="title">getKth</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> p.<span class="built_in">peek</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>分析：</p>
+<ul>
+<li>TopK 内部使用一个优先级队列和 <code>k</code>，构造方法接收一个参数 <code>k</code>，使用 <code>PriorityQueue</code> 的默认构造方法，假定元素实现了 <code>Comparable</code> 接口。</li>
+<li><strong><code>add()</code></strong> 方法实现向其中动态添加元素，如果元素个数小于 <code>k</code> 直接添加，否则与最小值比较，只在大于最小值的情况下添加，添加前，先删掉原来的最小值。<strong><code>addAll()</code></strong> 方法循环调用 <code>add()</code> 方法。</li>
+<li><strong><code>toArray()</code></strong> 方法返回当前的最大的 K 个元素，<strong><code>getKth()</code></strong> 方法返回第 K 个最大的元素。</li>
+</ul>
+</li>
+<li><p>Demo：</p>
+  <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">TopK&lt;Integer&gt; top5 = new TopK&lt;&gt; (<span class="number">5</span>);</span><br><span class="line">top5.addAll(Arrays.asList(new Integer[] &#123;<span class="number">100</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">34</span>, <span class="number">9</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">23</span>, <span class="number">21</span>, <span class="number">90</span>, <span class="number">1</span>, <span class="number">0</span>&#125;));</span><br><span class="line">System.<span class="keyword">out</span>.println(Arrays.toString(top5.toArray(new Integer[<span class="number">0</span>])));</span><br><span class="line">System.<span class="keyword">out</span>.println(top5.getKth());</span><br><span class="line"></span><br><span class="line"><span class="comment">//输出：[21, 23, 34, 100, 90] 和 21</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="5-中值的概念是"><a href="#5-中值的概念是" class="headerlink" title="5. 中值的概念是"></a>5. 中值的概念是</h4><ul>
+<li>中值就是<strong>排序后中间那个元素</strong>的值。</li>
+<li>如果元素个数为<strong>奇数</strong>，中值是没有歧义的。</li>
+<li>如果元素个数为<strong>偶数</strong>，中值<strong>可能有不同的定义</strong>。可以为偏小的那个，也可以是偏大的那个，或者两者的平均值，或者任意一个。</li>
+</ul>
+<h4 id="6-如果所有元素都已知，怎样求中值"><a href="#6-如果所有元素都已知，怎样求中值" class="headerlink" title="6. 如果所有元素都已知，怎样求中值"></a>6. 如果所有元素都已知，怎样求中值</h4><ul>
+<li><strong>排序</strong>，排序后取中间那个值就可以了。</li>
+<li>排序可以使用 <code>Arrays.sort()</code> 方法，效率为 <code>O(N * log2(N))</code>。</li>
+</ul>
+<h4 id="7-如果所有元素动态添加，怎样求中值"><a href="#7-如果所有元素动态添加，怎样求中值" class="headerlink" title="7. 如果所有元素动态添加，怎样求中值"></a>7. 如果所有元素动态添加，怎样求中值</h4><ul>
+<li>思路：<ul>
+<li><strong>可以使用两个堆，一个最大堆，一个最小堆</strong>。</li>
+</ul>
+</li>
+<li>步骤：<ul>
+<li>假设当前的中位数是 m，最大堆维护的是 &lt;=m 的元素，最小堆维护的是 &gt;=m 的元素，但两个堆都不包含 m。</li>
+<li>当新的元素到达时，比如 e，将 e 与 m 进行比较，若 e&lt;m，则将其加入最大堆中，否则将其加入最小堆中。</li>
+<li>第 2 步后，如果此时最小堆和最大堆的元素个数的差值 &gt;=2，则将 m 加入元素个数少的堆中，然后从元素个数多的堆将根节点移除并赋值给 m。</li>
+</ul>
+</li>
+</ul>
+<h4 id="8-求中值：Median"><a href="#8-求中值：Median" class="headerlink" title="8. 求中值：Median"></a>8. 求中值：Median</h4><ul>
+<li><p>代码：</p>
+  <figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> class Median&lt;E&gt; &#123;</span><br><span class="line">    <span class="keyword">private</span> PriorityQueue&lt;E&gt; minP; <span class="comment">//最小堆</span></span><br><span class="line">    <span class="keyword">private</span> PriorityQueue&lt;E&gt; maxP; <span class="comment">//最大堆</span></span><br><span class="line">    <span class="keyword">private</span> E m; <span class="comment">//当前中值</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> Median() &#123;</span><br><span class="line">        <span class="keyword">this</span>.minP = <span class="keyword">new</span> PriorityQueue&lt;&gt; ();</span><br><span class="line">        <span class="keyword">this</span>.maxP = <span class="keyword">new</span> PriorityQueue&lt;&gt; (<span class="number">11</span>, Collections.reverseOrder());</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> compare(E e, E m) &#123;</span><br><span class="line">        Comparable&lt;? <span class="keyword">super</span> E&gt; cmpr = (Comparable&lt;? <span class="keyword">super</span> E&gt;) e;</span><br><span class="line">        <span class="keyword">return</span> cmpr.compareTo(m);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="built_in">add</span>(E e) &#123;</span><br><span class="line">        <span class="keyword">if</span>(m == <span class="keyword">null</span>) &#123; <span class="comment">//第一个元素</span></span><br><span class="line">            m = e;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(compare(e, m) &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="comment">//小于中值，加入最大堆</span></span><br><span class="line">            maxP.<span class="built_in">add</span>(e);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            minP.<span class="built_in">add</span>(e); <span class="comment">//加入最小堆</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(minP.<span class="built_in">size</span>() - maxP.<span class="built_in">size</span>() &gt;= <span class="number">2</span>) &#123;</span><br><span class="line">            <span class="comment">//最小堆元素个数多，即大于中值的数多</span></span><br><span class="line">            <span class="comment">//将 m 加入到最大堆中，然后将最小堆中的根移除赋给 m</span></span><br><span class="line">            maxP.<span class="built_in">add</span>(<span class="keyword">this</span>.m);</span><br><span class="line">            <span class="keyword">this</span>.m = minP.poll();</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(maxP.<span class="built_in">size</span>() - minP.<span class="built_in">size</span>() &gt;= <span class="number">2</span>) &#123;</span><br><span class="line">            minP.<span class="built_in">add</span>(<span class="keyword">this</span>.m);</span><br><span class="line">            <span class="keyword">this</span>.m = maxP.poll();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> addAll(Collection&lt;? extends E&gt; c) &#123;</span><br><span class="line">        <span class="keyword">for</span>(E e : c) &#123;</span><br><span class="line">            <span class="built_in">add</span>(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> E getM() &#123;</span><br><span class="line">        <span class="keyword">return</span> m;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Demo：</p>
+  <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Median&lt;Integer&gt; median = <span class="keyword">new</span> Median&lt;&gt; <span class="literal">()</span>;</span><br><span class="line">List&lt;Integer&gt; <span class="built_in">list</span> = <span class="module-access"><span class="module"><span class="identifier">Arrays</span>.</span></span><span class="keyword">as</span><span class="constructor">List(<span class="params">new</span> Integer[] &#123;34, 90, 67, 1, 4, 5, 6, 7, 9, 10&#125;)</span>;</span><br><span class="line">median.add<span class="constructor">All(<span class="params">list</span>)</span>;</span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(median.get<span class="constructor">M()</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//输出中值 9</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;margin-top:80px">-------------------- 本文结束<i class="fa fa-paw"></i>感谢您的阅读 --------------------</div>
+    
+</div>
+      
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>隋钟元
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://24suixinsuoyu.com/2020/05/07/Java-%E5%A0%86%E4%B8%8E%E4%BC%98%E5%85%88%E7%BA%A7%E9%98%9F%E5%88%97%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E5%A0%86%E5%92%8C-PriorityQueue-%E7%9A%84%E5%BA%94%E7%94%A8/" title="Java 堆与优先级队列（三）：堆和 PriorityQueue 的应用">http://24suixinsuoyu.com/2020/05/07/Java-堆与优先级队列（三）：堆和-PriorityQueue-的应用/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E5%A0%86%E4%B8%8E%E4%BC%98%E5%85%88%E7%BA%A7%E9%98%9F%E5%88%97/" rel="tag"><i class="fa fa-tag"></i> 堆与优先级队列</a>
+              <a href="/tags/%E5%A0%86%E5%92%8C-PriorityQueue-%E7%9A%84%E5%BA%94%E7%94%A8/" rel="tag"><i class="fa fa-tag"></i> 堆和 PriorityQueue 的应用</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/07/Java-%E5%A0%86%E4%B8%8E%E4%BC%98%E5%85%88%E7%BA%A7%E9%98%9F%E5%88%97%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E5%89%96%E6%9E%90-PriorityQueue/" rel="prev" title="Java 堆与优先级队列（二）：剖析 PriorityQueue">
+      <i class="fa fa-chevron-left"></i> Java 堆与优先级队列（二）：剖析 PriorityQueue
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/07/Java-%E9%80%9A%E7%94%A8%E5%AE%B9%E5%99%A8%E7%B1%BB%E5%92%8C%E6%80%BB%E7%BB%93%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E6%8A%BD%E8%B1%A1%E5%AE%B9%E5%99%A8%E7%B1%BB/" rel="next" title="Java 通用容器类和总结（一）：抽象容器类">
+      Java 通用容器类和总结（一）：抽象容器类 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-PriorityQueue-除了用作优先级队列，还有哪些应用"><span class="nav-text">1. PriorityQueue 除了用作优先级队列，还有哪些应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-如果所有元素都已知，那么求前-K-个最大元素的思路是"><span class="nav-text">2. 如果所有元素都已知，那么求前 K 个最大元素的思路是</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-如果所有元素动态添加，那么求前-K-个最大元素的思路是"><span class="nav-text">3. 如果所有元素动态添加，那么求前 K 个最大元素的思路是</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-求前-K-个最大的元素：TopK"><span class="nav-text">4. 求前 K 个最大的元素：TopK</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-中值的概念是"><span class="nav-text">5. 中值的概念是</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-如果所有元素都已知，怎样求中值"><span class="nav-text">6. 如果所有元素都已知，怎样求中值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-如果所有元素动态添加，怎样求中值"><span class="nav-text">7. 如果所有元素动态添加，怎样求中值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-求中值：Median"><span class="nav-text">8. 求中值：Median</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="隋钟元"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">隋钟元</p>
+  <div class="site-description" itemprop="description">技术创造价值</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">157</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">188</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:24suixinsuoyu@gmail.com" title="E-Mail → mailto:24suixinsuoyu@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/24suixinsuoyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;24suixinsuoyu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/24sxsy" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;24sxsy" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/guolin_blog" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;guolin_blog" rel="noopener" target="_blank">郭霖</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/lmj623565791/" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;lmj623565791&#x2F;" rel="noopener" target="_blank">鸿洋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.520monkey.com/" title="http:&#x2F;&#x2F;www.520monkey.com&#x2F;" rel="noopener" target="_blank">姜维</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://daimajia.com/" title="https:&#x2F;&#x2F;daimajia.com&#x2F;" rel="noopener" target="_blank">代码家</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://kmxz.net/" title="https:&#x2F;&#x2F;kmxz.net&#x2F;" rel="noopener" target="_blank">孔祥舟</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yangwenbo.com/" title="http:&#x2F;&#x2F;yangwenbo.com&#x2F;" rel="noopener" target="_blank">杨文博</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">隋钟元</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">479k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">7:15</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+

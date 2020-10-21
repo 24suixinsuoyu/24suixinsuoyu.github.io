@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1. Android 音视频开发">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 详解音视频开发">
+<meta property="og:url" content="http://24suixinsuoyu.com/2020/07/03/Android-%E8%AF%A6%E8%A7%A3%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BC%80%E5%8F%91/index.html">
+<meta property="og:site_name" content="隋钟元’s Blog">
+<meta property="og:description" content="1. Android 音视频开发">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-07-03T03:11:34.000Z">
+<meta property="article:modified_time" content="2020-08-01T17:50:24.000Z">
+<meta property="article:author" content="隋钟元">
+<meta property="article:tag" content="音视频开发">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://24suixinsuoyu.com/2020/07/03/Android-%E8%AF%A6%E8%A7%A3%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BC%80%E5%8F%91/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Android 详解音视频开发 | 隋钟元’s Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">隋钟元’s Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-university"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th-list"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-english">
+
+    <a href="/english/" rel="section"><i class="fa fa-fw fa-graduation-cap"></i>英语</a>
+
+  </li>
+        <li class="menu-item menu-item-life">
+
+    <a href="/life/" rel="section"><i class="fa fa-fw fa-balance-scale"></i>生活</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/" rel="section"><i class="fa fa-fw fa-user-circle-o"></i>简历</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/commonweal/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/24suixinsuoyu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/07/03/Android-%E8%AF%A6%E8%A7%A3%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BC%80%E5%8F%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="隋钟元">
+      <meta itemprop="description" content="技术创造价值">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="隋钟元’s Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android 详解音视频开发
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-03 11:11:34" itemprop="dateCreated datePublished" datetime="2020-07-03T11:11:34+08:00">2020-07-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-02 01:50:24" itemprop="dateModified" datetime="2020-08-02T01:50:24+08:00">2020-08-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E3%80%8AAndroid-%E7%AC%AC%E4%BA%8C%E8%A1%8C%E4%BB%A3%E7%A0%81%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《Android 第二行代码》</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>16k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>14 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="1-Android-音视频开发"><a href="#1-Android-音视频开发" class="headerlink" title="1. Android 音视频开发"></a>1. Android 音视频开发</h4><a id="more"></a>
+
+<ul>
+<li><p>系列：</p>
+<ul>
+<li><a href="https://www.cnblogs.com/renhui/p/7452572.html" target="_blank" rel="noopener">Android 音视频开发学习之路</a></li>
+</ul>
+</li>
+<li><p>参考：</p>
+<ul>
+<li><a href="https://mp.weixin.qq.com/s/L9_O60jT7JdSPd2UL_B7Aw" target="_blank" rel="noopener">仿抖音上下滑动播放视频</a></li>
+<li><a href="https://mp.weixin.qq.com/s/ursuf8mdQoDjUFaSjXuzUA" target="_blank" rel="noopener">MediaCodec 进行音频合成</a></li>
+<li><a href="https://mp.weixin.qq.com/s/u5TPAPPtvE0__m5-LqsUlQ" target="_blank" rel="noopener">微信 Android 视频编码爬过的那些坑</a></li>
+<li><a href="https://mp.weixin.qq.com/s/eMuNlt2acB18VL0T-dB92g" target="_blank" rel="noopener">Android 逆向之旅–抖音短视频的 Native 注册混淆函数获取方法</a></li>
+<li><a href="https://mp.weixin.qq.com/s/RoOec72vqmiPWT9x5RRuEQ" target="_blank" rel="noopener">Android逆向之旅–微信封了抖音分享功能，而我要把短视频成功分享到朋友圈</a></li>
+</ul>
+</li>
+</ul>
+<h4 id="2-怎样打开-Android-手机的开发者选项中的-USB-调试"><a href="#2-怎样打开-Android-手机的开发者选项中的-USB-调试" class="headerlink" title="2. 怎样打开 Android 手机的开发者选项中的 USB 调试"></a>2. 怎样打开 Android 手机的开发者选项中的 USB 调试</h4><ul>
+<li><strong>Android 4.2 系统之前</strong>，设置、开发者选项、USB 调试。</li>
+<li><strong>Android 4.2 系统之后</strong>，开发者选项默认是隐藏的，关于手机 –&gt; 连续点击版本号 –&gt; 开发者选项 –&gt; USB 调试。</li>
+</ul>
+<h4 id="3-通知（Notification）使用的场景"><a href="#3-通知（Notification）使用的场景" class="headerlink" title="3. 通知（Notification）使用的场景"></a>3. 通知（Notification）使用的场景</h4><ul>
+<li><code>Notification</code> 既可以在 <code>Activity</code> 里创建，也可以在 <code>BroadcastReceiver</code> 里创建，还可以在 <code>Service</code> 里创建。</li>
+<li>相比于 <code>BroadcastReceive</code> 和 <code>Service</code>，在 <code>Activity</code> 里创建 <code>Notification</code> 的场景还是比较少的，因为一般只有当程序进入到后台的时候我们才需要使用 <code>Notification</code>。</li>
+</ul>
+<h4 id="4-写一个使用-Notification-的-Demo"><a href="#4-写一个使用-Notification-的-Demo" class="headerlink" title="4. 写一个使用 Notification 的 Demo"></a>4. 写一个使用 Notification 的 Demo</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">public <span class="keyword">class</span> MainActivity extends AppCompatActivity implements View.OnClickListener &#123;</span><br><span class="line">    @Override</span><br><span class="line">    protected void on<span class="constructor">Create(Bundle <span class="params">savedInstanceState</span>)</span> &#123;</span><br><span class="line">        super.on<span class="constructor">Create(<span class="params">savedInstanceState</span>)</span>;</span><br><span class="line">        set<span class="constructor">ContentView(R.<span class="params">layout</span>.<span class="params">activity_main</span>)</span>;</span><br><span class="line">        Button sendNotice = (Button) find<span class="constructor">ViewById(R.<span class="params">id</span>.<span class="params">send_notice</span>)</span>;</span><br><span class="line">        sendNotice.set<span class="constructor">OnClickListener(<span class="params">this</span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void on<span class="constructor">Click(View <span class="params">v</span>)</span> &#123;</span><br><span class="line">        switch (v.get<span class="constructor">Id()</span>) &#123;</span><br><span class="line">            case <span class="module-access"><span class="module"><span class="identifier">R</span>.</span></span>id.send_notice:</span><br><span class="line">                <span class="comment">//PendingIntent 和 Intent 都可以用于启动活动、启动服务以及发送广播</span></span><br><span class="line">                <span class="comment">//不同的是，Intent 更加倾向于去立即执行某个动作，而 PendingIntent 更加倾向于在某个合适的时机去执行某个动作</span></span><br><span class="line">                <span class="comment">//即可以把 PendingIntent 理解为延迟执行的 Intent</span></span><br><span class="line">                Intent intent = <span class="keyword">new</span> <span class="constructor">Intent(<span class="params">this</span>, NotificationActivity.<span class="params">class</span>)</span>; <span class="comment">//点击通知启动另一个活动</span></span><br><span class="line">                PendingIntent pi = <span class="module-access"><span class="module"><span class="identifier">PendingIntent</span>.</span></span>get<span class="constructor">Activity(<span class="params">this</span>, 0, <span class="params">intent</span>, 0)</span>; </span><br><span class="line"></span><br><span class="line">                NotificationManager manager = (NotificationManager) get<span class="constructor">SystemService(NOTIFICATION_SERVICE)</span>;</span><br><span class="line">                Notification notification = <span class="keyword">new</span> NotificationCompat.<span class="constructor">Builder(<span class="params">this</span>)</span> <span class="comment">// 使用 support-v4 库中的 NotificationCompat 类来解决因为 Andoird 团队经常对通知功能的修改导致的 API 不稳定的问题</span></span><br><span class="line">                        .set<span class="constructor">ContentTitle(<span class="string">"This is content title"</span>)</span> <span class="comment">//指定通知的标题内容</span></span><br><span class="line">                        .set<span class="constructor">ContentText(<span class="string">"This is content text"</span>)</span> <span class="comment">//指定通知的正文内容</span></span><br><span class="line">                        .set<span class="constructor">When(System.<span class="params">currentTimeMillis</span>()</span>) <span class="comment">//指定通知被创建的时间，这里指定的时间会显示在相应的通知上</span></span><br><span class="line">                        .set<span class="constructor">SmallIcon(R.<span class="params">mipmap</span>.<span class="params">ic_launcher</span>)</span> <span class="comment">//设置通知的小图标，这里只能使用纯 alpha 图层的图片进行设置，会显示在系统状态栏上</span></span><br><span class="line">                        .set<span class="constructor">LargeIcon(BitmapFactory.<span class="params">decodeResource</span>(<span class="params">getResources</span>()</span>, <span class="module-access"><span class="module"><span class="identifier">R</span>.</span></span>mipmap.ic_launcher)) <span class="comment">//设置通知的大图标，下拉状态栏时可以看到</span></span><br><span class="line">                        .set<span class="constructor">ContentIntent(<span class="params">pi</span>)</span> <span class="comment">//给通知增加点击功能</span></span><br><span class="line">                        .set<span class="constructor">AutoCancel(<span class="params">true</span>)</span> <span class="comment">//点击通知后会自动取消。另一种方式是：manager.cancel(1)，其中参数 1 正是 notify() 方法中的第一个参数</span></span><br><span class="line">                        .set<span class="constructor">Sound(Uri.<span class="params">fromFile</span>(<span class="params">new</span> File(<span class="string">"/system/media/audio/ringtones/Luna.ogg"</span>)</span>)) <span class="comment">//进阶技巧1：在通知发出时候播放一段音频</span></span><br><span class="line">                        .set<span class="constructor">Vibrate(<span class="params">new</span> <span class="params">long</span>[] &#123; 0, 1000, 1000, 1000 &#125;)</span> <span class="comment">//进阶技巧2：在通知到来的时候让手机进行振动，注意此时需要在 AdroidManifest.xml 文件中声明权限：&lt;uses-permission android:name="android.permissions.VIBRATE" /&gt;</span></span><br><span class="line">                        .set<span class="constructor">Lights(Color.GREEN, 1000, 1000)</span> <span class="comment">//进阶技巧3：当通知到来时，如果手机又处于锁屏状态，则控制手机的前置 LED 灯使其闪烁。也可以调用 .setDefaults(NotificationCompat.DEFAULT_ALL) 使用默认效果，它会根据当前手机的环境来决定播放什么铃声，以及如何振动</span></span><br><span class="line">                        .set<span class="constructor">Style(<span class="params">new</span> NotificationCompat.BigTextStyle()</span>.big<span class="constructor">Text(<span class="string">"很长很长的文本"</span>)</span>) <span class="comment">//高级功能1-1：让通知内容是长文本的富文本并完全显示，否则使用 setContentText() 的话，多余的内容会用省略号代替</span></span><br><span class="line">                        .set<span class="constructor">Style(<span class="params">new</span> NotificationCompat.BitPictureStyle()</span>.big<span class="constructor">Picture(BitmapFactory.<span class="params">decodeResource</span>(<span class="params">getResource</span>()</span>, <span class="module-access"><span class="module"><span class="identifier">R</span>.</span></span>drawable.big_image))) <span class="comment">//高级功能1-2：让通知内容是富文本的大图</span></span><br><span class="line">                        .set<span class="constructor">Priority(NotificationCompat.PRIORITY_MAX)</span> <span class="comment">//高级功能2：设置通知的优先级。</span></span><br><span class="line">                        <span class="comment">//这里一共有 5 个常量值可选，PRIORITY_DEFAULT 表示默认的优先级，和不设置的效果是一样的</span></span><br><span class="line">                        <span class="comment">//PRIORITY_MIN 表示最低的优先级，系统可能只会在特定的场景才显示这条通知，比如用户下拉状态栏的时候</span></span><br><span class="line">                        <span class="comment">//PRIORITY_LOW 表示较低的优先级，系统可能会将这类通知缩小，或改变其显示的顺序，将其排在优先级更高的通知之后</span></span><br><span class="line">                        <span class="comment">//PRIORITY_HIGH 表示较高的优先级，系统可能会将这类通知放大，或改变其显示顺序，将其排在比较靠前的位置</span></span><br><span class="line">                        <span class="comment">//PRIORITY_MAX 表示最高的优先级，这类通知必须要让用户立刻看到，甚至需要用户做出响应操作，此时的通知不是在系统状态栏显示一个小图标了，而是弹出了一个横幅，并附带了通知的详细内容，表示这是一条非常重要的通知，不管用户在玩游戏还是在看电影，这条通知都会显示在最上方 ，以此引起用户的注意。使用优先级最高的通知一定要谨慎，不能让用户反感</span></span><br><span class="line">                        .build<span class="literal">()</span>;</span><br><span class="line">                manager.notify(<span class="number">1</span>, notification); <span class="comment">//第一个参数是 id，要保证为每个通知所指定的 id 都是不同的</span></span><br><span class="line">                break;</span><br><span class="line">            default:</span><br><span class="line">                break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-写一个调用手机摄像头进行拍照的-Demo"><a href="#5-写一个调用手机摄像头进行拍照的-Demo" class="headerlink" title="5. 写一个调用手机摄像头进行拍照的 Demo"></a>5. 写一个调用手机摄像头进行拍照的 Demo</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line">public <span class="keyword">class</span> MainActivity extends AppCompatActivity &#123;</span><br><span class="line">    public static final <span class="built_in">int</span> TAKE_PHOTO = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">private</span> ImageView picture;</span><br><span class="line">    <span class="keyword">private</span> Uri imageUri;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void on<span class="constructor">Create(Bundle <span class="params">savedInstanceState</span>)</span> &#123;</span><br><span class="line">        super.on<span class="constructor">Create(<span class="params">savedInstanceState</span>)</span>;</span><br><span class="line">        set<span class="constructor">ContentView(R.<span class="params">layout</span>.<span class="params">activity_main</span>)</span>;</span><br><span class="line">        Button takePhoto = (Button) find<span class="constructor">ViewById(R.<span class="params">id</span>.<span class="params">take_photo</span>)</span>;</span><br><span class="line">        picture = (ImageView) find<span class="constructor">ViewById(R.<span class="params">id</span>.<span class="params">picture</span>)</span>;</span><br><span class="line">        takePhoto.set<span class="constructor">OnClickListener(<span class="params">new</span> View.OnClickListener()</span> &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void on<span class="constructor">Click(View <span class="params">v</span>)</span> &#123;</span><br><span class="line">                <span class="comment">//创建 File 对象，用于存储拍照后的图片</span></span><br><span class="line">                <span class="comment">//这里把 图片命名为 output_image.jgp，并把它存放在手机 SD 卡的应用关联缓存目录下</span></span><br><span class="line">                <span class="comment">//应用关联缓存目录是指 SD 卡中专门用于存放当前应用缓存数据的位置，调用 getExternalCache() 方法就可以得到这个目录，具体的路径是 /sdcard/Android/data/&lt;package name&gt;/cache</span></span><br><span class="line">                <span class="comment">//之所以要使用应用关联缓存目录来存放图片，是因为从 Android 6.0 系统开始，读写 SD 卡被列为了危险权限，如果将图片存放在 SD 卡的任何其他目录，都要进行运行时权限处理，而使用应用关联目录可以跳过运行时权限处理的这一步</span></span><br><span class="line">                File outputImage = <span class="keyword">new</span> <span class="constructor">File(<span class="params">getExternalCacheDir</span>()</span>, <span class="string">"output_image.jpg"</span>);</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                     <span class="keyword">if</span>(outputImage.exist<span class="literal">()</span>) &#123;</span><br><span class="line">                         outputImage.delete<span class="literal">()</span>;</span><br><span class="line">                     &#125;</span><br><span class="line">                     outputImage.create<span class="constructor">NewFile()</span>;</span><br><span class="line">                &#125; catch(IOException e) &#123;</span><br><span class="line">                    e.print<span class="constructor">StackTrace()</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(Build.VERSION.SDK_INT &gt;= <span class="number">24</span>) &#123; <span class="comment">//Android 7.0</span></span><br><span class="line">                    <span class="comment">//getUriForFile() 方法将 File 对象转换成一个封装过的 Uri 对象</span></span><br><span class="line">                    <span class="comment">//之所以要进行这样一层转换，是因为从 Android 7.0 系统开始，直接使用本地真实路径的 Uri 被认为是不安全的，会抛出一个 FileUriExposedException 异常</span></span><br><span class="line">                    <span class="comment">//而 FileProvider 则是一种特殊的内容提供器，它使用了和内容提供器类似的机制来对数据进行保护，可以选择性地将封装过的 Uri 共享给外部，从而提高了应用的安全性。此时，需要在 AndroidManifest.xml 文件中注册 FileProvider 这个内容提供器</span></span><br><span class="line">                    imageUri = <span class="module-access"><span class="module"><span class="identifier">FileProvider</span>.</span></span>get<span class="constructor">UriForFile(MainActivity.<span class="params">this</span>, <span class="string">"com.example.cameraalbumtest.fileprovider"</span>, <span class="params">outputImage</span>)</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                     <span class="comment">//这个 Uri 对象标识着 output_image.jgp 这张图片的本地真实路径</span></span><br><span class="line">                    imageUri = <span class="module-access"><span class="module"><span class="identifier">Uri</span>.</span></span>from<span class="constructor">File(<span class="params">outputImage</span>)</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">//启动相机程序</span></span><br><span class="line">                Intent intent = <span class="keyword">new</span> <span class="constructor">Intent(<span class="string">"android.media.action.IMAGE_CAPTURE"</span>)</span>; <span class="comment">//使用的是隐式 Intent，系统会找出能够响应这个 Intent 的活动去启动</span></span><br><span class="line">                intent.put<span class="constructor">Extra(MediaStore.EXTRA_OUTPUT, <span class="params">imageUri</span>)</span>;</span><br><span class="line">                start<span class="constructor">ActivityForResult(<span class="params">intent</span>, TAKE_PHOTO)</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void on<span class="constructor">ActivityResult(<span class="params">int</span> <span class="params">requestCode</span>, <span class="params">int</span> <span class="params">resultCode</span>, Intent <span class="params">data</span>)</span> &#123;</span><br><span class="line">        switch (requestCode) &#123;</span><br><span class="line">            case TAKE_PHOTO:</span><br><span class="line">                <span class="keyword">if</span>(resultCode<span class="operator"> == </span>RESULT_OK) &#123;</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        <span class="comment">//将拍摄的照片显示出来</span></span><br><span class="line">                        Bitmap bitmap = <span class="module-access"><span class="module"><span class="identifier">BitmapFactory</span>.</span></span>decode<span class="constructor">Stream(<span class="params">getContentResolver</span>()</span>.<span class="keyword">open</span><span class="constructor">InputStream(<span class="params">imageUri</span>)</span>);</span><br><span class="line">                        picture.set<span class="constructor">ImageBitmap(<span class="params">bitmap</span>)</span>;</span><br><span class="line">                    &#125; catch(FileNotFoundException e) &#123;</span><br><span class="line">                        e.print<span class="constructor">StackTrace()</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                break;</span><br><span class="line">            default:</span><br><span class="line">                break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//AndroidManifest.xml 清单文件</span></span><br><span class="line">&lt;manifest xmlns:android=<span class="string">"http://schemas.android.com/apk/res/android"</span></span><br><span class="line">    package=<span class="string">"com.example.cameraalbumtest"</span>&gt;</span><br><span class="line">    <span class="comment">//在 Andrioid 4.4 系统之前，访问 SD 卡的应用关联目录也是要声明权限的，从 4.4 系统开始不再需要权限声明。这里为了兼容老版本系统的手机，还是声明一下访问 SD 卡的权限</span></span><br><span class="line">    &lt;uses-permission android:name=<span class="string">"android.permission.WRITE_EXTERNAL_STORAGE"</span> /&gt;</span><br><span class="line">    &lt;application</span><br><span class="line">        android:allowBackup=<span class="string">"true"</span></span><br><span class="line">        android:icon=<span class="string">"@mipmap/ic_launcher"</span></span><br><span class="line">        android:label=<span class="string">"@string/app_name"</span></span><br><span class="line">        android:supportsRtl=<span class="string">"true"</span></span><br><span class="line">        android:theme=<span class="string">"@style/AppTheme"</span>&gt;</span><br><span class="line">        ...</span><br><span class="line">        &lt;provider</span><br><span class="line">            andorid:name=<span class="string">"android.support.v4.content.FileProvider"</span> <span class="comment">//name 属性的值是固定的</span></span><br><span class="line">            android:authorities=<span class="string">"com.example.cameraalbumtest.fileprovider"</span> <span class="comment">//authorities 属性的值必须要和上面 FileProvider.getUriForFile() 方法中的第二个参数一致</span></span><br><span class="line">            andorid:exported=<span class="string">"false"</span></span><br><span class="line">            android:grantUriPermissions=<span class="string">"true"</span>&gt;</span><br><span class="line">            &lt;meta-data <span class="comment">//指定 Uri 的共享路径，并引用了一个 @xml/file_paths 资源，这个资源需要手动创建</span></span><br><span class="line">                android:name=<span class="string">"android.support.FILE_PROVIDER_PATHS"</span></span><br><span class="line">                android:resource=<span class="string">"@xml/file_paths"</span> /&gt;</span><br><span class="line">        &lt;/provider&gt;</span><br><span class="line">    &lt;/application&gt;</span><br><span class="line">&lt;/manifest&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">//在 res 目录中创建一个 xml 目录，里面创建一个 file_paths.xml 文件</span></span><br><span class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"utf-8"</span>?&gt;</span><br><span class="line">&lt;paths xmlns:android=<span class="string">"http://schemas.android.com/apk/res/android"</span>&gt;</span><br><span class="line">    &lt;external-path name=<span class="string">"my_images"</span> path=<span class="string">""</span> /&gt; <span class="comment">//指定 Uri 共享的，name 属性值可以随便填，path 属性值表示共享的具体路径。这里设置空值表示将整个 SD 卡进行共享，当然也可以仅共享存放 output_image.jpg 这张图片的路径</span></span><br><span class="line">&lt;/paths&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="6-写一个从相册中选择照片的-Demo"><a href="#6-写一个从相册中选择照片的-Demo" class="headerlink" title="6. 写一个从相册中选择照片的 Demo"></a>6. 写一个从相册中选择照片的 Demo</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line">public <span class="keyword">class</span> MainActivity extends AppCompatActivity &#123;</span><br><span class="line">    ...</span><br><span class="line">    public static final <span class="built_in">int</span> CHOOSE_PHOTO = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void on<span class="constructor">Create(Bundle <span class="params">savedInstanceState</span>)</span> &#123;</span><br><span class="line">        super.on<span class="constructor">Create(<span class="params">savedInstanceState</span>)</span>;</span><br><span class="line">        set<span class="constructor">ContentView(R.<span class="params">layout</span>.<span class="params">activity_main</span>)</span>;</span><br><span class="line">        Button takePhoto = (Button)  find<span class="constructor">ViewById(R.<span class="params">id</span>.<span class="params">take_photo</span>)</span>;</span><br><span class="line">        Button chooseFromAlbum = (Button) find<span class="constructor">ViewById(R.<span class="params">id</span>.<span class="params">choose_from_album</span>)</span>;</span><br><span class="line">        ...</span><br><span class="line">        chooseFromAlbum.set<span class="constructor">OnClickListener(<span class="params">new</span> View.OnClickListener()</span> &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void on<span class="constructor">Click(View <span class="params">v</span>)</span> &#123;</span><br><span class="line">                <span class="keyword">if</span>(<span class="module-access"><span class="module"><span class="identifier">ContextCompat</span>.</span></span>check<span class="constructor">SelfPermission(MainActivity.<span class="params">this</span>, Manifest.<span class="params">permission</span>.WRITE_EXTENAL_STORAGE)</span> != PackageManager.PERMISSION_GRANTED) &#123;</span><br><span class="line">                    <span class="comment">//相册中的照片都是存储在 SD 卡上的，要从 SD 卡中读取照片就需要申请这个权限。WRITE_EXTERNAL_STORAGE 表示同时授予 SD 卡读和写的能力</span></span><br><span class="line">                    <span class="module-access"><span class="module"><span class="identifier">ActivityCompat</span>.</span></span>request<span class="constructor">Permissions(MainActivity.<span class="params">this</span>, <span class="params">new</span> String[] &#123; Manifest.<span class="params">permission</span>.WRITE_EXTERNAL_STORAGE &#125;, 1)</span>; </span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">open</span><span class="constructor">Album()</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> void <span class="keyword">open</span><span class="constructor">Album()</span> &#123;</span><br><span class="line">        Intent intent = <span class="keyword">new</span> <span class="constructor">Intent(<span class="string">"android.intent.action.GET_CONTENT"</span>)</span>;</span><br><span class="line">        intent.set<span class="constructor">Type(<span class="string">"image/*"</span>)</span>;</span><br><span class="line">        start<span class="constructor">ActivityForResult(<span class="params">intent</span>, CHOOSE_PHOTO)</span>; <span class="comment">//打开相册</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void on<span class="constructor">RequestPermissionResult(<span class="params">int</span> <span class="params">requestCode</span>, String[] <span class="params">permissions</span>, <span class="params">int</span>[] <span class="params">grantResults</span>)</span> &#123;</span><br><span class="line">        switch (requestCode) &#123;</span><br><span class="line">            case <span class="number">1</span>:</span><br><span class="line">                <span class="keyword">if</span>(grantResults.length &gt; <span class="number">0</span><span class="operator"> &amp;&amp; </span>grantResults<span class="literal">[<span class="number">0</span>]</span><span class="operator"> == </span>PackageManager.PERMISSION_GRANTED) &#123;</span><br><span class="line">                    <span class="keyword">open</span><span class="constructor">Album()</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="module-access"><span class="module"><span class="identifier">Toast</span>.</span></span>make<span class="constructor">Text(<span class="params">this</span>, <span class="string">"You denied the permission"</span>, Toast.LENGTH_SHORT)</span>.show<span class="literal">()</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                break;</span><br><span class="line">            default:</span><br><span class="line">                break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void on<span class="constructor">ActivityResult(<span class="params">int</span> <span class="params">requestCode</span>, <span class="params">int</span> <span class="params">resultCode</span>, Intent <span class="params">data</span>)</span> &#123;</span><br><span class="line">        switch (requestCode) &#123;</span><br><span class="line">            ...</span><br><span class="line">            case CHOOSE_PHOTO:</span><br><span class="line">                <span class="keyword">if</span>(resultCode<span class="operator"> == </span>RESULT_OK) &#123;</span><br><span class="line">                    <span class="comment">//判断手机系统版本号</span></span><br><span class="line">                    <span class="comment">//因为Android 系统从 4.4 版本开始，选取相册中的图片不再返回图片真实的 Uri 了，而是一个封装过的 Uri，因此如果是 4.4 版本以上的手机就需要对这个 Uri 进行解析才行</span></span><br><span class="line">                    <span class="keyword">if</span>(Build.VERSION.SDK_INT &gt;= <span class="number">19</span>) &#123;</span><br><span class="line">                        handle<span class="constructor">ImageOnKitKat(<span class="params">data</span>)</span>; <span class="comment">//4.4 及以上系统使用这个方法处理图片</span></span><br><span class="line">                     &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                         handle<span class="constructor">ImageBeforeKitKat(<span class="params">data</span>)</span>; <span class="comment">//4.4 以下系统使用这个方法处理图片</span></span><br><span class="line">                     &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                break;</span><br><span class="line">            default:</span><br><span class="line">                break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @<span class="constructor">TargetApi(19)</span></span><br><span class="line">    <span class="keyword">private</span> void handle<span class="constructor">ImageOnKitKat(Intent <span class="params">data</span>)</span> &#123; <span class="comment">//解析封装过的 Uri</span></span><br><span class="line">        String imagePath = null;</span><br><span class="line">        Uri uri = data.get<span class="constructor">Data()</span>;</span><br><span class="line">        <span class="keyword">if</span>(<span class="module-access"><span class="module"><span class="identifier">DocumentContract</span>.</span></span>is<span class="constructor">DocumentUri(<span class="params">this</span>, <span class="params">uri</span>)</span>) &#123;</span><br><span class="line">            <span class="comment">//如果是 document 类型的 uri，则通过 document id 处理</span></span><br><span class="line">            String docId = <span class="module-access"><span class="module"><span class="identifier">DocumentsContract</span>.</span></span>get<span class="constructor">DocumentId(<span class="params">uri</span>)</span>;</span><br><span class="line">            <span class="keyword">if</span>(<span class="string">"com.android.providers.media.documents"</span>.equals(uri.get<span class="constructor">Authrity()</span>)) &#123;</span><br><span class="line">                String id = docId.split(<span class="string">":"</span>)<span class="literal">[<span class="number">1</span>]</span>; <span class="comment">//解析出数字格式的 id</span></span><br><span class="line">                String selection = <span class="module-access"><span class="module"><span class="identifier">MediaStore</span>.</span><span class="module"><span class="identifier">Images</span>.</span><span class="module"><span class="identifier">Media</span>.</span><span class="module"><span class="identifier">_ID</span> </span></span>+ <span class="string">"="</span> + id;</span><br><span class="line">                imagePath = get<span class="constructor">ImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, <span class="params">selection</span>)</span>; <span class="comment">//获取图片的真实路径</span></span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span>(<span class="string">"com.android.provider.downloads.documents"</span>.equals(uri.getAuthority)) &#123;</span><br><span class="line">                Uri contentUri = <span class="module-access"><span class="module"><span class="identifier">ContentUris</span>.</span></span><span class="keyword">with</span><span class="constructor">AppendedId(Uri.<span class="params">parse</span>(<span class="string">"content://downloads/public_downloads"</span>)</span>, <span class="module-access"><span class="module"><span class="identifier">Long</span>.</span></span>value<span class="constructor">Of(<span class="params">docId</span>)</span>);</span><br><span class="line">                imagePath = get<span class="constructor">ImagePath(<span class="params">contentUri</span>, <span class="params">null</span>)</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(<span class="string">"content"</span>.equals<span class="constructor">IgnoreCase(<span class="params">uri</span>.<span class="params">getScheme</span>()</span>)) &#123;</span><br><span class="line">            <span class="comment">//如果是 content 类型的 Uri，则使用普通方式处理</span></span><br><span class="line">            imagePath = get<span class="constructor">ImagePath(<span class="params">uri</span>, <span class="params">null</span>)</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(<span class="string">"file"</span>.equals<span class="constructor">IgnoreCase(<span class="params">uri</span>.<span class="params">getScheme</span>()</span>)) &#123;</span><br><span class="line">            <span class="comment">//如果是 file 类型的 Uri，直接获取图片路径即可</span></span><br><span class="line">            imagePath = uri.get<span class="constructor">Path()</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        display<span class="constructor">Image(<span class="params">imagePath</span>)</span>; <span class="comment">//根据图片路径显示图片</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> void handle<span class="constructor">ImageBeforeKitKat(Intent <span class="params">data</span>)</span> &#123;</span><br><span class="line">        Uri uri = data.get<span class="constructor">Data()</span>;</span><br><span class="line">        String imagePath = get<span class="constructor">ImagePath(<span class="params">uri</span>, <span class="params">null</span>)</span>; <span class="comment">//不需要任何解析获取图片的真实路径</span></span><br><span class="line">        display<span class="constructor">Image(<span class="params">imagePath</span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> void String get<span class="constructor">ImagePath(Uri <span class="params">uri</span>, String <span class="params">selection</span>)</span> &#123;</span><br><span class="line">        String path = null;</span><br><span class="line">        <span class="comment">//通过 Uri 和 selection 来获取真实的图片路径</span></span><br><span class="line">        Cursor cursor = get<span class="constructor">ContentResolver()</span>.query(uri, null, selection, null, null);</span><br><span class="line">        <span class="keyword">if</span>(cursor != null) &#123;</span><br><span class="line">            <span class="keyword">if</span>(cursor.move<span class="constructor">ToFirst()</span>) &#123;</span><br><span class="line">                path = cursor.get<span class="constructor">String(<span class="params">cursor</span>.<span class="params">getColumnIndex</span>(MediaStore.Images.Media.DATA)</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            cursor.close<span class="literal">()</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        return path;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> void display<span class="constructor">Image(String <span class="params">imagePath</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(imagePath != null) &#123;</span><br><span class="line">            Bitmap bitmap = <span class="module-access"><span class="module"><span class="identifier">BitmapFactory</span>.</span></span>decode<span class="constructor">File(<span class="params">imagePath</span>)</span>;</span><br><span class="line">            picture.set<span class="constructor">ImageBitmap(<span class="params">bitmap</span>)</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="module-access"><span class="module"><span class="identifier">Toast</span>.</span></span>make<span class="constructor">Text(<span class="params">this</span>, <span class="string">"failed to get image"</span>, Toast.LENGTH_SHORT)</span>.show<span class="literal">()</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//<span class="doctag">TODO:</span> 上面的实现还不算完美，因为某些照片即使经过裁剪后体积仍然很大，直接加载到内存中有可能会导致程序崩溃。更好的做法是根据项目的需求先对照片进行适当的压缩，然后再加载到内存中</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="7-MediaPlayer-类中较为常用的控制方法有哪些"><a href="#7-MediaPlayer-类中较为常用的控制方法有哪些" class="headerlink" title="7. MediaPlayer 类中较为常用的控制方法有哪些"></a>7. MediaPlayer 类中较为常用的控制方法有哪些</h4><table>
+<thead>
+<tr>
+<th align="center">方法名</th>
+<th align="center">功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>setDataSource()</code></td>
+<td align="center">设置要播放的音频的位置</td>
+</tr>
+<tr>
+<td align="center"><code>prepare()</code></td>
+<td align="center">在开始之前调用这个方法完成准备工作</td>
+</tr>
+<tr>
+<td align="center"><code>start()</code></td>
+<td align="center">开始或继续播放音频</td>
+</tr>
+<tr>
+<td align="center"><code>pause()</code></td>
+<td align="center">暂停播放音频</td>
+</tr>
+<tr>
+<td align="center"><code>reset()</code></td>
+<td align="center">将 MP 对象重置到刚刚创建的状态</td>
+</tr>
+<tr>
+<td align="center"><code>seekTo()</code></td>
+<td align="center">从指定的位置开始播放音频</td>
+</tr>
+<tr>
+<td align="center"><code>stop()</code></td>
+<td align="center">停止播放音频，调用这个方法后的 MP 对象无法再播放音频</td>
+</tr>
+<tr>
+<td align="center"><code>release()</code></td>
+<td align="center">释放掉与 MP 对象相关的资源</td>
+</tr>
+<tr>
+<td align="center"><code>isPlaying()</code></td>
+<td align="center">判断当前 MP 对象是否正在播放音频</td>
+</tr>
+<tr>
+<td align="center"><code>getDuration()</code></td>
+<td align="center">获取载入的音频文件的时长</td>
+</tr>
+</tbody></table>
+<h4 id="8-写一个播放音频的-Demo"><a href="#8-写一个播放音频的-Demo" class="headerlink" title="8. 写一个播放音频的 Demo"></a>8. 写一个播放音频的 Demo</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//首先，需要在 AndroidManifest.xml 文件中声明权限：&lt;uses-permission android:name="android.pemission.WRITE_EXTERNAL_STORAGE" /&gt;</span></span><br><span class="line">public <span class="keyword">class</span> MainActivity extends AppCompatActivity implements View.OnClickListener &#123;</span><br><span class="line">    <span class="keyword">private</span> MediaPlayer mediaPlayer = <span class="keyword">new</span> <span class="constructor">MediaPlayer()</span>;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void on<span class="constructor">Create(Bundle <span class="params">savedInstanceState</span>)</span> &#123;</span><br><span class="line">        super.on<span class="constructor">Create(<span class="params">savedInstanceState</span>)</span>;</span><br><span class="line">        set<span class="constructor">ContentView(R.<span class="params">layout</span>.<span class="params">activity_main</span>)</span>;</span><br><span class="line">        Button play = (Button) find<span class="constructor">ViewById(R.<span class="params">id</span>.<span class="params">play</span>)</span>;</span><br><span class="line">        Button pause = (Button) find<span class="constructor">ViewByid(R.<span class="params">id</span>.<span class="params">pause</span>)</span>;</span><br><span class="line">        Button stop = (Button) find<span class="constructor">ViewById(R.<span class="params">id</span>.<span class="params">stop</span>)</span>;</span><br><span class="line">        play.set<span class="constructor">OnClickListener(<span class="params">this</span>)</span>;</span><br><span class="line">        pause.set<span class="constructor">OnClickListener(<span class="params">this</span>)</span>;</span><br><span class="line">        stop.set<span class="constructor">OnClickListener(<span class="params">this</span>)</span>;</span><br><span class="line">        <span class="comment">//动态申请 WRITE_EXTERNAL_STORAGE 权限，因为会在 SD 卡中放置一个音频文件，程序为了播放这个音频文件必须拥有访问 SD 卡的权限才行</span></span><br><span class="line">        <span class="keyword">if</span>(<span class="module-access"><span class="module"><span class="identifier">ContextCompat</span>.</span></span>check<span class="constructor">SelfPermission(MainActivity.<span class="params">this</span>, Manifest.<span class="params">permission</span>.WRITE_EXTERNAL_STORAGE)</span> != PackageManager.PERMISSION_GRANTED) &#123;</span><br><span class="line">            <span class="module-access"><span class="module"><span class="identifier">ActivityCompat</span>.</span></span>request<span class="constructor">Permission(MainActivity.<span class="params">this</span>, <span class="params">new</span> String[] &#123; Manifest.<span class="params">permission</span>.WRITE_EXTERNAL_STORATE &#125;, 1)</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            init<span class="constructor">MediaPlayer()</span>; <span class="comment">//初始化 MediaPlayer</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> void init<span class="constructor">MediaPlayer()</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            File file = <span class="keyword">new</span> <span class="constructor">File(Environment.<span class="params">getExternalStorageDirectory</span>()</span>, <span class="string">"music.mp3"</span>);</span><br><span class="line">            mediaPlayer.set<span class="constructor">DataSource(<span class="params">file</span>.<span class="params">getPath</span>()</span>); <span class="comment">//指定音频文件的路径</span></span><br><span class="line">            mediaPlayer.prepare<span class="literal">()</span>; <span class="comment">//让 MediaPlayer 进入到准备状态</span></span><br><span class="line">        &#125; catch(Exception e) &#123;</span><br><span class="line">            e.print<span class="constructor">StackTrace()</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void on<span class="constructor">RequestPermissionResult(<span class="params">int</span> <span class="params">requestCode</span>, String[] <span class="params">permissions</span>, <span class="params">int</span>[] <span class="params">grantResults</span>)</span> &#123;</span><br><span class="line">        switch (requestCode) &#123;</span><br><span class="line">            case <span class="number">1</span>:</span><br><span class="line">                <span class="keyword">if</span>(grantResults.length &gt; <span class="number">0</span><span class="operator"> &amp;&amp; </span>grantResults<span class="literal">[<span class="number">0</span>]</span><span class="operator"> == </span>PackageManager.PERMISSION_GRANTED) &#123;</span><br><span class="line">                    init<span class="constructor">MediaPlayer()</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="module-access"><span class="module"><span class="identifier">Toast</span>.</span></span>make<span class="constructor">Text(<span class="params">this</span>, <span class="string">"拒绝权限将无法使用程序"</span>, Toast.LENGTH_SHORT)</span>.show<span class="literal">()</span>;</span><br><span class="line">                    finish<span class="literal">()</span>; <span class="comment">//如果用户拒绝了权限申请，那么就调用 finish() 方法将程序直接关掉，因为如果没有 SD 卡的访问权限，这个程序什么也干不了</span></span><br><span class="line">                &#125;</span><br><span class="line">                break;</span><br><span class="line">            default:</span><br><span class="line">                break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void on<span class="constructor">Click(View <span class="params">v</span>)</span> &#123;</span><br><span class="line">        switch (v.get<span class="constructor">Id()</span> &#123;</span><br><span class="line">            case <span class="module-access"><span class="module"><span class="identifier">R</span>.</span></span>id.play:</span><br><span class="line">                <span class="keyword">if</span>(!mediaPlayer.is<span class="constructor">Playing()</span>) &#123;</span><br><span class="line">                    mediaPlayer.start<span class="literal">()</span>; <span class="comment">//开始播放</span></span><br><span class="line">                &#125;</span><br><span class="line">                break;</span><br><span class="line">            case <span class="module-access"><span class="module"><span class="identifier">R</span>.</span></span>id.pause:</span><br><span class="line">                <span class="keyword">if</span>(mediaPlayer.is<span class="constructor">Playing()</span>) &#123;</span><br><span class="line">                    mediaPlayer.pause<span class="literal">()</span>; <span class="comment">//暂停播放</span></span><br><span class="line">                &#125;</span><br><span class="line">                break;</span><br><span class="line">            case <span class="module-access"><span class="module"><span class="identifier">R</span>.</span></span>id.stop:</span><br><span class="line">                <span class="keyword">if</span>(mediaPlayer.is<span class="constructor">Playing()</span>) &#123;</span><br><span class="line">                    mediaPlayer.reset<span class="literal">()</span>; <span class="comment">//停止播放</span></span><br><span class="line">                    init<span class="constructor">MediaPlayer()</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                break;</span><br><span class="line">            default:</span><br><span class="line">                break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void on<span class="constructor">Destroy()</span> &#123;</span><br><span class="line">        super.on<span class="constructor">Destroy()</span>;</span><br><span class="line">        <span class="keyword">if</span>(mediaPlayer != null) &#123;</span><br><span class="line">            mediaPlayer.stop<span class="literal">()</span>; <span class="comment">//将与 MediaPlayer 相关的资源释放掉</span></span><br><span class="line">            mediaPlayer.release<span class="literal">()</span>; <span class="comment">//将与 MediaPlayer 相关的资源释放掉</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="9-VideoView-中常用的方法有哪些"><a href="#9-VideoView-中常用的方法有哪些" class="headerlink" title="9. VideoView 中常用的方法有哪些"></a>9. VideoView 中常用的方法有哪些</h4><table>
+<thead>
+<tr>
+<th align="center">方法名</th>
+<th align="center">功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>setVideoPath()</code></td>
+<td align="center">设置要播放的视频文件的位置</td>
+</tr>
+<tr>
+<td align="center"><code>start()</code></td>
+<td align="center">开始或继续播放视频</td>
+</tr>
+<tr>
+<td align="center"><code>pause()</code></td>
+<td align="center">暂停播放视频</td>
+</tr>
+<tr>
+<td align="center"><code>resume()</code></td>
+<td align="center">将视频从头开始播放</td>
+</tr>
+<tr>
+<td align="center"><code>seekTo()</code></td>
+<td align="center">从指定的位置开始播放视频</td>
+</tr>
+<tr>
+<td align="center"><code>isPlaying()</code></td>
+<td align="center">判断当前是否正在播放视频</td>
+</tr>
+<tr>
+<td align="center"><code>getDuration()</code></td>
+<td align="center">获取载入的视频文件的时长</td>
+</tr>
+</tbody></table>
+<h4 id="10-写一个播放视频的-Demo"><a href="#10-写一个播放视频的-Demo" class="headerlink" title="10. 写一个播放视频的 Demo"></a>10. 写一个播放视频的 Demo</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//首先，需要在 AndroidManifest.xml 文件中声明权限：&lt;uses-permission android:name="android.pemission.WRITE_EXTERNAL_STORAGE" /&gt;</span></span><br><span class="line">public <span class="keyword">class</span> MainActivity extends AppCompatActivity implements View.OnClickListener &#123;</span><br><span class="line">    <span class="keyword">private</span> VideoView videoView;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void on<span class="constructor">Create(Bundle <span class="params">savedInstanceState</span>)</span> &#123;</span><br><span class="line">        super.on<span class="constructor">Create(<span class="params">savedInstanceState</span>)</span>;</span><br><span class="line">        set<span class="constructor">ContentView(R.<span class="params">layout</span>.<span class="params">activity_main</span>)</span>;</span><br><span class="line">        videoView = (VideoView) find<span class="constructor">ViewById(R.<span class="params">id</span>.<span class="params">video_view</span>)</span>;</span><br><span class="line">        Button play = (Button) find<span class="constructor">ViewById(R.<span class="params">id</span>.<span class="params">play</span>)</span>;</span><br><span class="line">        Button pause = (Button) find<span class="constructor">ViewById(R.<span class="params">id</span>.<span class="params">pause</span>)</span>;</span><br><span class="line">        Button replay = (Button) find<span class="constructor">ViewById(R.<span class="params">id</span>.<span class="params">replay</span>)</span>;</span><br><span class="line">        play.set<span class="constructor">OnClickListener(<span class="params">this</span>)</span>;</span><br><span class="line">        pause.set<span class="constructor">OnClickListener(<span class="params">this</span>)</span>;</span><br><span class="line">        replay.set<span class="constructor">OnClickListener(<span class="params">this</span>)</span>;</span><br><span class="line">        <span class="comment">//因为你视频文件会放在 SD 卡上，所以需要动态申请权限</span></span><br><span class="line">        <span class="keyword">if</span>(<span class="module-access"><span class="module"><span class="identifier">ContextCompat</span>.</span></span>check<span class="constructor">SelfPermission(MainActivity.<span class="params">this</span>, Manifest.<span class="params">permission</span>.WRITE_EXTERNAL_STOREAGE)</span> != PackageManager.PERMISSION_GRANTED) &#123;</span><br><span class="line">            <span class="module-access"><span class="module"><span class="identifier">ActivityCompat</span>.</span></span>request<span class="constructor">Permissions(MainActivity.<span class="params">this</span>, <span class="params">new</span> String[] &#123; Manifest.<span class="params">permission</span>.WRITE_EXTERNAL_STORAGE &#125;, 1)</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            init<span class="constructor">VideoPath()</span>; <span class="comment">//初始化 VideoView</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> void init<span class="constructor">VideoPath()</span> &#123;</span><br><span class="line">        File file = <span class="keyword">new</span> <span class="constructor">File(Environment.<span class="params">getExternalStorageDirectory</span>()</span>, <span class="string">"movie.mp4"</span>);</span><br><span class="line">        videoView.set<span class="constructor">VideoPath(<span class="params">file</span>.<span class="params">getPath</span>()</span>); <span class="comment">//指定视频文件的路径</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void on<span class="constructor">RequestPermissionResult(<span class="params">int</span> <span class="params">requestCod</span>, String[] <span class="params">permissions</span>, <span class="params">int</span>[] <span class="params">grantResults</span>)</span> &#123;</span><br><span class="line">        switch (requestCode) &#123;</span><br><span class="line">            case <span class="number">1</span>:</span><br><span class="line">                <span class="keyword">if</span>(grantResult.length &gt; <span class="number">0</span><span class="operator"> &amp;&amp; </span>grantResults<span class="literal">[<span class="number">0</span>]</span><span class="operator"> == </span>PackageManage.PERMISSION_GRANTED) &#123;</span><br><span class="line">                    init<span class="constructor">VideoPath()</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="module-access"><span class="module"><span class="identifier">Toast</span>.</span></span>make<span class="constructor">Text(<span class="params">ths</span>, <span class="string">"拒绝权限将无法使用程序"</span>, Toast.LENGTH_SHORT)</span>.show<span class="literal">()</span>;</span><br><span class="line">                    finish<span class="literal">()</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                break;</span><br><span class="line">            default:</span><br><span class="line">                break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void on<span class="constructor">Click(View <span class="params">v</span>)</span> &#123;</span><br><span class="line">        switch (v.get<span class="constructor">Id()</span>) &#123;</span><br><span class="line">            case <span class="module-access"><span class="module"><span class="identifier">R</span>.</span></span>id.play:</span><br><span class="line">                <span class="keyword">if</span>(!videoView.is<span class="constructor">Playing()</span>) &#123;</span><br><span class="line">                    videoView.start<span class="literal">()</span>; <span class="comment">//开始播放</span></span><br><span class="line">                &#125;</span><br><span class="line">                break;</span><br><span class="line">            case <span class="module-access"><span class="module"><span class="identifier">R</span>.</span></span>id.pause:</span><br><span class="line">                <span class="keyword">if</span>(videoView.is<span class="constructor">Playing()</span>) &#123;</span><br><span class="line">                    videoView.pause<span class="literal">()</span>; <span class="comment">//暂停播放</span></span><br><span class="line">                &#125;</span><br><span class="line">                break;</span><br><span class="line">            case <span class="module-access"><span class="module"><span class="identifier">R</span>.</span></span>id.replay:</span><br><span class="line">                <span class="keyword">if</span>(videoView.is<span class="constructor">Playint()</span>) &#123;</span><br><span class="line">                    videoView.resume<span class="literal">()</span>; <span class="comment">//从头播放</span></span><br><span class="line">                &#125;</span><br><span class="line">                break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void on<span class="constructor">Destroy()</span> &#123;</span><br><span class="line">        super.on<span class="constructor">Destroy()</span>;</span><br><span class="line">        <span class="keyword">if</span>(videoView != null) &#123;</span><br><span class="line">            videoView.suspend<span class="literal">()</span>; <span class="comment">//将 VideoView 所占用的资源释放掉</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="11-怎样理解-VideoView（场景、优缺点、底层原理）"><a href="#11-怎样理解-VideoView（场景、优缺点、底层原理）" class="headerlink" title="11. 怎样理解 VideoView（场景、优缺点、底层原理）"></a>11. 怎样理解 VideoView（场景、优缺点、底层原理）</h4><ul>
+<li><code>VideoView</code> 的底层仍然是使用 <code>MediaPlayer</code> 来对文件进行控制的，只不过 <code>VideoView</code> 做了一层很好的封装。</li>
+<li><code>VideoView</code> 并不是一个万能的视频播放工具类，它在<strong>视频格式</strong>的支持以及<strong>播放效率</strong>方面都存在着较大的不足。</li>
+<li>所以，如果想要仅仅使用 <code>VideoView</code> 就编写出一个功能非常强大的视频播放器是不太现实的。但是如果只是用于播放一些<strong>游戏的片头动画</strong>，或者某个<strong>应用的视频宣传</strong>，使用 <code>VideoView</code> 还是绰绰有余的。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;margin-top:80px">-------------------- 本文结束<i class="fa fa-paw"></i>感谢您的阅读 --------------------</div>
+    
+</div>
+      
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>隋钟元
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://24suixinsuoyu.com/2020/07/03/Android-%E8%AF%A6%E8%A7%A3%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BC%80%E5%8F%91/" title="Android 详解音视频开发">http://24suixinsuoyu.com/2020/07/03/Android-详解音视频开发/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%BC%80%E5%8F%91/" rel="tag"><i class="fa fa-tag"></i> 音视频开发</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/03/Android-%E8%AF%A6%E8%A7%A3Service/" rel="prev" title="Android 详解Service">
+      <i class="fa fa-chevron-left"></i> Android 详解Service
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/03/Android-%E8%AF%A6%E8%A7%A3Material-Design/" rel="next" title="Android 详解Material Design">
+      Android 详解Material Design <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Android-音视频开发"><span class="nav-text">1. Android 音视频开发</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-怎样打开-Android-手机的开发者选项中的-USB-调试"><span class="nav-text">2. 怎样打开 Android 手机的开发者选项中的 USB 调试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-通知（Notification）使用的场景"><span class="nav-text">3. 通知（Notification）使用的场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-写一个使用-Notification-的-Demo"><span class="nav-text">4. 写一个使用 Notification 的 Demo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-写一个调用手机摄像头进行拍照的-Demo"><span class="nav-text">5. 写一个调用手机摄像头进行拍照的 Demo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-写一个从相册中选择照片的-Demo"><span class="nav-text">6. 写一个从相册中选择照片的 Demo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-MediaPlayer-类中较为常用的控制方法有哪些"><span class="nav-text">7. MediaPlayer 类中较为常用的控制方法有哪些</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-写一个播放音频的-Demo"><span class="nav-text">8. 写一个播放音频的 Demo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-VideoView-中常用的方法有哪些"><span class="nav-text">9. VideoView 中常用的方法有哪些</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-写一个播放视频的-Demo"><span class="nav-text">10. 写一个播放视频的 Demo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-怎样理解-VideoView（场景、优缺点、底层原理）"><span class="nav-text">11. 怎样理解 VideoView（场景、优缺点、底层原理）</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="隋钟元"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">隋钟元</p>
+  <div class="site-description" itemprop="description">技术创造价值</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">157</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">188</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:24suixinsuoyu@gmail.com" title="E-Mail → mailto:24suixinsuoyu@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/24suixinsuoyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;24suixinsuoyu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/24sxsy" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;24sxsy" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/guolin_blog" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;guolin_blog" rel="noopener" target="_blank">郭霖</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/lmj623565791/" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;lmj623565791&#x2F;" rel="noopener" target="_blank">鸿洋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.520monkey.com/" title="http:&#x2F;&#x2F;www.520monkey.com&#x2F;" rel="noopener" target="_blank">姜维</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://daimajia.com/" title="https:&#x2F;&#x2F;daimajia.com&#x2F;" rel="noopener" target="_blank">代码家</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://kmxz.net/" title="https:&#x2F;&#x2F;kmxz.net&#x2F;" rel="noopener" target="_blank">孔祥舟</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yangwenbo.com/" title="http:&#x2F;&#x2F;yangwenbo.com&#x2F;" rel="noopener" target="_blank">杨文博</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">隋钟元</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">479k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">7:15</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+

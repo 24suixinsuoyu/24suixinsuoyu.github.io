@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1. 怎样理解泛型的局限性">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 泛型（三）：细节和局限性">
+<meta property="og:url" content="http://24suixinsuoyu.com/2020/04/21/Java-%E6%B3%9B%E5%9E%8B%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E7%BB%86%E8%8A%82%E5%92%8C%E5%B1%80%E9%99%90%E6%80%A7/index.html">
+<meta property="og:site_name" content="隋钟元’s Blog">
+<meta property="og:description" content="1. 怎样理解泛型的局限性">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-21T10:49:32.000Z">
+<meta property="article:modified_time" content="2020-04-23T08:59:42.000Z">
+<meta property="article:author" content="隋钟元">
+<meta property="article:tag" content="泛型">
+<meta property="article:tag" content="细节和局限性">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://24suixinsuoyu.com/2020/04/21/Java-%E6%B3%9B%E5%9E%8B%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E7%BB%86%E8%8A%82%E5%92%8C%E5%B1%80%E9%99%90%E6%80%A7/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Java 泛型（三）：细节和局限性 | 隋钟元’s Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">隋钟元’s Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-university"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th-list"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-english">
+
+    <a href="/english/" rel="section"><i class="fa fa-fw fa-graduation-cap"></i>英语</a>
+
+  </li>
+        <li class="menu-item menu-item-life">
+
+    <a href="/life/" rel="section"><i class="fa fa-fw fa-balance-scale"></i>生活</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/" rel="section"><i class="fa fa-fw fa-user-circle-o"></i>简历</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/commonweal/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/24suixinsuoyu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/04/21/Java-%E6%B3%9B%E5%9E%8B%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E7%BB%86%E8%8A%82%E5%92%8C%E5%B1%80%E9%99%90%E6%80%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="隋钟元">
+      <meta itemprop="description" content="技术创造价值">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="隋钟元’s Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java 泛型（三）：细节和局限性
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-21 18:49:32" itemprop="dateCreated datePublished" datetime="2020-04-21T18:49:32+08:00">2020-04-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-23 16:59:42" itemprop="dateModified" datetime="2020-04-23T16:59:42+08:00">2020-04-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E3%80%8AJava-%E7%BC%96%E7%A8%8B%E7%9A%84%E9%80%BB%E8%BE%91%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《Java 编程的逻辑》</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="1-怎样理解泛型的局限性"><a href="#1-怎样理解泛型的局限性" class="headerlink" title="1. 怎样理解泛型的局限性"></a>1. 怎样理解泛型的局限性</h4><a id="more"></a>
+
+<ul>
+<li>泛型的<strong>局限性</strong>主要与 Java 的<strong>实现机制</strong>有关。</li>
+<li>Java 中泛型是通过<strong>类型擦除</strong>来实现的，类型参数在编译时会被替换为 <strong><code>Object</code></strong> 或<strong>限定的上界</strong>。</li>
+<li><strong>运行时 Java 虚拟机不知道泛型这回事</strong>，这就带来了很多局限性。</li>
+</ul>
+<h4 id="2-下面写法是否合法，为什么，解决方法是"><a href="#2-下面写法是否合法，为什么，解决方法是" class="headerlink" title="2. 下面写法是否合法，为什么，解决方法是"></a>2. 下面写法是否合法，为什么，解决方法是</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Pair&lt;<span class="built_in">int</span>&gt; minmax = new Pair&lt;<span class="built_in">int</span>&gt; (<span class="number">1</span>, <span class="number">100</span>);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>结论：不合法。</li>
+<li>原因：类型参数在编译时会被替换为 <code>Object</code>，所以 <strong>Java 泛型中不能使用基本数据类型</strong>。</li>
+<li>解决方法：<strong>使用基本数据类型对应的包装类</strong>。</li>
+</ul>
+<h4 id="3-下面写法是否合法，为什么"><a href="#3-下面写法是否合法，为什么" class="headerlink" title="3. 下面写法是否合法，为什么"></a>3. 下面写法是否合法，为什么</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Pair&lt;Integer&gt;<span class="class">.<span class="keyword">class</span>;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>结论：不合法。</li>
+<li>原因：这个<strong>泛型对象（反射）只有一份，与泛型无关</strong>。</li>
+</ul>
+<h4 id="4-下面代码的输出是什么，为什么"><a href="#4-下面代码的输出是什么，为什么" class="headerlink" title="4. 下面代码的输出是什么，为什么"></a>4. 下面代码的输出是什么，为什么</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Pair&lt;Integer&gt; p1 = <span class="keyword">new</span> Pair&lt;Integer&gt; (<span class="number">1</span>, <span class="number">100</span>);</span><br><span class="line">Pair&lt;String&gt; p2 = <span class="keyword">new</span> Pair&lt;String&gt; (<span class="string">"hello"</span>, <span class="string">"world"</span>);</span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="module-access"><span class="module"><span class="identifier">Pair</span>.</span></span><span class="keyword">class</span><span class="operator"> == </span>p1.get<span class="constructor">Class()</span>); <span class="comment">//true</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="module-access"><span class="module"><span class="identifier">Pair</span>.</span></span><span class="keyword">class</span><span class="operator"> == </span>p2.get<span class="constructor">Class()</span>); <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>结果：都是 <code>true</code>。</li>
+<li>原因：<strong>一个泛型对象的 <code>getClass()</code> 方法的返回值与原始类型对象是相同的</strong>。</li>
+</ul>
+<h4 id="5-下面代码是否合法，为什么"><a href="#5-下面代码是否合法，为什么" class="headerlink" title="5. 下面代码是否合法，为什么"></a>5. 下面代码是否合法，为什么</h4><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 代码1</span></span><br><span class="line"><span class="function"><span class="title">if</span><span class="params">(p1 instanceof Pair&lt;Integer&gt;)</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 代码2</span></span><br><span class="line"><span class="function"><span class="title">if</span><span class="params">(p1 instanceof Pair&lt;?&gt;)</span></span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>结果：代码 1 不合法；代码 2 合法。</li>
+<li>原因：<code>instanceof</code> 关键字后面是接口或类名，<strong><code>instanceof</code> 是运行时判断，也与泛型无关，但支持通配符</strong>。</li>
+</ul>
+<h4 id="6-下面代码是否合法，为什么，解决方法是"><a href="#6-下面代码是否合法，为什么，解决方法是" class="headerlink" title="6. 下面代码是否合法，为什么，解决方法是"></a>6. 下面代码是否合法，为什么，解决方法是</h4><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Child</span> <span class="keyword">extends</span> <span class="title">Base</span> <span class="title">Implements</span> <span class="title">Comparable&lt;Child&gt;</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 主体代码</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>结论：Java 编译报错。</p>
+</li>
+<li><p><code>Comparable</code> 接口不能被实现两次，且两次<strong>实现的类型参数</strong>还不同，一次是 <code>Comparable&lt;Base&gt;</code>，一次是 <code>Comparable&lt;Child&gt;</code>。因为<strong>类型擦除后，实际上只能有一个</strong>。</p>
+</li>
+<li><p>解决方法：只能重写 <code>Base</code> 类的实现。</p>
+  <figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Child</span> <span class="keyword">extends</span> <span class="title">Base</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    public int compareTo(<span class="type">Base</span> o) &#123;</span><br><span class="line">        <span class="keyword">if</span>(!(o instanceof <span class="type">Child</span>)) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="type">IllegalArgumentException</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">Child</span> c = (<span class="type">Child</span>) o;</span><br><span class="line">        <span class="comment">// 比较代码</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//其他代码</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="7-下面定义重载方法是否正确，为什么"><a href="#7-下面定义重载方法是否正确，为什么" class="headerlink" title="7. 下面定义重载方法是否正确，为什么"></a>7. 下面定义重载方法是否正确，为什么</h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">(DynamicArray&lt;Integer&gt; intArr)</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">(DynamicArray&lt;<span class="keyword">String</span>&gt; strArr)</span></span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>结论：错误。</li>
+<li>原因：<strong>重载方法后，因为类型擦除，它们的声明是一样的</strong>。</li>
+</ul>
+<h4 id="8-下面代码是否合法，为什么"><a href="#8-下面代码是否合法，为什么" class="headerlink" title="8. 下面代码是否合法，为什么"></a>8. 下面代码是否合法，为什么</h4><figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//<span class="built_in">T</span> 是类型参数</span><br><span class="line"><span class="built_in">T</span> elm = new <span class="built_in">T</span>();</span><br><span class="line"><span class="built_in">T</span>[] arr = new <span class="built_in">T</span>[<span class="number">10</span>];</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>结论：非法。</li>
+<li>原因：因为如果允许，那么用户会以为创建的就是对应类型的对象，但由于<strong>类型擦除</strong>，Java 只能创建 <code>Object</code> 类型的对象。<ul>
+<li>Java 运行时根本不知道 <code>T</code> 是什么，也就无法创建 <code>T</code> 类型的对象。容易引起误解，所以 Java 干脆禁止这么做。</li>
+<li>即：<strong>Java 不支持通过类型参数创建对象</strong>。</li>
+</ul>
+</li>
+</ul>
+<h4 id="9-接上题，如果确实希望根据类型创建对象呢，举个栗子"><a href="#9-接上题，如果确实希望根据类型创建对象呢，举个栗子" class="headerlink" title="9. 接上题，如果确实希望根据类型创建对象呢，举个栗子"></a>9. 接上题，如果确实希望根据类型创建对象呢，举个栗子</h4><ul>
+<li><p>需要设计 API 接受类型对象，即 <code>Class</code> 对象，并使用 <code>Java</code> 中的<strong>反射机制</strong>。</p>
+</li>
+<li><p>如果类型有<strong>默认构造方法</strong>，可以调用 <code>Class</code> 的 <strong><code>newInstance()</code></strong> 方法构建对象。</p>
+  <figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">public</span> static &lt;T&gt; T <span class="keyword">create</span>(<span class="keyword">Class</span>&lt;T&gt; <span class="keyword">type</span>) &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">type</span>.newInstance();</span><br><span class="line">    &#125; catch (<span class="keyword">Exception</span> e) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">Date</span> <span class="type">date</span> = <span class="keyword">create</span>(<span class="type">Date</span>.<span class="keyword">class</span>);</span><br><span class="line">StringBuilder sb = <span class="keyword">create</span>(StringBuilder.<span class="keyword">class</span>);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="10-下面代码是否合法，为什么"><a href="#10-下面代码是否合法，为什么" class="headerlink" title="10. 下面代码是否合法，为什么"></a>10. 下面代码是否合法，为什么</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> T instance;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">static</span> T <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">//创建实例</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>结论：非法。</li>
+<li>原因：如果合法，那么对于每种实例化类型，都需要有一个对应的静态变量和方法。但由于<strong>类型擦除</strong>，<code>Singleton</code> 类型只有一份，静态变量和方法都是类型的属性，且与类型参数无关。所以，<strong>对于泛型类声明的类型参数，可以在实例变量和方法中使用，但在静态变量和静态方法中是不能使用的</strong>。</li>
+<li>注意：<strong>对于静态方法，它可以是泛型的，可以声明自己的类型参数，这个参数与泛型类的类型参数是没有关系的</strong>。</li>
+</ul>
+<h4 id="11-Java-泛型支持多个上界吗，举个栗子"><a href="#11-Java-泛型支持多个上界吗，举个栗子" class="headerlink" title="11. Java 泛型支持多个上界吗，举个栗子"></a>11. Java 泛型支持多个上界吗，举个栗子</h4><ul>
+<li><strong>支持，多个上界之间以 <code>&amp;</code> 分隔</strong>。</li>
+<li><code>Demo</code>：<code>T extends Base &amp; Comparable &amp; Serializable;</code><br><code>Base</code> 为<strong>上界类</strong>，<code>Comparable</code> 和 <code>Serializable</code> 为<strong>上界接口</strong>。</li>
+<li><strong>如果有上界类，类应该放在第一个，类型擦除时，会用第一个上界替换</strong>。</li>
+</ul>
+<h4 id="12-下面代码是否合法，为什么"><a href="#12-下面代码是否合法，为什么" class="headerlink" title="12. 下面代码是否合法，为什么"></a>12. 下面代码是否合法，为什么</h4><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Pair&lt;<span class="keyword">Object</span>, <span class="type">Integer</span>&gt; [] <span class="keyword">options</span> = <span class="built_in">new</span> Pair&lt;<span class="keyword">Object</span>, <span class="type">Integer</span>&gt; [] &#123;</span><br><span class="line">    <span class="built_in">new</span> Pair("1 元", <span class="number">7</span>), <span class="built_in">new</span> Pair("2 元", <span class="number">2</span>), <span class="built_in">new</span> Pair("10 元", <span class="number">1</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>结论：Java 编译报错。</li>
+<li>原因：<strong>Java 不支持创建泛型数组</strong>。</li>
+</ul>
+<h4 id="13-下面代码是否合法，为什么"><a href="#13-下面代码是否合法，为什么" class="headerlink" title="13. 下面代码是否合法，为什么"></a>13. 下面代码是否合法，为什么</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Integer[] <span class="built_in">int</span>s = new Integer[<span class="number">10</span>];</span><br><span class="line">Number[] numbers = <span class="built_in">int</span>s;</span><br><span class="line">Object[] objs = <span class="built_in">int</span>s;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>结论：合法。</li>
+<li>原因：<strong>数组是 Java 直接支持的概念，它知道数组元素的实际类型</strong>，知道 <code>Object</code> 和 <code>Number</code> 都是 <code>Integer</code> 的父类型，所以后面两种赋值都<strong>是允许的</strong>。</li>
+</ul>
+<h4 id="14-下面代码是否正确，为什么"><a href="#14-下面代码是否正确，为什么" class="headerlink" title="14. 下面代码是否正确，为什么"></a>14. 下面代码是否正确，为什么</h4><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Integer</span>[] ints = <span class="built_in">new</span> <span class="type">Integer</span>[<span class="number">10</span>];</span><br><span class="line"><span class="keyword">Object</span>[] objs = ints;</span><br><span class="line">objs[<span class="number">0</span>] = "hello";</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>结论：<strong>编译没有问题，运行时抛出 <code>ArrayStoreException</code> 异常</strong>。</li>
+<li>原因：因为 Java 知道实际的类型是 <code>Integer</code>，所以写入 <code>String</code> 时会抛出异常。</li>
+</ul>
+<h4 id="15-Java-为什么不支持创建泛型数组"><a href="#15-Java-为什么不支持创建泛型数组" class="headerlink" title="15. Java 为什么不支持创建泛型数组"></a>15. Java 为什么不支持创建泛型数组</h4><ul>
+<li>因为如果 Java 支持创建泛型数组，那么<strong>可能会出现类型不匹配的数组赋值的错误操作</strong>，<strong>它既不会引起编译错误，也不会立即触发运行异常</strong>，却相当于埋下一颗定时炸弹💣，不定什么时候爆发。</li>
+<li>为避免这种情况，<strong>Java 干脆就禁止创建泛型数组</strong>。</li>
+</ul>
+<h4 id="16-现实中需要能够存放泛型对象的容器，怎么办"><a href="#16-现实中需要能够存放泛型对象的容器，怎么办" class="headerlink" title="16. 现实中需要能够存放泛型对象的容器，怎么办"></a>16. 现实中需要能够存放泛型对象的容器，怎么办</h4><ul>
+<li><p><strong>使用原始数组</strong>。比如：</p>
+  <figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Pair[] options = <span class="keyword">new</span> <span class="type">Pair</span>[] &#123;</span><br><span class="line">    <span class="keyword">new</span> <span class="type">Pair</span>&lt;<span class="keyword">String</span>, Integer&gt; (<span class="string">"1 元"</span>, <span class="number">7</span>), <span class="keyword">new</span> <span class="type">Pair</span>&lt;<span class="keyword">String</span>, Integer&gt; (<span class="string">"2 元"</span>, <span class="number">2</span>), <span class="keyword">new</span> <span class="type">Pair</span>&lt;<span class="keyword">String</span>, Integer&gt; (<span class="string">"10 元"</span>, <span class="number">1</span>)</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>更好的选择是，使用泛型容器</strong>。比如：</p>
+  <figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">DynamicArray&lt;<span class="built_in">Pair</span>&lt;<span class="built_in">String</span>, <span class="built_in">Integer</span>&gt;&gt; options = <span class="literal">new</span> DynamicArray&lt;&gt; ();</span><br><span class="line">options.add(<span class="literal">new</span> <span class="built_in">Pair</span>&lt;<span class="built_in">String</span>, <span class="built_in">Integer</span>&gt; (<span class="string">"1 元"</span>, <span class="number">7</span>));</span><br><span class="line">options.add(<span class="literal">new</span> <span class="built_in">Pair</span>&lt;<span class="built_in">String</span>, <span class="built_in">Integer</span>&gt; (<span class="string">"2 元"</span>, <span class="number">2</span>));</span><br><span class="line">options.add(<span class="literal">new</span> <span class="built_in">Pair</span>&lt;<span class="built_in">String</span>, <span class="built_in">Integer</span>&gt; (<span class="string">"10 元"</span>, <span class="number">1</span>));</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="17-有时，我们希望转换泛型容器为一个数组。比如，对于-DynamicArray，我们可能希望它有这么一个方法：public-E-toArray-，而希望可以如下这么用。即，先使用动态容器收集一些数据，然后转换为一个固定数组，对于这个常见的合理的需求，该怎样实现这个-toArray-方法"><a href="#17-有时，我们希望转换泛型容器为一个数组。比如，对于-DynamicArray，我们可能希望它有这么一个方法：public-E-toArray-，而希望可以如下这么用。即，先使用动态容器收集一些数据，然后转换为一个固定数组，对于这个常见的合理的需求，该怎样实现这个-toArray-方法" class="headerlink" title="17. 有时，我们希望转换泛型容器为一个数组。比如，对于 DynamicArray，我们可能希望它有这么一个方法：public E[] toArray()，而希望可以如下这么用。即，先使用动态容器收集一些数据，然后转换为一个固定数组，对于这个常见的合理的需求，该怎样实现这个 toArray() 方法"></a>17. 有时，我们希望转换泛型容器为一个数组。比如，对于 DynamicArray，我们可能希望它有这么一个方法：public E[] toArray()，而希望可以如下这么用。即，先使用动态容器收集一些数据，然后转换为一个固定数组，对于这个常见的合理的需求，该怎样实现这个 toArray() 方法</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">DynamicArray&lt;Integer&gt; <span class="built_in">int</span>s = new DynamicArray&lt;Integer&gt; ();</span><br><span class="line"><span class="built_in">int</span>s.add(<span class="number">100</span>);</span><br><span class="line"><span class="built_in">int</span>s.add(<span class="number">34</span>);</span><br><span class="line">Integer[] arr = <span class="built_in">int</span>s.toArray();</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>可以利用 Java 中的<strong>运行时类型信息和反射机制</strong>。</p>
+</li>
+<li><p>Java 必须在运行时知道要转换成的数组类型，类型可以作为参数传递给 toArray() 方法，比如：</p>
+  <figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">public</span> E[] toArray(<span class="keyword">Class</span>&lt;E&gt; <span class="keyword">type</span>) &#123;</span><br><span class="line">    <span class="keyword">Object</span> copy = <span class="keyword">Array</span>.newInstance(<span class="keyword">type</span>, size);</span><br><span class="line">    <span class="keyword">System</span>.arraycopy(elemendData, <span class="number">0</span>, <span class="keyword">copy</span>, size);</span><br><span class="line">    <span class="keyword">return</span> (E[]) <span class="keyword">copy</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">Integer</span>[] arr = ints.toArray(<span class="type">Integer</span>.<span class="keyword">class</span>);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="18-泛型和数组的关系"><a href="#18-泛型和数组的关系" class="headerlink" title="18. 泛型和数组的关系"></a>18. 泛型和数组的关系</h4><ul>
+<li>一般并不需要特别记忆，根据提示进行正确处理即可：<ul>
+<li><strong>Java 不支持创建泛型数组</strong>。</li>
+<li>如果要存放泛型对象，可以使用原始类型的数组，或者使用泛型容器。</li>
+<li>泛型容器内部使用 <code>Object</code> 数组，如果要转换泛型容器为对应类型的数组，需要使用反射。</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;margin-top:80px">-------------------- 本文结束<i class="fa fa-paw"></i>感谢您的阅读 --------------------</div>
+    
+</div>
+      
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>隋钟元
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://24suixinsuoyu.com/2020/04/21/Java-%E6%B3%9B%E5%9E%8B%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E7%BB%86%E8%8A%82%E5%92%8C%E5%B1%80%E9%99%90%E6%80%A7/" title="Java 泛型（三）：细节和局限性">http://24suixinsuoyu.com/2020/04/21/Java-泛型（三）：细节和局限性/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E6%B3%9B%E5%9E%8B/" rel="tag"><i class="fa fa-tag"></i> 泛型</a>
+              <a href="/tags/%E7%BB%86%E8%8A%82%E5%92%8C%E5%B1%80%E9%99%90%E6%80%A7/" rel="tag"><i class="fa fa-tag"></i> 细节和局限性</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/21/Java-%E6%B3%9B%E5%9E%8B%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E8%A7%A3%E6%9E%90%E9%80%9A%E9%85%8D%E7%AC%A6/" rel="prev" title="Java 泛型（二）：解析通配符">
+      <i class="fa fa-chevron-left"></i> Java 泛型（二）：解析通配符
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/23/Java-%E5%88%97%E8%A1%A8%E5%92%8C%E9%98%9F%E5%88%97%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%89%96%E6%9E%90-ArrayList/" rel="next" title="Java 列表和队列（一）：剖析 ArrayList">
+      Java 列表和队列（一）：剖析 ArrayList <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-怎样理解泛型的局限性"><span class="nav-text">1. 怎样理解泛型的局限性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-下面写法是否合法，为什么，解决方法是"><span class="nav-text">2. 下面写法是否合法，为什么，解决方法是</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-下面写法是否合法，为什么"><span class="nav-text">3. 下面写法是否合法，为什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-下面代码的输出是什么，为什么"><span class="nav-text">4. 下面代码的输出是什么，为什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-下面代码是否合法，为什么"><span class="nav-text">5. 下面代码是否合法，为什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-下面代码是否合法，为什么，解决方法是"><span class="nav-text">6. 下面代码是否合法，为什么，解决方法是</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-下面定义重载方法是否正确，为什么"><span class="nav-text">7. 下面定义重载方法是否正确，为什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-下面代码是否合法，为什么"><span class="nav-text">8. 下面代码是否合法，为什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-接上题，如果确实希望根据类型创建对象呢，举个栗子"><span class="nav-text">9. 接上题，如果确实希望根据类型创建对象呢，举个栗子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-下面代码是否合法，为什么"><span class="nav-text">10. 下面代码是否合法，为什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-Java-泛型支持多个上界吗，举个栗子"><span class="nav-text">11. Java 泛型支持多个上界吗，举个栗子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-下面代码是否合法，为什么"><span class="nav-text">12. 下面代码是否合法，为什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-下面代码是否合法，为什么"><span class="nav-text">13. 下面代码是否合法，为什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-下面代码是否正确，为什么"><span class="nav-text">14. 下面代码是否正确，为什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#15-Java-为什么不支持创建泛型数组"><span class="nav-text">15. Java 为什么不支持创建泛型数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#16-现实中需要能够存放泛型对象的容器，怎么办"><span class="nav-text">16. 现实中需要能够存放泛型对象的容器，怎么办</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#17-有时，我们希望转换泛型容器为一个数组。比如，对于-DynamicArray，我们可能希望它有这么一个方法：public-E-toArray-，而希望可以如下这么用。即，先使用动态容器收集一些数据，然后转换为一个固定数组，对于这个常见的合理的需求，该怎样实现这个-toArray-方法"><span class="nav-text">17. 有时，我们希望转换泛型容器为一个数组。比如，对于 DynamicArray，我们可能希望它有这么一个方法：public E[] toArray()，而希望可以如下这么用。即，先使用动态容器收集一些数据，然后转换为一个固定数组，对于这个常见的合理的需求，该怎样实现这个 toArray() 方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#18-泛型和数组的关系"><span class="nav-text">18. 泛型和数组的关系</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="隋钟元"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">隋钟元</p>
+  <div class="site-description" itemprop="description">技术创造价值</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">157</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">188</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:24suixinsuoyu@gmail.com" title="E-Mail → mailto:24suixinsuoyu@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/24suixinsuoyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;24suixinsuoyu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/24sxsy" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;24sxsy" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/guolin_blog" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;guolin_blog" rel="noopener" target="_blank">郭霖</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/lmj623565791/" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;lmj623565791&#x2F;" rel="noopener" target="_blank">鸿洋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.520monkey.com/" title="http:&#x2F;&#x2F;www.520monkey.com&#x2F;" rel="noopener" target="_blank">姜维</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://daimajia.com/" title="https:&#x2F;&#x2F;daimajia.com&#x2F;" rel="noopener" target="_blank">代码家</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://kmxz.net/" title="https:&#x2F;&#x2F;kmxz.net&#x2F;" rel="noopener" target="_blank">孔祥舟</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yangwenbo.com/" title="http:&#x2F;&#x2F;yangwenbo.com&#x2F;" rel="noopener" target="_blank">杨文博</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">隋钟元</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">479k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">7:15</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+

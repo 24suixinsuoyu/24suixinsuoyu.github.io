@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1. 【强制】避免通过一个类的对象引用访问此类的静态变量或静态方法，无谓增加编译器解析成本，直接用类名来访问即可">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编程规约（四）：OOP规约">
+<meta property="og:url" content="http://24suixinsuoyu.com/2020/08/14/%E7%BC%96%E7%A8%8B%E8%A7%84%E7%BA%A6%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9AOOP%E8%A7%84%E7%BA%A6/index.html">
+<meta property="og:site_name" content="隋钟元’s Blog">
+<meta property="og:description" content="1. 【强制】避免通过一个类的对象引用访问此类的静态变量或静态方法，无谓增加编译器解析成本，直接用类名来访问即可">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-13T16:51:28.000Z">
+<meta property="article:modified_time" content="2020-08-19T16:28:08.000Z">
+<meta property="article:author" content="隋钟元">
+<meta property="article:tag" content="编程规约">
+<meta property="article:tag" content="OOP规约">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://24suixinsuoyu.com/2020/08/14/%E7%BC%96%E7%A8%8B%E8%A7%84%E7%BA%A6%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9AOOP%E8%A7%84%E7%BA%A6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>编程规约（四）：OOP规约 | 隋钟元’s Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">隋钟元’s Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-university"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th-list"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-english">
+
+    <a href="/english/" rel="section"><i class="fa fa-fw fa-graduation-cap"></i>英语</a>
+
+  </li>
+        <li class="menu-item menu-item-life">
+
+    <a href="/life/" rel="section"><i class="fa fa-fw fa-balance-scale"></i>生活</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/" rel="section"><i class="fa fa-fw fa-user-circle-o"></i>简历</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/commonweal/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/24suixinsuoyu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/08/14/%E7%BC%96%E7%A8%8B%E8%A7%84%E7%BA%A6%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9AOOP%E8%A7%84%E7%BA%A6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="隋钟元">
+      <meta itemprop="description" content="技术创造价值">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="隋钟元’s Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          编程规约（四）：OOP规约
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-14 00:51:28" itemprop="dateCreated datePublished" datetime="2020-08-14T00:51:28+08:00">2020-08-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-20 00:28:08" itemprop="dateModified" datetime="2020-08-20T00:28:08+08:00">2020-08-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E3%80%8A%E9%98%BF%E9%87%8C-Java-%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%EF%BC%88%E5%B5%A9%E5%B1%B1%E7%89%88%EF%BC%89%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《阿里 Java 开发手册（嵩山版）》</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="1-【强制】避免通过一个类的对象引用访问此类的静态变量或静态方法，无谓增加编译器解析成本，直接用类名来访问即可"><a href="#1-【强制】避免通过一个类的对象引用访问此类的静态变量或静态方法，无谓增加编译器解析成本，直接用类名来访问即可" class="headerlink" title="1. 【强制】避免通过一个类的对象引用访问此类的静态变量或静态方法，无谓增加编译器解析成本，直接用类名来访问即可"></a>1. 【强制】避免通过一个类的对象引用访问此类的静态变量或静态方法，无谓增加编译器解析成本，直接用类名来访问即可</h4><a id="more"></a>
+
+<h4 id="2-【强制】所有的覆盖方法，必须加-Override-注解"><a href="#2-【强制】所有的覆盖方法，必须加-Override-注解" class="headerlink" title="2. 【强制】所有的覆盖方法，必须加 @Override 注解"></a>2. 【强制】所有的覆盖方法，必须加 @Override 注解</h4><ul>
+<li><strong>说明</strong>：<code>getObject()</code> 与 <code>get0bject()</code> 的问题。一个是字母的 <code>O</code>，一个是数字的 0，加 <code>@Override</code> 可以准确判断是否覆盖成功。另外，如果在抽象类中对方法签名进行修改，其实现类会马上编译报错</li>
+</ul>
+<h4 id="3-【强制】相同参数类型，相同业务含义，才可以使用-Java-的可变参数，避免使用-Object"><a href="#3-【强制】相同参数类型，相同业务含义，才可以使用-Java-的可变参数，避免使用-Object" class="headerlink" title="3. 【强制】相同参数类型，相同业务含义，才可以使用 Java 的可变参数，避免使用 Object"></a>3. 【强制】相同参数类型，相同业务含义，才可以使用 Java 的可变参数，避免使用 Object</h4><ul>
+<li><strong>说明</strong>：可变参数必须放置在参数列表的最后（建议开发者尽量不用可变参数编程）</li>
+<li><strong>正例</strong>：<code>public List&lt;User&gt; listUsers(String type, Long... ids) {...}</code></li>
+</ul>
+<h4 id="4-【强制】外部正在调用或者二方库依赖的接口，不允许修改方法签名，避免对接口调用方产生影响。接口过时必须加-Deprecated-注解，并清晰地说明采用的新接口或者新服务是什么"><a href="#4-【强制】外部正在调用或者二方库依赖的接口，不允许修改方法签名，避免对接口调用方产生影响。接口过时必须加-Deprecated-注解，并清晰地说明采用的新接口或者新服务是什么" class="headerlink" title="4. 【强制】外部正在调用或者二方库依赖的接口，不允许修改方法签名，避免对接口调用方产生影响。接口过时必须加 @Deprecated 注解，并清晰地说明采用的新接口或者新服务是什么"></a>4. 【强制】外部正在调用或者二方库依赖的接口，不允许修改方法签名，避免对接口调用方产生影响。接口过时必须加 @Deprecated 注解，并清晰地说明采用的新接口或者新服务是什么</h4><h4 id="5-【强制】不能使用过时的类或方法"><a href="#5-【强制】不能使用过时的类或方法" class="headerlink" title="5. 【强制】不能使用过时的类或方法"></a>5. 【强制】不能使用过时的类或方法</h4><ul>
+<li><strong>说明</strong>：<code>java.net.URLDecoder</code> 中的方法 <code>decode(String encodeStr)</code> 这个方法已经过时，应该使用双参数 <code>decode(String source, String encode)</code>。接口提供方既然明确是过时接口，那么有义务同时提供新的接口；作为调用方来说，有义务去考证过时方法的新实现是什么</li>
+</ul>
+<h4 id="6-【强制】Object-的-equals-方法容易抛空指针异常，应使用常量或确定有值的对象来调用-equals"><a href="#6-【强制】Object-的-equals-方法容易抛空指针异常，应使用常量或确定有值的对象来调用-equals" class="headerlink" title="6. 【强制】Object 的 equals 方法容易抛空指针异常，应使用常量或确定有值的对象来调用 equals"></a>6. 【强制】Object 的 equals 方法容易抛空指针异常，应使用常量或确定有值的对象来调用 equals</h4><ul>
+<li><strong>正例</strong>：<code>&quot;test.equals(object);</code></li>
+<li><strong>反例</strong>：<code>object.equals(&quot;test&quot;);</code></li>
+<li><strong>说明</strong>：推荐使用 JDK7 引入的工具类 <code>java.util.Object#equals(Object a, Object b)</code></li>
+</ul>
+<h4 id="7-【强制】所有整型包装类对象之间值的比较，全部使用-equals-方法比较"><a href="#7-【强制】所有整型包装类对象之间值的比较，全部使用-equals-方法比较" class="headerlink" title="7. 【强制】所有整型包装类对象之间值的比较，全部使用 equals 方法比较"></a>7. 【强制】所有整型包装类对象之间值的比较，全部使用 equals 方法比较</h4><ul>
+<li><strong>说明</strong>：对于 <code>Integer var = ?</code> 在 -128 至 127 之间的赋值，<code>Integer</code> 对象是在 <code>IntegerCache.cache</code> 产生，会复用已有对象，这个区间的 <code>Integer</code> 值可以直接使用 <code>==</code> 进行判断，但是这个区间之外的所有数据，都会在堆上产生，并不会复用已有对象，这是一个大坑，推荐使用 <code>equals</code> 方法进行判断</li>
+</ul>
+<h4 id="8-【强制】任何货币金额，均以最小货币单位且整型类型来进行存储"><a href="#8-【强制】任何货币金额，均以最小货币单位且整型类型来进行存储" class="headerlink" title="8. 【强制】任何货币金额，均以最小货币单位且整型类型来进行存储"></a>8. 【强制】任何货币金额，均以最小货币单位且整型类型来进行存储</h4><h4 id="9-【强制】浮点数之间的等值判断，基本数据类型不能用-来比较，包装数据类型不能用-equals-来判断"><a href="#9-【强制】浮点数之间的等值判断，基本数据类型不能用-来比较，包装数据类型不能用-equals-来判断" class="headerlink" title="9. 【强制】浮点数之间的等值判断，基本数据类型不能用 == 来比较，包装数据类型不能用 equals 来判断"></a>9. 【强制】浮点数之间的等值判断，基本数据类型不能用 == 来比较，包装数据类型不能用 equals 来判断</h4><ul>
+<li><p><strong>说明</strong>：浮点数采用“尾数+阶码”的编码方式，类似于科学计数法的“有效数字+指数”的表示方式。二进制无法精确表示大部分的十进制小数，具体原理参考《码出高效》</p>
+</li>
+<li><p><strong>反例</strong>：</p>
+  <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">float</span> a = <span class="number">1.0</span>F - <span class="number">0.9</span>F;</span><br><span class="line"><span class="built_in">float</span> b = <span class="number">0.9</span>F - <span class="number">0.8</span>F;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (a<span class="operator"> == </span>b) &#123;</span><br><span class="line">	<span class="comment">// 预期进入此代码块，执行其他业务逻辑</span></span><br><span class="line">	<span class="comment">// 但事实上 a == b 的结果为 false</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Float x = <span class="module-access"><span class="module"><span class="identifier">Float</span>.</span></span>value<span class="constructor">Of(<span class="params">a</span>)</span>;</span><br><span class="line">Float y = <span class="module-access"><span class="module"><span class="identifier">Float</span>.</span></span>value<span class="constructor">Of(<span class="params">b</span>)</span>;</span><br><span class="line"><span class="keyword">if</span> (x.equals(y)) &#123;</span><br><span class="line">	<span class="comment">// 预期进入此代码块，执行其他业务逻辑</span></span><br><span class="line">	<span class="comment">// 但事实上 equals 的结果为 false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>正例</strong>：</p>
+<ul>
+<li><p>指定一个误差范围，两个浮点数的差值在此范围之内，则认为是相等的</p>
+  <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">float</span> a = <span class="number">1.0</span>F - <span class="number">0.9</span>F;</span><br><span class="line"><span class="built_in">float</span> b = <span class="number">0.9</span>F - <span class="number">0.8</span>F;</span><br><span class="line"><span class="built_in">float</span> diff = <span class="number">1</span>e - <span class="number">6</span>F;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (Math.abs(a - b) &lt; diff) &#123;</span><br><span class="line">	System.<span class="keyword">out</span>.println(<span class="string">"true"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用 <code>BigDecimal</code> 来定义值，再进行浮点数的运算操作</p>
+  <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">BigDecimal a = <span class="keyword">new</span> <span class="constructor">BigDecimal(<span class="string">"1.0"</span>)</span>;</span><br><span class="line">BigDecimal b = <span class="keyword">new</span> <span class="constructor">BigDecimal(<span class="string">"0.9"</span>)</span>;</span><br><span class="line">BigDecimal c = <span class="keyword">new</span> <span class="constructor">BigDecimal(<span class="string">"0.8"</span>)</span>;</span><br><span class="line"></span><br><span class="line">BigDecimal x = a.substract(b);</span><br><span class="line">BigDecimal y = b.substract(c);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (x.compare<span class="constructor">To(<span class="params">y</span>)</span><span class="operator"> == </span><span class="number">0</span>) &#123;</span><br><span class="line">	<span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="string">"true"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="10-【强制】如上所示-BigDecimal-的等值比较应使用-compareTo-方法，而不是-equals-方法"><a href="#10-【强制】如上所示-BigDecimal-的等值比较应使用-compareTo-方法，而不是-equals-方法" class="headerlink" title="10. 【强制】如上所示 BigDecimal 的等值比较应使用 compareTo() 方法，而不是 equals() 方法"></a>10. 【强制】如上所示 BigDecimal 的等值比较应使用 compareTo() 方法，而不是 equals() 方法</h4><ul>
+<li><strong>说明</strong>：<code>equals()</code> 方法会比较值和精度（1.0 与 1.00 返回结果为 <code>false</code>），而 <code>compareTo()</code> 则会忽略精度</li>
+</ul>
+<h4 id="11-【强制】定义数据对象-DO-类时，属性类型要与数据库字段类型相匹配"><a href="#11-【强制】定义数据对象-DO-类时，属性类型要与数据库字段类型相匹配" class="headerlink" title="11. 【强制】定义数据对象 DO 类时，属性类型要与数据库字段类型相匹配"></a>11. 【强制】定义数据对象 DO 类时，属性类型要与数据库字段类型相匹配</h4><ul>
+<li><strong>正例</strong>：数据库字段的 <code>bigint</code> 必须与类属性的 <code>Long</code> 类型相对应</li>
+<li><strong>反例</strong>：某个案例的数据库表 <code>id</code> 字段定义类型 <code>bigint unsigned</code>，实际类对象属性为 <code>Integer</code>，随着 <code>id</code> 越来越大，超过 <code>Integer</code> 的表示范围而溢出成为负数</li>
+</ul>
+<h4 id="12-【强制】禁止使用构造方法-BigDecimal-double-的方式把-double-值转化为-BigDecimal-对象"><a href="#12-【强制】禁止使用构造方法-BigDecimal-double-的方式把-double-值转化为-BigDecimal-对象" class="headerlink" title="12. 【强制】禁止使用构造方法 BigDecimal(double) 的方式把 double 值转化为 BigDecimal 对象"></a>12. 【强制】禁止使用构造方法 BigDecimal(double) 的方式把 double 值转化为 BigDecimal 对象</h4><ul>
+<li><p><strong>说明</strong>：<code>BigDecimal(double)</code> 存在精度损失风险，在精确计算或值比较的场景中可能会导致业务逻辑异常。如：<code>BigDecimal g = new BigDecimal(0.1F);</code> 实际的存储值为：0.10000000149</p>
+</li>
+<li><p><strong>正例</strong>：优先推荐入参为 <code>String</code> 的构造方法，或使用 <code>BigDecimal</code> 的 <code>valueOf()</code> 方法，此方法内部其实执行了 <code>Double</code> 的 <code>toString()</code> 方法，而 <code>Double</code> 的 <code>toString()</code> 方法按 <code>double</code> 的实际能表达的精度对尾数进行了截断。如：</p>
+  <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">BigDecimal recommend1 = <span class="keyword">new</span> <span class="constructor">BigDecimal(<span class="string">"0.1"</span>)</span>;</span><br><span class="line">BigDecimal recommend2 = <span class="module-access"><span class="module"><span class="identifier">BigDecimal</span>.</span></span>value<span class="constructor">Of(0.1)</span>;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="13-关于基本数据类型与包装数据类型的使用标准如下："><a href="#13-关于基本数据类型与包装数据类型的使用标准如下：" class="headerlink" title="13. 关于基本数据类型与包装数据类型的使用标准如下："></a>13. 关于基本数据类型与包装数据类型的使用标准如下：</h4><ol>
+<li><strong>【强制】</strong>所有的 POJO 类属性必须使用包装数据类型</li>
+<li><strong>【强制】</strong>RPC 方法的返回值和参数必须使用包装数据类型</li>
+<li><strong>【推荐】</strong>所有的局部变量使用基本数据类型</li>
+</ol>
+<ul>
+<li><strong>说明</strong>：POJO 类属性没有初值是提醒使用者在需要使用时，必须自己显示地进行赋值，任何 NPE 问题，或者入库检查，都由使用者来保证</li>
+<li><strong>正例</strong>：数据库的查询结果可能是 <code>null</code>，因为自动拆箱，用基本数据类型接收有 NPE 风险</li>
+<li><strong>反例</strong>：某业务的交易报表上显示成交总额涨跌情况，即正负 x%，x 为基本数据类型，调用的 RPC 服务，调用不成功时，返回的是默认值，页面显示为 0%，这是不合理的，应该显示成中划线-。所以包装数据类型的 <code>null</code> 值，能够表示额外的信息，如：远程调用失败，异常退出</li>
+</ul>
+<h4 id="14-【强制】定义-DO、DTO、VO-等-POJO-类时，不用设定任何属性默认值"><a href="#14-【强制】定义-DO、DTO、VO-等-POJO-类时，不用设定任何属性默认值" class="headerlink" title="14. 【强制】定义 DO、DTO、VO 等 POJO 类时，不用设定任何属性默认值"></a>14. 【强制】定义 DO、DTO、VO 等 POJO 类时，不用设定任何属性默认值</h4><ul>
+<li><strong>反例</strong>：POJO 类的 <code>createTime</code> 默认值为 <code>new Date()</code>，但是这个属性在数据提取时并没有置入具体值，在更新其它字段时又附带更新了此字段，导致创建时间被修改成当前时间</li>
+</ul>
+<h4 id="15-【强制】序列化类新增属性时，请不要修改-serialVersionUID-字段，避免反序列化失败；如果完全不兼容升级，避免反序列化混乱，那么请修改-serialVersionUID-值"><a href="#15-【强制】序列化类新增属性时，请不要修改-serialVersionUID-字段，避免反序列化失败；如果完全不兼容升级，避免反序列化混乱，那么请修改-serialVersionUID-值" class="headerlink" title="15. 【强制】序列化类新增属性时，请不要修改 serialVersionUID 字段，避免反序列化失败；如果完全不兼容升级，避免反序列化混乱，那么请修改 serialVersionUID 值"></a>15. 【强制】序列化类新增属性时，请不要修改 serialVersionUID 字段，避免反序列化失败；如果完全不兼容升级，避免反序列化混乱，那么请修改 serialVersionUID 值</h4><ul>
+<li><strong>说明</strong>：注意 <code>serialVersionUID</code> 不一致会抛出序列化运行时异常</li>
+</ul>
+<h4 id="16-【强制】构造方法里面禁止加入任何业务逻辑，如果有初始化逻辑，请放在-init-方法中"><a href="#16-【强制】构造方法里面禁止加入任何业务逻辑，如果有初始化逻辑，请放在-init-方法中" class="headerlink" title="16. 【强制】构造方法里面禁止加入任何业务逻辑，如果有初始化逻辑，请放在 init() 方法中"></a>16. 【强制】构造方法里面禁止加入任何业务逻辑，如果有初始化逻辑，请放在 init() 方法中</h4><h4 id="17-【强制】POJO-类必须写-toString-方法。使用-IDE-中的工具：source-gt-generate-toString-时，如果继承了另一个-POJO-类，注意在前面加一下-super-toString"><a href="#17-【强制】POJO-类必须写-toString-方法。使用-IDE-中的工具：source-gt-generate-toString-时，如果继承了另一个-POJO-类，注意在前面加一下-super-toString" class="headerlink" title="17. 【强制】POJO 类必须写 toString() 方法。使用 IDE 中的工具：source &gt; generate toString 时，如果继承了另一个 POJO 类，注意在前面加一下 super.toString"></a>17. 【强制】POJO 类必须写 toString() 方法。使用 IDE 中的工具：source &gt; generate toString 时，如果继承了另一个 POJO 类，注意在前面加一下 super.toString</h4><ul>
+<li><strong>说明</strong>：在方法执行抛出异常时，可以直接调用 POJO 的 <code>toString()</code> 方法打印其属性值，便于排查问题</li>
+</ul>
+<h4 id="18-【强制】禁止在-POJO-类中，同时存在对应属性-xxx-的-isXxx-和-getXxx-方法"><a href="#18-【强制】禁止在-POJO-类中，同时存在对应属性-xxx-的-isXxx-和-getXxx-方法" class="headerlink" title="18. 【强制】禁止在 POJO 类中，同时存在对应属性 xxx 的 isXxx() 和 getXxx() 方法"></a>18. 【强制】禁止在 POJO 类中，同时存在对应属性 xxx 的 isXxx() 和 getXxx() 方法</h4><ul>
+<li><strong>说明</strong>：框架在调用属性 <code>xxx</code> 的提取方法时，并不能确定哪一个方法一定是被优先调用到的</li>
+</ul>
+<h4 id="19-【推荐】使用索引访问用-String-的-split-方法得到的数组时，需做最后一个分隔符后有无内容的检查，否则会有抛-IndexOutOfBoundsException-的风险"><a href="#19-【推荐】使用索引访问用-String-的-split-方法得到的数组时，需做最后一个分隔符后有无内容的检查，否则会有抛-IndexOutOfBoundsException-的风险" class="headerlink" title="19. 【推荐】使用索引访问用 String 的 split() 方法得到的数组时，需做最后一个分隔符后有无内容的检查，否则会有抛 IndexOutOfBoundsException 的风险"></a>19. 【推荐】使用索引访问用 String 的 split() 方法得到的数组时，需做最后一个分隔符后有无内容的检查，否则会有抛 IndexOutOfBoundsException 的风险</h4><ul>
+<li><p><strong>说明</strong>：</p>
+  <figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">String</span> <span class="built_in">str</span> = <span class="string">"a,b,c,,"</span>;</span><br><span class="line"><span class="keyword">String</span>[] ary = <span class="built_in">str</span>.<span class="built_in">split</span>(<span class="string">","</span>);</span><br><span class="line"><span class="comment">// 预期大于3，结果是3</span></span><br><span class="line">System.out.<span class="built_in">println</span>(ary.length);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="20-【推荐】当一个类有多个构造方法，或者多个同名方法，这些方法应该按顺序放置在一起，便于阅读，此条规则优先于下一条"><a href="#20-【推荐】当一个类有多个构造方法，或者多个同名方法，这些方法应该按顺序放置在一起，便于阅读，此条规则优先于下一条" class="headerlink" title="20. 【推荐】当一个类有多个构造方法，或者多个同名方法，这些方法应该按顺序放置在一起，便于阅读，此条规则优先于下一条"></a>20. 【推荐】当一个类有多个构造方法，或者多个同名方法，这些方法应该按顺序放置在一起，便于阅读，此条规则优先于下一条</h4><h4 id="21-【推荐】类内方法定义的顺序依次是：公有方法或保护方法-gt-私有方法-gt-getter-setter-方法"><a href="#21-【推荐】类内方法定义的顺序依次是：公有方法或保护方法-gt-私有方法-gt-getter-setter-方法" class="headerlink" title="21. 【推荐】类内方法定义的顺序依次是：公有方法或保护方法 &gt; 私有方法 &gt; getter/setter 方法"></a>21. 【推荐】类内方法定义的顺序依次是：公有方法或保护方法 &gt; 私有方法 &gt; getter/setter 方法</h4><ul>
+<li><p><strong>说明</strong>：</p>
+<ul>
+<li>公有方法是类的调用者和维护者最关心的方法，首屏展示最好</li>
+<li>保护方法虽然只是子类关心，也可能是“模板设计模式”下的核心方法</li>
+<li>私有方法外部一般不需要特别关心，是一个黑盒实现</li>
+<li>因为承载的信息价值较低，所有 <code>Service</code> 和 <code>DAO</code> 的 <code>getter/setter</code> 方法放在类体最后</li>
+</ul>
+</li>
+</ul>
+<h4 id="22-【推荐】setter-方法中，参数名称和类成员变量名称一致，this-成员名-参数名。在-getter-setter-方法中，不要增加业务逻辑，增加排查问题的难度"><a href="#22-【推荐】setter-方法中，参数名称和类成员变量名称一致，this-成员名-参数名。在-getter-setter-方法中，不要增加业务逻辑，增加排查问题的难度" class="headerlink" title="22. 【推荐】setter 方法中，参数名称和类成员变量名称一致，this.成员名 = 参数名。在 getter/setter 方法中，不要增加业务逻辑，增加排查问题的难度"></a>22. 【推荐】setter 方法中，参数名称和类成员变量名称一致，this.成员名 = 参数名。在 getter/setter 方法中，不要增加业务逻辑，增加排查问题的难度</h4><ul>
+<li><p><strong>反例</strong>：</p>
+  <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Integer getData() &#123;</span><br><span class="line">	<span class="keyword">if</span> (condition) &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.<span class="keyword">data</span> + <span class="number">100</span>;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.<span class="keyword">data</span> - <span class="number">100</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="23-【推荐】循环体内，字符串的连接方式，使用-StringBuilder-的-append-方法进行扩展。"><a href="#23-【推荐】循环体内，字符串的连接方式，使用-StringBuilder-的-append-方法进行扩展。" class="headerlink" title="23. 【推荐】循环体内，字符串的连接方式，使用 StringBuilder 的 append 方法进行扩展。"></a>23. 【推荐】循环体内，字符串的连接方式，使用 StringBuilder 的 append 方法进行扩展。</h4><ul>
+<li><p><strong>说明</strong>：下例中，反编译出的字节码文件显示每次循环都会 <code>new</code> 出一个 <code>StringBuilder</code> 对象，然后进行 <code>append</code> 操作，最后通过 <code>toString()</code> 方法返回，造成内存资源浪费</p>
+</li>
+<li><p><strong>反例</strong>：</p>
+  <figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">String</span> <span class="built_in">str</span> = <span class="string">"start"</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">	<span class="built_in">str</span> = <span class="built_in">str</span> + <span class="string">"hello"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="24-【推荐】final-可以声明类、成员变量、方法、以及本地变量，下列情况使用-final-关键字"><a href="#24-【推荐】final-可以声明类、成员变量、方法、以及本地变量，下列情况使用-final-关键字" class="headerlink" title="24. 【推荐】final 可以声明类、成员变量、方法、以及本地变量，下列情况使用 final 关键字"></a>24. 【推荐】final 可以声明类、成员变量、方法、以及本地变量，下列情况使用 final 关键字</h4><ol>
+<li>不允许被继承的类，如：<code>String</code> 类</li>
+<li>不允许修改引用的域对象，如：POJO 类的域变量</li>
+<li>不允许被覆写的方法，如：POJO 类的 <code>setter</code> 方法</li>
+<li>不允许运行过程中重新赋值的局部变量</li>
+<li>避免上下文重复使用一个变量，使用 <code>final</code> 关键字可以强制重新定义一个变量，方便更好地进行重构</li>
+</ol>
+<h4 id="25-【推荐】慎用-Object-的-clone-方法来拷贝对象"><a href="#25-【推荐】慎用-Object-的-clone-方法来拷贝对象" class="headerlink" title="25. 【推荐】慎用 Object 的 clone() 方法来拷贝对象"></a>25. 【推荐】慎用 Object 的 clone() 方法来拷贝对象</h4><ul>
+<li><strong>说明</strong>：对象 <code>clone()</code> 方法默认是浅拷贝，若想实现深拷贝，需覆写 <code>clone()</code> 方法实现域对象的深度遍历式拷贝</li>
+</ul>
+<h4 id="26-【推荐】类成员与方法访问控制从严"><a href="#26-【推荐】类成员与方法访问控制从严" class="headerlink" title="26. 【推荐】类成员与方法访问控制从严"></a>26. 【推荐】类成员与方法访问控制从严</h4><ol>
+<li>如果不允许外部直接通过 <code>new</code> 来创建对象，那么构造方法必须是 <code>private</code></li>
+<li>工具类不允许有 <code>public</code> 或 <code>default</code> 构造方法</li>
+<li>类非 <code>static</code> 成员变量并且与子类共享，必须是 <code>protected</code></li>
+<li>类非 <code>static</code> 成员变量并且仅在本类使用，必须是 <code>private</code></li>
+<li>类 <code>static</code> 成员变量如果仅在本类使用，必须是 <code>private</code></li>
+<li>若是 <code>static</code> 成员变量，考虑是否为 <code>final</code></li>
+<li>类成员方法只供类内部调用，必须是 <code>private</code></li>
+<li>类成员方法只对继承类公开，那么限制为 <code>protected</code></li>
+</ol>
+<ul>
+<li><strong>说明</strong>：任何类、方法、参数、变量，严格控制范围。过于宽泛的访问范围，不利于模块解耦。思考：如果是一个 <code>private</code> 的方法，想删除就删除，可是一个 <code>public</code> 的 <code>service</code> 成员方法或成员变量，删除一下，不得手心冒点汗么。变量像自己的小孩，尽量在自己的视线内</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;margin-top:80px">-------------------- 本文结束<i class="fa fa-paw"></i>感谢您的阅读 --------------------</div>
+    
+</div>
+      
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>隋钟元
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://24suixinsuoyu.com/2020/08/14/%E7%BC%96%E7%A8%8B%E8%A7%84%E7%BA%A6%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9AOOP%E8%A7%84%E7%BA%A6/" title="编程规约（四）：OOP规约">http://24suixinsuoyu.com/2020/08/14/编程规约（四）：OOP规约/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E7%BC%96%E7%A8%8B%E8%A7%84%E7%BA%A6/" rel="tag"><i class="fa fa-tag"></i> 编程规约</a>
+              <a href="/tags/OOP%E8%A7%84%E7%BA%A6/" rel="tag"><i class="fa fa-tag"></i> OOP规约</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/14/%E7%BC%96%E7%A8%8B%E8%A7%84%E7%BA%A6%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E4%BB%A3%E7%A0%81%E6%A0%BC%E5%BC%8F/" rel="prev" title="编程规约（三）：代码格式">
+      <i class="fa fa-chevron-left"></i> 编程规约（三）：代码格式
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/08/14/%E7%BC%96%E7%A8%8B%E8%A7%84%E7%BA%A6%EF%BC%88%E4%BA%94%EF%BC%89%EF%BC%9A%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4/" rel="next" title="编程规约（五）：日期时间">
+      编程规约（五）：日期时间 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-【强制】避免通过一个类的对象引用访问此类的静态变量或静态方法，无谓增加编译器解析成本，直接用类名来访问即可"><span class="nav-text">1. 【强制】避免通过一个类的对象引用访问此类的静态变量或静态方法，无谓增加编译器解析成本，直接用类名来访问即可</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-【强制】所有的覆盖方法，必须加-Override-注解"><span class="nav-text">2. 【强制】所有的覆盖方法，必须加 @Override 注解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-【强制】相同参数类型，相同业务含义，才可以使用-Java-的可变参数，避免使用-Object"><span class="nav-text">3. 【强制】相同参数类型，相同业务含义，才可以使用 Java 的可变参数，避免使用 Object</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-【强制】外部正在调用或者二方库依赖的接口，不允许修改方法签名，避免对接口调用方产生影响。接口过时必须加-Deprecated-注解，并清晰地说明采用的新接口或者新服务是什么"><span class="nav-text">4. 【强制】外部正在调用或者二方库依赖的接口，不允许修改方法签名，避免对接口调用方产生影响。接口过时必须加 @Deprecated 注解，并清晰地说明采用的新接口或者新服务是什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-【强制】不能使用过时的类或方法"><span class="nav-text">5. 【强制】不能使用过时的类或方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-【强制】Object-的-equals-方法容易抛空指针异常，应使用常量或确定有值的对象来调用-equals"><span class="nav-text">6. 【强制】Object 的 equals 方法容易抛空指针异常，应使用常量或确定有值的对象来调用 equals</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-【强制】所有整型包装类对象之间值的比较，全部使用-equals-方法比较"><span class="nav-text">7. 【强制】所有整型包装类对象之间值的比较，全部使用 equals 方法比较</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-【强制】任何货币金额，均以最小货币单位且整型类型来进行存储"><span class="nav-text">8. 【强制】任何货币金额，均以最小货币单位且整型类型来进行存储</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-【强制】浮点数之间的等值判断，基本数据类型不能用-来比较，包装数据类型不能用-equals-来判断"><span class="nav-text">9. 【强制】浮点数之间的等值判断，基本数据类型不能用 &#x3D;&#x3D; 来比较，包装数据类型不能用 equals 来判断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-【强制】如上所示-BigDecimal-的等值比较应使用-compareTo-方法，而不是-equals-方法"><span class="nav-text">10. 【强制】如上所示 BigDecimal 的等值比较应使用 compareTo() 方法，而不是 equals() 方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-【强制】定义数据对象-DO-类时，属性类型要与数据库字段类型相匹配"><span class="nav-text">11. 【强制】定义数据对象 DO 类时，属性类型要与数据库字段类型相匹配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-【强制】禁止使用构造方法-BigDecimal-double-的方式把-double-值转化为-BigDecimal-对象"><span class="nav-text">12. 【强制】禁止使用构造方法 BigDecimal(double) 的方式把 double 值转化为 BigDecimal 对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-关于基本数据类型与包装数据类型的使用标准如下："><span class="nav-text">13. 关于基本数据类型与包装数据类型的使用标准如下：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-【强制】定义-DO、DTO、VO-等-POJO-类时，不用设定任何属性默认值"><span class="nav-text">14. 【强制】定义 DO、DTO、VO 等 POJO 类时，不用设定任何属性默认值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#15-【强制】序列化类新增属性时，请不要修改-serialVersionUID-字段，避免反序列化失败；如果完全不兼容升级，避免反序列化混乱，那么请修改-serialVersionUID-值"><span class="nav-text">15. 【强制】序列化类新增属性时，请不要修改 serialVersionUID 字段，避免反序列化失败；如果完全不兼容升级，避免反序列化混乱，那么请修改 serialVersionUID 值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#16-【强制】构造方法里面禁止加入任何业务逻辑，如果有初始化逻辑，请放在-init-方法中"><span class="nav-text">16. 【强制】构造方法里面禁止加入任何业务逻辑，如果有初始化逻辑，请放在 init() 方法中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#17-【强制】POJO-类必须写-toString-方法。使用-IDE-中的工具：source-gt-generate-toString-时，如果继承了另一个-POJO-类，注意在前面加一下-super-toString"><span class="nav-text">17. 【强制】POJO 类必须写 toString() 方法。使用 IDE 中的工具：source &gt; generate toString 时，如果继承了另一个 POJO 类，注意在前面加一下 super.toString</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#18-【强制】禁止在-POJO-类中，同时存在对应属性-xxx-的-isXxx-和-getXxx-方法"><span class="nav-text">18. 【强制】禁止在 POJO 类中，同时存在对应属性 xxx 的 isXxx() 和 getXxx() 方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#19-【推荐】使用索引访问用-String-的-split-方法得到的数组时，需做最后一个分隔符后有无内容的检查，否则会有抛-IndexOutOfBoundsException-的风险"><span class="nav-text">19. 【推荐】使用索引访问用 String 的 split() 方法得到的数组时，需做最后一个分隔符后有无内容的检查，否则会有抛 IndexOutOfBoundsException 的风险</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#20-【推荐】当一个类有多个构造方法，或者多个同名方法，这些方法应该按顺序放置在一起，便于阅读，此条规则优先于下一条"><span class="nav-text">20. 【推荐】当一个类有多个构造方法，或者多个同名方法，这些方法应该按顺序放置在一起，便于阅读，此条规则优先于下一条</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#21-【推荐】类内方法定义的顺序依次是：公有方法或保护方法-gt-私有方法-gt-getter-setter-方法"><span class="nav-text">21. 【推荐】类内方法定义的顺序依次是：公有方法或保护方法 &gt; 私有方法 &gt; getter&#x2F;setter 方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-【推荐】setter-方法中，参数名称和类成员变量名称一致，this-成员名-参数名。在-getter-setter-方法中，不要增加业务逻辑，增加排查问题的难度"><span class="nav-text">22. 【推荐】setter 方法中，参数名称和类成员变量名称一致，this.成员名 &#x3D; 参数名。在 getter&#x2F;setter 方法中，不要增加业务逻辑，增加排查问题的难度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#23-【推荐】循环体内，字符串的连接方式，使用-StringBuilder-的-append-方法进行扩展。"><span class="nav-text">23. 【推荐】循环体内，字符串的连接方式，使用 StringBuilder 的 append 方法进行扩展。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#24-【推荐】final-可以声明类、成员变量、方法、以及本地变量，下列情况使用-final-关键字"><span class="nav-text">24. 【推荐】final 可以声明类、成员变量、方法、以及本地变量，下列情况使用 final 关键字</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#25-【推荐】慎用-Object-的-clone-方法来拷贝对象"><span class="nav-text">25. 【推荐】慎用 Object 的 clone() 方法来拷贝对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#26-【推荐】类成员与方法访问控制从严"><span class="nav-text">26. 【推荐】类成员与方法访问控制从严</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="隋钟元"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">隋钟元</p>
+  <div class="site-description" itemprop="description">技术创造价值</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">157</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">188</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:24suixinsuoyu@gmail.com" title="E-Mail → mailto:24suixinsuoyu@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/24suixinsuoyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;24suixinsuoyu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/24sxsy" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;24sxsy" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/guolin_blog" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;guolin_blog" rel="noopener" target="_blank">郭霖</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/lmj623565791/" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;lmj623565791&#x2F;" rel="noopener" target="_blank">鸿洋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.520monkey.com/" title="http:&#x2F;&#x2F;www.520monkey.com&#x2F;" rel="noopener" target="_blank">姜维</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://daimajia.com/" title="https:&#x2F;&#x2F;daimajia.com&#x2F;" rel="noopener" target="_blank">代码家</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://kmxz.net/" title="https:&#x2F;&#x2F;kmxz.net&#x2F;" rel="noopener" target="_blank">孔祥舟</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yangwenbo.com/" title="http:&#x2F;&#x2F;yangwenbo.com&#x2F;" rel="noopener" target="_blank">杨文博</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">隋钟元</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">479k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">7:15</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+

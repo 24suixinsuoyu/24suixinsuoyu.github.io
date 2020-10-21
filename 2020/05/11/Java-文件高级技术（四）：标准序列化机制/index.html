@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1. 序列化&#x2F;反序列化的概念">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 文件高级技术（四）：标准序列化机制">
+<meta property="og:url" content="http://24suixinsuoyu.com/2020/05/11/Java-%E6%96%87%E4%BB%B6%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%A0%87%E5%87%86%E5%BA%8F%E5%88%97%E5%8C%96%E6%9C%BA%E5%88%B6/index.html">
+<meta property="og:site_name" content="隋钟元’s Blog">
+<meta property="og:description" content="1. 序列化&#x2F;反序列化的概念">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-11T12:28:34.000Z">
+<meta property="article:modified_time" content="2020-05-15T03:58:48.000Z">
+<meta property="article:author" content="隋钟元">
+<meta property="article:tag" content="文件高级技术">
+<meta property="article:tag" content="标准序列化机制">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://24suixinsuoyu.com/2020/05/11/Java-%E6%96%87%E4%BB%B6%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%A0%87%E5%87%86%E5%BA%8F%E5%88%97%E5%8C%96%E6%9C%BA%E5%88%B6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Java 文件高级技术（四）：标准序列化机制 | 隋钟元’s Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">隋钟元’s Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-university"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th-list"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-english">
+
+    <a href="/english/" rel="section"><i class="fa fa-fw fa-graduation-cap"></i>英语</a>
+
+  </li>
+        <li class="menu-item menu-item-life">
+
+    <a href="/life/" rel="section"><i class="fa fa-fw fa-balance-scale"></i>生活</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/" rel="section"><i class="fa fa-fw fa-user-circle-o"></i>简历</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/commonweal/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/24suixinsuoyu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/05/11/Java-%E6%96%87%E4%BB%B6%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%A0%87%E5%87%86%E5%BA%8F%E5%88%97%E5%8C%96%E6%9C%BA%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="隋钟元">
+      <meta itemprop="description" content="技术创造价值">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="隋钟元’s Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java 文件高级技术（四）：标准序列化机制
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-11 20:28:34" itemprop="dateCreated datePublished" datetime="2020-05-11T20:28:34+08:00">2020-05-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-15 11:58:48" itemprop="dateModified" datetime="2020-05-15T11:58:48+08:00">2020-05-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E3%80%8AJava-%E7%BC%96%E7%A8%8B%E7%9A%84%E9%80%BB%E8%BE%91%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《Java 编程的逻辑》</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="1-序列化-反序列化的概念"><a href="#1-序列化-反序列化的概念" class="headerlink" title="1. 序列化/反序列化的概念"></a>1. 序列化/反序列化的概念</h4><a id="more"></a>
+
+<ul>
+<li><strong>序列化</strong>：将对象转化为字节流。</li>
+<li><strong>反序列化</strong>：将字节流转化为对象。</li>
+</ul>
+<h4 id="2-Java-中标准序列化机制的基本用法"><a href="#2-Java-中标准序列化机制的基本用法" class="headerlink" title="2. Java 中标准序列化机制的基本用法"></a>2. Java 中标准序列化机制的基本用法</h4><ul>
+<li><p><strong>要让一个类支持序列化，只需要让这个类实现接口 <code>java.io.Serializable</code></strong>。</p>
+<ul>
+<li><strong><code>Serializable</code> 没有定义任何方法，只是一个标记接口</strong>。</li>
+<li>声明实现了 <code>Serializable</code> 接口后，保存/读取对象就可以使用 <strong><code>ObjectOutputStream/ObjectInputStream</code></strong> 流了。</li>
+<li>之前保存/读取对象使用的是 <strong><code>DataOutputStream/DataInputStream</code></strong>，需要逐个处理对象中的每个字段，<strong>比较繁琐</strong>。</li>
+</ul>
+</li>
+<li><p><strong><code>ObjectOutputStream</code></strong> 是 <code>OutputStream</code> 的子类，实现了 <code>ObjectOutput</code> 接口。</p>
+<ul>
+<li><code>ObjectOutput</code> 接口是 <code>DataOutput</code> 的子接口，增加了一个方法：<code>public void writeObject(Object obj) throws IOException</code>。</li>
+<li><strong><code>writeObject(Object obj)</code> 方法能够将内存中的一个对象 <code>obj</code> 转化为字节，写到流中（序列化）</strong>。</li>
+</ul>
+</li>
+<li><p><strong><code>ObjectInputStream</code></strong> 是 <code>InputStream</code> 的子类，实现了 <code>ObjectInput</code> 接口。</p>
+<ul>
+<li><code>ObjectInput</code> 接口是 <code>DataInput</code> 的子接口，增加了一个方法：<code>public Object readObject() throws ClassNotFoundException, IOException</code>。</li>
+<li><strong><code>readObject()</code> 方法能够从流中读取字节，转化为内存中的一个对象 <code>obj</code>（反序列化）</strong>。</li>
+</ul>
+</li>
+<li><p><code>String</code>、<code>Date</code>、 <code>Double</code>、 <code>ArrayList</code>、 <code>LinkedList</code>、 <code>HashMap</code>、 <code>TreeMap</code> 等，<strong>都实现了 <code>Serializable</code> 接口</strong>。</p>
+</li>
+</ul>
+<h4 id="3-使用流-ObjectOutputStream-ObjectInputStream-保存-读入学生列表（假设学生类-Student-已实现-Serializable-接口）"><a href="#3-使用流-ObjectOutputStream-ObjectInputStream-保存-读入学生列表（假设学生类-Student-已实现-Serializable-接口）" class="headerlink" title="3. 使用流 ObjectOutputStream/ObjectInputStream 保存/读入学生列表（假设学生类 Student 已实现 Serializable 接口）"></a>3. 使用流 ObjectOutputStream/ObjectInputStream 保存/读入学生列表（假设学生类 Student 已实现 Serializable 接口）</h4><ul>
+<li><p>保存学生列表（序列化）：</p>
+  <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">writeStudents</span>(<span class="params">List&lt;Student&gt; students</span>) throws IOException</span> &#123;</span><br><span class="line">    ObjectOutputStream <span class="keyword">out</span> = <span class="keyword">new</span> ObjectOutputStream(<span class="keyword">new</span> BufferedOutputStream(<span class="keyword">new</span> FileOutputStream(<span class="string">"students.dat"</span>)));</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">out</span>.writeInt(students.size());</span><br><span class="line">        <span class="keyword">for</span>(Student s : students) &#123;</span><br><span class="line">            <span class="keyword">out</span>.writeObjects(s); <span class="comment">//与之前相比，不用单独处理每个字段</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="keyword">out</span>.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>读入学生列表（反序列化）：</p>
+  <figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;Student&gt; readStudents() <span class="keyword">throws</span> IOException, ClassNotFoundException &#123;</span><br><span class="line">    ObjectInputStream in = <span class="keyword">new</span> ObjectInputStream(<span class="keyword">new</span> BufferedInputStream(<span class="keyword">new</span> FileInputStream(<span class="string">"students.dat"</span>)));</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="built_in">int</span> <span class="built_in">size</span> = in.readInt();</span><br><span class="line">        List&lt;Student&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt; (<span class="built_in">size</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="built_in">int</span> i=<span class="number">0</span>; i&lt;<span class="built_in">size</span>; i++) &#123;</span><br><span class="line">            list.<span class="built_in">add</span>((Student) in.readObject()); <span class="comment">//与之前相比，不用单独处理每个字段</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> list;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        in.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="4-接上题，上面代码的优化"><a href="#4-接上题，上面代码的优化" class="headerlink" title="4. 接上题，上面代码的优化"></a>4. 接上题，上面代码的优化</h4><ul>
+<li><p><strong>思路</strong>：实际上，只要 <code>List</code> 对象也实现了 <code>Serializable</code> （<code>ArrayList/LinkedList</code> 都实现了），上面代码还可以进一步简化，读写只需要一行代码，省去了循环相关代码。</p>
+</li>
+<li><p>保存学生列表（序列化）：</p>
+  <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">writeStudents</span>(<span class="params">List&lt;Student&gt; students</span>) throws IOException</span> &#123;</span><br><span class="line">    ObjectOutputStream <span class="keyword">out</span> = <span class="keyword">new</span> ObjectOutputStream(<span class="keyword">new</span> BufferedOutputStream(<span class="keyword">new</span> FileOutputStream(<span class="string">"students.dat"</span>)));</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">out</span>.writeObject(students); <span class="comment">//与上题相比，省去了循环代码</span></span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="keyword">out</span>.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>读入学生列表（反序列化）：</p>
+  <figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;Student&gt; readStudents() throws IOException, ClassNotFoundException &#123;</span><br><span class="line">    ObjectInputStream <span class="keyword">in</span> = <span class="keyword">new</span> <span class="type">ObjectInputStream</span>(<span class="keyword">new</span> <span class="type">BufferedInputStream</span>(<span class="keyword">new</span> <span class="type">FileInputStream</span>(<span class="string">"students.dat"</span>)));</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> (List&lt;Student&gt;) <span class="keyword">in</span>.readObject(); <span class="comment">//与上题相比，省去了循环代码</span></span><br><span class="line">    &#125; finally &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="5-Java-序列化机制对复杂对象的处理"><a href="#5-Java-序列化机制对复杂对象的处理" class="headerlink" title="5. Java 序列化机制对复杂对象的处理"></a>5. Java 序列化机制对复杂对象的处理</h4><ul>
+<li>Java 序列化机制能自动处理<strong>引用同一个对象</strong>的情况，也能自动处理<strong>循环引用</strong>的情况（具体例子可以参看公号“老马说编程”第 62 篇文章）：</li>
+<li>如果 a、b 两个对象<strong>都引用同一个对象</strong> c，序列化后 c 是保存两份还是一份？在反序列化后还能让 a、b 指向同一个对象吗？答案是，c <strong>只会保存一份，反序列化后指向相同对象</strong>。</li>
+<li>如果 a、b 两个对象有<strong>循环引用</strong>呢？即 a 引用了 b，而 b 也引用了 a。答案是，这种情况 Java 也没问题，<strong>可以保持引用关系</strong>。</li>
+</ul>
+<h4 id="6-定制序列化的原因-场景-理由是"><a href="#6-定制序列化的原因-场景-理由是" class="headerlink" title="6. 定制序列化的原因/场景/理由是"></a>6. 定制序列化的原因/场景/理由是</h4><ul>
+<li>默认的序列化机制已经很强大了，它可以<strong>自动将对象中的所有字段自动保存和恢复</strong>。但这种<strong>默认行为</strong>有时候不是我们想要的。</li>
+<li>对于有些字段，<strong>它的值可能与内存位置有关</strong>。比如默认的 <strong><code>hashCode()</code></strong> 方法的返回值，当恢复对象后，内存位置肯定变了，基于原内存位置的值也就没有意义了。</li>
+<li>对于有些字段，<strong>可能与当前时间有关</strong>，比如<strong>表示对象创建时的时间</strong>，保存和恢复这个字段就是不正确的。</li>
+</ul>
+<h4 id="7-如果类中的字段表示的是类的实现细节，而非逻辑信息，那默认序列化也是不合适的。为什么"><a href="#7-如果类中的字段表示的是类的实现细节，而非逻辑信息，那默认序列化也是不合适的。为什么" class="headerlink" title="7. 如果类中的字段表示的是类的实现细节，而非逻辑信息，那默认序列化也是不合适的。为什么"></a>7. 如果类中的字段表示的是类的实现细节，而非逻辑信息，那默认序列化也是不合适的。为什么</h4><ul>
+<li>因为序列化格式表示一种<strong>契约</strong>，应该描述类的<strong>逻辑结构</strong>，而非与<strong>实现细节</strong>相绑定，绑定实现细节将使得难以修改、破坏封装。</li>
+<li><strong>比如 <code>LinkedList</code>，它的默认序列化就是不合适的</strong>。因为 <code>LinkedList</code> 表示一个 <code>List</code>，它的逻辑信息是列表的长度以及列表中的每个对象；但 <code>LinkedList</code> 类中的字段表示的是链表的实现细节，如头尾节点指针，对每个节点，还有前驱和后继节点指针等。</li>
+</ul>
+<h4 id="8-怎样自定义序列化"><a href="#8-怎样自定义序列化" class="headerlink" title="8. 怎样自定义序列化"></a>8. 怎样自定义序列化</h4><ul>
+<li><p><strong><code>transient</code> 关键字</strong>：</p>
+<ul>
+<li><strong>将字段声明为 <code>transient</code>，默认序列化机制将忽略该字段，不会自动保存和恢复该字段。自己实现 <code>writeObject()/readObject()</code> 方法来保存和恢复该字段</strong>。</li>
+<li>可以实现 <strong><code>writeObject()</code></strong> 方法，以<strong>自定义</strong>该类对象的序列化过程，其<strong>声明</strong>必须为：<code>private void writeObject(java.io.ObjectOutputStream s) throws java.io.IOException</code>。</li>
+<li>与 <code>writeObject()</code> 对应的是 <strong><code>readObject()</code></strong> 方法，通过它<strong>自定义</strong>反序列化过程，其<strong>声明</strong>必须为：<code>private void readObject(java.io.ObjectInputStream s) throws java.io.IOException, ClassNotFoundException</code>。</li>
+</ul>
+</li>
+<li><p>除了自定义 <code>writeObject()/readObject()</code> 方法，还有一些自定义序列化过程的<strong>机制</strong>：<code>Externalizable</code> 接口、<code>realResolve()</code> 方法和 <code>writeReplace()</code> 方法，这些机制用得相对较少。</p>
+</li>
+</ul>
+<h4 id="9-LinkedList-的序列化和反序列化的源码中代码-s-defaultWriteObject-s-defaultReadObject-的作用是"><a href="#9-LinkedList-的序列化和反序列化的源码中代码-s-defaultWriteObject-s-defaultReadObject-的作用是" class="headerlink" title="9. LinkedList 的序列化和反序列化的源码中代码 s.defaultWriteObject()/s.defaultReadObject() 的作用是"></a>9. LinkedList 的序列化和反序列化的源码中代码 s.defaultWriteObject()/s.defaultReadObject() 的作用是</h4><ul>
+<li>这行代码是必需的，它会<strong>调用默认的序列化机制</strong>，默认机制会保存所有没声明为 <code>transient</code> 的字段，即使类中的所有字段都是 <code>transient</code>，也应该写这一行。</li>
+<li>这是因为 Java 的序列化机制不仅会保存<strong>纯粹的数据信息</strong>，还会保存一些元数据描述等<strong>隐藏信息</strong>。</li>
+<li>这些隐藏的信息是序列化之所以能够<strong>神奇</strong>的重要原因。</li>
+</ul>
+<h4 id="10-总结一下-Java-的序列化机制"><a href="#10-总结一下-Java-的序列化机制" class="headerlink" title="10. 总结一下 Java 的序列化机制"></a>10. 总结一下 Java 的序列化机制</h4><ul>
+<li>如果类的字段表示的就是类的<strong>逻辑信息</strong>，那就可以使用默认序列化机制，只要<strong>声明实现 <code>Serializable</code> 接口</strong>即可。</li>
+<li>否则的话，比如 <code>LinkedList</code>，那就可以<strong>使用 <code>transient</code> 关键字，实现 <code>writeObject()</code> 和 <code>readObject()</code> 自定义序列化过程</strong>。</li>
+<li>Java 的序列化机制可以自动处理<strong>引用同一个对象</strong>、<strong>循环引用</strong>等情况。</li>
+</ul>
+<h4 id="11-序列化的基本原理是，或者说序列化到底是如何发生的"><a href="#11-序列化的基本原理是，或者说序列化到底是如何发生的" class="headerlink" title="11. 序列化的基本原理是，或者说序列化到底是如何发生的"></a>11. 序列化的基本原理是，或者说序列化到底是如何发生的</h4><ul>
+<li><p>关键在 <code>ObjectOutputStream</code> 的 <strong><code>writeObject()</code></strong> 和 <code>ObjectInputStream</code> 的 <strong><code>readObject()</code></strong> 方法内。这两个方法的实现都非常<strong>复杂</strong>，正因为这些复杂的实现才使得序列化看上去很<strong>神奇</strong>。</p>
+</li>
+<li><p><strong><code>writeObject()</code> 方法的基本逻辑</strong>：</p>
+<ul>
+<li>如果对象没有实现 <code>Serializable</code>，抛出<strong>异常</strong> <code>NotSerializableException</code>。</li>
+<li><strong>每个对象都有一个编号</strong>，如果之前已经写过该对象了，则本次只会写该对象的引用，这可以解决对象引用和循环引用的问题。</li>
+<li><strong>默认是利用反射机制</strong>，遍历对象结构图，对每个没有标记为 <code>transient</code> 的字段，根据其类型，分别进行处理，写出到流，流中的信息包括字段的类型，即完整类名、字段名、字段值等。</li>
+</ul>
+</li>
+<li><p><strong><code>readObject()</code> 方法的基本逻辑</strong>：</p>
+<ul>
+<li><strong>不调用任何构造方法</strong>。</li>
+<li>它自己就相当于是一个独立的构造方法，根据字节流初始化对象，利用的也是<strong>反射机制</strong>。</li>
+<li>在解析字节流时，对于引用到的类型信息，会<strong>动态加载</strong>，如果找不到类，会抛出<strong>异常</strong> <code>ClassNotFoundException</code>。</li>
+</ul>
+</li>
+</ul>
+<h4 id="12-代码是在不断演化的，而序列化的对象可能是持久化保存在文件上的，如果类的定义发生了变化，那持久化的对象还能反序列化吗，或者说-Java-序列化机制怎样解决版本问题"><a href="#12-代码是在不断演化的，而序列化的对象可能是持久化保存在文件上的，如果类的定义发生了变化，那持久化的对象还能反序列化吗，或者说-Java-序列化机制怎样解决版本问题" class="headerlink" title="12. 代码是在不断演化的，而序列化的对象可能是持久化保存在文件上的，如果类的定义发生了变化，那持久化的对象还能反序列化吗，或者说 Java 序列化机制怎样解决版本问题"></a>12. 代码是在不断演化的，而序列化的对象可能是持久化保存在文件上的，如果类的定义发生了变化，那持久化的对象还能反序列化吗，或者说 Java 序列化机制怎样解决版本问题</h4><ul>
+<li><p><strong>默认情况下，Java 会给类定义一个版本号</strong>，这个版本号是根据类中一系列信息<strong>自动生成</strong>的。反序列化时，如果类的定义发生了变化，版本号就会变化，与流中的版本号就会<strong>不匹配</strong>，反序列化就会抛出<strong>异常</strong>，类型是 <code>java.io.InvalidClassException</code>。</p>
+</li>
+<li><p>通常情况下，我们希望<strong>自定义这个版本号</strong>，而非让 Java 自动生成，一方面是为了<strong>更好地控制</strong>，另一方面是为了性能，因为 Java <strong>自动生成的性能比较低</strong>。</p>
+</li>
+<li><p><strong>自定义这个版本号的方法</strong>：</p>
+<ul>
+<li>在类中定义变量：<strong><code>private static final long serialVersionUID = 1L;</code></strong>，这个变量的值可以是<strong>任意的</strong>，代表该类的<strong>版本号</strong>。</li>
+<li>在序列化时，会将该值写入流；反序列化时，会将流中的值与类定义中的值进行比较。如果不匹配，会抛出 <code>InvalidClassException</code>。</li>
+</ul>
+</li>
+<li><p>如果版本号一样，但实际的字段不匹配呢？Java 会分情况自动进行处理，以尽量保持<strong>兼容性</strong>，大概分为三种情况：</p>
+<ul>
+<li><strong>字段删掉了</strong>：即流中有该字段，而类定义中没有，该字段<strong>会被忽略</strong>。</li>
+<li><strong>新增了字段</strong>：即类定义中有，而流中没有，该字段<strong>会被设为默认值</strong>。</li>
+<li><strong>字段类型变了</strong>：对于同名的字段，类型变了，<strong>会抛出 <code>InvalidClassException</code></strong>。</li>
+</ul>
+</li>
+</ul>
+<h4 id="13-Java-标准序列化机制的用途"><a href="#13-Java-标准序列化机制的用途" class="headerlink" title="13. Java 标准序列化机制的用途"></a>13. Java 标准序列化机制的用途</h4><ul>
+<li>对象<strong>持久化</strong>。</li>
+<li>跨网络的<strong>数据交换</strong>。</li>
+<li><strong>远程过程</strong>调用。</li>
+</ul>
+<h4 id="14-Java-标准序列化机制的优点"><a href="#14-Java-标准序列化机制的优点" class="headerlink" title="14. Java 标准序列化机制的优点"></a>14. Java 标准序列化机制的优点</h4><ul>
+<li>使用简单（<code>Serializable</code>）。</li>
+<li>可自动处理<strong>对象引用</strong>和<strong>循环引用</strong>。</li>
+<li>可以方便地进行<strong>定制</strong>（<code>transient</code>、<code>writeObject()</code>、<code>readObject()</code>）。</li>
+<li>可以方便地处理<strong>版本问题</strong>（<code>serialVersionUID</code>）。</li>
+</ul>
+<h4 id="15-Java-序列化机制的局限性"><a href="#15-Java-序列化机制的局限性" class="headerlink" title="15. Java 序列化机制的局限性"></a>15. Java 序列化机制的局限性</h4><ul>
+<li><p>Java 序列化格式是一种<strong>私有格式</strong>，是一种 <strong>Java 特有</strong>的技术，不能被其他语言识别，<strong>不能实现跨语言</strong>的数据交换。</p>
+<ul>
+<li>Java 在序列化字节中保存了很多<strong>描述信息</strong>，使得<strong>序列化格式比较大</strong>。</li>
+<li>Java 的默认序列化使用<strong>反射</strong>分析遍历对象结构，<strong>性能比较低</strong>。</li>
+</ul>
+</li>
+<li><p>Java 的序列化<strong>格式是二进制的</strong>，<strong>不方便查看和修改</strong>。</p>
+</li>
+<li><p>在性能和大小敏感的领域，往往会采用<strong>更为高效的</strong>二进制方式，如 <code>ProtoBuf</code>、<code>Thrift</code>、<code>MessagePack</code> 等。</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;margin-top:80px">-------------------- 本文结束<i class="fa fa-paw"></i>感谢您的阅读 --------------------</div>
+    
+</div>
+      
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>隋钟元
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://24suixinsuoyu.com/2020/05/11/Java-%E6%96%87%E4%BB%B6%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%A0%87%E5%87%86%E5%BA%8F%E5%88%97%E5%8C%96%E6%9C%BA%E5%88%B6/" title="Java 文件高级技术（四）：标准序列化机制">http://24suixinsuoyu.com/2020/05/11/Java-文件高级技术（四）：标准序列化机制/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E6%96%87%E4%BB%B6%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF/" rel="tag"><i class="fa fa-tag"></i> 文件高级技术</a>
+              <a href="/tags/%E6%A0%87%E5%87%86%E5%BA%8F%E5%88%97%E5%8C%96%E6%9C%BA%E5%88%B6/" rel="tag"><i class="fa fa-tag"></i> 标准序列化机制</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/11/Java-%E6%96%87%E4%BB%B6%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E5%86%85%E5%AD%98%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6/" rel="prev" title="Java 文件高级技术（三）：内存映射文件">
+      <i class="fa fa-chevron-left"></i> Java 文件高级技术（三）：内存映射文件
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/15/Java-%E5%B9%B6%E5%8F%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" rel="next" title="Java 并发基础知识（一）：线程的基本概念">
+      Java 并发基础知识（一）：线程的基本概念 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-序列化-反序列化的概念"><span class="nav-text">1. 序列化&#x2F;反序列化的概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Java-中标准序列化机制的基本用法"><span class="nav-text">2. Java 中标准序列化机制的基本用法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-使用流-ObjectOutputStream-ObjectInputStream-保存-读入学生列表（假设学生类-Student-已实现-Serializable-接口）"><span class="nav-text">3. 使用流 ObjectOutputStream&#x2F;ObjectInputStream 保存&#x2F;读入学生列表（假设学生类 Student 已实现 Serializable 接口）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-接上题，上面代码的优化"><span class="nav-text">4. 接上题，上面代码的优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-Java-序列化机制对复杂对象的处理"><span class="nav-text">5. Java 序列化机制对复杂对象的处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-定制序列化的原因-场景-理由是"><span class="nav-text">6. 定制序列化的原因&#x2F;场景&#x2F;理由是</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-如果类中的字段表示的是类的实现细节，而非逻辑信息，那默认序列化也是不合适的。为什么"><span class="nav-text">7. 如果类中的字段表示的是类的实现细节，而非逻辑信息，那默认序列化也是不合适的。为什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-怎样自定义序列化"><span class="nav-text">8. 怎样自定义序列化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-LinkedList-的序列化和反序列化的源码中代码-s-defaultWriteObject-s-defaultReadObject-的作用是"><span class="nav-text">9. LinkedList 的序列化和反序列化的源码中代码 s.defaultWriteObject()&#x2F;s.defaultReadObject() 的作用是</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-总结一下-Java-的序列化机制"><span class="nav-text">10. 总结一下 Java 的序列化机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-序列化的基本原理是，或者说序列化到底是如何发生的"><span class="nav-text">11. 序列化的基本原理是，或者说序列化到底是如何发生的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-代码是在不断演化的，而序列化的对象可能是持久化保存在文件上的，如果类的定义发生了变化，那持久化的对象还能反序列化吗，或者说-Java-序列化机制怎样解决版本问题"><span class="nav-text">12. 代码是在不断演化的，而序列化的对象可能是持久化保存在文件上的，如果类的定义发生了变化，那持久化的对象还能反序列化吗，或者说 Java 序列化机制怎样解决版本问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-Java-标准序列化机制的用途"><span class="nav-text">13. Java 标准序列化机制的用途</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-Java-标准序列化机制的优点"><span class="nav-text">14. Java 标准序列化机制的优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#15-Java-序列化机制的局限性"><span class="nav-text">15. Java 序列化机制的局限性</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="隋钟元"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">隋钟元</p>
+  <div class="site-description" itemprop="description">技术创造价值</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">157</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">188</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:24suixinsuoyu@gmail.com" title="E-Mail → mailto:24suixinsuoyu@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/24suixinsuoyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;24suixinsuoyu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/24sxsy" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;24sxsy" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/guolin_blog" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;guolin_blog" rel="noopener" target="_blank">郭霖</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/lmj623565791/" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;lmj623565791&#x2F;" rel="noopener" target="_blank">鸿洋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.520monkey.com/" title="http:&#x2F;&#x2F;www.520monkey.com&#x2F;" rel="noopener" target="_blank">姜维</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://daimajia.com/" title="https:&#x2F;&#x2F;daimajia.com&#x2F;" rel="noopener" target="_blank">代码家</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://kmxz.net/" title="https:&#x2F;&#x2F;kmxz.net&#x2F;" rel="noopener" target="_blank">孔祥舟</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yangwenbo.com/" title="http:&#x2F;&#x2F;yangwenbo.com&#x2F;" rel="noopener" target="_blank">杨文博</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">隋钟元</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">479k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">7:15</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+

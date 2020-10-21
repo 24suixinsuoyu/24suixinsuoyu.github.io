@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1. 异步任务执行服务是什么意思">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 异步任务执行服务（一）：基本概念和原理">
+<meta property="og:url" content="http://24suixinsuoyu.com/2020/05/22/Java-%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C%E6%9C%8D%E5%8A%A1%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E5%92%8C%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="隋钟元’s Blog">
+<meta property="og:description" content="1. 异步任务执行服务是什么意思">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-22T12:24:28.000Z">
+<meta property="article:modified_time" content="2020-05-25T10:00:10.000Z">
+<meta property="article:author" content="隋钟元">
+<meta property="article:tag" content="异步任务执行服务">
+<meta property="article:tag" content="基本概念和原理">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://24suixinsuoyu.com/2020/05/22/Java-%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C%E6%9C%8D%E5%8A%A1%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E5%92%8C%E5%8E%9F%E7%90%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Java 异步任务执行服务（一）：基本概念和原理 | 隋钟元’s Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">隋钟元’s Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-university"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th-list"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-english">
+
+    <a href="/english/" rel="section"><i class="fa fa-fw fa-graduation-cap"></i>英语</a>
+
+  </li>
+        <li class="menu-item menu-item-life">
+
+    <a href="/life/" rel="section"><i class="fa fa-fw fa-balance-scale"></i>生活</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/" rel="section"><i class="fa fa-fw fa-user-circle-o"></i>简历</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/commonweal/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/24suixinsuoyu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/05/22/Java-%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C%E6%9C%8D%E5%8A%A1%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E5%92%8C%E5%8E%9F%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="隋钟元">
+      <meta itemprop="description" content="技术创造价值">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="隋钟元’s Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java 异步任务执行服务（一）：基本概念和原理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-22 20:24:28" itemprop="dateCreated datePublished" datetime="2020-05-22T20:24:28+08:00">2020-05-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-25 18:00:10" itemprop="dateModified" datetime="2020-05-25T18:00:10+08:00">2020-05-25</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E3%80%8AJava-%E7%BC%96%E7%A8%8B%E7%9A%84%E9%80%BB%E8%BE%91%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《Java 编程的逻辑》</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="1-异步任务执行服务是什么意思"><a href="#1-异步任务执行服务是什么意思" class="headerlink" title="1. 异步任务执行服务是什么意思"></a>1. 异步任务执行服务是什么意思</h4><a id="more"></a>
+
+<ul>
+<li>线程 <code>Thread</code> 既表示要<strong>执行的任务（<code>run()</code> 方法）</strong>，又表示<strong>执行的机制（<code>start()</code> 方法）</strong>。</li>
+<li>Java 并发包提供了一套<strong>框架</strong>，大大<strong>简化</strong>了执行异步任务所需的开发，这套框架引入了一个<strong>“执行服务”</strong>的<strong>概念</strong>。</li>
+<li><strong>执行服务</strong>将<strong>任务的提交</strong>和<strong>任务的执行</strong>相分离。“执行服务”封装了任务执行的细节，对于任务提交者而言，它可以关注于<strong>任务本身</strong>，如<strong>提交任务</strong>、<strong>获取结果</strong>、<strong>取消任务</strong>；而不需要关注<strong>任务执行</strong>的细节，如<strong>线程的创建</strong>、<strong>任务调度</strong>、<strong>线程关闭</strong>等。</li>
+<li>任务执行服务体现了并发异步开发中<strong>关注点分离</strong>的思想，使用者只需要通过 <strong><code>ExecutorService</code></strong> 提交任务，通过 <strong><code>Future</code></strong> 操作任务和结果即可，不需要关注线程创建和协调的细节。</li>
+</ul>
+<h4 id="2-任务执行服务涉及的基本接口有哪些"><a href="#2-任务执行服务涉及的基本接口有哪些" class="headerlink" title="2. 任务执行服务涉及的基本接口有哪些"></a>2. 任务执行服务涉及的基本接口有哪些</h4><ul>
+<li><strong><code>Runnable</code></strong> 和 <strong><code>Callable</code></strong>：表示<strong>要执行的异步任务</strong>。</li>
+<li><strong><code>Executor</code></strong> 和 <strong><code>ExecutorService</code></strong>：表示<strong>执行服务</strong>。</li>
+<li><strong><code>Future</code></strong>：表示<strong>异步任务的结果</strong>。</li>
+</ul>
+<h4 id="3-Runnable-和-Callable-的区别是什么"><a href="#3-Runnable-和-Callable-的区别是什么" class="headerlink" title="3. Runnable 和 Callable 的区别是什么"></a>3. Runnable 和 Callable 的区别是什么</h4><ul>
+<li>二者都表示任务：<ul>
+<li><code>Runnable</code> 没有<strong>返回结果</strong>，而 <code>Callable</code> 有返回结果。</li>
+<li><code>Runnable</code> 不会抛出<strong>异常</strong>，而 <code>Callable</code> 会抛出异常。</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-怎样理解-Executor"><a href="#4-怎样理解-Executor" class="headerlink" title="4. 怎样理解 Executor"></a>4. 怎样理解 Executor</h4><ul>
+<li><code>Executor</code> 表示<strong>最简单的执行服务</strong>。</li>
+<li>定义：<code>public interface Executor { void execute(Runnable command); }</code>，<strong>就是可以执行一个 <code>Runnable</code></strong>，没有返回结果。</li>
+<li><strong>没有限定任务如何执行</strong>，<strong>可能</strong>是创建一个新线程，<strong>可能</strong>是复用线程池中的某个线程，<strong>也可能</strong>是在调用者线程中执行。</li>
+</ul>
+<h4 id="5-怎样理解-ExecutorService"><a href="#5-怎样理解-ExecutorService" class="headerlink" title="5. 怎样理解 ExecutorService"></a>5. 怎样理解 ExecutorService</h4><ul>
+<li><p><strong><code>ExecutorService</code> 扩展了 <code>Executor</code>，定义了更多服务</strong>，基本方法有：</p>
+  <figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">	<span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ExecutorService</span> <span class="keyword">extends</span> <span class="title">Executor</span> </span>&#123;</span><br><span class="line">	    &lt;T&gt; Future&lt;T&gt; submit(Callable&lt;T&gt; task);</span><br><span class="line">	    &lt;T&gt; Future&lt;T&gt; submit(Runnable task, T result);</span><br><span class="line">	    Future&lt;?&gt; submit(Runnable task);</span><br><span class="line">	</span><br><span class="line">	    <span class="function"><span class="keyword">void</span> <span class="title">shutdown</span><span class="params">()</span></span>;</span><br><span class="line">	    List&lt;Runnable&gt; shutdownNow();</span><br><span class="line">	    <span class="function"><span class="keyword">boolean</span> <span class="title">isShutdown</span><span class="params">()</span></span>;</span><br><span class="line">	    <span class="function"><span class="keyword">boolean</span> <span class="title">isTerminated</span><span class="params">()</span></span>;</span><br><span class="line">	    <span class="function"><span class="keyword">boolean</span> <span class="title">awaitTermination</span><span class="params">(<span class="keyword">long</span> timeout, TimeUnit unit)</span> <span class="keyword">throws</span> InterruptedException</span>;</span><br><span class="line">	    &lt;T&gt; List&lt;Future&lt;T&gt;&gt; invokeAll(Collection&lt;? <span class="keyword">extends</span> Callable&lt;T&gt;&gt; tasks) <span class="keyword">throws</span> InterruptedException;</span><br><span class="line">	    &lt;T&gt; List&lt;Future&lt;T&gt;&gt; invokeAll(Collection&lt;? <span class="keyword">extends</span> Callable&lt;T&gt;&gt; tasks, <span class="keyword">long</span> timeout, TimeUnit unit) <span class="keyword">throws</span> InterruptedException;</span><br><span class="line">	    &lt;T&gt; <span class="function">T <span class="title">invokeAny</span><span class="params">(Collection&lt;? <span class="keyword">extends</span> Callable&lt;T&gt;&gt; tasks)</span> <span class="keyword">throws</span> InterruptedException, ExecutionException</span>;</span><br><span class="line">	    &lt;T&gt; <span class="function">T <span class="title">invokeAny</span><span class="params">(Collection&lt;? <span class="keyword">extends</span> Callable&lt;T&gt;&gt; tasks, <span class="keyword">long</span> timeout, TimeUnit unit)</span> <span class="keyword">throws</span> InterruptedException, ExecutionException, TimeoutException</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>三个 <strong><code>submit()</code></strong> 都表示<strong>提交</strong>一个任务，返回值类型都是 <code>Future</code>。返回后，只是表示任务已提交，不代表已执行，通过 <code>Future</code> 可以查询异步任务的状态、获取最终结果、取消任务等。</p>
+<ul>
+<li>对于 <code>Callable</code>，任务最终有个返回值，对于 <code>Runnable</code> 是没有返回值的。</li>
+<li>第二个提交 <code>Runnable</code> 的方法可以同时提供一个结果，在异步任务结束时返回。</li>
+<li>第三个方法异步任务的最终返回值为 <code>null</code>。</li>
+</ul>
+</li>
+<li><p>有两个关闭方法：<strong><code>shutdown()</code></strong> 和 <strong><code>shutdownNow()</code></strong>。</p>
+<ul>
+<li>区别是，<code>shutdown()</code> 表示不再接受新任务，但已提交的任务会继续执行，即使任务还未开始执行。</li>
+<li><code>shutdownNow()</code> 不仅不接受新任务，而且会终止已提交但尚未执行的任务，对于正在执行的任务，一般会调用线程的 <code>interrupt()</code> 方法尝试中断。不过，线程可能不响应中断，<code>shutdownNow()</code> 会返回已提交但尚未执行的任务列表。</li>
+<li><code>shutdown()</code> 和 <code>shutdownNow()</code> 不会阻塞等待，它们返回后不代表所有任务都已结束。不过 <code>isShutdown()</code> 方法会返回 <code>true</code>。调用者可以通过 <code>awaitTermination()</code> 等待所有任务结束，它可以限定等待的时间，如果超时前所有任务都结束了，即 <code>isTerminated()</code> 方法返回 <code>true</code>，则返回 <code>true</code>，否则返回 <code>false</code>。</li>
+</ul>
+</li>
+<li><p><code>ExecutorService</code> 有两组<strong>批量提交任</strong>务的方法：<code>invokeAll()</code> 和 <code>invokeAny()</code>，它们都有两个版本，其中一个限定等待时间。</p>
+<ul>
+<li><strong><code>invokeAll()</code></strong> 方法等待所有任务完成，返回的 <code>Future</code> 列表中，每个 <code>Future</code> 的 <code>isDone()</code> 方法都返回 <code>true</code>。不过 <code>isDone()</code> 为 <code>true</code> 不代表任务就执行成功了，可能是被取消了。<code>invokeAll()</code> 可以指定等待时间，如果超时后有的任务没完成，就会被取消。</li>
+<li>对于 <strong><code>invokeAny()</code></strong>，只要有一个任务在限时内成功返回了，它就会返回该任务的结果，其他任务会被取消；如果没有任务能在限时内成功返回，抛出 <code>TimeoutException</code> 异常；如果限时内所有任务都结束了，但都发生了异常，抛出 <code>ExecutionException</code> 异常。</li>
+</ul>
+</li>
+<li><p>使用 <code>ExecutorService</code>，编写并发异步任务的代码就<strong>像写顺序程序</strong>一样，不用关心线程的创建和协调，只需要提交任务、处理结果就可以了，大大<strong>简化</strong>了开发工作。</p>
+</li>
+</ul>
+<h4 id="6-怎样理解-Future"><a href="#6-怎样理解-Future" class="headerlink" title="6. 怎样理解 Future"></a>6. 怎样理解 Future</h4><ul>
+<li><p><code>Future</code> 接口定义：</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Future</span>&lt;<span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">cancel</span><span class="params">(<span class="keyword">boolean</span> mayInterruptIfRunning)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">isCancelled</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">isDone</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function">V <span class="title">get</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException, ExecutionException</span>;</span><br><span class="line">    <span class="function">V <span class="title">get</span><span class="params">(<span class="keyword">long</span> timeout, TimeUnit unit)</span> <span class="keyword">throws</span> InterruptedException, ExecutionException, TimeoutException</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong><code>get()</code></strong> 方法用于<strong>返回</strong>异步任务最终的结果，如果任务还未执行完成，会阻塞等待；带参数的 <code>get()</code> 方法可以限定阻塞等待的时间，如果超时任务还未结束，会抛出 <code>TimeoutException</code> 异常。</p>
+</li>
+<li><p><strong><code>cancel()</code></strong> 用于<strong>取消</strong>异步任务，如果任务已完成、或已经取消、或由于某种原因不能取消，<code>cancel()</code> 返回 <code>false</code>，否则返回 <code>true</code>。如果任务还未开始，则不再运行。但如果任务已经在运行，则不一定能取消，参数 <code>mayInterruptIfRunning</code> 表示，如果任务正在执行，是否调用 <code>interrupt()</code> 方法中断线程，如果为 <code>false</code>，就不会，如果为 <code>true</code>，就会尝试中断线程，虽然中断不一定能取消线程。</p>
+</li>
+<li><p><strong><code>isDone()</code></strong> 和 <strong><code>isCancelled()</code></strong> 用于<strong>查询</strong>任务状态。<code>isCancelled()</code> 表示任务是否被取消，只要 <code>cancel()</code> 方法返回了 <code>true</code>，随后的 <code>isCancelled()</code> 方法都会返回 <code>true</code>，即使执行任务的线程还未真正结束。<code>isDone()</code> 表示任务是否结束，不管什么原因都算，可能是任务正常结束，可能是任务抛出了异常，也可能是任务被取消。</p>
+</li>
+<li><p>对于 <code>get()</code> 方法，如果调用<code>get()</code> 方法的线程被中断了，<code>get()</code> 方法会抛出 <code>InterruptedException</code> 异常，任务最终大概有三种结果：</p>
+<ul>
+<li><strong>正常完成</strong>，<code>get()</code> 方法会返回其执行结果，如果任务是 <code>Runnable</code> 且没有提供结果，返回 <code>null</code>。</li>
+<li><strong>任务执行抛出了异常</strong>，<code>get()</code> 方法会将异常包装为 <code>ExecutionException</code> 重新抛出，通过异常的 <code>getCause()</code> 方法可以获取原异常。</li>
+<li><strong>任务被取消了</strong>，<code>get()</code> 方法会抛出异常 <code>CancellationException</code>。</li>
+</ul>
+</li>
+<li><p><strong><code>Future</code></strong> 是一个重要的概念，是实现<strong>“任务的提交”</strong>与<strong>“任务的执行”</strong>相分离的关键，是其中的<strong>“纽带”</strong>，任务提交者和任务执行服务通过它隔离各自的关注点，同时进行协作。</p>
+</li>
+</ul>
+<h4 id="7-写一个任务执行服务-Demo"><a href="#7-写一个任务执行服务-Demo" class="headerlink" title="7. 写一个任务执行服务 Demo"></a>7. 写一个任务执行服务 Demo</h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BasicDemo</span> &#123;</span></span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Task</span> <span class="title">implements</span> <span class="title">Callable</span>&lt;Integer&gt; &#123;</span></span><br><span class="line">        @Override</span><br><span class="line">        <span class="function"><span class="keyword">public</span> Integer <span class="title">call</span><span class="params">()</span> throws Exception </span>&#123;</span><br><span class="line">            <span class="keyword">int</span> sleepSeconds = <span class="keyword">new</span> Random().nextInt(<span class="number">1000</span>);</span><br><span class="line">            Thread.sleep(sleepSeconds);</span><br><span class="line">            <span class="keyword">return</span> sleepSeconds;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> throws InterruptedException </span>&#123;</span><br><span class="line">        ExecutorService executor = Executors.newSingleThreadExecutor(); <span class="comment">//使用工厂类 Executors 创建了一个任务执行服务，表示使用一个线程执行所有服务</span></span><br><span class="line">        Future&lt;Integer&gt; <span class="built_in">future</span> = executor.submit(<span class="keyword">new</span> <span class="built_in">Task</span>());</span><br><span class="line">        <span class="comment">//模拟执行其他任务</span></span><br><span class="line">        Thread.sleep(<span class="number">100</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            System.out.<span class="built_in">println</span>(<span class="built_in">future</span>.<span class="built_in">get</span>());</span><br><span class="line">        &#125; <span class="keyword">catch</span>(ExecutionException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        executor.<span class="built_in">shutdown</span>(); <span class="comment">//关闭任务执行服务</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="8-ExecutorService-的基本实现原理"><a href="#8-ExecutorService-的基本实现原理" class="headerlink" title="8. ExecutorService 的基本实现原理"></a>8. ExecutorService 的基本实现原理</h4><ul>
+<li><strong><code>ExecutorService</code> 的主要实现类是 <code>ThreadPoolExecutor</code></strong>，它是<strong>基于线程池</strong>实现的。</li>
+<li><code>ExecutorService</code> 还有一个<strong>抽象实现类</strong> <code>AbstractExecutorService</code>。</li>
+<li><code>AbstractExecutorService</code> 提供了 <code>submit()</code>、<code>invokeAll()</code> 和 <code>invokeAny()</code> 的默认实现，子类需要实现其他方法。<ul>
+<li>除了 <code>execute()</code>，其他方法都与执行服务的<strong>生命周期管理</strong>有关。</li>
+<li><code>submit()</code>、<code>invokeAll()</code>和 <code>invokeAny()</code> 最终都会调用 <code>execute()</code>，<strong><code>execute()</code> 决定了到底如何执行任务</strong>。</li>
+</ul>
+</li>
+</ul>
+<h4 id="9-Future-的基本实现原理"><a href="#9-Future-的基本实现原理" class="headerlink" title="9. Future 的基本实现原理"></a>9. Future 的基本实现原理</h4><ul>
+<li><strong><code>Future</code> 的主要实现类是 <code>FutureTask</code></strong>。</li>
+<li><code>FutureTask</code> 实现了 <code>RunnableFuture</code> 接口。</li>
+<li><code>RunnableFuture</code> 接口既扩展了 <code>Runnable</code>，又扩展了 <code>Future</code>，没有定义新方法。<ul>
+<li><strong>作为 <code>Runnable</code></strong>，它表示要执行的任务，传递给 <code>execute()</code> 方法进行执行。</li>
+<li><strong>作为 <code>Future</code></strong>，它又表示任务执行的异步结果。</li>
+</ul>
+</li>
+</ul>
+<h4 id="10-写一个简单的-ExecutorService-实现类"><a href="#10-写一个简单的-ExecutorService-实现类" class="headerlink" title="10. 写一个简单的 ExecutorService 实现类"></a>10. 写一个简单的 ExecutorService 实现类</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SimpleExecutorService</span> <span class="keyword">extends</span> <span class="title">AbstractExecutorService</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">shutdown</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Runnable&gt; <span class="title">shutdownNow</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isShutdown</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isTerminated</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">awaitTermination</span><span class="params">(<span class="keyword">long</span> itmeout, TimeUnit unit)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">(Runnable command)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> Thread(command).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;margin-top:80px">-------------------- 本文结束<i class="fa fa-paw"></i>感谢您的阅读 --------------------</div>
+    
+</div>
+      
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>隋钟元
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://24suixinsuoyu.com/2020/05/22/Java-%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C%E6%9C%8D%E5%8A%A1%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E5%92%8C%E5%8E%9F%E7%90%86/" title="Java 异步任务执行服务（一）：基本概念和原理">http://24suixinsuoyu.com/2020/05/22/Java-异步任务执行服务（一）：基本概念和原理/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C%E6%9C%8D%E5%8A%A1/" rel="tag"><i class="fa fa-tag"></i> 异步任务执行服务</a>
+              <a href="/tags/%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E5%92%8C%E5%8E%9F%E7%90%86/" rel="tag"><i class="fa fa-tag"></i> 基本概念和原理</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/22/Java-%E5%B9%B6%E5%8F%91%E5%AE%B9%E5%99%A8%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E5%B9%B6%E5%8F%91%E9%98%9F%E5%88%97/" rel="prev" title="Java 并发容器（四）：并发队列">
+      <i class="fa fa-chevron-left"></i> Java 并发容器（四）：并发队列
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/22/Java-%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C%E6%9C%8D%E5%8A%A1%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E7%BA%BF%E7%A8%8B%E6%B1%A0/" rel="next" title="Java 异步任务执行服务（二）：线程池">
+      Java 异步任务执行服务（二）：线程池 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-异步任务执行服务是什么意思"><span class="nav-text">1. 异步任务执行服务是什么意思</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-任务执行服务涉及的基本接口有哪些"><span class="nav-text">2. 任务执行服务涉及的基本接口有哪些</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Runnable-和-Callable-的区别是什么"><span class="nav-text">3. Runnable 和 Callable 的区别是什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-怎样理解-Executor"><span class="nav-text">4. 怎样理解 Executor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-怎样理解-ExecutorService"><span class="nav-text">5. 怎样理解 ExecutorService</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-怎样理解-Future"><span class="nav-text">6. 怎样理解 Future</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-写一个任务执行服务-Demo"><span class="nav-text">7. 写一个任务执行服务 Demo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-ExecutorService-的基本实现原理"><span class="nav-text">8. ExecutorService 的基本实现原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-Future-的基本实现原理"><span class="nav-text">9. Future 的基本实现原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-写一个简单的-ExecutorService-实现类"><span class="nav-text">10. 写一个简单的 ExecutorService 实现类</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="隋钟元"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">隋钟元</p>
+  <div class="site-description" itemprop="description">技术创造价值</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">157</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">188</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:24suixinsuoyu@gmail.com" title="E-Mail → mailto:24suixinsuoyu@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/24suixinsuoyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;24suixinsuoyu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/24sxsy" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;24sxsy" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/guolin_blog" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;guolin_blog" rel="noopener" target="_blank">郭霖</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/lmj623565791/" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;lmj623565791&#x2F;" rel="noopener" target="_blank">鸿洋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.520monkey.com/" title="http:&#x2F;&#x2F;www.520monkey.com&#x2F;" rel="noopener" target="_blank">姜维</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://daimajia.com/" title="https:&#x2F;&#x2F;daimajia.com&#x2F;" rel="noopener" target="_blank">代码家</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://kmxz.net/" title="https:&#x2F;&#x2F;kmxz.net&#x2F;" rel="noopener" target="_blank">孔祥舟</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yangwenbo.com/" title="http:&#x2F;&#x2F;yangwenbo.com&#x2F;" rel="noopener" target="_blank">杨文博</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">隋钟元</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">479k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">7:15</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+

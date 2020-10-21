@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1. ConcurrentHashMap 的特点">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 并发容器（二）：ConcurrentHashMap">
+<meta property="og:url" content="http://24suixinsuoyu.com/2020/05/22/Java-%E5%B9%B6%E5%8F%91%E5%AE%B9%E5%99%A8%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9AConcurrentHashMap/index.html">
+<meta property="og:site_name" content="隋钟元’s Blog">
+<meta property="og:description" content="1. ConcurrentHashMap 的特点">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-22T12:22:09.000Z">
+<meta property="article:modified_time" content="2020-05-24T13:37:04.000Z">
+<meta property="article:author" content="隋钟元">
+<meta property="article:tag" content="并发容器">
+<meta property="article:tag" content="ConcurrentHashMap">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://24suixinsuoyu.com/2020/05/22/Java-%E5%B9%B6%E5%8F%91%E5%AE%B9%E5%99%A8%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9AConcurrentHashMap/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Java 并发容器（二）：ConcurrentHashMap | 隋钟元’s Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">隋钟元’s Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-university"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th-list"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-english">
+
+    <a href="/english/" rel="section"><i class="fa fa-fw fa-graduation-cap"></i>英语</a>
+
+  </li>
+        <li class="menu-item menu-item-life">
+
+    <a href="/life/" rel="section"><i class="fa fa-fw fa-balance-scale"></i>生活</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/" rel="section"><i class="fa fa-fw fa-user-circle-o"></i>简历</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/commonweal/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/24suixinsuoyu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/05/22/Java-%E5%B9%B6%E5%8F%91%E5%AE%B9%E5%99%A8%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9AConcurrentHashMap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="隋钟元">
+      <meta itemprop="description" content="技术创造价值">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="隋钟元’s Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java 并发容器（二）：ConcurrentHashMap
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-22 20:22:09" itemprop="dateCreated datePublished" datetime="2020-05-22T20:22:09+08:00">2020-05-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-24 21:37:04" itemprop="dateModified" datetime="2020-05-24T21:37:04+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E3%80%8AJava-%E7%BC%96%E7%A8%8B%E7%9A%84%E9%80%BB%E8%BE%91%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《Java 编程的逻辑》</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="1-ConcurrentHashMap-的特点"><a href="#1-ConcurrentHashMap-的特点" class="headerlink" title="1. ConcurrentHashMap 的特点"></a>1. ConcurrentHashMap 的特点</h4><a id="more"></a>
+
+<ul>
+<li><code>ConcurrentHashMap</code> 是 <code>HashMap</code> 的<strong>并发版本</strong>，与 <code>HashMap</code> 相比，有如下特点：<ul>
+<li><strong>并发安全</strong>。</li>
+<li>直接支持一些<strong>原子复合操作</strong>。</li>
+<li>支持<strong>高并发</strong>，读操作完全并行，写操作支持一定程度的并行。</li>
+<li>与同步容器 <code>Collections.synchronizedMap</code> 相比，<strong>迭代不用加锁</strong>，不会抛出 <code>ConcurrentModificationException</code> 异常。</li>
+<li><strong>弱一致性</strong>。</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-写一个-HashMap-死循环-Demo"><a href="#2-写一个-HashMap-死循环-Demo" class="headerlink" title="2. 写一个 HashMap 死循环 Demo"></a>2. 写一个 HashMap 死循环 Demo</h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//HashMap 不是并发安全的，在并发更新的情况下，HashMap 可能出现死循环，占满 CPU</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">unsafeConcurrentUpdate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> Map&lt;Integer, Integer&gt; <span class="built_in">map</span> = <span class="keyword">new</span> HashMap&lt;&gt; ();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">1000</span>; i++) &#123;</span><br><span class="line">        Thread t = <span class="keyword">new</span> Thread() &#123;</span><br><span class="line">            Random rnd = <span class="keyword">new</span> Random();</span><br><span class="line">            @Override</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">1000</span>; i++) &#123;</span><br><span class="line">                    <span class="built_in">map</span>.<span class="built_in">put</span>(rnd.nextInt(), <span class="number">1</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-接上题，上面代码为什么会出现死循环"><a href="#3-接上题，上面代码为什么会出现死循环" class="headerlink" title="3. 接上题，上面代码为什么会出现死循环"></a>3. 接上题，上面代码为什么会出现死循环</h4><ul>
+<li>死循环出现在<strong>多个线程同时扩容哈希表</strong>的时候，不是同时更新一个链表的时候，那种情况可能出现更新丢失，但不会死循环，具体过程比较复杂。</li>
+<li>关于 Java 7 的解释可以参考：<a href="http://coolshell.cn/articles/9606.html" target="_blank" rel="noopener">http://coolshell.cn/articles/9606.html</a>。</li>
+<li>Java 8 对 HashMap 的实现进行了大量<strong>优化</strong>，减少了死循环的可能，但在扩容的时候还是可能有死循环。</li>
+</ul>
+<h4 id="4-接上题，怎样避免产生死循环"><a href="#4-接上题，怎样避免产生死循环" class="headerlink" title="4. 接上题，怎样避免产生死循环"></a>4. 接上题，怎样避免产生死循环</h4><ul>
+<li><p>使用 <code>Collections.synchronizedMap</code> 方法生成一个<strong>同步容器</strong>，替换第一行代码为：<code>final Map&lt;Integer, Integer&gt; map = Collections.synchronizedMap(new HashMap&lt;Integer, Integer&gt; ());</code>。同步容器有两个问题：</p>
+<ul>
+<li>每个方法都需要同步，支持的<strong>并发度</strong>比较低。</li>
+<li>对于迭代和复合操作，需要调用方<strong>加锁</strong>，使用比较麻烦，且容易忘记。</li>
+</ul>
+</li>
+<li><p><strong><code>ConcurrentHashMap</code></strong> 没有这些问题，它同样实现了 <code>Map</code> 接口，也是基于哈希表实现的，替换第一行代码为：<code>final Map&lt;Integer, Integer&gt; map = new ConcurrentHashMap&lt;&gt; ();</code>。</p>
+</li>
+</ul>
+<h4 id="5-ConcurrentHashMap-是怎样支持原子复合操作的"><a href="#5-ConcurrentHashMap-是怎样支持原子复合操作的" class="headerlink" title="5. ConcurrentHashMap 是怎样支持原子复合操作的"></a>5. ConcurrentHashMap 是怎样支持原子复合操作的</h4><ul>
+<li><code>ConcurrentHashMap</code> 还实现了一个接口 <code>ConcurrentMap</code>，接口定义了一些<strong>条件更新</strong>操作。</li>
+<li>如果使用同步容器，调用方必须加锁，而 <code>ConcurrentHashMap</code> 将它们实现为了<strong>原子操作</strong>。</li>
+<li>实际上，使用 <code>ConcurrentHashMap</code>，调用方也没有办法进行加锁，它没有暴露<strong>锁接口</strong>，也不使用 <code>synchronized</code>。</li>
+</ul>
+<h4 id="6-ConcurrentMap-接口的定义是"><a href="#6-ConcurrentMap-接口的定义是" class="headerlink" title="6. ConcurrentMap 接口的定义是"></a>6. ConcurrentMap 接口的定义是</h4><ul>
+<li><p>Java 7 中的具体定义：</p>
+  <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="symbol">ConcurrentMap</span>&lt;<span class="symbol">K</span>, <span class="symbol">V</span>&gt; <span class="symbol">extends</span> <span class="symbol">Map</span>&lt;<span class="symbol">K</span>, <span class="symbol">V</span>&gt; &#123;</span><br><span class="line">    <span class="comment">//条件更新，如果 map 中没有 key，设置 key 为 value，返回原来 key 对应的值</span></span><br><span class="line">    <span class="comment">//如果没有，返回 null</span></span><br><span class="line">    V putIfAbsent(K key, V value);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//条件删除，如果 Map 中有 key，且对应的值为 value，则删除，如果删除了，返回 true</span></span><br><span class="line">    <span class="comment">//否则返回 false</span></span><br><span class="line">    <span class="built_in">bool</span>ean remove(Object key, Object value);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//条件替换，如果 Map 中有 key，且对应的值为 oldValue，则替换为 newValue</span></span><br><span class="line">    <span class="comment">//如果替换了，返回 ture，否则 false</span></span><br><span class="line">    <span class="built_in">bool</span>ean replace(K key, V oldValue, V newValue);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//条件替换，如果 Map 中有 key，则替换值为 value，返回原来 key 对应的值</span></span><br><span class="line">    <span class="comment">//如果原来没有，返回 null</span></span><br><span class="line">    V replace(K key, V value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Java 8 增加了几个<strong>默认方法</strong>，包括 <code>getOrDefault()</code>、<code>forEach()</code>、<code>computeIfAbsent()</code>、<code>merge()</code> 等。</p>
+</li>
+</ul>
+<h4 id="7-ConcurrentHashMap-是为高并发设计的，具体怎么实现的呢"><a href="#7-ConcurrentHashMap-是为高并发设计的，具体怎么实现的呢" class="headerlink" title="7. ConcurrentHashMap 是为高并发设计的，具体怎么实现的呢"></a>7. ConcurrentHashMap 是为高并发设计的，具体怎么实现的呢</h4><ul>
+<li><p>在 Java 7 中，主要有两点：</p>
+<ul>
+<li><strong>分段锁</strong>。</li>
+<li><strong>读不需要锁</strong>。</li>
+</ul>
+</li>
+<li><p>同步容器使用 <code>synchronized</code>，所有方法竞争同一个锁；而 <code>ConcurrentHashMap</code> 采用<strong>分段锁</strong>技术：</p>
+<ul>
+<li>将数据分为<strong>多个段</strong>，而每个段有一个<strong>独立的锁</strong>。</li>
+<li>每一个段相当于一个独立的哈希表，<strong>分段的依据也是哈希值</strong>，无论是保存键值对还是根据键查找，都先根据键的哈希值映射到段，再在对应的哈希表上进行操作。</li>
+</ul>
+</li>
+<li><p>采用分段锁，可以大大提高<strong>并发度</strong>，多个段之间可以并行读写。<strong>默认情况下，段是 16 个</strong>，不过，这个数字可以通过<strong>构造方法</strong>进行设置：<code>public ConcurrentHashMap(int initialCapacity, float loadFactor, int concurrencyLevel);</code>。</p>
+<ul>
+<li><strong><code>concurrencyLevel</code> 表示估计的并行更新的线程个数，<code>ConcurrentHashMap</code> 会将该数据转换为 2 的整数次幂</strong>，比如 14 转换为 16，25 转换为 32。</li>
+<li>在对每个段的数据进行读写时，<code>ConcurrentHashMap</code> 也不是简单地使用锁进行同步，<strong>内部使用了 CAS</strong>。对一些写采用<strong>原子方式</strong>的方法，实现比较复杂。</li>
+<li>实现的效果是，<strong>对于写操作，需要获取锁，不能并行；但是读操作可以，多个读可以并行，写的同时也可以读</strong>，这使得 <code>ConcurrentHashMap</code> 的并行度<strong>远高于</strong>同步容器。</li>
+</ul>
+</li>
+<li><p>Java 8 对 <code>ConcurrentHashMap</code> 的实现进一步做了优化。</p>
+<ul>
+<li>首先，与 <code>HashMap</code> 的改进类似，在<strong>哈希冲突</strong>比较严重的时候，会将单向链表转化为平衡的排序二叉树，提高查找的效率。</li>
+<li>其次，<strong>锁的粒度</strong>进一步细化了，以提高并行性，哈希表数组中的每个位置（指向一个单链表或树）都有一个单独的锁，具体比较复杂。</li>
+</ul>
+</li>
+</ul>
+<h4 id="8-怎样理解-ConcurrentHashMap-的迭代安全"><a href="#8-怎样理解-ConcurrentHashMap-的迭代安全" class="headerlink" title="8. 怎样理解 ConcurrentHashMap 的迭代安全"></a>8. 怎样理解 ConcurrentHashMap 的迭代安全</h4><ul>
+<li><strong>使用同步容器，在迭代中需要加锁</strong>，否则可能会抛出 <code>ConcurrentModificationException</code> 异常。</li>
+<li><code>ConcurrentHashMap</code> 没有这个问题，在迭代器创建后，在迭代过程中，如果另一个线程对容器进行了修改，<strong>迭代会继续，不会抛出异常</strong>。</li>
+</ul>
+<h4 id="9-怎样理解-ConcurrentHashMap-的弱一致性"><a href="#9-怎样理解-ConcurrentHashMap-的弱一致性" class="headerlink" title="9. 怎样理解 ConcurrentHashMap 的弱一致性"></a>9. 怎样理解 ConcurrentHashMap 的弱一致性</h4><ul>
+<li><p><code>ConcurrentHashMap</code> 的<strong>迭代器</strong>创建后，就会按照哈希表结构<strong>遍历</strong>每个元素，但在遍历过程中，<strong>内部元素</strong>可能发生变化。</p>
+<ul>
+<li>如果变化发生在<strong>已遍历过</strong>的部分，迭代器就不会反映出来。</li>
+<li>而如果变化发生在<strong>未遍历过</strong>的部分，迭代器就会发现并反映出来，这就是<strong>弱一致性</strong>。</li>
+</ul>
+</li>
+<li><p>类似的情况还会出现在 <code>ConcurrentHashMap</code> 的另一个方法：<code>public void putAll(Map&lt;? extends K, ? extends V&gt; m)（批量添加 m 中的键值对到当前 Map）</code>。<strong>该方法并非原子操作</strong>，而是调用 <code>put()</code> 方法逐个元素进行添加的，在该方法没有结束的时候，部分修改效果就会体现出来。</p>
+</li>
+</ul>
+<h4 id="10-Java-中有并发版本的-HashSet-吗"><a href="#10-Java-中有并发版本的-HashSet-吗" class="headerlink" title="10. Java 中有并发版本的 HashSet 吗"></a>10. Java 中有并发版本的 HashSet 吗</h4><ul>
+<li><strong>没有</strong>。</li>
+<li>但可以通过 <code>Collections.newSetFromMap</code> 方法基于 <code>ConcurrentHashMap</code> 创建一个。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;margin-top:80px">-------------------- 本文结束<i class="fa fa-paw"></i>感谢您的阅读 --------------------</div>
+    
+</div>
+      
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>隋钟元
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://24suixinsuoyu.com/2020/05/22/Java-%E5%B9%B6%E5%8F%91%E5%AE%B9%E5%99%A8%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9AConcurrentHashMap/" title="Java 并发容器（二）：ConcurrentHashMap">http://24suixinsuoyu.com/2020/05/22/Java-并发容器（二）：ConcurrentHashMap/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E5%B9%B6%E5%8F%91%E5%AE%B9%E5%99%A8/" rel="tag"><i class="fa fa-tag"></i> 并发容器</a>
+              <a href="/tags/ConcurrentHashMap/" rel="tag"><i class="fa fa-tag"></i> ConcurrentHashMap</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/22/Java-%E5%B9%B6%E5%8F%91%E5%AE%B9%E5%99%A8%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%86%99%E6%97%B6%E5%A4%8D%E5%88%B6%E7%9A%84-List-%E5%92%8C-Set/" rel="prev" title="Java 并发容器（一）：写时复制的 List 和 Set">
+      <i class="fa fa-chevron-left"></i> Java 并发容器（一）：写时复制的 List 和 Set
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/22/Java-%E5%B9%B6%E5%8F%91%E5%AE%B9%E5%99%A8%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E5%9F%BA%E4%BA%8E%E8%B7%B3%E8%A1%A8%E7%9A%84-Map-%E5%92%8C-Set/" rel="next" title="Java 并发容器（三）：基于跳表的 Map 和 Set">
+      Java 并发容器（三）：基于跳表的 Map 和 Set <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-ConcurrentHashMap-的特点"><span class="nav-text">1. ConcurrentHashMap 的特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-写一个-HashMap-死循环-Demo"><span class="nav-text">2. 写一个 HashMap 死循环 Demo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-接上题，上面代码为什么会出现死循环"><span class="nav-text">3. 接上题，上面代码为什么会出现死循环</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-接上题，怎样避免产生死循环"><span class="nav-text">4. 接上题，怎样避免产生死循环</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-ConcurrentHashMap-是怎样支持原子复合操作的"><span class="nav-text">5. ConcurrentHashMap 是怎样支持原子复合操作的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-ConcurrentMap-接口的定义是"><span class="nav-text">6. ConcurrentMap 接口的定义是</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-ConcurrentHashMap-是为高并发设计的，具体怎么实现的呢"><span class="nav-text">7. ConcurrentHashMap 是为高并发设计的，具体怎么实现的呢</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-怎样理解-ConcurrentHashMap-的迭代安全"><span class="nav-text">8. 怎样理解 ConcurrentHashMap 的迭代安全</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-怎样理解-ConcurrentHashMap-的弱一致性"><span class="nav-text">9. 怎样理解 ConcurrentHashMap 的弱一致性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-Java-中有并发版本的-HashSet-吗"><span class="nav-text">10. Java 中有并发版本的 HashSet 吗</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="隋钟元"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">隋钟元</p>
+  <div class="site-description" itemprop="description">技术创造价值</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">157</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">188</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:24suixinsuoyu@gmail.com" title="E-Mail → mailto:24suixinsuoyu@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/24suixinsuoyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;24suixinsuoyu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/24sxsy" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;24sxsy" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/guolin_blog" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;guolin_blog" rel="noopener" target="_blank">郭霖</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/lmj623565791/" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;lmj623565791&#x2F;" rel="noopener" target="_blank">鸿洋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.520monkey.com/" title="http:&#x2F;&#x2F;www.520monkey.com&#x2F;" rel="noopener" target="_blank">姜维</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://daimajia.com/" title="https:&#x2F;&#x2F;daimajia.com&#x2F;" rel="noopener" target="_blank">代码家</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://kmxz.net/" title="https:&#x2F;&#x2F;kmxz.net&#x2F;" rel="noopener" target="_blank">孔祥舟</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yangwenbo.com/" title="http:&#x2F;&#x2F;yangwenbo.com&#x2F;" rel="noopener" target="_blank">杨文博</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">隋钟元</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">479k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">7:15</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+
