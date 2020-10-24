@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. Activity 生命周期的种类">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-09-09T15:57:46.000Z">
-<meta property="article:modified_time" content="2020-09-13T09:41:20.000Z">
+<meta property="article:modified_time" content="2020-10-24T12:53:38.419Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Activity 的生命周期和启动模式">
 <meta property="article:tag" content="Activity 的生命周期全面分析">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-13 17:41:20" itemprop="dateModified" datetime="2020-09-13T17:41:20+08:00">2020-09-13</time>
+                <time title="修改时间：2020-10-24 20:53:38" itemprop="dateModified" datetime="2020-10-24T20:53:38+08:00">2020-10-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,14 +233,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2k</span>
+              <span>5.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>5 分钟</span>
             </span>
 
         </div>
@@ -335,7 +335,126 @@
 </ul>
 </li>
 </ul>
-<h4 id="7"><a href="#7" class="headerlink" title="7."></a>7.</h4>
+<h4 id="7-异常情况-Activity-生命周期包括哪些异常情况"><a href="#7-异常情况-Activity-生命周期包括哪些异常情况" class="headerlink" title="7. 异常情况 Activity 生命周期包括哪些异常情况"></a>7. 异常情况 Activity 生命周期包括哪些异常情况</h4><ul>
+<li>资源相关的<strong>系统配置发生改变</strong>导致 Activity 被杀死并被重新创建</li>
+<li>系统资源<strong>内存不足</strong>导致低优先级的 Activity 被杀死</li>
+</ul>
+<h4 id="8-系统配置发生改变的异常情况下-Activity-的重建过程"><a href="#8-系统配置发生改变的异常情况下-Activity-的重建过程" class="headerlink" title="8. 系统配置发生改变的异常情况下 Activity 的重建过程"></a>8. 系统配置发生改变的异常情况下 Activity 的重建过程</h4><ul>
+<li><p>系统配置发生改变后，Activity 会被销毁，其 <code>onPause()</code>、<code>onStop()</code>、<code>onDestroy()</code> 方法均会被调用</p>
+<ul>
+<li>由于 Activity 是在异常情况下终止的，系统会调用 <strong><code>onSaveInstanceState()</code></strong> 方法来保存当前 Activity 的状态</li>
+<li><code>onSaveInstanceState()</code> 方法的调用时机是在 <code>onStop()</code> 之前，它和 <code>onPause()</code> 没有既定的时序关系，既可能在 <code>onPause()</code> 之前调用，也可能在 <code>onPause()</code> 之后调用</li>
+</ul>
+</li>
+<li><p>当 Activity 被重新创建后，系统会调用 <strong><code>onRestoreInstanceState()</code></strong> 方法，并且把 Activity 销毁时 <code>onSaveInstanceState()</code> 方法所保存的 Bundle 对象作为参数同时传递给 <code>onRestoreInstanceState()</code> 方法和 <code>onCreate()</code> 方法</p>
+<ul>
+<li>可以通过 <code>onRestoreInstanceState()</code> 和 <code>onCreate()</code> 方法来判断 Activity 是否被重建了，如果被重建了，那么就可以取出之前保存的数据并恢复</li>
+<li>从时序上来说，<code>onRestoreIntanceState()</code> 的调用时机在 <code>onStart()</code> 之后</li>
+</ul>
+</li>
+<li><p>在 <code>onSaveInstanceState()</code> 和 <code>onRestoreInstanceState()</code> 方法中，系统自动做了一定程度的恢复工作</p>
+<ul>
+<li>当 Activity 在异常情况下需要重新创建时，系统会默认为我们保存当前 Activity 的<strong>视图结构</strong>，并且在 Activity 重启后为我们恢复这些数据。比如文本框中用户输入的数据、ListView 滚动的位置等，这些 View 相关的状态系统都能够默认为我们恢复</li>
+<li>具体针对某一个特定的 View 系统能为我们恢复哪些数据，我们可以查看 View 的源码。和 Activity 一样，<strong>每个 View 都有 <code>onSaveInstanceState()</code> 方法和 <code>onRestoreInstanceState()</code> 方法</strong>，看一下它们的具体实现，就能知道系统能自动为每个 View 恢复哪些数据</li>
+</ul>
+</li>
+<li><p>系统只在 Activity 异常终止的时候才会调用 <code>onSaveInstanceState()</code> 和 <code>onRestoreInstanceState()</code> 来存储和恢复数据，其他情况不会触发对这一对方法的调用。但是<strong>按 Home 键或启动新 Activity 时仍然会单独触发 <code>onSaveInstanceState()</code>方法的调用</strong></p>
+</li>
+</ul>
+<h4 id="9-关于保存和恢复-View-层次结构，系统的工作流程"><a href="#9-关于保存和恢复-View-层次结构，系统的工作流程" class="headerlink" title="9. 关于保存和恢复 View 层次结构，系统的工作流程"></a>9. 关于保存和恢复 View 层次结构，系统的工作流程</h4><ul>
+<li>首先 Activity 被意外终止时，Activity 会调用 <code>onSaveInstanceState()</code> 方法去保存数据，然后 Activity 会委托 Window 去保存数据，接着 Window 再委托它上面的顶级容器去保存数据</li>
+<li>顶层容器是一个 ViewGroup，一般来说它很可能是 DecorView，最后顶层容器再去一一通知它的子元素来保存数据，这样整个数据保存过程就完成了</li>
+<li>这是一种典型的<strong>委托思想</strong>，<strong>上层委托底层、父容器委托子元素去处理一件事情</strong>。这种思想在 Android 中有很多应用，比如 View 的绘制过程、事件分发等都是采用类似的思想</li>
+<li>数据恢复过程也是采用的类似的委托思想</li>
+</ul>
+<h4 id="10-异常情况下-Activity-被销毁并重新创建，获取保存的数据时，接受的位置可以选择-onRestoreInstanceState-或者-onCreate-，二者的区别"><a href="#10-异常情况下-Activity-被销毁并重新创建，获取保存的数据时，接受的位置可以选择-onRestoreInstanceState-或者-onCreate-，二者的区别" class="headerlink" title="10. 异常情况下 Activity 被销毁并重新创建，获取保存的数据时，接受的位置可以选择 onRestoreInstanceState() 或者 onCreate()，二者的区别"></a>10. 异常情况下 Activity 被销毁并重新创建，获取保存的数据时，接受的位置可以选择 onRestoreInstanceState() 或者 onCreate()，二者的区别</h4><ul>
+<li><code>onRestoreInstanceState()</code> 一旦被调用，其参数 <code>Bundle savedInstanceState</code> 一定是有值的，不用额外判空</li>
+<li>而 <code>onCreate()</code> 如果是正常启动的话，其参数 <code>Bundle savedInstanceState</code> 为 <code>null</code>，所以必须要进行判空操作</li>
+<li>这两个方法我们可以选择任意一个进行数据恢复，但是官方文档建议采用 <code>onRestoreInstanceState()</code> 方法去恢复数据</li>
+</ul>
+<h4 id="11-系统资源内存不足导致低优先级的-Activity-被杀死，此异常情况下的数据存储和恢复过程"><a href="#11-系统资源内存不足导致低优先级的-Activity-被杀死，此异常情况下的数据存储和恢复过程" class="headerlink" title="11. 系统资源内存不足导致低优先级的 Activity 被杀死，此异常情况下的数据存储和恢复过程"></a>11. 系统资源内存不足导致低优先级的 Activity 被杀死，此异常情况下的数据存储和恢复过程</h4><ul>
+<li>这种情况不太好模拟，但是其数据存储和恢复过程和系统配置改变导致 Activity 被销毁并重新创建的异常情况下的数据存储和恢复过程<strong>完全一致</strong></li>
+<li>当系统内存不足时，<strong>系统就会按照优先级去杀死目标 Activity 所在的进程</strong>，并在后续通过 <code>onSaveInstanceState()</code> 和 <code>onRestoreInstanceState()</code> 来存储和恢复数据<ul>
+<li>如果一个进程中没有四大组件在执行，那么这个进程将很快被系统杀死。因此，一些后台工作不适合脱离四大组件而独自运行在后台中，这样进程很容易被杀死</li>
+<li>比较好的方法是将后台工作放入 Service 中从而保证进程有一定的优先级，这样就不会轻易地被系统杀死</li>
+</ul>
+</li>
+</ul>
+<h4 id="12-Activity-按照优先级从高到低分类"><a href="#12-Activity-按照优先级从高到低分类" class="headerlink" title="12. Activity 按照优先级从高到低分类"></a>12. Activity 按照优先级从高到低分类</h4><ul>
+<li><strong>前台 Activity</strong>: 正在和用户交互的 Activity，优先级最高</li>
+<li><strong>可见但非前台 Activity</strong>: 比如 Activity 中弹出了一个对话框，导致 Activity 可见但是位于后台无法和用户直接交互</li>
+<li><strong>后台 Activity</strong>: 已经被暂停的 Activity，比如执行了 onStop()，优先级最低</li>
+</ul>
+<h4 id="13-默认情况下当系统配置发生了改变，Activity-就会被销毁并重新创建，怎样能不重新创建"><a href="#13-默认情况下当系统配置发生了改变，Activity-就会被销毁并重新创建，怎样能不重新创建" class="headerlink" title="13. 默认情况下当系统配置发生了改变，Activity 就会被销毁并重新创建，怎样能不重新创建"></a>13. 默认情况下当系统配置发生了改变，Activity 就会被销毁并重新创建，怎样能不重新创建</h4><ul>
+<li>可以在 AndroidMenifest.xml 清单文件中给 Activity 的 <strong>configChanges</strong> 属性指定属性值为 orientation</li>
+<li>编译时项目中指定的 minSdkVersion 和 targetSdkVersion 如果有一个大于 13，此时为了防止旋转屏幕时 Activity 重启，除了 orientation，还要加上 <strong>screenSize</strong> 属性值。即：<strong>android:configChanges=”orientation|screenSize”</strong></li>
+<li>指定好属性值后，Activity 的确没有重新创建，也没有调用 onSaveInstanceState() 和 onRestoreInstanceState() 来存储和恢复数据。而是系统调用了 Activity 的 <strong><code>onConfigurationChanged()</code></strong> 方法，我们可以在这个方法里加入自己的逻辑</li>
+</ul>
+<h4 id="14-configChanges-的属性值和对应的含义"><a href="#14-configChanges-的属性值和对应的含义" class="headerlink" title="14. configChanges 的属性值和对应的含义"></a>14. configChanges 的属性值和对应的含义</h4><table>
+<thead>
+<tr>
+<th align="center">属性值</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">mcc</td>
+<td align="center">SIM 卡唯一标识 IMSI（国际移动用户识别码）中的国家代码，由三位数字组成，中国为 460。此项标识 mcc 代码发生了改变</td>
+</tr>
+<tr>
+<td align="center">mnc</td>
+<td align="center">SIM 卡唯一标识（国际移动用户识别码）中的运营商代码，由两位数字组成，中国移动 TD 系统为 00，中国联通为 01，中国电信为 03。此项标识 mnc 发生了改变</td>
+</tr>
+<tr>
+<td align="center">locale</td>
+<td align="center">设备的本地位置发生了改变，一般指切换了系统语言</td>
+</tr>
+<tr>
+<td align="center">touchscreen</td>
+<td align="center">触摸屏发生了改变，这个很费解，正常情况下无法发生，可以忽略</td>
+</tr>
+<tr>
+<td align="center">keyboard</td>
+<td align="center">键盘类型发生了改变，比如用户使用了外插键盘</td>
+</tr>
+<tr>
+<td align="center">keyboardHidden</td>
+<td align="center">键盘的可访问性发生了改变，比如用户调出了键盘</td>
+</tr>
+<tr>
+<td align="center">navigation</td>
+<td align="center">键盘导航方式发生了改变，比如采用了轨迹球导航，这个有点费解，很难发生，可以忽略</td>
+</tr>
+<tr>
+<td align="center">screenLayout</td>
+<td align="center">屏幕布局发生了改变，很可能是用户激活了另外一个显示设备</td>
+</tr>
+<tr>
+<td align="center">fontScale</td>
+<td align="center">系统字体缩放比例发生了改变，比如用户选择了一个新字号</td>
+</tr>
+<tr>
+<td align="center">uiMode</td>
+<td align="center">用户界面模式发生了改变，比如是否开启了夜间模式（API 8 新加）</td>
+</tr>
+<tr>
+<td align="center">orientation</td>
+<td align="center">屏幕方向发生了改变，这个是最常用的，比如旋转了手机屏幕</td>
+</tr>
+<tr>
+<td align="center">screenSize</td>
+<td align="center">当屏幕的尺寸信息发生了改变，当旋转设备屏幕时，屏幕尺寸会发生变化。这个选项比较特殊，它和编译选项有关，当编译选项中的 minSdkVersion 和 targetSdkVersion 均低于 13 时，此选项不会导致 Activity 重启，否则会导致 Activity 重启（API 13 新加）</td>
+</tr>
+<tr>
+<td align="center">smallestScreenSize</td>
+<td align="center">设备的物理屏幕尺寸发生改变，这个属性和屏幕的方向没关系，仅仅表示在实际的物理屏幕的尺寸改变的时候发生，比如用户切换到了外部的显示设备。这个属性和 screenSize 一样，当编译选项中的 minSdkVersion 和 targetSdkVersion 均低于 13 时，此选项不会导致 Activity 重启，否则会导致 Activity 重启（API 13 新加）</td>
+</tr>
+<tr>
+<td align="center">layoutDirection</td>
+<td align="center">当布局方向发生变化，这个属性用的比较少，正常情况下无须修改布局的 layoutDirection 属性（API 17 新加）</td>
+</tr>
+</tbody></table>
+
     </div>
 
     
@@ -448,7 +567,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Activity-生命周期的种类"><span class="nav-text">1. Activity 生命周期的种类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-典型情况下-Activity-生命周期各个方法含义"><span class="nav-text">2. 典型情况下 Activity 生命周期各个方法含义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Activity-生命周期中各个方法的配对情况"><span class="nav-text">3. Activity 生命周期中各个方法的配对情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-onStart-和-onResume-、onPause-和-onStop-从描述上来看差不多，那它们之间有什么实质的不同"><span class="nav-text">4. onStart() 和 onResume()、onPause() 和 onStop() 从描述上来看差不多，那它们之间有什么实质的不同</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-Activity-的启动过程大概是怎样的"><span class="nav-text">5. Activity 的启动过程大概是怎样的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-假设当前-Activity-为-A，如果这时用户打开一个新的-Activity-B，那么-B-的-onResume-和-A-的-onPause-哪个先执行呢"><span class="nav-text">6. 假设当前 Activity 为 A，如果这时用户打开一个新的 Activity B，那么 B 的 onResume() 和 A 的 onPause() 哪个先执行呢</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7"><span class="nav-text">7.</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Activity-生命周期的种类"><span class="nav-text">1. Activity 生命周期的种类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-典型情况下-Activity-生命周期各个方法含义"><span class="nav-text">2. 典型情况下 Activity 生命周期各个方法含义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Activity-生命周期中各个方法的配对情况"><span class="nav-text">3. Activity 生命周期中各个方法的配对情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-onStart-和-onResume-、onPause-和-onStop-从描述上来看差不多，那它们之间有什么实质的不同"><span class="nav-text">4. onStart() 和 onResume()、onPause() 和 onStop() 从描述上来看差不多，那它们之间有什么实质的不同</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-Activity-的启动过程大概是怎样的"><span class="nav-text">5. Activity 的启动过程大概是怎样的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-假设当前-Activity-为-A，如果这时用户打开一个新的-Activity-B，那么-B-的-onResume-和-A-的-onPause-哪个先执行呢"><span class="nav-text">6. 假设当前 Activity 为 A，如果这时用户打开一个新的 Activity B，那么 B 的 onResume() 和 A 的 onPause() 哪个先执行呢</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-异常情况-Activity-生命周期包括哪些异常情况"><span class="nav-text">7. 异常情况 Activity 生命周期包括哪些异常情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-系统配置发生改变的异常情况下-Activity-的重建过程"><span class="nav-text">8. 系统配置发生改变的异常情况下 Activity 的重建过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-关于保存和恢复-View-层次结构，系统的工作流程"><span class="nav-text">9. 关于保存和恢复 View 层次结构，系统的工作流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-异常情况下-Activity-被销毁并重新创建，获取保存的数据时，接受的位置可以选择-onRestoreInstanceState-或者-onCreate-，二者的区别"><span class="nav-text">10. 异常情况下 Activity 被销毁并重新创建，获取保存的数据时，接受的位置可以选择 onRestoreInstanceState() 或者 onCreate()，二者的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-系统资源内存不足导致低优先级的-Activity-被杀死，此异常情况下的数据存储和恢复过程"><span class="nav-text">11. 系统资源内存不足导致低优先级的 Activity 被杀死，此异常情况下的数据存储和恢复过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-Activity-按照优先级从高到低分类"><span class="nav-text">12. Activity 按照优先级从高到低分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-默认情况下当系统配置发生了改变，Activity-就会被销毁并重新创建，怎样能不重新创建"><span class="nav-text">13. 默认情况下当系统配置发生了改变，Activity 就会被销毁并重新创建，怎样能不重新创建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-configChanges-的属性值和对应的含义"><span class="nav-text">14. configChanges 的属性值和对应的含义</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -548,12 +667,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">479k</span>
+    <span title="站点总字数">482k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">7:15</span>
+    <span title="站点阅读时长">7:18</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
