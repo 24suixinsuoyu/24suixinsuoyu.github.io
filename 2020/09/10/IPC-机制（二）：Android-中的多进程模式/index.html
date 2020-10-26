@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1. AAA">
+  <meta name="description" content="1. Android 中开启多进程模式的方式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="IPC 机制（二）：Android 中的多进程模式">
 <meta property="og:url" content="http://24suixinsuoyu.com/2020/09/10/IPC-%E6%9C%BA%E5%88%B6%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9AAndroid-%E4%B8%AD%E7%9A%84%E5%A4%9A%E8%BF%9B%E7%A8%8B%E6%A8%A1%E5%BC%8F/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
-<meta property="og:description" content="1. AAA">
+<meta property="og:description" content="1. Android 中开启多进程模式的方式">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-09-09T16:08:56.000Z">
-<meta property="article:modified_time" content="2020-09-09T16:15:20.000Z">
+<meta property="article:modified_time" content="2020-10-26T08:05:02.002Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="IPC 机制">
 <meta property="article:tag" content="Android 中的多进程模式">
@@ -207,10 +207,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-09-10 00:08:56 / 修改时间：00:15:20" itemprop="dateCreated datePublished" datetime="2020-09-10T00:08:56+08:00">2020-09-10</time>
+              <time title="创建时间：2020-09-10 00:08:56" itemprop="dateCreated datePublished" datetime="2020-09-10T00:08:56+08:00">2020-09-10</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-26 16:05:02" itemprop="dateModified" datetime="2020-10-26T16:05:02+08:00">2020-10-26</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -227,7 +233,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5</span>
+              <span>1.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -246,7 +252,71 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-AAA"><a href="#1-AAA" class="headerlink" title="1. AAA"></a>1. AAA</h4><a id="more"></a>
+        <h4 id="1-Android-中开启多进程模式的方式"><a href="#1-Android-中开启多进程模式的方式" class="headerlink" title="1. Android 中开启多进程模式的方式"></a>1. Android 中开启多进程模式的方式</h4><a id="more"></a>
+
+<ul>
+<li>在 Android 中使用多进程只有一种方法：<strong>给四大组件在 AndroidMenifest.xml 文件中指定 android:process 属性</strong>。除此之外没有其他办法，也就是说我们无法给一个线程或者一个实体类指定其运行时所在的进程</li>
+<li>还有一种非常规的方法：<em>通过 JNI 在 native 层去 fork 一个新的进程</em>。但这种方法属于特殊情况，也不是常用的创建多进程的方式</li>
+</ul>
+<h4 id="2-指定-android-process-属性的方式及区别"><a href="#2-指定-android-process-属性的方式及区别" class="headerlink" title="2. 指定 android:process 属性的方式及区别"></a>2. 指定 android:process 属性的方式及区别</h4><ul>
+<li><p><strong>默认进程</strong></p>
+<ul>
+<li><strong>入口 Activity 没有指定 process 属性</strong>，因为它运行在默认进程中，<strong>默认进程的进程名是应用的包名</strong></li>
+</ul>
+</li>
+<li><p><strong>私有进程</strong></p>
+<ul>
+<li><strong><code>android:process=&quot;:自定义进程名&quot;</code></strong></li>
+<li>: 的含义是<strong>在当前自定义进程名的前面附加上当前应用的包名</strong>，这是一种<strong>简写</strong>的方法</li>
+<li><strong>进程名以 : 开头的进程属于当前应用的私有进程</strong>，其他应用的组件不可以和它跑在同一个进程中</li>
+</ul>
+</li>
+<li><p><strong>全局进程</strong></p>
+<ul>
+<li><strong><code>android:process=&quot;包名.自定义进程名&quot;</code></strong></li>
+<li>这是一种<strong>完整的命名方式</strong>，不会附加其他信息</li>
+<li><strong>进程名不以 : 开头的进程属于全局进程</strong>，其他应用通过 <strong>ShareUID</strong> 的方式可以和它跑在同一个进程中</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-全局进程与-ShareUID-的关系"><a href="#3-全局进程与-ShareUID-的关系" class="headerlink" title="3. 全局进程与 ShareUID 的关系"></a>3. 全局进程与 ShareUID 的关系</h4><ul>
+<li>Android 系统会为每个应用分配一个<strong>唯一的 UID</strong>，具有相同 UID 的应用才能共享数据</li>
+<li>两个应用通过 <strong>ShareUID</strong> 跑在同一个进程中是有要求的，需要这两个应用有相同的 UID 并且签名相同<ul>
+<li>在这种情况下，它们可以互相访问对方的<strong>私有数据，</strong>比如 data 目录、组件信息等，不管它们是否跑在同一个进程中</li>
+<li>如果它们跑在同一个进程中， 那么除了能共享 data 目录、组件信息，还可以<strong>共享内存</strong>数据，或者说它们看起来就像是一个应用的两个部分</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-Android-多进程模式的运行机制"><a href="#4-Android-多进程模式的运行机制" class="headerlink" title="4. Android 多进程模式的运行机制"></a>4. Android 多进程模式的运行机制</h4><ul>
+<li><strong>特殊情况下</strong>，某些组件之间是不需要共享数据的，此时可以通过<strong>直接指定 android:process 的方式</strong>来开启多进程。但这种场景是不常见的，<strong>几乎所有情况都需要共享数据</strong></li>
+<li>Android 会为每个应用或者说每个进程分配一个<strong>独立的虚拟机</strong>，不同的虚拟机在内存分配上有不同的<strong>地址空间</strong>，在不同的虚拟机中访问<strong>同一个类的对象会产生多个副本</strong></li>
+<li>为了解决多进程带来的问题，系统提供了很多<strong>跨进程通信</strong>的方法，虽然<strong>不能直接共享内存</strong>，但是通过跨进程通信依然可以实现数据交互</li>
+</ul>
+<h4 id="5-在-Android-中使用多进程可能会导致的问题"><a href="#5-在-Android-中使用多进程可能会导致的问题" class="headerlink" title="5. 在 Android 中使用多进程可能会导致的问题"></a>5. 在 Android 中使用多进程可能会导致的问题</h4><ul>
+<li><p><strong>静态成员和单例模式完全失效</strong></p>
+<ul>
+<li>Android 会为每个进程分配一个<strong>独立的虚拟机</strong>，对应独立的内存地址，对应类对象的多个副本</li>
+</ul>
+</li>
+<li><p><strong>线程同步机制完全失效</strong></p>
+<ul>
+<li>本质也是因为<strong>独立的虚拟机</strong>，既然都不是同一块内存了，那么不管是锁对象还是锁全局类都无法保证线程同步，因为不同进程锁的不是同一个对象</li>
+</ul>
+</li>
+<li><p><strong>SharedPreferences 的可靠性下降</strong></p>
+<ul>
+<li><strong>SharedPreferences 不支持两个进程同时去执行写操作</strong>，否则会导致一定几率的数据丢失</li>
+<li>因为 SharedPreferences 底层是通过<strong>读写 XML 文件</strong>来实现的，并发写显然是可能出问题的，甚至并发读写都有可能出问题</li>
+</ul>
+</li>
+<li><p><strong>Application 会多次创建</strong></p>
+<ul>
+<li>当一个组件跑在一个新的进程中的时候，由于<strong>系统要在创建新的进程的同时分配独立的虚拟机</strong>，所以<strong>这个过程其实就是启动一个应用的过程</strong>。因此，相当于系统又把这个应用重新启动了一遍，既然<strong>重新启动</strong>了，那么自然会创建新的 Application</li>
+<li>运行在同一个进程中的组件是属于同一个虚拟机和同一个 Application 的，同理，<strong>运行在不同进程中的组件是属于两个不同的虚拟机和 Application 的</strong></li>
+<li>在多进程模式中，不同进程的组件会拥有<strong>独立的虚拟机</strong>、<strong>Application</strong> 和<strong>内存空间</strong></li>
+</ul>
+</li>
+</ul>
 
     </div>
 
@@ -360,7 +430,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-AAA"><span class="nav-text">1. AAA</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Android-中开启多进程模式的方式"><span class="nav-text">1. Android 中开启多进程模式的方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-指定-android-process-属性的方式及区别"><span class="nav-text">2. 指定 android:process 属性的方式及区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-全局进程与-ShareUID-的关系"><span class="nav-text">3. 全局进程与 ShareUID 的关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-Android-多进程模式的运行机制"><span class="nav-text">4. Android 多进程模式的运行机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-在-Android-中使用多进程可能会导致的问题"><span class="nav-text">5. 在 Android 中使用多进程可能会导致的问题</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -460,12 +530,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">491k</span>
+    <span title="站点总字数">492k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">7:26</span>
+    <span title="站点阅读时长">7:27</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
