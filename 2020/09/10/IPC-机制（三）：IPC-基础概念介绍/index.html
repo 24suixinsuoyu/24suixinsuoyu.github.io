@@ -29,12 +29,14 @@
 <meta property="og:site_name" content="隋钟元’s Blog">
 <meta property="og:description" content="1. AAA">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gixm53hst8j30ji08f401.jpg">
 <meta property="article:published_time" content="2020-09-09T16:09:38.000Z">
-<meta property="article:modified_time" content="2020-09-09T16:16:12.000Z">
+<meta property="article:modified_time" content="2020-10-26T08:35:54.482Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="IPC 机制">
 <meta property="article:tag" content="IPC 基础概念介绍">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gixm53hst8j30ji08f401.jpg">
 
 <link rel="canonical" href="http://24suixinsuoyu.com/2020/09/10/IPC-%E6%9C%BA%E5%88%B6%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9AIPC-%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5%E4%BB%8B%E7%BB%8D/">
 
@@ -207,10 +209,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-09-10 00:09:38 / 修改时间：00:16:12" itemprop="dateCreated datePublished" datetime="2020-09-10T00:09:38+08:00">2020-09-10</time>
+              <time title="创建时间：2020-09-10 00:09:38" itemprop="dateCreated datePublished" datetime="2020-09-10T00:09:38+08:00">2020-09-10</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-26 16:35:54" itemprop="dateModified" datetime="2020-10-26T16:35:54+08:00">2020-10-26</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -227,14 +235,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5</span>
+              <span>5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>5 分钟</span>
             </span>
 
         </div>
@@ -247,6 +255,155 @@
 
       
         <h4 id="1-AAA"><a href="#1-AAA" class="headerlink" title="1. AAA"></a>1. AAA</h4><a id="more"></a>
+
+<h4 id="1-Serializable-接口介绍"><a href="#1-Serializable-接口介绍" class="headerlink" title="1. Serializable 接口介绍"></a>1. Serializable 接口介绍</h4><ul>
+<li>Serializable 是 <strong>Java 提供</strong>的一个序列化接口，它是一个<strong>空接口</strong>（标记接口），为对象提供标准的序列化和反序列化操作</li>
+<li>一个对象要实现序列化，只需要这个类<strong>实现 Serializable 接口</strong>并声明一个 <strong>serialVersionUID</strong> 常量即可，系统会<strong>自动完成</strong>序列化操作</li>
+<li>实际上，<strong>serialVersionUID 不是必须的</strong>，不声明 serialVersionUID 同样可以实现序列化，但是这会对<strong>反序列化</strong>过程产生影响（<em>类结构没有发生改变或即使改变但能兼容时就没有影响</em>）</li>
+</ul>
+<h4 id="2-serialVersionUID-的作用及工作机制"><a href="#2-serialVersionUID-的作用及工作机制" class="headerlink" title="2. serialVersionUID 的作用及工作机制"></a>2. serialVersionUID 的作用及工作机制</h4><ul>
+<li><p>作用</p>
+<ul>
+<li>serialVersionUID 是用来<strong>辅助</strong>序列化和反序列过程的</li>
+<li>原则上序列化后的数据中的 serialVersionUID 只有和当前类的 serialVersionUID 相同才能够正常地被反序列化</li>
+</ul>
+</li>
+<li><p>工作机制</p>
+<ul>
+<li><p>序列化的时候系统会把当前类的 serialVersionUID <strong>写入</strong>序列化的文件中（也可能是其他中介）</p>
+</li>
+<li><p>反序列化的时候系统会去<strong>检测</strong>文件中的 serialVersionUID 是否和当前类的 serialVersionUID 一致</p>
+<ul>
+<li>如果一致就说明序列化的类的<strong>版本</strong>和当前类的版本是相同的，此时可以成功进行反序列化操作</li>
+<li>如果不一致就说明当前类和之前序列化的类相比发生了某些改变，此时反序列化会失败报错：<code>java.io.InvalidClassException</code> 发生 carsh</li>
+</ul>
+</li>
+<li><p>一般来说，我们应该<strong>手动指定 serialVersionUID 的值</strong></p>
+<ul>
+<li>比如 1L，也可通过 IDE 根据当前类的结构自动生成它的 hash 值，两者效果一样</li>
+<li>当我们手动指定之后，就可以<strong>在很大程度上避免反序列化的失败</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>特殊情况</p>
+<ul>
+<li>如果类的结构发生了<strong>非常规性改变</strong>，比如<em>修改了类名</em>、<em>修改了成员变量的类型</em>，这个时候<strong>尽管 serialVersionUID 验证通过了，但是反序列化过程还是会失败</strong></li>
+<li>因为类的结构发生了<strong>根本性的改变</strong>，系统无法从老版本的数据中还原出一个新的类结构的对象</li>
+</ul>
+</li>
+<li><p>需要注意的两点</p>
+<ul>
+<li><strong>静态成员变量</strong>属于类不属于对象，所以<strong>不会参与</strong>序列化过程</li>
+<li>使用 <strong>transient 关键字</strong>标记的成员变量<strong>不会参与</strong>序列化过程</li>
+</ul>
+</li>
+<li><p>默认序列化机制</p>
+<ul>
+<li>系统的默认序列化过程是可以改变的，通过<strong>重写 <code>writeObject()</code> 和 <code>readObject()</code> 两个方法</strong>即可实现自定义的序列化过程</li>
+<li>大部分情况下我们不需要重写这两个方法，看具体需求<strong>实际情况</strong>决定是否自定义序列化过程</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-Serializable-接口使用-Demo"><a href="#3-Serializable-接口使用-Demo" class="headerlink" title="3. Serializable 接口使用 Demo"></a>3. Serializable 接口使用 Demo</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">User</span> <span class="symbol">implements</span> <span class="symbol">Serializable</span> &#123;</span><br><span class="line">	<span class="keyword">private</span> static <span class="keyword">final</span> long serialVersionUID = <span class="number">1</span>L;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">public</span> <span class="built_in">int</span> userId;</span><br><span class="line">	<span class="keyword">public</span> String userName;</span><br><span class="line">	<span class="keyword">public</span> <span class="built_in">bool</span>ean isMale;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 序列化</span><br><span class="line"><span class="keyword">User</span> <span class="keyword">user</span> = <span class="built_in">new</span> <span class="keyword">User</span>(<span class="number">0</span>, "david", <span class="keyword">true</span>);</span><br><span class="line">ObjectOutputStream <span class="keyword">out</span> = <span class="built_in">new</span> ObjectOutputStream (<span class="built_in">new</span> FileOutputStream("cache.text"));</span><br><span class="line"><span class="keyword">out</span>.writeObject(<span class="keyword">user</span>);</span><br><span class="line"><span class="keyword">out</span>.<span class="keyword">close</span>();</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 反序列化</span></span><br><span class="line">ObjectInputStream <span class="keyword">in</span> = <span class="keyword">new</span> <span class="type">ObjectInputStream</span>(<span class="keyword">new</span> <span class="type">FileInputStream</span>(<span class="string">"cache.text"</span>));</span><br><span class="line">User <span class="keyword">new</span><span class="type">User</span> = (User) <span class="keyword">in</span>.readObject();</span><br><span class="line"><span class="keyword">in</span>.close();</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-Parcelable-接口介绍"><a href="#4-Parcelable-接口介绍" class="headerlink" title="4. Parcelable 接口介绍"></a>4. Parcelable 接口介绍</h4><ul>
+<li>在序列化过程中需要实现的功能有<strong>序列化</strong>、<strong>反序列化</strong>和<strong>内容描述</strong></li>
+<li><strong>序列化功能</strong>：由 <strong><code>writeToParcel()</code></strong> 方法完成，最终是通过 Parcel 中的一系列 <strong><code>write()</code></strong> 方法来完成</li>
+<li><strong>反序列化功能</strong>：由 <strong>CREATOR</strong> 完成，其内部标明了如何创建序列化对象和数组，并通过 Parcel 的一系列 <strong><code>read()</code></strong> 方法来完成反序列化过程</li>
+<li><strong>内容描述功能</strong>：由 <strong><code>describeContents()</code></strong> 方法完成，<strong>几乎在所有情况下这个方法都应该返回 0，仅当当前对象中存在文件描述符时返回 1</strong></li>
+<li><strong>系统已经为我们提供了许多实现了 Parcelable 接口的类，它们都是可以直接序列化的</strong>。比如 Intent、Bundle、Bitmap 等，同时 List 和 Map 也可以序列化，前提是它们里面的每个元素都是可序列化的</li>
+</ul>
+<h4 id="5-Parcelable-中的方法说明"><a href="#5-Parcelable-中的方法说明" class="headerlink" title="5. Parcelable 中的方法说明"></a>5. Parcelable 中的方法说明</h4><table>
+<thead>
+<tr>
+<th align="center">方法</th>
+<th align="center">功能</th>
+<th align="center">标记位</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>createFromParcel(Parcel in)</code></td>
+<td align="center">从序列化后的对象中创建原始对象</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><code>newArray(int size)</code></td>
+<td align="center">创建指定长度的原始对象数组</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><code>User(Parcel in)</code></td>
+<td align="center">从序列化后的对象中创建原始对象</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><code>writeToParcel(Parcel out, int flags)</code></td>
+<td align="center">将当前对象写入序列化结构中，其中 flags 标识有两种值：0 或 1（参见右侧标记位）。为 1 时标识当前对象需要作为返回值返回，不能立即释放资源，几乎所有情况都为 0</td>
+<td align="center"><code>PARCELABLE_WRITE_RETURN_VALUE</code></td>
+</tr>
+<tr>
+<td align="center"><code>describeContents()</code></td>
+<td align="center">返回当前对象的内容描述。如果含有文件描述符，返回 1（参见右侧标记位），否则返回 0，几乎所有情况都返回 0</td>
+<td align="center"><code>CONTENTS_FILE_DESCRIPTOR</code></td>
+</tr>
+</tbody></table>
+<h4 id="6-Parcelable-接口使用-Demo"><a href="#6-Parcelable-接口使用-Demo" class="headerlink" title="6. Parcelable 接口使用 Demo"></a>6. Parcelable 接口使用 Demo</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">User</span> <span class="symbol">implements</span> <span class="symbol">Parcelable</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="built_in">int</span> userId;</span><br><span class="line">	<span class="keyword">public</span> String userName;</span><br><span class="line">	<span class="keyword">public</span> <span class="built_in">bool</span>ean isMale;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">public</span> Book book;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">public</span> User (<span class="built_in">int</span> userId, String userName, <span class="built_in">bool</span>ean isMale) &#123;</span><br><span class="line">		<span class="keyword">this</span>.userId = userId;</span><br><span class="line">		<span class="keyword">this</span>.userName = userName;</span><br><span class="line">		<span class="keyword">this</span>.isMale = isMale;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">public</span> <span class="built_in">int</span> describeContents () &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">public</span> <span class="built_in">void</span> writeToParcel (Parcel <span class="keyword">out</span>, <span class="built_in">int</span> flags) &#123;</span><br><span class="line">		<span class="keyword">out</span>.writeInt(userId);</span><br><span class="line">		<span class="keyword">out</span>.writeString(userName);</span><br><span class="line">		<span class="keyword">out</span>.writeInt(isMale ? <span class="number">1</span> : <span class="number">0</span>);</span><br><span class="line">		<span class="keyword">out</span>.writeParcelable(book, <span class="number">0</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">public</span> static <span class="keyword">final</span> Parcelable.Creator&lt;User&gt; CREATOR = new Parcelable.Creator&lt;User&gt; () &#123;</span><br><span class="line">		<span class="keyword">public</span> User createFromParcel (Parcel <span class="keyword">in</span>) &#123;</span><br><span class="line">			<span class="keyword">return</span> new User (<span class="keyword">in</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">public</span> User[] newArray (<span class="built_in">int</span> size) &#123;</span><br><span class="line">			<span class="keyword">return</span> new User [size];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">private</span> User (Parcel <span class="keyword">in</span>) &#123;</span><br><span class="line">		userId = <span class="keyword">in</span>.readInt();</span><br><span class="line">		userName = <span class="keyword">in</span>.readString();</span><br><span class="line">		isMale = <span class="keyword">in</span>.readInt() == <span class="number">1</span>;</span><br><span class="line">		<span class="comment">// 需要注意的是，由于 book 是另一个可序列化对象，所以它的反序列化过程需要传递当前线程的上下文类加载器，否则会报无法找到类的错误</span></span><br><span class="line">		book = <span class="keyword">in</span>.readParcelable(Thread.currentThread().getContextClassLoader());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-Serializable-和-Parcelable-两种序列化方式的对比"><a href="#7-Serializable-和-Parcelable-两种序列化方式的对比" class="headerlink" title="7. Serializable 和 Parcelable 两种序列化方式的对比"></a>7. Serializable 和 Parcelable 两种序列化方式的对比</h4><ul>
+<li><strong>Serializable</strong>: <strong>Java</strong> 中的序列化接口，其<strong>使用起来简单但是开销很大</strong>，因为序列化和反序列化过程需要大量 IO 操作</li>
+<li><strong>Parcelable</strong>: 是 <strong>Android</strong> 中的序列化方式，因此更适合用在 Android 平台上，缺点是使<strong>用起来稍微麻烦，但效率很高</strong>，是 Android <strong>推荐</strong>的序列化方式</li>
+</ul>
+<h4 id="8-Binder-简介"><a href="#8-Binder-简介" class="headerlink" title="8. Binder 简介"></a>8. Binder 简介</h4><ul>
+<li><strong>直观来说</strong>：Binder 是 Android 中的一个<strong>类</strong>，它实现了 <strong>IBinder</strong> 接口</li>
+<li><strong>从 IPC 角度</strong>：Binder 是 Android 中的一种<strong>跨进程通信方式</strong>，还可以把 Binder 理解为一种<strong>虚拟的物理设备</strong>，它的设备驱动是 /dev/binder，该通信方式在 Linux 中没有</li>
+<li><strong>从 Android Framework 角度</strong>：Binder 是 <strong>ServiceManager</strong> 连接各种 Manager(ActivityManager、WindowManager 等)和相应 <strong>ManagerService</strong> 的<strong>桥梁</strong></li>
+<li><strong>从 Android 应用层角度</strong>：Binder 是<strong>客户端</strong>和<strong>服务端</strong>进行通信的<strong>媒介</strong><ul>
+<li>当 bindService 的时候，服务端会返回一个包含了服务端业务调用的 Binder 对象</li>
+<li>通过这个 Binder 对象，客户端就可以获取服务端提供的服务或者数据，这里的服务包括普通服务和基于 AIDL 的服务</li>
+</ul>
+</li>
+</ul>
+<h4 id="9-Binder-的工作机制简介"><a href="#9-Binder-的工作机制简介" class="headerlink" title="9. Binder 的工作机制简介"></a>9. Binder 的工作机制简介</h4><ul>
+<li>首先，当客户端发起远程请求时，由于<strong>当前线程会被挂起直至服务端进程返回数据</strong>，所以如果一个远程方法是很耗时的，那么不能在 UI 线程中发起此远程请求</li>
+<li>其次，由于<strong>服务端的 Binder 运行在 Binder 线程池</strong>中，所以 Binder 方法不管是否耗时都应该采用同步的方式去实现，因为它已经运行在一个线程中了</li>
+<li>流程图<br><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gixm53hst8j30ji08f401.jpg" alt="Binder 的工作机制"></li>
+</ul>
+<h4 id="10-手动实现一个-Binder-步骤"><a href="#10-手动实现一个-Binder-步骤" class="headerlink" title="10. 手动实现一个 Binder 步骤"></a>10. 手动实现一个 Binder 步骤</h4><ul>
+<li>声明一个 <strong>AIDL</strong> 性质的接口，只需要继承 <strong>IInterface</strong> 接口即可</li>
+<li>实现<strong>内部类 Stub</strong> 和 <strong>Stub 类中的 Proxy 代理类</strong>，这段代码我们可以自己写，但是写出来后会发现和系统自动生成的代码是一样的，因此这个 Stub 类我们只需参考系统生成的代码即可，只是结构上需要做一下调整</li>
+<li>实际开发中完全可以通过 AIDL 文件让系统去自动生成 Binder，<strong>AIDL 文件的本质是系统为我们提供了一种快速实现 Binder 的工具，仅此而已</strong></li>
+</ul>
+<h4 id="11-Binder-中的-方法-linkToDeath-和-unlinkToDeath-介绍"><a href="#11-Binder-中的-方法-linkToDeath-和-unlinkToDeath-介绍" class="headerlink" title="11. Binder 中的 方法 linkToDeath() 和 unlinkToDeath() 介绍"></a>11. Binder 中的 方法 linkToDeath() 和 unlinkToDeath() 介绍</h4><ul>
+<li><p>原因</p>
+<ul>
+<li><strong>Binder 运行在服务端进程</strong>，如果服务端进程由于<strong>某种原因</strong>异常终止，这个时候我们到服务端的 Binder 连接断裂（称之为 <strong>Binder 死亡</strong>），会导致我们的远程调用失败</li>
+<li>更为关键的是，如果我们不知道 Binder 连接已经断裂，那么<strong>客户端的功能</strong>就会受到影响</li>
+</ul>
+</li>
+<li><p>解决</p>
+<ul>
+<li>为了解决 Binder 死亡的问题，Binder 中提供了两个配对的方法 <strong><code>linkToDeath()</code></strong> 和 <strong><code>unlinkToDeath()</code></strong></li>
+<li>通过方法 <code>linkToDeath()</code>，我们可以给 Binder 设置一个<strong>死亡代理</strong>，当 Binder 死亡时，我们就会收到通知，这个时候就可以<strong>重新发起连接请求</strong>从而恢复连接</li>
+</ul>
+</li>
+<li><p>给 Binder 设置死亡代理的步骤</p>
+<ol>
+<li><p>声明一个 <strong>DeathRecipient</strong> 对象。DeathRecipient 是一个接口，其内部只有一个方法 <strong><code>binderDied()</code></strong>，我们需要实现这个方法，当 Binder 死亡的时候，系统就会回调 <code>binderDied()</code> 方法，然后就可以移出之前绑定的 binder 代理并重新绑定远程服务：</p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> IBinder.DeathRecipient mDeathRecipient = <span class="keyword">new</span> IBinder.DeathRecipient () &#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">binderDied</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (mBookManager == <span class="keyword">null</span>) &#123;</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		mBookManager.asBinder().unlinkToDeath(mDeathRecipient, <span class="number">0</span>);</span><br><span class="line">		mBookManager = <span class="keyword">null</span>;</span><br><span class="line">		<span class="comment">// <span class="doctag">TODO:</span> 这里重新绑定远程 service</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>在客户端绑定远程服务成功后</strong>，给 binder 设置死亡代理：</p>
+ <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mService = <span class="module-access"><span class="module"><span class="identifier">IMessageBoxManager</span>.</span><span class="module"><span class="identifier">Stub</span>.</span></span><span class="keyword">as</span><span class="constructor">Interface(<span class="params">binder</span>)</span>;</span><br><span class="line">binder.link<span class="constructor">ToDeath(<span class="params">mDeathRecipient</span>, 0)</span>; <span class="comment">// 第二个参数是标记位，直接设为 0 即可</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>也可以通过 Binder 的 <strong><code>isBinderAlive()</code></strong> 方法判断 Binder 是否死亡</p>
+</li>
+</ol>
+</li>
+</ul>
 
     </div>
 
@@ -360,7 +517,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-AAA"><span class="nav-text">1. AAA</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-AAA"><span class="nav-text">1. AAA</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Serializable-接口介绍"><span class="nav-text">1. Serializable 接口介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-serialVersionUID-的作用及工作机制"><span class="nav-text">2. serialVersionUID 的作用及工作机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Serializable-接口使用-Demo"><span class="nav-text">3. Serializable 接口使用 Demo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-Parcelable-接口介绍"><span class="nav-text">4. Parcelable 接口介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-Parcelable-中的方法说明"><span class="nav-text">5. Parcelable 中的方法说明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-Parcelable-接口使用-Demo"><span class="nav-text">6. Parcelable 接口使用 Demo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-Serializable-和-Parcelable-两种序列化方式的对比"><span class="nav-text">7. Serializable 和 Parcelable 两种序列化方式的对比</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-Binder-简介"><span class="nav-text">8. Binder 简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-Binder-的工作机制简介"><span class="nav-text">9. Binder 的工作机制简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-手动实现一个-Binder-步骤"><span class="nav-text">10. 手动实现一个 Binder 步骤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-Binder-中的-方法-linkToDeath-和-unlinkToDeath-介绍"><span class="nav-text">11. Binder 中的 方法 linkToDeath() 和 unlinkToDeath() 介绍</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -460,12 +617,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">492k</span>
+    <span title="站点总字数">497k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">7:27</span>
+    <span title="站点阅读时长">7:32</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
