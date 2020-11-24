@@ -22,19 +22,21 @@
     var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1. AAA">
+  <meta name="description" content="1. 什么是 View">
 <meta property="og:type" content="article">
 <meta property="og:title" content="View 的事件体系（一）：View 基础知识">
 <meta property="og:url" content="http://24suixinsuoyu.com/2020/11/22/View-%E7%9A%84%E4%BA%8B%E4%BB%B6%E4%BD%93%E7%B3%BB%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9AView-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
-<meta property="og:description" content="1. AAA">
+<meta property="og:description" content="1. 什么是 View">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1gl0ko3yjkmj30hu0gojv5.jpg">
 <meta property="article:published_time" content="2020-11-22T15:39:23.000Z">
-<meta property="article:modified_time" content="2020-11-22T16:41:29.759Z">
+<meta property="article:modified_time" content="2020-11-24T17:17:13.445Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="View 的事件体系">
 <meta property="article:tag" content="View 基础知识">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1gl0ko3yjkmj30hu0gojv5.jpg">
 
 <link rel="canonical" href="http://24suixinsuoyu.com/2020/11/22/View-%E7%9A%84%E4%BA%8B%E4%BB%B6%E4%BD%93%E7%B3%BB%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9AView-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
 
@@ -215,7 +217,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-23 00:41:29" itemprop="dateModified" datetime="2020-11-23T00:41:29+08:00">2020-11-23</time>
+                <time title="修改时间：2020-11-25 01:17:13" itemprop="dateModified" datetime="2020-11-25T01:17:13+08:00">2020-11-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,14 +235,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5</span>
+              <span>4.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>4 分钟</span>
             </span>
 
         </div>
@@ -252,8 +254,204 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-AAA"><a href="#1-AAA" class="headerlink" title="1. AAA"></a>1. AAA</h4><a id="more"></a>
+        <h4 id="1-什么是-View"><a href="#1-什么是-View" class="headerlink" title="1. 什么是 View"></a>1. 什么是 View</h4><a id="more"></a>
 
+<ul>
+<li><strong>View 是 Android 中所有控件的基类</strong>，不管是简单的 Button 和 TextView 还是复杂的 RelativeLayout 和 ListView，它们的共同基类都是 View。即，<strong>View 是一种界面层的控件的一种抽象，它代表了一个控件</strong></li>
+<li>除了 View，还有 <strong>ViewGroup</strong>，即控件组，ViewGroup 内部包含了许多个控件，即一组 View。<strong>View 通常绘制用户可查看并进行交互的内容</strong>，<strong>ViewGroup 是不可见容器</strong>用于定义 View 和其他 ViewGroup 对象的布局结构</li>
+<li>在 Android 的设计中，<strong>ViewGroup 也继承了 View</strong>，这意味着 View 本身就可以是单个控件也可以是由多个控件组成的一组控件，通过这种关系就形成了 <strong>View 树</strong>的结构，这和 Web 前端中的 DOM 树的概念是类似的</li>
+</ul>
+<h4 id="2-View-的位置参数"><a href="#2-View-的位置参数" class="headerlink" title="2. View 的位置参数"></a>2. View 的位置参数</h4><ul>
+<li><p>View 的位置主要由它的<strong>四个顶点</strong>来决定，分别对应 View 的<strong>四个属性</strong>：left、top、right、bottom</p>
+<ul>
+<li><strong>left</strong>: 左上角横坐标；<strong>top</strong>: 左上角纵坐标；<strong>right</strong>: 右下角横坐标；<strong>bottom</strong>: 右下角纵坐标</li>
+<li>需要注意的是，这些坐标都是<strong>相对于 View 的直接父容器</strong>，因此是一种<strong>相对坐标</strong></li>
+<li>在 Android 中，<strong>x 轴和 y 轴的正方向分别为右和下</strong>。不仅是 Android，大部分显示系统都是按照这个标准来定义坐标系的</li>
+</ul>
+</li>
+<li><p>View 的宽高和坐标的关系</p>
+<ul>
+<li><code>width = getWidth() = mRight - mLeft = getRight() - getLeft()</code></li>
+<li><code>height = getHeight() = mBottom - mTop = getBottom() - getTop()</code></li>
+</ul>
+</li>
+<li><p>View 的位置坐标和直接父容器的关系</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/0081Kckwgy1gl0ko3yjkmj30hu0gojv5.jpg" alt="View 的位置坐标和直接父容器的关系"></p>
+</li>
+<li><p>从 <strong>Android 3.0</strong> 开始，View 新增加了几个参数：<strong>x</strong>、<strong>y</strong>、<strong>translationX</strong>、<strong>translationY</strong></p>
+<ul>
+<li>x 和 y 是 View <strong>左上角</strong>的坐标，translationX 和 translationY 是 View <strong>左上角</strong>相对于父容器的<strong>偏移量</strong></li>
+<li>这 4 个参数也是相对于直接父容器的<strong>相对坐标</strong>，并且 translationX 和 translationY 的<strong>默认值是 0</strong></li>
+<li>和 View 的四个基本的位置参数一样，View 也为这几个新增的参数提供了 <strong>get/set</strong> 方法，这些参数的换算关系为：<strong><code>x = left + translationX</code></strong>，<strong><code>y = top + translationY</code></strong></li>
+</ul>
+</li>
+<li><p>需要注意的是，<strong>View 在平移的过程中</strong></p>
+<ul>
+<li><strong>top 和 left 表示的是原始左上角的位置信息，其值并不会发生改变</strong></li>
+<li><strong>此时发生改变的是 x、y、translationX、translationY 这四个新增的参数</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="3-MotionEvent-和-TouchSlop"><a href="#3-MotionEvent-和-TouchSlop" class="headerlink" title="3. MotionEvent 和 TouchSlop"></a>3. MotionEvent 和 TouchSlop</h4><ol>
+<li><p><strong>MotionEvent</strong></p>
+<ul>
+<li><p>典型的屏幕触摸事件类型</p>
+<ul>
+<li><code>ACTION_DOWN</code>: 手指刚<strong>接触</strong>屏幕</li>
+<li><code>ACTION_MOVE</code>: 手指在屏幕上<strong>移动</strong></li>
+<li><code>ACTION_UP</code>: 手指从屏幕上<strong>松开</strong>的一瞬间</li>
+</ul>
+</li>
+<li><p>正常情况下，一次手指触摸屏幕的行为会触发一系列的点击事件</p>
+<ul>
+<li>点击屏幕后离开松开，事件序列为：<code>DOWN -&gt; UP</code></li>
+<li>点击屏幕滑动一会再松开，事件序列为：<code>DOWN -&gt; MOVE -&gt; … -&gt; MOVE -&gt; UP</code></li>
+</ul>
+</li>
+<li><p>通过 <strong>MotionEvent</strong> 对象可以得到<strong>点击事件发生的</strong> x 和 y 坐标，系统提供了两组方法：<code>getX()/getY()</code> 和 <code>getRawX()/getRawY()</code></p>
+<ul>
+<li><strong><code>getX()/getY()</code></strong>: 返回的是相对于<strong>当前 View 左上角</strong>的 x 和 y 坐标</li>
+<li><strong><code>getRawX()/getRawY()</code></strong>: 返回的是相对于<strong>手机屏幕左上角</strong>的 x 和 y 坐标</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>TouchSlop</strong></p>
+<ul>
+<li><p>TouchSlop 是系统所能识别出的被认为是<strong>滑动的最小距离</strong></p>
+</li>
+<li><p>这是一个<strong>常量</strong>，<strong>和设备有关</strong>，在不同设备上这个值可能是不同的</p>
+</li>
+<li><p>获取这个常量的方法：<strong><code>ViewConfiguration.get(getContext()).getScaledTouchSlop()</code></strong></p>
+</li>
+<li><p><strong>源码</strong>中这个常量定义在文件 frameworks/base/core/res/res/values/config.xml 中：</p>
+  <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Base "touch slop" value used by ViewConfiguration as a movement threshold where scrolling should begin. --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dimen</span> <span class="attr">name</span>=<span class="string">"config_viewConfigurationTouchSlop"</span>&gt;</span>8dp<span class="tag">&lt;/<span class="name">dimen</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="4-VelocityTracker、GestureDetector-和-Scroller"><a href="#4-VelocityTracker、GestureDetector-和-Scroller" class="headerlink" title="4. VelocityTracker、GestureDetector 和 Scroller"></a>4. VelocityTracker、GestureDetector 和 Scroller</h4><ol>
+<li><p><strong>VelocityTracker</strong></p>
+<ul>
+<li><p>VelocityTracker 即为<strong>速度追踪</strong>，用于追踪<strong>手指在滑动过程中的速度</strong>，包括<strong>水平速度</strong>和<strong>垂直速度</strong>，坐标轴正方向即为<strong>正值</strong>、反方向即为<strong>负值</strong></p>
+</li>
+<li><p>VelocityTracker 的用法</p>
+<ol>
+<li><p>首先，在 View 的 <strong><code>onTouchEvent()</code></strong> 方法中追踪当前<strong>单击事件的速度</strong>：</p>
+ <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">VelocityTracker velocityTracker = <span class="module-access"><span class="module"><span class="identifier">VelocityTracker</span>.</span></span>obtain<span class="literal">()</span>;</span><br><span class="line">velocityTracker.add<span class="constructor">Movement(<span class="params">event</span>)</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>然后，获取当前滑动速度：</p>
+ <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">velocityTracker.compute<span class="constructor">CurrentVelocity(1000)</span>;</span><br><span class="line"><span class="built_in">int</span> xVelocity = (<span class="built_in">int</span>) velocityTracker.get<span class="constructor">XVelocity()</span>;</span><br><span class="line"><span class="built_in">int</span> yVelocity = (<span class="built_in">int</span>) velocityTracker.get<span class="constructor">YVelocity()</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>获取速度之前必须先计算速度</strong>，即 <code>getXVelocity()</code> 和 <code>getYVelocity()</code> 这两个方法的前面必须要调用 <code>computeCurrentVelocity()</code> 方法</li>
+<li>这里的速度是指<strong>一段时间内手指所滑过的像素数</strong>，方法 <code>computeCurrentVelocity()</code> 的参数表示的就是这个“一段时间”，单位是<strong>毫秒</strong>（ms）</li>
+</ul>
+</li>
+<li><p>最后，当不需要使用它的时候，需要调用 <code>clear()</code> 方法来<strong>重置并回收内存</strong>：</p>
+ <figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">velocityTracker.clear()<span class="comment">;</span></span><br><span class="line">velocityTracker.recycle()<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p><strong>GestureDetector</strong></p>
+<ul>
+<li><p>GestureDetector 即为<strong>手势检测</strong>，用于<strong>辅助检测用户的单击、滑动、长按、双击等行为</strong></p>
+</li>
+<li><p>GestureDetector 的用法</p>
+<ol>
+<li><p>首先，需要创建一个 GestureDetector 对象并实现 <code>OnGestureListener</code> 接口，根据需要还可以实现 <code>OnDoubleTapListener</code> 接口（监听双击行为）：</p>
+ <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">GestureDetector mGestrueDetector = <span class="keyword">new</span> <span class="constructor">GestureDetector(<span class="params">this</span>)</span>;</span><br><span class="line"><span class="comment">// 解决长按屏幕后无法拖动的现象</span></span><br><span class="line">mGestureDetector.set<span class="constructor">IsLongpressEnabled(<span class="params">false</span>)</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>然后，接管目标 View 的 <code>onTouchEvent()</code> 方法，在待监听的 <code>onTouchEvent()</code> 方法中添加如下实现：</p>
+ <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">boolean</span> consume = mGestureDetector.<span class="literal">on</span>TouchEvent(event);</span><br><span class="line"><span class="attribute">return</span> consume;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>最后，可以有选择地实现 <code>OnGestureListener</code> 和 <code>OnDoubleTapListener</code> 中的方法</p>
+<table>
+<thead>
+<tr>
+<th align="center">方法名</th>
+<th align="center">描述</th>
+<th align="center">所属接口</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>onDown()</code></td>
+<td align="center">手指<strong>轻轻触摸屏幕</strong>的一瞬间，由 1 个 ACTION_DOWN 触发</td>
+<td align="center"><code>OnGestureListener</code></td>
+</tr>
+<tr>
+<td align="center"><code>onShowPress()</code></td>
+<td align="center">手指轻轻触摸屏幕，尚未松开或拖动，由 1 个 ACTION_DOWN 触发。注意和 <code>onDown()</code> 的区别，它<strong>强调的是没有松开或者拖动的状态</strong></td>
+<td align="center"><code>OnGestureListener</code></td>
+</tr>
+<tr>
+<td align="center"><strong><code>onSingleTapUp()</code></strong></td>
+<td align="center">手指（轻轻触摸屏幕后）松开，伴随着 1 个 ACTION_UP 触发，即<strong>单击行为</strong></td>
+<td align="center"><code>OnGestureListener</code></td>
+</tr>
+<tr>
+<td align="center"><strong><code>onScroll()</code></strong></td>
+<td align="center">手指按下屏幕并拖动，由 1 个 ACTION_DOWN，多个 ACTION_MOVE 触发，即<strong>拖动行为</strong></td>
+<td align="center"><code>OnGestureListene</code></td>
+</tr>
+<tr>
+<td align="center"><strong><code>onLongPress()</code></strong></td>
+<td align="center">用户长久地按着屏幕不放，即<strong>长按行为</strong></td>
+<td align="center"><code>OnGestureListener</code></td>
+</tr>
+<tr>
+<td align="center"><strong><code>onFling()</code></strong></td>
+<td align="center">用户按下屏幕、快速滑动后松开，由 1 个 ACTION_DOWN、多个 ACTION_MOVE 和 1 个 ACTION_UP 触发，即<strong>快速滑动行为</strong></td>
+<td align="center"><code>OnGestureListener</code></td>
+</tr>
+<tr>
+<td align="center"><strong><code>onDoubleTap()</code></strong></td>
+<td align="center"><strong>双击行为</strong>，由 2 次连续的单击组成，<strong>它不可能和 <code>onSingleTapConfirmed()</code> 共存</strong></td>
+<td align="center"><code>OnDoubleTapListener</code></td>
+</tr>
+<tr>
+<td align="center"><code>onSingleTapConfirmed()</code></td>
+<td align="center"><strong>严格的单击行为</strong>，注意它和 <code>onSingleTapUp()</code> 的区别，如果触发了 <code>onSingleTapConfirmed()</code>，那么后面不可能再紧跟着另一个单击行为，即这只可能是单击行为，而不可能是双击中的一次单击（奇怪为什么所属 <code>OnDoubleTapListener</code> 这个接口，有点矛盾）</td>
+<td align="center"><code>OnDoubleTapListener</code></td>
+</tr>
+<tr>
+<td align="center"><code>onDoubleTapEvent()</code></td>
+<td align="center">表示<strong>发生了双击行为</strong>，在双击的期间，ACTION_DOWN、ACTION_MOVE 和 ACTION_UP 都会触发此回调</td>
+<td align="center"><code>OnDoubleTapListener</code></td>
+</tr>
+</tbody></table>
+</li>
+<li><p>注意</p>
+<ul>
+<li>说明：实际开发中可以不使用 GestureDetector，完全可以在 View 的 <code>onTouchEvent()</code> 方法中实现所需的监听</li>
+<li>建议：如果只是监听<strong>滑动</strong>相关的，可以在 <code>onTouchEvent()</code> 中实现；如果要监听<strong>双击</strong>行为，可以使用 GestureDetector</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p><strong>Scroller</strong></p>
+<ul>
+<li><p>Scroller 即为<strong>弹性滑动对象</strong>，用于<strong>实现 View 的弹性滑动</strong></p>
+</li>
+<li><p>Scroller 的作用</p>
+<ul>
+<li>当使用 View 的 <strong><code>scrollTo()/scrollBy()</code></strong> 方法来进行滑动时，其过程是<strong>瞬间完成</strong>的，这个没有过渡效果的滑动体验并不是很好</li>
+<li>此时可以使用 Scroller 来实现有<strong>过渡效果</strong>的滑动，其过程不是瞬间完成的，而是<strong>在一定的时间间隔内完成的滑动行为</strong></li>
+<li>Scroller 本身无法让 View 弹性滑动，它需要<strong>和 View 的 <code>computeScroll()</code> 方法配合使用</strong>才能共同完成这个功能</li>
+</ul>
+</li>
+<li><p>使用 Scroller 的<strong>典型代码</strong>：</p>
+  <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Scroller scroller = <span class="keyword">new</span> <span class="constructor">Scroller(<span class="params">mContext</span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 缓慢滚动到指定位置</span></span><br><span class="line"><span class="keyword">private</span> void smooth<span class="constructor">ScrollTo(<span class="params">int</span> <span class="params">destX</span>, <span class="params">int</span> <span class="params">destY</span>)</span> &#123;</span><br><span class="line">	<span class="built_in">int</span> scrollX = get<span class="constructor">ScrollX()</span>;</span><br><span class="line">	<span class="built_in">int</span> delta = destX - scroollX;</span><br><span class="line">	<span class="comment">// 1000 ms 内滑向 destX，效果就是慢慢滑动</span></span><br><span class="line">	mScroller.start<span class="constructor">Scroll(<span class="params">scrollX</span>, 0, <span class="params">delta</span>, 0, 1000)</span>;</span><br><span class="line">	invalidate<span class="literal">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">public void compute<span class="constructor">Scroll()</span> &#123;</span><br><span class="line">	<span class="keyword">if</span> (mScroller.compute<span class="constructor">ScrollOffset()</span>) &#123;</span><br><span class="line">		scroll<span class="constructor">To(<span class="params">mScroller</span>.<span class="params">getCurrX</span>()</span>, mScroller.get<span class="constructor">CurrY()</span>);</span><br><span class="line">		post<span class="constructor">Invalidate()</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ol>
 
     </div>
 
@@ -367,7 +565,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-AAA"><span class="nav-text">1. AAA</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-什么是-View"><span class="nav-text">1. 什么是 View</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-View-的位置参数"><span class="nav-text">2. View 的位置参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-MotionEvent-和-TouchSlop"><span class="nav-text">3. MotionEvent 和 TouchSlop</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-VelocityTracker、GestureDetector-和-Scroller"><span class="nav-text">4. VelocityTracker、GestureDetector 和 Scroller</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -467,12 +665,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">544k</span>
+    <span title="站点总字数">549k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:15</span>
+    <span title="站点阅读时长">8:19</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
