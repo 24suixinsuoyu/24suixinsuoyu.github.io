@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1. AAA">
+  <meta name="description" content="1. 事件分发的概念">
 <meta property="og:type" content="article">
 <meta property="og:title" content="View 的事件体系（四）：View 的事件分发机制">
 <meta property="og:url" content="http://24suixinsuoyu.com/2020/11/22/View-%E7%9A%84%E4%BA%8B%E4%BB%B6%E4%BD%93%E7%B3%BB%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9AView-%E7%9A%84%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91%E6%9C%BA%E5%88%B6/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
-<meta property="og:description" content="1. AAA">
+<meta property="og:description" content="1. 事件分发的概念">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-11-22T15:42:06.000Z">
-<meta property="article:modified_time" content="2020-11-27T06:55:25.629Z">
+<meta property="article:modified_time" content="2020-11-29T11:06:17.016Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="View 的事件体系">
 <meta property="article:tag" content="View 的事件分发机制">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-27 14:55:25" itemprop="dateModified" datetime="2020-11-27T14:55:25+08:00">2020-11-27</time>
+                <time title="修改时间：2020-11-29 19:06:17" itemprop="dateModified" datetime="2020-11-29T19:06:17+08:00">2020-11-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,14 +233,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5</span>
+              <span>3.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -252,38 +252,83 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-AAA"><a href="#1-AAA" class="headerlink" title="1. AAA"></a>1. AAA</h4><a id="more"></a>
+        <h4 id="1-事件分发的概念"><a href="#1-事件分发的概念" class="headerlink" title="1. 事件分发的概念"></a>1. 事件分发的概念</h4><a id="more"></a>
 
+<ul>
+<li>所谓点击事件的事件分发，其实就是对 <strong>MotionEvent</strong> 事件的分发过程</li>
+<li>即当一个 MotionEvent 产生了以后，系统需要把这个事件<strong>传递给一个具体的 View</strong>，这个传递的过程就是分发过程</li>
+</ul>
+<h4 id="2-点击事件分发过程中三个重要方法的区别及联系"><a href="#2-点击事件分发过程中三个重要方法的区别及联系" class="headerlink" title="2. 点击事件分发过程中三个重要方法的区别及联系"></a>2. 点击事件分发过程中三个重要方法的区别及联系</h4><ul>
+<li><p><strong><code>public boolean dispatchTouchEvent(MotionEvent event)</code></strong>: 用来<strong>进行事件的分发</strong>。如果事件能够传递给当前 View，那么此方法一定会被调用，返回结果受当前 View 的 <code>onTouchEvent()</code> 和下级 View 的 <code>dispatchTouchEvent()</code> 方法的影响，表示是否消耗当前事件</p>
+</li>
+<li><p><strong><code>public boolean onInterceptTouchEvent(MotionEvent event)</code></strong>: 在上述方法内部调用，用来判断<strong>是否拦截某个事件</strong>，【如果当前 View 拦截了某个事件，那么在同一个事件序列当中，此方法不会被再次调用】（<strong>拦截了局部即拦截了整体，不用多次调用多次拦截</strong>），返回结果表示是否拦截当前事件</p>
+</li>
+<li><p><strong><code>public boolean onTouchEvent(MotionEvent event)</code></strong>: 在 <code>dispatchTouchEvent(MotionEvent event)</code> 方法中调用，用来<strong>处理点击事件</strong>，返回结果表示是否消耗当前事件，【如果不消耗，则在同一个事件序列中，当前 View 无法再次接收到事件】（<strong>如果局部不处理，则整体不再发送，事件序列类似事务的原子性，提高事件分发的效率</strong>）</p>
+</li>
+<li><p><strong>伪代码</strong>表示三个方法的联系</p>
+  <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">public</span> boolean dispatchTouchEvent(MotionEvent event) &#123;</span><br><span class="line">	<span class="attribute">boolean</span> consume = <span class="literal">false</span>;</span><br><span class="line">	<span class="attribute">if</span> (<span class="literal">on</span>InterceptTouchEvent(event)) &#123;</span><br><span class="line">		<span class="attribute">consume</span> = <span class="literal">on</span>TouchEvent(event);</span><br><span class="line">	&#125; <span class="section">else</span> &#123;</span><br><span class="line">		<span class="attribute">consume</span> = child.dispatchTouchEvent(event);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="attribute">return</span> consume;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+</li>
+</ul>
+<h4 id="3-onTouch-、onTouchEvent-和-onClick-三个方法的优先级"><a href="#3-onTouch-、onTouchEvent-和-onClick-三个方法的优先级" class="headerlink" title="3. onTouch()、onTouchEvent() 和 onClick() 三个方法的优先级"></a>3. <code>onTouch()</code>、<code>onTouchEvent()</code> 和 <code>onClick()</code> 三个方法的优先级</h4><ul>
+<li><p>当一个 View 需要处理事件时，如果它设置了 <strong>OnTouchListener</strong>，那么 OnTouchListener 中的 <strong><code>onTouch()</code></strong> 方法会被回调</p>
+<ul>
+<li>这时事件如何处理<strong>还要看 <code>onTouch()</code> 方法的返回值</strong>，如果返回 false，则当前 View 的 <code>onTouchEvent()</code> 方法会被调用；如果返回 true，那么 <code>onTouchEvent()</code> 方法将不会被调用</li>
+<li>因此，<strong>给 View 设置的 OnTouchListener，其优先级比 onTouchEvent() 要高</strong>，这样做的好处是<strong>方便外界处理点击事件</strong></li>
+</ul>
+</li>
+<li><p>在 <code>onTouchEvent()</code> 方法中，如果当前设置的有  <strong>OnClickListener</strong>，那么它的 <strong><code>onClick()</code></strong> 方法会被调用。由此可看出，平时<strong>常用的 OnClickListener，其优先级最低</strong> ，即处于事件传递的尾端</p>
+</li>
+</ul>
+<h4 id="4-一个点击事件产生后，它的正-反传递顺序"><a href="#4-一个点击事件产生后，它的正-反传递顺序" class="headerlink" title="4. 一个点击事件产生后，它的正/反传递顺序"></a>4. 一个点击事件产生后，它的正/反传递顺序</h4><ul>
+<li><p><strong>Activity -&gt; Window -&gt; View</strong></p>
+<ul>
+<li>即事件总是先传递给 Activity，Activity 再传递给 Window，最后 Window 再传递给<strong>顶级 View</strong></li>
+<li>顶级 View 接收到事件后，就会按照<strong>事件分发机制</strong>去分发事件（如果 View 设置有<strong>代理</strong>，那么还会执行 TouchDelegate 的 <code>onTouchDelegate()</code> 方法）</li>
+<li>这里的顶级 View 一般是 <strong>decor view</strong>，decor view 一般就是当前界面的底层容器（即 <code>setContentView()</code> 所设置的 View 的父容器），通过 <code>Activity.getWindow().getDecorView()</code> 可以获得</li>
+</ul>
+</li>
+<li><p>考虑一种情况（类比工作中，下级解决不了的问题逐级回溯给上级处理）</p>
+<ul>
+<li>如果一个 View 的 <code>onTouchEvent()</code> 方法返回 <strong>false</strong>，那么它的<strong>父容器</strong>的 <code>onTouchEvent()</code> 方法将会被调用，依次类推</li>
+<li>如果所有的元素都不处理这个事件，那么这个事件将会<strong>最终传递给 Activity 处理</strong>，及 <strong>Activity 的 <code>onTouchEvent()</code></strong> 方法会被调用</li>
+</ul>
+</li>
+</ul>
+<h4 id="5-分析源码，事件传递机制的一些结论"><a href="#5-分析源码，事件传递机制的一些结论" class="headerlink" title="5. 分析源码，事件传递机制的一些结论"></a>5. 分析源码，事件传递机制的一些结论</h4><ol>
+<li><p><strong>同一个事件序列</strong>是指从<strong>手指接触屏幕</strong>的那一刻起，到<strong>手指离开屏幕</strong>的那一刻结束，在这个过程中产生的一系列事件。这个事件序列以 <strong>down</strong> 事件开始，中间含有数量不定的 <strong>move</strong> 事件，最终以 <strong>up</strong> 事件结束</p>
+</li>
+<li><p><strong>正常情况下，一个事件序列只能被一个 View 拦截且消耗</strong>。这一条的原因可以参考 3，因为一旦一个元素拦截了此事件，那么同一个事件序列内的所有事件都会直接交给它处理，因此同一个事件序列中的事件不能分别由两个 View 同时处理，但是通过<strong>特殊手段</strong>可以做到，比如一个 View 将本该自己处理的事件通过 <code>onTouchEvent()</code> <strong>强行传递</strong>给其他 View 处理</p>
+</li>
+<li><p>某个 View 一旦决定<strong>拦截</strong>，那么这一事件序列都只能由它来处理（如果事件序列能够传递给它的话），<strong>并且它的 <code>onInterceptEvent()</code> 方法不会再被调用</strong>。也就是说，当一个 View 决定拦截一个事件后，那么系统会把同一个事件序列内的其他方法都直接交给它来处理，因此就不用再调用这个 View 的 <code>onInterceptEvent()</code> 方法去询问它是否要拦截了</p>
+</li>
+<li><p>某个 View 一旦开始<strong>处理</strong>事件，如果它不消耗 <code>MotionEvent.ACTION_DOWN</code> 事件（<code>onTouchEvent()</code> 方法返回了 false），那么同一事件序列中的其他事件都不会再交给它来处理，并且事件将重新交由它的父元素去处理，即<strong>父元素的 <code>onTouchEvent()</code> 方法会被调用</strong>。即事件一旦交给一个 View 处理，那么它就必须消耗掉，否则同一事件序列中剩下的事件就不再交给它来处理了</p>
+</li>
+<li><p><strong>如果 View 不消耗除 <code>MotionEvent.ACTION_DOWN</code> 以外的其他事件，那么这个点击事件会消失，此时父元素的 <code>onTouchEvent()</code> 并不会被调用，并且当前 View 可以持续收到后续的事件，最终这些消失的点击事件会传递给 Activity 处理</strong></p>
+</li>
+<li><p><strong>ViewGroup 默认不拦截任何事件</strong>，Android 源码中 ViewGroup 的 <code>onInterceptTouchEvent()</code> 方法默认返回 false</p>
+</li>
+<li><p><strong>View 没有 <code>onInterceptTouchEvent()</code> 方法</strong>，一旦有点击事件传递给它，那么它的 <code>onTouchEvent()</code> 方法就会被调用</p>
+</li>
+<li><p><strong>View 的 <code>onTouchEvent()</code> 方法默认都会消耗事件（返回 true）</strong>，除非它是不可点击的（clickable 和 longClickable 同时为 false）</p>
+<ul>
+<li>View 的 longClickable 属性默认都为 false；clickable 属性要分情况，比如 Button 的 clickable 属性默认为 true，而 TextView 的 clickable 属性默认为 false</li>
+<li>通过 <code>setClickable()</code> 和 <code>setLongClickable()</code> 方法可以分别改变 View 的 <code>CLICKABLE</code> 和 <code>LONG_CLICKABLE</code> 属性</li>
+<li><code>setOnClickListener()</code> 会自动将 View 的 <code>CLICKABLE</code> 设为 true，<code>setOnLongClickListener()</code> 会自动将 View 的 <code>LONG_CLICKABLE</code> 设为 true</li>
+</ul>
+</li>
+<li><p><strong>View 的 enable 属性不影响 <code>onTouchEvent()</code> 的默认返回值</strong>。哪怕一个 View 是 disable 状态的，只要它的 clickable 和 longClickable 有一个为 true，那么它的 <code>onTouchEvent()</code> 就返回 true</p>
+</li>
+<li><p><strong><code>onClick()</code> 方法会发生的前提是当前 View 是可点击的，并且它收到了 down 和 up 事件</strong></p>
+</li>
+<li><p>事件传递过程是<strong>由外向内</strong>的，即事件总是先传递给父元素，然后再由父元素分发给子 View。通过 <strong><code>requestDisallowInterceptTouchEvent()</code></strong> 方法可以在子元素中干预父元素的事件分发过程，但是 <code>Motion.ACTION_DOWN</code> 事件除外</p>
+</li>
+</ol>
+<h4 id="6-Window-传递事件给顶级-View-即-ViewGroup-的原理"><a href="#6-Window-传递事件给顶级-View-即-ViewGroup-的原理" class="headerlink" title="6. Window 传递事件给顶级 View 即 ViewGroup 的原理"></a>6. Window 传递事件给顶级 View 即 ViewGroup 的原理</h4><ul>
+<li>根据源码，<strong>Window 是个抽象类</strong>，Window 的 <code>superDispatchTouchEvent()</code> 方法也是个抽象方法</li>
+<li><strong>Window 类可以控制顶级 View 的外观和行为策略，它的唯一实现位于 <code>android.policy.PhoneWindow</code> 中</strong>，当要实例化 Window 类的时候，你并不知道它的细节，因为这个类会被重构，只有一个工厂方法可以使用</li>
+<li><strong>PhoneWindow 将事件直接传递给 DecorView</strong>，通过 <code>((ViewGroup)getWindow().getDecorView().findViewById(android.R.id.content)).getChildAt(0)</code> 这种方式就可以获取 Activity 所设置的 View</li>
+</ul>
 
     </div>
 
@@ -397,7 +442,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-AAA"><span class="nav-text">1. AAA</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-事件分发的概念"><span class="nav-text">1. 事件分发的概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-点击事件分发过程中三个重要方法的区别及联系"><span class="nav-text">2. 点击事件分发过程中三个重要方法的区别及联系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-onTouch-、onTouchEvent-和-onClick-三个方法的优先级"><span class="nav-text">3. onTouch()、onTouchEvent() 和 onClick() 三个方法的优先级</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-一个点击事件产生后，它的正-反传递顺序"><span class="nav-text">4. 一个点击事件产生后，它的正&#x2F;反传递顺序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-分析源码，事件传递机制的一些结论"><span class="nav-text">5. 分析源码，事件传递机制的一些结论</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-Window-传递事件给顶级-View-即-ViewGroup-的原理"><span class="nav-text">6. Window 传递事件给顶级 View 即 ViewGroup 的原理</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -497,12 +542,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">560k</span>
+    <span title="站点总字数">564k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:29</span>
+    <span title="站点阅读时长">8:32</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
