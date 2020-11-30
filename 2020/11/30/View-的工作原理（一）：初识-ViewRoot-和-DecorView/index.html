@@ -22,19 +22,22 @@
     var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1. AAA">
+  <meta name="description" content="1. ViewRoot 的概念">
 <meta property="og:type" content="article">
 <meta property="og:title" content="View 的工作原理（一）：初识 ViewRoot 和 DecorView">
 <meta property="og:url" content="http://24suixinsuoyu.com/2020/11/30/View-%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%88%9D%E8%AF%86-ViewRoot-%E5%92%8C-DecorView/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
-<meta property="og:description" content="1. AAA">
+<meta property="og:description" content="1. ViewRoot 的概念">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1gl7kvtcic0j30to0mkgvi.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1gl7lur1d2dj30gi0kgwho.jpg">
 <meta property="article:published_time" content="2020-11-30T11:06:53.000Z">
-<meta property="article:modified_time" content="2020-11-30T11:14:29.600Z">
+<meta property="article:modified_time" content="2020-11-30T15:16:45.355Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="View 的工作原理">
 <meta property="article:tag" content="初识 ViewRoot 和 DecorView">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1gl7kvtcic0j30to0mkgvi.jpg">
 
 <link rel="canonical" href="http://24suixinsuoyu.com/2020/11/30/View-%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%88%9D%E8%AF%86-ViewRoot-%E5%92%8C-DecorView/">
 
@@ -209,7 +212,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-11-30 19:06:53 / 修改时间：19:14:29" itemprop="dateCreated datePublished" datetime="2020-11-30T19:06:53+08:00">2020-11-30</time>
+              <time title="创建时间：2020-11-30 19:06:53 / 修改时间：23:16:45" itemprop="dateCreated datePublished" datetime="2020-11-30T19:06:53+08:00">2020-11-30</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -227,7 +230,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5</span>
+              <span>1.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -246,37 +249,66 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-AAA"><a href="#1-AAA" class="headerlink" title="1. AAA"></a>1. AAA</h4><a id="more"></a>
+        <h4 id="1-ViewRoot-的概念"><a href="#1-ViewRoot-的概念" class="headerlink" title="1. ViewRoot 的概念"></a>1. ViewRoot 的概念</h4><a id="more"></a>
 
+<ul>
+<li><p>ViewRoot 对应于 <strong>ViewRootImpl</strong> 类，<strong>它是连接 WindowManager 和 DecorView 的纽带</strong>，<strong>View 的三大流程均是通过 ViewRoot 来完成的</strong></p>
+</li>
+<li><p>在 <strong>ActivityThread</strong> 中，当 Activity 对象被创建完毕后，会将 DecorView 添加到 Window 中，同时会创建 ViewRootImpl 对象，并将 ViewRootImpl 对象和 DecorView 建立关联。源码如下：</p>
+  <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root = <span class="keyword">new</span> <span class="constructor">ViewRootImpl(<span class="params">view</span>.<span class="params">getContext</span>()</span>, display);</span><br><span class="line">root.set<span class="constructor">View(<span class="params">view</span>, <span class="params">wparams</span>, <span class="params">panelParentView</span>)</span>;</span><br></pre></td></tr></table></figure>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+</li>
+</ul>
+<h4 id="2-View-大致的绘制流程"><a href="#2-View-大致的绘制流程" class="headerlink" title="2. View 大致的绘制流程"></a>2. View 大致的绘制流程</h4><ul>
+<li><p><strong>View 的绘制流程是从 ViewRoot 的 <code>performTraversal()</code> 方法开始的</strong>，经过 measure、layout 和 draw 三个过程最终将一个 View 绘制出来</p>
+<ul>
+<li><strong>measure</strong>: 用来<strong>测量</strong> View 的宽高</li>
+<li><strong>layout</strong>: 用来确定 View 在父容器中的<strong>布局</strong>位置</li>
+<li><strong>draw</strong>: 用来将 View <strong>绘制</strong>在屏幕上</li>
+</ul>
+</li>
+<li><p>ViewRoot 的 <strong><code>performTraversal()</code></strong> 方法的工作流程图</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/0081Kckwgy1gl7kvtcic0j30to0mkgvi.jpg" alt="performTraversals() 方法的工作路程图"></p>
+<ol>
+<li><code>performTraversals()</code> 会依次调用 <strong><code>performMeasure()</code></strong>、<strong><code>performLayout()</code></strong> 和 <strong><code>performdraw()</code></strong> 三个方法，这三个方法分别完成<strong>顶级 View</strong> 的 measure、layout 和 draw 三大流程</li>
+<li>在 <code>performMeasure()</code> 中会调用 <strong>measure 方法</strong>，在 measure 方法中又会调用 <strong>onMeasure 方法</strong>，在 onMeasure 方法则会对<strong>所有的子元素</strong>进行 measure 过程。接着子元素会重复父容器的 measure 过程，如此反复就完成了整个 View 树的遍历</li>
+<li>同理，<code>performLayout()</code> 和 <code>performDraw()</code> 的传递流程和 <code>performMeasure()</code> 是类似的，<strong>唯一不同的是，<code>performDraw()</code> 的传递过程是在 draw 方法中通过 <code>dispatchDraw()</code> 来实现的</strong>，不过这并没有本质区别</li>
+</ol>
+</li>
+</ul>
+<h4 id="3-View-三大流程的具体含义"><a href="#3-View-三大流程的具体含义" class="headerlink" title="3. View 三大流程的具体含义"></a>3. View 三大流程的具体含义</h4><ul>
+<li><p><strong>measure</strong>:</p>
+<ul>
+<li>measure 过程<strong>决定了 View 的宽高</strong></li>
+<li>measure 完成以后，可以通过 <strong><code>getMeasuredWidth()</code></strong> 方法和 <strong><code>getMeasuredHeight()</code></strong> 方法获取 View 测量后的宽高。<strong>在几乎所有的情况下它都等同于 View 最终的宽高</strong>，但是特殊情况除外</li>
+</ul>
+</li>
+<li><p><strong>layout</strong>:</p>
+<ul>
+<li>layout 过程<strong>决定了 View 的四个顶点的坐标和实际的 View 的宽高</strong></li>
+<li>layout 完成以后，可以通过 <strong><code>getTop()</code></strong>、<strong><code>getBottom()</code></strong>、<strong><code>getLeft()</code></strong> 和 <strong><code>getRight()</code></strong> 四个方法来拿到 View 的四个顶点的坐标，并可以通过 <strong><code>getWidth()</code></strong> 和 <strong><code>getHeight()</code></strong> 方法来拿到 View 的最终宽高</li>
+</ul>
+</li>
+<li><p><strong>draw</strong>:</p>
+<ul>
+<li>draw 过程<strong>决定了 View 的显示</strong></li>
+<li>只有 draw 方法完成以后 View 的内容才能呈现在屏幕上</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-DecorView-的概念"><a href="#4-DecorView-的概念" class="headerlink" title="4. DecorView 的概念"></a>4. DecorView 的概念</h4><ul>
+<li><p><strong>DecorView 作为顶级 View</strong>，一般情况下它内部会包含一个竖直方向的 LinearLayout，在这个 LinearLayout 里面有上下两个部分（具体情况和 Android 版本以及主题有关），上面时<strong>标题栏</strong>，下面是<strong>内容栏</strong></p>
+<ul>
+<li>得到 content: <code>ViewGroup content = findViewById(R.android.id.content);</code></li>
+<li>得到 content 中设置的 View: <code>content.getChildAt(0);</code></li>
+</ul>
+</li>
+<li><p>分析源码，<strong>DecorView 其实是一个 FrameLayout</strong>，View 层的事件都先经过 DecorView，然后才传递给 View</p>
+</li>
+<li><p>作为顶级 View 的 DecorView 的结构示意图</p>
+</li>
+</ul>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1gl7lur1d2dj30gi0kgwho.jpg" alt="DecorView 的结构示意图"></p>
 
     </div>
 
@@ -390,7 +422,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-AAA"><span class="nav-text">1. AAA</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-ViewRoot-的概念"><span class="nav-text">1. ViewRoot 的概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-View-大致的绘制流程"><span class="nav-text">2. View 大致的绘制流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-View-三大流程的具体含义"><span class="nav-text">3. View 三大流程的具体含义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-DecorView-的概念"><span class="nav-text">4. DecorView 的概念</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -490,12 +522,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">577k</span>
+    <span title="站点总字数">579k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:45</span>
+    <span title="站点阅读时长">8:47</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
