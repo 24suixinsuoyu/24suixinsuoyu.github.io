@@ -30,8 +30,10 @@
 <meta property="og:description" content="Satoshi Nakamoto · satoshin@gmx.com · www.bitcoin.org">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1gl7h6lj5jbj30m60dewfu.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1gl8c6z75tvj30km06674i.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1gl8cm9tytuj30ki05ijrm.jpg">
 <meta property="article:published_time" content="2020-11-28T14:31:11.000Z">
-<meta property="article:modified_time" content="2020-11-30T12:47:27.539Z">
+<meta property="article:modified_time" content="2020-12-01T06:56:21.243Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Bitcoin">
 <meta property="article:tag" content="Satoshi Nakamoto">
@@ -217,7 +219,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-30 20:47:27" itemprop="dateModified" datetime="2020-11-30T20:47:27+08:00">2020-11-30</time>
+                <time title="修改时间：2020-12-01 14:56:21" itemprop="dateModified" datetime="2020-12-01T14:56:21+08:00">2020-12-01</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -235,14 +237,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.1k</span>
+              <span>6.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
+              <span>6 分钟</span>
             </span>
 
         </div>
@@ -266,7 +268,14 @@
 <p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1gl7h6lj5jbj30m60dewfu.jpg" alt="Transactions"></p>
 <p>The problem of course is the payee can’t verify that one of the owners did not double-spend the coin. A common solution is to introduce a trusted central authority, or mint, that checks every transaction for double spending. After each transaction, the coin must be returned to the mint to issue a new coin, and only coins issused directly from the mint are trusted not to be double-spent. The problem with this solution is that the fate of the entire money system depends on the company running the mint, with every transaction having to go through them,, just like a bank.</p>
 <p>We need a way for the payee to know that the previous owners did not sign any earlier transactions. For our purposes, the earliest transaction is the one that counts, so we don’t care about later attempts to double-spend. The only way to confirm the absence of a transaction is to be aware of all transactions. In the mint based model, the mint was aware of all transactions and decided which arrived first. To accomplish this without a trusted party, transactions must be publicly announced[1], and we need a system for participants to agree on a single history of the order in which they were received. The payee needs proof that at the time of each transaction, the majority of nodes agreed it was the first received.</p>
-<h4 id="3-Timestamp-Server"><a href="#3-Timestamp-Server" class="headerlink" title="3. Timestamp Server"></a>3. Timestamp Server</h4><h4 id="4-Proof-of-Work"><a href="#4-Proof-of-Work" class="headerlink" title="4. Proof-of-Work"></a>4. Proof-of-Work</h4><h4 id="5-Network"><a href="#5-Network" class="headerlink" title="5. Network"></a>5. Network</h4><h4 id="6-Incentive"><a href="#6-Incentive" class="headerlink" title="6. Incentive"></a>6. Incentive</h4><h4 id="7-Reclaiming-Disk-Space"><a href="#7-Reclaiming-Disk-Space" class="headerlink" title="7. Reclaiming Disk Space"></a>7. Reclaiming Disk Space</h4><h4 id="8-Simplified-Payment-Verification"><a href="#8-Simplified-Payment-Verification" class="headerlink" title="8.Simplified Payment Verification"></a>8.Simplified Payment Verification</h4><h4 id="9-Combining-and-Splitting-Value"><a href="#9-Combining-and-Splitting-Value" class="headerlink" title="9. Combining and Splitting Value"></a>9. Combining and Splitting Value</h4><h4 id="10-Privacy"><a href="#10-Privacy" class="headerlink" title="10. Privacy"></a>10. Privacy</h4><h4 id="11-Calculations"><a href="#11-Calculations" class="headerlink" title="11. Calculations"></a>11. Calculations</h4><h4 id="12-Conclusion"><a href="#12-Conclusion" class="headerlink" title="12. Conclusion"></a>12. Conclusion</h4><h4 id="References"><a href="#References" class="headerlink" title="References"></a>References</h4>
+<h4 id="3-Timestamp-Server"><a href="#3-Timestamp-Server" class="headerlink" title="3. Timestamp Server"></a>3. Timestamp Server</h4><p>The solution we propose begins with a timestamp server. A timestamp server works by taking a hash of a block of items to be timestamped and widely publishing the hash, such as in a newspaper or Usenet post[2-5]. The timestamp proves that the data must have existed at the time, obviously, in order to get into the hash. Each timestamp includes the previous timestamp in its hash, forming a chain, with each additional timestamp reinforcing the ones before it.</p>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1gl8c6z75tvj30km06674i.jpg" alt="Timestamp Server"></p>
+<h4 id="4-Proof-of-Work"><a href="#4-Proof-of-Work" class="headerlink" title="4. Proof-of-Work"></a>4. Proof-of-Work</h4><p>To implement a distributed timestamp server on a peer-to-peer basis, we will need to use a proof-of-work system similar to Adam Back’s Hashcash[6], rather than newspaper or Usenet posts. The proof-of-work involves scanning for a value that when hashed, such as with SHA-256, the hash begins with a number of zero bits. The average work required is exponential in the number of zero bits required and can be verified by executing a single hash.</p>
+<p>For our timestamp network, we implement the proof-of-work by incrementing a nonce in the block until a value is found that gives the block’s hash the required zero bits. Once the CPU effort has been expanded to make it satisfy the proof-of-work, the block cannot be changed without redoing the work. As later blocks are chained after it, the work to change the block would include redoing all the blocks after it.</p>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1gl8cm9tytuj30ki05ijrm.jpg" alt="Proof-of-Work"></p>
+<p>The proof-of-work also solves the problem of determining representation in majority decision making. If the majority were based on one-IP-address-one-vote, it would be subverted by anyone able to allocate many IPs. Proof-of-work is essentially one-CPU-one-vote. The majority decision is represented by the longest chain, which has the greatest proof-of-work effort invested in it. If a majority of CPU power is controlled by honest nodes, the honest chain will grow the fastest and outpace any competing chains. To modify a past block, an attacker would have to redo the proof-of-work of the block and all blocks after it and than catch up with and surpass the work of the honest nodes. We will show later that the probability of a slower attacker catching up diminishes exponentially as subsequent blocks are added.</p>
+<p>To compensate for increasing hardware speed and varying interest in running nodes over time, the proof-of-work difficulty is determined by a moving average targeting an average number of blocks per hour If they’re generated too fast, the difficulty increases.</p>
+<h4 id="5-Network"><a href="#5-Network" class="headerlink" title="5. Network"></a>5. Network</h4><h4 id="6-Incentive"><a href="#6-Incentive" class="headerlink" title="6. Incentive"></a>6. Incentive</h4><h4 id="7-Reclaiming-Disk-Space"><a href="#7-Reclaiming-Disk-Space" class="headerlink" title="7. Reclaiming Disk Space"></a>7. Reclaiming Disk Space</h4><h4 id="8-Simplified-Payment-Verification"><a href="#8-Simplified-Payment-Verification" class="headerlink" title="8.Simplified Payment Verification"></a>8.Simplified Payment Verification</h4><h4 id="9-Combining-and-Splitting-Value"><a href="#9-Combining-and-Splitting-Value" class="headerlink" title="9. Combining and Splitting Value"></a>9. Combining and Splitting Value</h4><h4 id="10-Privacy"><a href="#10-Privacy" class="headerlink" title="10. Privacy"></a>10. Privacy</h4><h4 id="11-Calculations"><a href="#11-Calculations" class="headerlink" title="11. Calculations"></a>11. Calculations</h4><h4 id="12-Conclusion"><a href="#12-Conclusion" class="headerlink" title="12. Conclusion"></a>12. Conclusion</h4><h4 id="References"><a href="#References" class="headerlink" title="References"></a>References</h4>
     </div>
 
     
@@ -479,12 +488,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">579k</span>
+    <span title="站点总字数">581k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:47</span>
+    <span title="站点阅读时长">8:48</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
