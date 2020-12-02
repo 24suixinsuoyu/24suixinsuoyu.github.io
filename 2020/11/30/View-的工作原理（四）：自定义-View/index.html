@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. 自定义 View 常见的分类">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-11-30T11:09:42.000Z">
-<meta property="article:modified_time" content="2020-12-02T16:36:26.830Z">
+<meta property="article:modified_time" content="2020-12-02T16:38:18.547Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="View 的工作原理">
 <meta property="article:tag" content="自定义 View">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-03 00:36:26" itemprop="dateModified" datetime="2020-12-03T00:36:26+08:00">2020-12-03</time>
+                <time title="修改时间：2020-12-03 00:38:18" itemprop="dateModified" datetime="2020-12-03T00:38:18+08:00">2020-12-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,14 +233,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>11k</span>
+              <span>12k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>10 分钟</span>
+              <span>11 分钟</span>
             </span>
 
         </div>
@@ -327,232 +327,46 @@
 <li><p>针对 wrap_content 不生效的问题：<strong>这里只需要在 onMeasure 方法中指定一个 wrap_content 模式的默认宽高即可</strong>，比如选择 200px 作为默认的宽高</p>
 </li>
 <li><p>针对 padding 不生效的问题：<strong>在绘制的时候考虑一下 padding 即可</strong>，修改后 onDraw 方法：</p>
-<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">	<span class="comment">// 思路：绘制的时候考虑到 View 四周的空白即可，其中圆心和半径都会考虑到 View 四周的 padding，做相应的调整</span></span><br><span class="line">	protected void on<span class="constructor">Draw(Canvas <span class="params">canvas</span>)</span> &#123;</span><br><span class="line">		super.on<span class="constructor">Draw(<span class="params">canvas</span>)</span>;</span><br><span class="line">		final <span class="built_in">int</span> paddingLeft = get<span class="constructor">PaddingLeft()</span>;</span><br><span class="line">		final <span class="built_in">int</span> paddingRight = get<span class="constructor">PaddingRight()</span>;</span><br><span class="line">		final <span class="built_in">int</span> paddingTop = get<span class="constructor">PaddingTop()</span>;</span><br><span class="line">		final <span class="built_in">int</span> paddingBottom = get<span class="constructor">PaddingBottom()</span>;</span><br><span class="line">		<span class="built_in">int</span> width = get<span class="constructor">Width()</span> - paddingLeft - paddingRight;</span><br><span class="line">		<span class="built_in">int</span> height = get<span class="constructor">Height()</span> - paddingTop - paddingBottom;</span><br><span class="line">		<span class="built_in">int</span> radius = <span class="module-access"><span class="module"><span class="identifier">Math</span>.</span></span>min(width, height)<span class="operator"> / </span><span class="number">2</span>;</span><br><span class="line">		canvas.draw<span class="constructor">Circle(<span class="params">paddingLeft</span> + <span class="params">width</span> <span class="operator">/</span> 2, <span class="params">paddingTop</span> + <span class="params">height</span> <span class="operator">/</span> 2, <span class="params">radius</span>, <span class="params">mPaint</span>)</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	``` </span><br><span class="line"></span><br><span class="line"><span class="number">4.</span> 为提高易用性和复用性，这里提供**自定义属性**（以 android 开头的属性是系统自带的属性）。添加自定义属性的步骤：</span><br><span class="line">	<span class="number">1.</span> 在 values 目录下**创建**自定义属性的 XML 文件，文件名没有限制，建议以 **attrs** 开头</span><br></pre></td></tr></table></figure>
-<p>  // 文件名为 attrs.xml</p>
-  <?xml version="1.0" encoding="utf-8"?>
-  <resources>
-      <declare-styleable name="CircleView">
-          <attr name="circle_color" format="color" />
-      </declare-styleable>
-  </resource>
-  <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="code">	</span></span><br><span class="line"><span class="bullet">2. </span>在 View 的构造方法中<span class="strong">**解析**</span>自定义属性的值并做相应处理</span><br></pre></td></tr></table></figure>
-  public CircleView(Context context, AttributeSet attrs, int defStyleAttr) {
-      super(context, attrs, defStyleAttr);
-      TypeArray ta = context.obtainStyledAttributes(attrs, R.styleable.CircleView);
-      mColor = ta.getColor(styleable.CircleView_circle_color, Color.RED); // 如果没有指定属性值，则默认值为红色
-      ta.recycle(); // 释放资源
-      init();
-  }
-  <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="code">	</span></span><br><span class="line"><span class="bullet">3. </span>在布局文件中<span class="strong">**使用**</span>自定义的属性</span><br></pre></td></tr></table></figure>
-  <LinearLayout xmlns:android="http://schema.android.com/apk/res/android"
-      xmlns:app="http://schema.android.com/apk/res-auto"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:background="#ffffff"
-      android:orientation="vetical" >
+  <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 思路：绘制的时候考虑到 View 四周的空白即可，其中圆心和半径都会考虑到 View 四周的 padding，做相应的调整</span></span><br><span class="line">protected void on<span class="constructor">Draw(Canvas <span class="params">canvas</span>)</span> &#123;</span><br><span class="line">	super.on<span class="constructor">Draw(<span class="params">canvas</span>)</span>;</span><br><span class="line">	final <span class="built_in">int</span> paddingLeft = get<span class="constructor">PaddingLeft()</span>;</span><br><span class="line">	final <span class="built_in">int</span> paddingRight = get<span class="constructor">PaddingRight()</span>;</span><br><span class="line">	final <span class="built_in">int</span> paddingTop = get<span class="constructor">PaddingTop()</span>;</span><br><span class="line">	final <span class="built_in">int</span> paddingBottom = get<span class="constructor">PaddingBottom()</span>;</span><br><span class="line">	<span class="built_in">int</span> width = get<span class="constructor">Width()</span> - paddingLeft - paddingRight;</span><br><span class="line">	<span class="built_in">int</span> height = get<span class="constructor">Height()</span> - paddingTop - paddingBottom;</span><br><span class="line">	<span class="built_in">int</span> radius = <span class="module-access"><span class="module"><span class="identifier">Math</span>.</span></span>min(width, height)<span class="operator"> / </span><span class="number">2</span>;</span><br><span class="line">	canvas.draw<span class="constructor">Circle(<span class="params">paddingLeft</span> + <span class="params">width</span> <span class="operator">/</span> 2, <span class="params">paddingTop</span> + <span class="params">height</span> <span class="operator">/</span> 2, <span class="params">radius</span>, <span class="params">mPaint</span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<pre><code>&lt;com.szy.chapter_4.ui.CircleView
-    android:id=&quot;@+id/circleView1&quot;
-    android:layout_width=&quot;wrap_content&quot;
-    android:layout_height=&quot;100dp&quot;
-    android:layout_margin=&quot;20dp&quot;
-    app:circle_color=&quot;@color/light_green&quot;
-    android:padding=&quot;20dp&quot;
-    android:background=&quot;#000000&quot; /&gt;</code></pre>  </LinearLayout>
-  <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="code">		</span></span><br><span class="line"><span class="bullet">		* </span>为了使用自定义属性，必须在布局文件中添加 <span class="strong">**schemas**</span> 声明：<span class="code">`xmlns:app=http://schema.android.com/apk/res-auto`</span>。<span class="strong">**app 是自定义属性的前缀**</span>，可以换其他名字，但 CircleView 中的自定义属性的前缀必须和这里的一致</span><br><span class="line"><span class="bullet">		* </span>也可以这样声明 <span class="strong">**schemas**</span>: <span class="code">`xmlns:app=http://schema.android.com/apk/res/com.szy.chapter_4`</span>，这种方式会在 apk/res/ 后面附加应用的包名</span><br><span class="line"></span><br><span class="line"><span class="bullet">5. </span>CircleView 的完整代码：</span><br></pre></td></tr></table></figure>
-// 此时的 CircleView 已经是一个很规范的自定义的 View
-public class CircleView extends View {
 
-<p>  private int mColor = Color.RED;<br>  private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);</p>
-<p>  public CircleView(Context context) {</p>
-<pre><code>super(context);
-init();</code></pre><p>  }</p>
-<p>  public CircleView(Context context, AttributeSet atts) {</p>
-<pre><code>this(context, attrs, 0);</code></pre><p>  }</p>
-<p>  public CircleView(Context context, AttributeSet atts, int defStyleAttr) {</p>
-<pre><code>super(context, attrs, defStyleAttr);
-TypeArray ta = context.obtainStyledAttributes(attrs, R.styleable.CircleView);
-mColor = ta.getColor(R.styleable.CircleView_circle_color, Color.RED);
-ta.recycle();
-init();</code></pre><p>  }</p>
-<p>  private void init() {</p>
-<pre><code>mPaint.setColor(mColor);</code></pre><p>  }</p>
-<p>  @Override<br>  protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {</p>
-<pre><code>super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
-int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
-int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
-int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
-
-// 解决 wrap_content 的问题
-if (widthSpecMode == MeasureSpec.AT_MOST &amp;&amp; heightSpecMode == MeasureSpec.AT_MOST) {
-    setMeasureDimension(200, 200);
-} else if (widthSpecMode == MeasureSpec.AT_MOST) {
-    setMeasureDimension(200, heightSpecSize);
-} else if (heightSpecMode == MeasureSpec.AT_MOST) {
-    setMeasureDimension(widthSpecSize, 200);
-}</code></pre><p>  }</p>
-<p>  @Override<br>  protected void onDraw(Canvas canvas) {</p>
-<pre><code>super.onDraw(canvas);
-final int paddingLeft = getPaddingLeft();
-final int paddingRight = getPaddingRight();
-final int paddingTop = getPaddingTop();
-final int paddingBottom = getPaddingBottom();
-
-// 解决 padding 的问题
-int width = getWidth() - paddingLeft - paddingRight;
-int height = getHeight() - paddingTop - paddingBottom;
-int radius = Math.min(width, height) / 2;
-canvas.drawCircle(paddingLeft + width / 2, paddingTop + height / 2, radius, mPaint);</code></pre><p>  }<br>}</p>
-<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### 4. Demo: 继承 ViewGroup 派生特殊的 Layout</span><br><span class="line"></span><br><span class="line"><span class="bullet">* </span>自定义一个*<span class="strong">*类似于水平方向的 LinearLayout 的控件*</span><span class="strong">*，内部的子元素可以进行水平滑动并且子元素的内部还可以进行竖直滑动</span></span><br><span class="line"><span class="strong">*</span> 注意解决*<span class="strong">*滑动冲突*</span><span class="strong">*问题以及自身和子元素的 *</span><span class="strong">*padding*</span><span class="strong">*、*</span><span class="strong">*margin*</span>* 等问题</span><br><span class="line"><span class="bullet">* </span>*<span class="strong">*HorizontalScrollViewEx*</span>* 的完整代码：</span><br></pre></td></tr></table></figure>
-<p>public class HorizontalScrollViewEx extends ViewGroup {<br>  private static final String TAG = “HorizontalScrollViewEx”;</p>
-<p>  private int mChildrenSize;<br>  private int mChildWidth;<br>  private int mChildIndex;</p>
-<p>  // 分别记录上次滑动的坐标<br>  private int mLastX = 0;<br>  private int mLastY = 0;</p>
-<p>  // 分别记录上次滑动的坐标（onInterceptTouchEvent）<br>  private int mLastXIntercept = 0;<br>  private int mLastYIntercept = 0;</p>
-<p>  private Scroller mScroller;<br>  private VelocityTracker mVelocityTracker;</p>
-<p>  public HorizontalScrollViewex(Context context) {</p>
-<pre><code>super(context);
-init();</code></pre><p>  }</p>
-<p>  public HorizontalScrollViewEx(Context context, AttributeSet attrs) {</p>
-<pre><code>super(context, attrs);
-init();</code></pre><p>  }</p>
-<p>  public HorizontalScrollViewEx(Context context, AttributeSet attrs, int defStyle) {</p>
-<pre><code>super(context, attrs, defStyle);
-init();</code></pre><p>  }</p>
-<p>  private void init() {</p>
-<pre><code>if (mScroller == null) {
-    mScroller = new Scroller(getContext());
-    mVelocityTracker = VelocityTracker.obtain();
-}</code></pre><p>  }</p>
-<p>  @Override<br>  public boolean onInterceptTouchEvent(MotionEvent event) {</p>
-<pre><code>boolean intercepted = false;
-int x = (int) event.getX();
-int y = (int) event.getY();
-
-switch (event.getAction()) {
-    case MotionEvent.ACTION_DOWN:
-        intercepted = false;
-        if (!mScroller.isFinished()) {
-            mScroller.abortAnimation();
-            intercepted = true;
-        }
-        break;
-    case MotionEvent.ACTION_MOVE:
-        int deltaX = x - mLastXIntercept;
-        int deltaY = y - mLastYIntercept;
-        if (Math.abs(deltaX) &gt; Math.abs(deltaY)) {
-            intercepted = true;
-        } else {
-            intercepted = false;
-        }
-        break;
-    case MotionEvent.ACTION_UP:
-        intercepted = false;
-        break;
-    default:
-        break;
-}
-
-Log.d(TAG, &quot;intercepted=&quot; + intercepted);
-mLastX = x;
-mLastY = y;
-mLastXIntercepted = x;
-mLastYIntercepted = y;
-
-return intercepted;</code></pre><p>  }</p>
-<p>  @Override<br>  public boolean onTouchEvent(MotionEvent event) {</p>
-<pre><code>mVelocityTracker.addMovement(event);
-int x = (int) event.getX();
-int y = (int) event.getY();
-
-switch (event.getAction()) {
-    case MotionEvent.ACTION_DOWN:
-        if (mScroller.isFinished()) {
-            mScroller.abortAnimation();
-        }
-        break;
-    case MotionEvent.ACTION_MOVE:
-        int deltaX = x - mLastX;
-        int deltaY = y - mLastY;
-        scrollBy(-deltaX, 0);
-        break;
-    case MotionEvent.ACTION_UP:
-        int scrollX = getScrollX();
-        mVelocityTracker.computeCurrentVelocity(1000);
-        float xVelocity = mVelocityTracker.getXVelocity();
-        if (Math.abs(xVelocity) &gt;= 50) {
-            mChildIndex = xVelocity &gt; 0 ? mChildIndex - 1 : mChildIndex + 1;
-        } else {
-            mChildIndex = (scrollX + mChildWidth / 2) / mChildWidth;
-        }
-        mChildIndex = Math.max(0, Math.min(mChildIndex, mChildrenSize - 1));
-        int dx = mChildIndex * mChildWidth - scrollX;
-        smoothScrollBy(dx, 0);
-        mVelocityTracker.clear();
-        break;
-    default:
-        break;
-}
-
-mLastX = x;
-mLastY = y;
-return true;</code></pre><p>  }</p>
-<p>  @Override<br>  protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {</p>
-<pre><code>super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-int measuredWidth = 0;
-int measuredHeight = 0;
-final int childCount = getChildCount();
-measureChildren(widthMeasureSpec, heightMeasureSpec);
-
-int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
-int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
-int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
-int heightSpecMode = MeasureSpec.getMode(heightMeasrueSpec);
-if (childCount == 0) {
-    setMeasuredDimension(0, 0); // 根据 LayoutParams 设置似乎更合理
-} else if (widthSpecMode == MeasureSpec.AT_MOST &amp;&amp; heightSpecMode == MeasureSpec.AT_MOST) {
-    final View childView = getChildAt(0);
-    measuredWith = childView.getMeasuredWidth() * childCount;
-    measuredHeight = childView.getMeasuredHeight();
-    setMeasuredDimension(measuredWidth, measuredHeight);
-} else if (heightSpecMode == MeasureSpec.AT_MOST) {
-    final View childView = getChildAt(0);
-    // TODO: measuredHeight = childView.getMeasuredHeight();
-    // TODO: setMeasuredDimension(widthSpecSize, childView.getMeasuredHeight());
-} else if (widthSpecMode == MeasureSpec.AT_MOST) {
-    final View childView = getChildAt(0);
-    measuredWidth = childView.getMeasuredWidth() * childCount;
-    setMeasuredDimension(measuredWidth, heightSpecSize);
-}</code></pre><p>  }</p>
-<p>  @Override<br>  protected void onLayout(boolean changed, int l, int t, int r, int b) {</p>
-<pre><code>int childLeft = 0;
-final int childCount = getChildCount();
-mChildSize = childCount;
-
-for (int i = 0; i &lt; childCount; i++) {
-    final View childView = getChildAt(i);
-    if (childView.getVisibility() != View.GONE) {
-        final int childWidth = childView.getMeasuredWidth();
-        mChilWidth = childWidth;
-        childView.layout(childLeft, 0, childLeft + childWidth, childView.getMeasuredHeight());
-        childLeft += childWidth();
-    }
-}</code></pre><p>  }</p>
-<p>  private void smoothScrollBy(int dx, int dy) {</p>
-<pre><code>mSroller.startScroll(getScrollX(), 0, dx, 0, 500);
-invalidate();</code></pre><p>  }</p>
-<p>  @Override<br>  public void computeScroll() {</p>
-<pre><code>if (mScroller.computeScrollOffset()) {
-    scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
-    postInvalidate();
-}</code></pre><p>  }</p>
-<p>  @Override<br>  protected void onDetachedFromWindow() {</p>
-<pre><code>mVelocityTracker.recycle();
-super.onDetachedFromWindow();</code></pre><p>  }<br>}</p>
-<pre><code></code></pre></li>
+</li>
 </ul>
 </li>
 </ol>
+<ol start="4">
+<li><p>为提高易用性和复用性，这里提供<strong>自定义属性</strong>（以 android 开头的属性是系统自带的属性）。添加自定义属性的步骤：</p>
+<ol>
+<li><p>在 values 目录下<strong>创建</strong>自定义属性的 XML 文件，文件名没有限制，建议以 <strong>attrs</strong> 开头</p>
+ <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 文件名为 attrs.xml</span><br><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">declare-styleable</span> <span class="attr">name</span>=<span class="string">"CircleView"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">"circle_color"</span> <span class="attr">format</span>=<span class="string">"color"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">declare-styleable</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在 View 的构造方法中<strong>解析</strong>自定义属性的值并做相应处理</p>
+ <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public <span class="constructor">CircleView(Context <span class="params">context</span>, AttributeSet <span class="params">attrs</span>, <span class="params">int</span> <span class="params">defStyleAttr</span>)</span> &#123;</span><br><span class="line">	super(context, attrs, defStyleAttr);</span><br><span class="line">	TypeArray ta = context.obtain<span class="constructor">StyledAttributes(<span class="params">attrs</span>, R.<span class="params">styleable</span>.CircleView)</span>;</span><br><span class="line">	mColor = ta.get<span class="constructor">Color(<span class="params">styleable</span>.CircleView_circle_color, Color.RED)</span>; <span class="comment">// 如果没有指定属性值，则默认值为红色</span></span><br><span class="line">	ta.recycle<span class="literal">()</span>; <span class="comment">// 释放资源</span></span><br><span class="line">	init<span class="literal">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在布局文件中<strong>使用</strong>自定义的属性</p>
+ <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;LinearLayout xmlns:android=<span class="string">"http://schema.android.com/apk/res/android"</span></span><br><span class="line">	xmlns:app=<span class="string">"http://schema.android.com/apk/res-auto"</span></span><br><span class="line">	android:layout_width=<span class="string">"match_parent"</span></span><br><span class="line">	android:layout_height=<span class="string">"match_parent"</span></span><br><span class="line">	android:<span class="attribute">background</span>=<span class="string">"#ffffff"</span></span><br><span class="line">	android:orientation=<span class="string">"vetical"</span> &gt;</span><br><span class="line">	</span><br><span class="line">	&lt;com<span class="selector-class">.szy</span><span class="selector-class">.chapter_4</span><span class="selector-class">.ui</span>.CircleView</span><br><span class="line">		android:id=<span class="string">"@+id/circleView1"</span></span><br><span class="line">		android:layout_width=<span class="string">"wrap_content"</span></span><br><span class="line">		android:layout_height=<span class="string">"100dp"</span></span><br><span class="line">		android:layout_margin=<span class="string">"20dp"</span></span><br><span class="line">		app:circle_color=<span class="string">"@color/light_green"</span></span><br><span class="line">		android:<span class="attribute">padding</span>=<span class="string">"20dp"</span></span><br><span class="line">		android:<span class="attribute">background</span>=<span class="string">"#000000"</span> /&gt;</span><br><span class="line">	</span><br><span class="line">&lt;/LinearLayout&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>为了使用自定义属性，必须在布局文件中添加 <strong>schemas</strong> 声明：<code>xmlns:app=http://schema.android.com/apk/res-auto</code>。<strong>app 是自定义属性的前缀</strong>，可以换其他名字，但 CircleView 中的自定义属性的前缀必须和这里的一致</li>
+<li>也可以这样声明 <strong>schemas</strong>: <code>xmlns:app=http://schema.android.com/apk/res/com.szy.chapter_4</code>，这种方式会在 apk/res/ 后面附加应用的包名</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p>CircleView 的完整代码：</p>
+ <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 此时的 CircleView 已经是一个很规范的自定义的 View</span></span><br><span class="line">public <span class="keyword">class</span> CircleView extends View &#123;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">private</span> <span class="built_in">int</span> mColor = Color.RED;</span><br><span class="line">	<span class="keyword">private</span> Paint mPaint = <span class="keyword">new</span> <span class="constructor">Paint(Paint.ANTI_ALIAS_FLAG)</span>;</span><br><span class="line">	</span><br><span class="line">	public <span class="constructor">CircleView(Context <span class="params">context</span>)</span> &#123;</span><br><span class="line">		super(context);</span><br><span class="line">		init<span class="literal">()</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public <span class="constructor">CircleView(Context <span class="params">context</span>, AttributeSet <span class="params">atts</span>)</span> &#123;</span><br><span class="line">		this(context, attrs, <span class="number">0</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public <span class="constructor">CircleView(Context <span class="params">context</span>, AttributeSet <span class="params">atts</span>, <span class="params">int</span> <span class="params">defStyleAttr</span>)</span> &#123;</span><br><span class="line">		super(context, attrs, defStyleAttr);</span><br><span class="line">		TypeArray ta = context.obtain<span class="constructor">StyledAttributes(<span class="params">attrs</span>, R.<span class="params">styleable</span>.CircleView)</span>;</span><br><span class="line">		mColor = ta.get<span class="constructor">Color(R.<span class="params">styleable</span>.CircleView_circle_color, Color.RED)</span>;</span><br><span class="line">		ta.recycle<span class="literal">()</span>;</span><br><span class="line">		init<span class="literal">()</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">private</span> void init<span class="literal">()</span> &#123;</span><br><span class="line">		mPaint.set<span class="constructor">Color(<span class="params">mColor</span>)</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	@Override</span><br><span class="line">	protected void on<span class="constructor">Measure(<span class="params">int</span> <span class="params">widthMeasureSpec</span>, <span class="params">int</span> <span class="params">heightMeasureSpec</span>)</span> &#123;</span><br><span class="line">		super.on<span class="constructor">Measure(<span class="params">widthMeasureSpec</span>, <span class="params">heightMeasureSpec</span>)</span>;</span><br><span class="line">		<span class="built_in">int</span> widthSpecMode = <span class="module-access"><span class="module"><span class="identifier">MeasureSpec</span>.</span></span>get<span class="constructor">Mode(<span class="params">widthMeasureSpec</span>)</span>;</span><br><span class="line">		<span class="built_in">int</span> widthSpecSize = <span class="module-access"><span class="module"><span class="identifier">MeasureSpec</span>.</span></span>get<span class="constructor">Size(<span class="params">widthMeasureSpec</span>)</span>;</span><br><span class="line">		<span class="built_in">int</span> heightSpecMode = <span class="module-access"><span class="module"><span class="identifier">MeasureSpec</span>.</span></span>get<span class="constructor">Mode(<span class="params">heightMeasureSpec</span>)</span>;</span><br><span class="line">		<span class="built_in">int</span> heightSpecSize = <span class="module-access"><span class="module"><span class="identifier">MeasureSpec</span>.</span></span>get<span class="constructor">Size(<span class="params">heightMeasureSpec</span>)</span>;</span><br><span class="line">		</span><br><span class="line">		<span class="comment">// 解决 wrap_content 的问题</span></span><br><span class="line">		<span class="keyword">if</span> (widthSpecMode<span class="operator"> == </span>MeasureSpec.AT_MOST<span class="operator"> &amp;&amp; </span>heightSpecMode<span class="operator"> == </span>MeasureSpec.AT_MOST) &#123;</span><br><span class="line">			set<span class="constructor">MeasureDimension(200, 200)</span>;</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (widthSpecMode<span class="operator"> == </span>MeasureSpec.AT_MOST) &#123;</span><br><span class="line">			set<span class="constructor">MeasureDimension(200, <span class="params">heightSpecSize</span>)</span>;</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (heightSpecMode<span class="operator"> == </span>MeasureSpec.AT_MOST) &#123;</span><br><span class="line">			set<span class="constructor">MeasureDimension(<span class="params">widthSpecSize</span>, 200)</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	@Override</span><br><span class="line">	protected void on<span class="constructor">Draw(Canvas <span class="params">canvas</span>)</span> &#123;</span><br><span class="line">		super.on<span class="constructor">Draw(<span class="params">canvas</span>)</span>;</span><br><span class="line">		final <span class="built_in">int</span> paddingLeft = get<span class="constructor">PaddingLeft()</span>;</span><br><span class="line">		final <span class="built_in">int</span> paddingRight = get<span class="constructor">PaddingRight()</span>;</span><br><span class="line">		final <span class="built_in">int</span> paddingTop = get<span class="constructor">PaddingTop()</span>;</span><br><span class="line">		final <span class="built_in">int</span> paddingBottom = get<span class="constructor">PaddingBottom()</span>;</span><br><span class="line">		</span><br><span class="line">		<span class="comment">// 解决 padding 的问题</span></span><br><span class="line">		<span class="built_in">int</span> width = get<span class="constructor">Width()</span> - paddingLeft - paddingRight;</span><br><span class="line">		<span class="built_in">int</span> height = get<span class="constructor">Height()</span> - paddingTop - paddingBottom;</span><br><span class="line">		<span class="built_in">int</span> radius = <span class="module-access"><span class="module"><span class="identifier">Math</span>.</span></span>min(width, height)<span class="operator"> / </span><span class="number">2</span>;</span><br><span class="line">		canvas.draw<span class="constructor">Circle(<span class="params">paddingLeft</span> + <span class="params">width</span> <span class="operator">/</span> 2, <span class="params">paddingTop</span> + <span class="params">height</span> <span class="operator">/</span> 2, <span class="params">radius</span>, <span class="params">mPaint</span>)</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h4 id="4-Demo-继承-ViewGroup-派生特殊的-Layout"><a href="#4-Demo-继承-ViewGroup-派生特殊的-Layout" class="headerlink" title="4. Demo: 继承 ViewGroup 派生特殊的 Layout"></a>4. Demo: 继承 ViewGroup 派生特殊的 Layout</h4><ul>
+<li><p>自定义一个<strong>类似于水平方向的 LinearLayout 的控件</strong>，内部的子元素可以进行水平滑动并且子元素的内部还可以进行竖直滑动</p>
+</li>
+<li><p>注意解决<strong>滑动冲突</strong>问题以及自身和子元素的 <strong>padding</strong>、<strong>margin</strong> 等问题</p>
+</li>
+<li><p><strong>HorizontalScrollViewEx</strong> 的完整代码：</p>
+  <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">HorizontalScrollViewEx</span> <span class="symbol">extends</span> <span class="symbol">ViewGroup</span> &#123;</span><br><span class="line">	<span class="keyword">private</span> static <span class="keyword">final</span> String TAG = <span class="string">"HorizontalScrollViewEx"</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">private</span> <span class="built_in">int</span> mChildrenSize;</span><br><span class="line">	<span class="keyword">private</span> <span class="built_in">int</span> mChildWidth;</span><br><span class="line">	<span class="keyword">private</span> <span class="built_in">int</span> mChildIndex;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 分别记录上次滑动的坐标</span></span><br><span class="line">	<span class="keyword">private</span> <span class="built_in">int</span> mLastX = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">private</span> <span class="built_in">int</span> mLastY = <span class="number">0</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 分别记录上次滑动的坐标（onInterceptTouchEvent）</span></span><br><span class="line">	<span class="keyword">private</span> <span class="built_in">int</span> mLastXIntercept = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">private</span> <span class="built_in">int</span> mLastYIntercept = <span class="number">0</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">private</span> Scroller mScroller;</span><br><span class="line">	<span class="keyword">private</span> VelocityTracker mVelocityTracker;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">public</span> HorizontalScrollViewex(Context context) &#123;</span><br><span class="line">		<span class="keyword">super</span>(context);</span><br><span class="line">		init();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">public</span> HorizontalScrollViewEx(Context context, AttributeSet attrs) &#123;</span><br><span class="line">		<span class="keyword">super</span>(context, attrs);</span><br><span class="line">		init();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">public</span> HorizontalScrollViewEx(Context context, AttributeSet attrs, <span class="built_in">int</span> defStyle) &#123;</span><br><span class="line">		<span class="keyword">super</span>(context, attrs, defStyle);</span><br><span class="line">		init();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">private</span> <span class="built_in">void</span> init() &#123;</span><br><span class="line">		<span class="keyword">if</span> (mScroller == <span class="literal">null</span>) &#123;</span><br><span class="line">			mScroller = new Scroller(getContext());</span><br><span class="line">			mVelocityTracker = VelocityTracker.obtain();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	@Override</span><br><span class="line">	<span class="keyword">public</span> <span class="built_in">bool</span>ean onInterceptTouchEvent(MotionEvent event) &#123;</span><br><span class="line">		<span class="built_in">bool</span>ean <span class="built_in">int</span>ercepted = <span class="literal">false</span>;</span><br><span class="line">		<span class="built_in">int</span> x = (<span class="built_in">int</span>) event.getX();</span><br><span class="line">		<span class="built_in">int</span> y = (<span class="built_in">int</span>) event.getY();</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">switch</span> (event.getAction()) &#123;</span><br><span class="line">			<span class="keyword">case</span> MotionEvent.ACTION_DOWN:</span><br><span class="line">				<span class="built_in">int</span>ercepted = <span class="literal">false</span>;</span><br><span class="line">				<span class="keyword">if</span> (!mScroller.isFinished()) &#123;</span><br><span class="line">					mScroller.abortAnimation();</span><br><span class="line">					<span class="built_in">int</span>ercepted = <span class="literal">true</span>;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			<span class="keyword">case</span> MotionEvent.ACTION_MOVE:</span><br><span class="line">				<span class="built_in">int</span> deltaX = x - mLastXIntercept;</span><br><span class="line">				<span class="built_in">int</span> deltaY = y - mLastYIntercept;</span><br><span class="line">				<span class="keyword">if</span> (Math.abs(deltaX) &gt; Math.abs(deltaY)) &#123;</span><br><span class="line">					<span class="built_in">int</span>ercepted = <span class="literal">true</span>;</span><br><span class="line">				&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">					<span class="built_in">int</span>ercepted = <span class="literal">false</span>;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			<span class="keyword">case</span> MotionEvent.ACTION_UP:</span><br><span class="line">				<span class="built_in">int</span>ercepted = <span class="literal">false</span>;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			<span class="keyword">default</span>:</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		Log.d(TAG, <span class="string">"intercepted="</span> + <span class="built_in">int</span>ercepted);</span><br><span class="line">		mLastX = x;</span><br><span class="line">		mLastY = y;</span><br><span class="line">		mLastXIntercepted = x;</span><br><span class="line">		mLastYIntercepted = y;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">int</span>ercepted;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	@Override</span><br><span class="line">	<span class="keyword">public</span> <span class="built_in">bool</span>ean onTouchEvent(MotionEvent event) &#123;</span><br><span class="line">		mVelocityTracker.addMovement(event);</span><br><span class="line">		<span class="built_in">int</span> x = (<span class="built_in">int</span>) event.getX();</span><br><span class="line">		<span class="built_in">int</span> y = (<span class="built_in">int</span>) event.getY();</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">switch</span> (event.getAction()) &#123;</span><br><span class="line">			<span class="keyword">case</span> MotionEvent.ACTION_DOWN:</span><br><span class="line">				<span class="keyword">if</span> (mScroller.isFinished()) &#123;</span><br><span class="line">					mScroller.abortAnimation();</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			<span class="keyword">case</span> MotionEvent.ACTION_MOVE:</span><br><span class="line">				<span class="built_in">int</span> deltaX = x - mLastX;</span><br><span class="line">				<span class="built_in">int</span> deltaY = y - mLastY;</span><br><span class="line">				scrollBy(-deltaX, <span class="number">0</span>);</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			<span class="keyword">case</span> MotionEvent.ACTION_UP:</span><br><span class="line">				<span class="built_in">int</span> scrollX = getScrollX();</span><br><span class="line">				mVelocityTracker.computeCurrentVelocity(<span class="number">1000</span>);</span><br><span class="line">				<span class="built_in">float</span> xVelocity = mVelocityTracker.getXVelocity();</span><br><span class="line">				<span class="keyword">if</span> (Math.abs(xVelocity) &gt;= <span class="number">50</span>) &#123;</span><br><span class="line">					mChildIndex = xVelocity &gt; <span class="number">0</span> ? mChildIndex - <span class="number">1</span> : mChildIndex + <span class="number">1</span>;</span><br><span class="line">				&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">					mChildIndex = (scrollX + mChildWidth / <span class="number">2</span>) / mChildWidth;</span><br><span class="line">				&#125;</span><br><span class="line">				mChildIndex = Math.max(<span class="number">0</span>, Math.min(mChildIndex, mChildrenSize - <span class="number">1</span>));</span><br><span class="line">				<span class="built_in">int</span> dx = mChildIndex * mChildWidth - scrollX;</span><br><span class="line">				smoothScrollBy(dx, <span class="number">0</span>);</span><br><span class="line">				mVelocityTracker.clear();</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			<span class="keyword">default</span>:</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		mLastX = x;</span><br><span class="line">		mLastY = y;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	@Override</span><br><span class="line">	<span class="keyword">protected</span> <span class="built_in">void</span> onMeasure(<span class="built_in">int</span> widthMeasureSpec, <span class="built_in">int</span> heightMeasureSpec) &#123;</span><br><span class="line">		<span class="keyword">super</span>.onMeasure(widthMeasureSpec, heightMeasureSpec);</span><br><span class="line">		<span class="built_in">int</span> measuredWidth = <span class="number">0</span>;</span><br><span class="line">		<span class="built_in">int</span> measuredHeight = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">final</span> <span class="built_in">int</span> childCount = getChildCount();</span><br><span class="line">		measureChildren(widthMeasureSpec, heightMeasureSpec);</span><br><span class="line">		</span><br><span class="line">		<span class="built_in">int</span> widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);</span><br><span class="line">		<span class="built_in">int</span> widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);</span><br><span class="line">		<span class="built_in">int</span> heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);</span><br><span class="line">		<span class="built_in">int</span> heightSpecMode = MeasureSpec.getMode(heightMeasrueSpec);</span><br><span class="line">		<span class="keyword">if</span> (childCount == <span class="number">0</span>) &#123;</span><br><span class="line">			setMeasuredDimension(<span class="number">0</span>, <span class="number">0</span>); <span class="comment">// 根据 LayoutParams 设置似乎更合理</span></span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (widthSpecMode == MeasureSpec.AT_MOST &amp;&amp; heightSpecMode == MeasureSpec.AT_MOST) &#123;</span><br><span class="line">			<span class="keyword">final</span> View childView = getChildAt(<span class="number">0</span>);</span><br><span class="line">			measuredWith = childView.getMeasuredWidth() * childCount;</span><br><span class="line">			measuredHeight = childView.getMeasuredHeight();</span><br><span class="line">			setMeasuredDimension(measuredWidth, measuredHeight);</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (heightSpecMode == MeasureSpec.AT_MOST) &#123;</span><br><span class="line">			<span class="keyword">final</span> View childView = getChildAt(<span class="number">0</span>);</span><br><span class="line">			<span class="comment">// <span class="doctag">TODO:</span> measuredHeight = childView.getMeasuredHeight();</span></span><br><span class="line">			<span class="comment">// <span class="doctag">TODO:</span> setMeasuredDimension(widthSpecSize, childView.getMeasuredHeight());</span></span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (widthSpecMode == MeasureSpec.AT_MOST) &#123;</span><br><span class="line">			<span class="keyword">final</span> View childView = getChildAt(<span class="number">0</span>);</span><br><span class="line">			measuredWidth = childView.getMeasuredWidth() * childCount;</span><br><span class="line">			setMeasuredDimension(measuredWidth, heightSpecSize);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	@Override</span><br><span class="line">	<span class="keyword">protected</span> <span class="built_in">void</span> onLayout(<span class="built_in">bool</span>ean changed, <span class="built_in">int</span> l, <span class="built_in">int</span> t, <span class="built_in">int</span> r, <span class="built_in">int</span> b) &#123;</span><br><span class="line">		<span class="built_in">int</span> childLeft = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">final</span> <span class="built_in">int</span> childCount = getChildCount();</span><br><span class="line">		mChildSize = childCount;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; childCount; i++) &#123;</span><br><span class="line">			<span class="keyword">final</span> View childView = getChildAt(i);</span><br><span class="line">			<span class="keyword">if</span> (childView.getVisibility() != View.GONE) &#123;</span><br><span class="line">				<span class="keyword">final</span> <span class="built_in">int</span> childWidth = childView.getMeasuredWidth();</span><br><span class="line">				mChilWidth = childWidth;</span><br><span class="line">				childView.layout(childLeft, <span class="number">0</span>, childLeft + childWidth, childView.getMeasuredHeight());</span><br><span class="line">				childLeft += childWidth();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">private</span> <span class="built_in">void</span> smoothScrollBy(<span class="built_in">int</span> dx, <span class="built_in">int</span> dy) &#123;</span><br><span class="line">		mSroller.startScroll(getScrollX(), <span class="number">0</span>, dx, <span class="number">0</span>, <span class="number">500</span>);</span><br><span class="line">		invalidate();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	@Override</span><br><span class="line">	<span class="keyword">public</span> <span class="built_in">void</span> computeScroll() &#123;</span><br><span class="line">		<span class="keyword">if</span> (mScroller.computeScrollOffset()) &#123;</span><br><span class="line">			scrollTo(mScroller.getCurrX(), mScroller.getCurrY());</span><br><span class="line">			postInvalidate();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	@Override</span><br><span class="line">	<span class="keyword">protected</span> <span class="built_in">void</span> onDetachedFromWindow() &#123;</span><br><span class="line">		mVelocityTracker.recycle();</span><br><span class="line">		<span class="keyword">super</span>.onDetachedFromWindow();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
 
     </div>
 
@@ -663,7 +477,7 @@ super.onDetachedFromWindow();</code></pre><p>  }<br>}</p>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-自定义-View-常见的分类"><span class="nav-text">1. 自定义 View 常见的分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-自定义-View-常见的注意事项"><span class="nav-text">2. 自定义 View 常见的注意事项</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Demo-继承-View-重写-onDraw-方法"><span class="nav-text">3. Demo: 继承 View 重写 onDraw 方法</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-自定义-View-常见的分类"><span class="nav-text">1. 自定义 View 常见的分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-自定义-View-常见的注意事项"><span class="nav-text">2. 自定义 View 常见的注意事项</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Demo-继承-View-重写-onDraw-方法"><span class="nav-text">3. Demo: 继承 View 重写 onDraw 方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-Demo-继承-ViewGroup-派生特殊的-Layout"><span class="nav-text">4. Demo: 继承 ViewGroup 派生特殊的 Layout</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -763,12 +577,12 @@ super.onDetachedFromWindow();</code></pre><p>  }<br>}</p>
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">607k</span>
+    <span title="站点总字数">608k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9:12</span>
+    <span title="站点阅读时长">9:13</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
