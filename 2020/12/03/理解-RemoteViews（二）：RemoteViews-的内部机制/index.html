@@ -22,19 +22,21 @@
     var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1. AAA">
+  <meta name="description" content="1. RemoteViews 所支持的 View 的类型">
 <meta property="og:type" content="article">
 <meta property="og:title" content="理解 RemoteViews（二）：RemoteViews 的内部机制">
 <meta property="og:url" content="http://24suixinsuoyu.com/2020/12/03/%E7%90%86%E8%A7%A3-RemoteViews%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9ARemoteViews-%E7%9A%84%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
-<meta property="og:description" content="1. AAA">
+<meta property="og:description" content="1. RemoteViews 所支持的 View 的类型">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1glb4wdn0vvj30yk0hmair.jpg">
 <meta property="article:published_time" content="2020-12-02T16:49:12.000Z">
-<meta property="article:modified_time" content="2020-12-02T16:57:25.247Z">
+<meta property="article:modified_time" content="2020-12-03T16:45:04.788Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="理解 RemoteViews">
 <meta property="article:tag" content="RemoteViews 的内部机制">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1glb4wdn0vvj30yk0hmair.jpg">
 
 <link rel="canonical" href="http://24suixinsuoyu.com/2020/12/03/%E7%90%86%E8%A7%A3-RemoteViews%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9ARemoteViews-%E7%9A%84%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6/">
 
@@ -207,10 +209,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-12-03 00:49:12 / 修改时间：00:57:25" itemprop="dateCreated datePublished" datetime="2020-12-03T00:49:12+08:00">2020-12-03</time>
+              <time title="创建时间：2020-12-03 00:49:12" itemprop="dateCreated datePublished" datetime="2020-12-03T00:49:12+08:00">2020-12-03</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-04 00:45:04" itemprop="dateModified" datetime="2020-12-04T00:45:04+08:00">2020-12-04</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -227,14 +235,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5</span>
+              <span>2.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -246,36 +254,91 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-AAA"><a href="#1-AAA" class="headerlink" title="1. AAA"></a>1. AAA</h4><a id="more"></a>
+        <h4 id="1-RemoteViews-所支持的-View-的类型"><a href="#1-RemoteViews-所支持的-View-的类型" class="headerlink" title="1. RemoteViews 所支持的 View 的类型"></a>1. RemoteViews 所支持的 View 的类型</h4><a id="more"></a>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<ul>
+<li><p>RemoteViews 目前并不能支持所有的 View 类型，它所支持的所有的类型如下：</p>
+<table>
+<thead>
+<tr>
+<th align="center"><code>Layout</code></th>
+<th align="center"><code>View</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>FrameLayout</code>、<code>LinearLayout</code>、<code>RelativeLayout</code>、<code>GridLayout</code></td>
+<td align="center"><code>AnalogClock</code>、<code>Button</code>、<code>Chronometer</code>、<code>ImageButton</code>、<code>ImageView</code>、<code>ProgressBar</code>、<code>TextView</code>、<code>ViewFlipper</code>、<code>ListView</code>、<code>GridView</code>、<code>StackView</code>、<code>AdapterViewFlipper</code>、<code>ViewStub</code></td>
+</tr>
+</tbody></table>
+</li>
+<li><p><strong>RemoteViews 不支持上面所列 View 的子类及其他 View 类型，包括自定义类型 View 也不支持</strong>。比如如果在通知栏的 RemoteViews 中使用系统的 EditText，那么通知栏消息将无法弹出且会抛出异常</p>
+</li>
+</ul>
+<h4 id="2-RemoteViews-常用的-set-方法"><a href="#2-RemoteViews-常用的-set-方法" class="headerlink" title="2. RemoteViews 常用的 set 方法"></a>2. RemoteViews 常用的 set 方法</h4><table>
+<thead>
+<tr>
+<th align="center">方法名</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>setTextViewText(int viewId, CharSequence text)</code></td>
+<td align="center">设置 TextView 的文本</td>
+</tr>
+<tr>
+<td align="center"><code>setTextViewTextSize(int viewId, int units, float size)</code></td>
+<td align="center">设置 TextView 的字体大小</td>
+</tr>
+<tr>
+<td align="center"><code>setTextColor(int viewId, int color)</code></td>
+<td align="center">设置 TextView 的字体颜色</td>
+</tr>
+<tr>
+<td align="center"><code>setImageViewResource(int viewId, int srcId)</code></td>
+<td align="center">设置 ImageView 的图片资源</td>
+</tr>
+<tr>
+<td align="center"><code>setInt(int viewId, String methodName, int value)</code></td>
+<td align="center">反射调用 View 对象的参数类型为 int 的方法</td>
+</tr>
+<tr>
+<td align="center"><code>setLong(int viewId, String methodName, long value)</code></td>
+<td align="center">反射调用 View 对象的参数类型为 long 的方法</td>
+</tr>
+<tr>
+<td align="center"><code>setBoolean(int viewId, String methodName, boolean value)</code></td>
+<td align="center">反射调用 View 对象的参数类型为 boolean 的方法</td>
+</tr>
+<tr>
+<td align="center"><code>setOnClickPendingIntent(int viewId, PendingIntent pendingIntent)</code></td>
+<td align="center">为 View 添加单击事件，事件类型只能为 PendingIntent</td>
+</tr>
+</tbody></table>
+<h4 id="3-RemoteViews-的内部机制"><a href="#3-RemoteViews-的内部机制" class="headerlink" title="3. RemoteViews 的内部机制"></a>3. RemoteViews 的内部机制</h4><ul>
+<li><p>RemoteViews 主要作用于<strong>通知栏</strong>和<strong>桌面小部件</strong>，以这两个为例</p>
+</li>
+<li><p>通知栏和桌面小部件分别由 <strong><code>NotificationManager</code></strong> 和 <strong><code>AppWidgetManager</code></strong> 管理，而 <code>NotificationManager</code> 和 <code>AppWidgetManager</code> 通过 <strong><code>Binder</code></strong> 分别和 <strong><code>SystemServer</code> 进程</strong>中的 <strong><code>NotificationManagerService</code></strong> 以及 <strong><code>AppWidgetService</code></strong> 通信</p>
+</li>
+<li><p>由此，通知栏和桌面小部件中的布局文件实际上是在 <code>NotificationManagerService</code> 和 <code>AppWidgetService</code> 中被加载的，而它们运行在系统的 <code>SystemServer</code> 中，这就和我们的进程构成了<strong>跨进程通信</strong>的场景</p>
+<ol>
+<li>首先 RemoteViews 会通过 Binder 传递到 SystemServer 进程，这是因为 <strong>RemoteViews 实现了 Parcelable 接口，因此它可以跨进程传输</strong>，系统会根据 RemoteViews 中的包名等信息去得到该应用的资源</li>
+<li>然后会通过 LayoutInflater 去加载 RemoteViews 中的布局文件，<strong>在 SystemServer 进程中加载后的布局文件是一个普通的 View</strong>，只不过相对于我们的进程它是一个 RemoteViews 而已</li>
+<li>接着系统会对 View 执行一系列的界面更新任务，这些任务就是之前我们通过 set 方法来提交的。<strong>set 方法对 View 所做的更新不是立刻执行的</strong>，在 RemoteViews 内部会记录所有的更新操作，具体的执行要等到 RemoteViews 被加载以后才能执行，这样 RemoteViews 就可以在 SystemServer 进程中显示了，这就是我们所看到的通知栏消息或者桌面小部件</li>
+<li>当需要更新 RemoteViews 时，我们需要调用一系列的 set 方法并通过 NotificationManager 和 AppWidgetManager 来提交更新任务，<strong>具体的更新操作也是在 SystemServer 进程中完成的</strong></li>
+</ol>
+</li>
+<li><p><strong>RemoteViews 内部机制示意图</strong></p>
+<p>  <img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glb4wdn0vvj30yk0hmair.jpg" alt="RemoteViews 内部机制示意图"></p>
+</li>
+<li><p><strong>关于单击事件，RemoteViews 只支持发起 <code>PendingIntent</code></strong>，不支持 <code>onClickListener</code> 那种模式</p>
+</li>
+<li><p><code>setOnClickPendingIntent</code>、<code>setPendingIntentTemplate</code> 以及 <code>setOnClickFillInIntent</code> 之间的区别和联系</p>
+<ul>
+<li><code>setOnClickPendingIntent</code> 用于给普通 View 设置单击事件，但是不能给集合（ListView 和 StackView）中的 View 设置单击事件，因为开销比较大，所以系统禁止了这种方式</li>
+<li>如果要给 ListView 和 StackView 中的 item 添加单击事件，必须将 <code>setPendingIntentTemplate</code> 和 <code>setOnClickFillInIntent</code> 组合使用才可以</li>
+</ul>
+</li>
+</ul>
 
     </div>
 
@@ -389,7 +452,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-AAA"><span class="nav-text">1. AAA</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-RemoteViews-所支持的-View-的类型"><span class="nav-text">1. RemoteViews 所支持的 View 的类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-RemoteViews-常用的-set-方法"><span class="nav-text">2. RemoteViews 常用的 set 方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-RemoteViews-的内部机制"><span class="nav-text">3. RemoteViews 的内部机制</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -489,12 +552,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">617k</span>
+    <span title="站点总字数">619k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9:21</span>
+    <span title="站点阅读时长">9:23</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
