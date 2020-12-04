@@ -36,8 +36,16 @@
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1gl9b4axwjcj30u40dejsl.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1gl9bh35vfdj30a606g74d.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1gl9bsngkeyj30ou088q3h.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1glbne9bu3bj309g03waa5.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1glbo1669cij304a036t8m.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1glbo3q4b2ij30cs03yjrk.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1glbo508d69j30be032t8s.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1glbo5zl5zij30k00cimye.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1glbo779scwj308i0j23zf.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1glbo8hcsqkj306o07kglr.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1glbokcqcxnj30vg0fy42q.jpg">
 <meta property="article:published_time" content="2020-11-28T14:31:11.000Z">
-<meta property="article:modified_time" content="2020-12-02T03:16:41.711Z">
+<meta property="article:modified_time" content="2020-12-04T03:50:58.210Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Bitcoin">
 <meta property="article:tag" content="Satoshi Nakamoto">
@@ -223,7 +231,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-02 11:16:41" itemprop="dateModified" datetime="2020-12-02T11:16:41+08:00">2020-12-02</time>
+                <time title="修改时间：2020-12-04 11:50:58" itemprop="dateModified" datetime="2020-12-04T11:50:58+08:00">2020-12-04</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -241,14 +249,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>11k</span>
+              <span>15k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>10 分钟</span>
+              <span>14 分钟</span>
             </span>
 
         </div>
@@ -305,7 +313,31 @@
 <h4 id="10-Privacy"><a href="#10-Privacy" class="headerlink" title="10. Privacy"></a>10. Privacy</h4><p>The traditional banking model achieves a level of privacy by limiting access to information to the parties involved and the trusted third party. The necessity to announce all transactions publicly precludes this method, but privacy can still be maintained by breaking the flow of information in another place: by keeping public keys anonymous. The public can see that someone is sending an amount to someone else, but without information linking the transaction to anyone. This is similar to the level of information released by stock exchanges, where the time and size of individual trades, the “tap”, is made public, but without telling who the parties were.</p>
 <p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1gl9bsngkeyj30ou088q3h.jpg" alt="Privacy"></p>
 <p>As an additional firewall, a new key pair should be used for each transaction to keep them from being linked to a common owner. Some linking is still unavoidable with multi-input transactions, which necessarily reveal that their inputs were owned by the same owner. The risk is that if the owner of a key is revealed, linking could reveal other transactions that belonged to the same owner.</p>
-<h4 id="11-Calculations"><a href="#11-Calculations" class="headerlink" title="11. Calculations"></a>11. Calculations</h4><h4 id="12-Conclusion"><a href="#12-Conclusion" class="headerlink" title="12. Conclusion"></a>12. Conclusion</h4><h4 id="References"><a href="#References" class="headerlink" title="References"></a>References</h4>
+<h4 id="11-Calculations"><a href="#11-Calculations" class="headerlink" title="11. Calculations"></a>11. Calculations</h4><p>We consider the scenario of an attacker trying to generate an alternate chain faster than the honest chain. Even if this is accomplished, it does not throw the system open to arbitrary changes, such as creating value out of thin air or taking money that never belonged to the attacker. Nodes are not going to accept an invalid transaction as payment, and honest nodes will never accept a block containing them. An attacker can only try to change one of his own transactions to take back money he recently spent.</p>
+<p>The race between the honest chain and an attacker chain can be characterized as a Binomial Random Walk. The success event is the honest chain being extended by one block, increasing its lead by +1, and the failure event is the attacker’s chain being extended by one block, reducing the gap by -1.</p>
+<p>The probability of an attacker catching up from a given deficit is analogous to a Gambler’s Ruin problem. Suppose a gambler with unlimited credit starts at a deficit and plays potentially an infinite number of trials to try to reach breakeven. We can calculate the probability he ever reaches breakeven, or that an attcker ever chtches up with the honest chain, as follow[8]:</p>
+<p>p = probability an honest node finds the next block</p>
+<p>q = probability the attacker finds the next block</p>
+<p>qz = probability the attacker will ever catch up from z blocks behind</p>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glbne9bu3bj309g03waa5.jpg" alt="Calculations"></p>
+<p>Given our assumption that p &gt; q, the probability drops exponentially as the number of blocks the attacker has to catch up with increases. With the odds against him, if he doesn’t make a lucky lunge forward early on, his chances become vanishingly small as he falls further behind.</p>
+<p>We now consider how long the recipient of a new transaction needs to wait before being sufficiently certain the sender can’t change the transaction. We assume the sender is an attacker who wants to make the recipient believe he paid him for a while, then switch it to pay back to himself after some time has passed. The receiver will be alterted when that happens, but the sender hopes it will be too late.</p>
+<p>The receiver generates a new key pair and gives the public key to sender shortly before signing. This prevents the sender from preparing a chain of blocks ahead of time by working on it continuously until he is lucky enough to get far enough ahead, then executing the transaction at that moment. Once the transaction is sent, the dishonest sender starts working in secret on a parallel chain containing an alternate version of his transaction.</p>
+<p>The recipient waits until the transaction has been added to a block and z blocks have been linked after it. He doesn’t know the exact amount of progress the attacker has made, but assuming the honest blocks took the average expected time per block, the attacker’s potential progress will be a Poisson distribution with expected value:</p>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glbo1669cij304a036t8m.jpg" alt="Poisson distribution"></p>
+<p>To get the probability the attacker could still catch up now, we multiply the Poisson density for each amount of progress he could have made by the probability he could catch up from that point:</p>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glbo3q4b2ij30cs03yjrk.jpg" alt="Poisson density"></p>
+<p>Rearrangint to avoid summing the infinite tail of the distribution…</p>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glbo508d69j30be032t8s.jpg" alt="infinite tail"></p>
+<p>Converting co C code…</p>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glbo5zl5zij30k00cimye.jpg" alt="C code"></p>
+<p>Running some results, we can see the probability drop off exponentially with z.</p>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glbo779scwj308i0j23zf.jpg" alt="drop off"></p>
+<p>Solving for P less than 0.1%…</p>
+<p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glbo8hcsqkj306o07kglr.jpg" alt="P"></p>
+<h4 id="12-Conclusion"><a href="#12-Conclusion" class="headerlink" title="12. Conclusion"></a>12. Conclusion</h4><p>We have proposed a system for electronic transactions without relying on trust. We started with the usual framework of coins made from digital signatures, which provides strong control of ownership, but is incomplete without a way to prevent double-spending. To solve this, we propoesed a peer-to-peer network using proof-of-work to record a public history of transactions that quickly becomes computationally impractical for an attacker to change if honest nodes control a majority of CPU power. The network is robust in its unstructured simplicity. Nodes work all at once with little coordination. They do not need to be identified, since messages are not routed to any particular place and only need to be delivered on a best effort basis. Nodes can leave and rejoin the network at will, accepting the proof-of-work chain as proof of what happened while they were gone. They vote with their CPU power, expressing their acceptance of valid blocks by working on extending them and rejecting invalid blocks by refusing to work on them. Any needed rules and incentives can be enforced with this consensus mechanism.</p>
+<h4 id="References"><a href="#References" class="headerlink" title="References"></a>References</h4><p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glbokcqcxnj30vg0fy42q.jpg" alt="References"></p>
+
     </div>
 
     
@@ -518,12 +550,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">619k</span>
+    <span title="站点总字数">622k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9:23</span>
+    <span title="站点阅读时长">9:26</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
