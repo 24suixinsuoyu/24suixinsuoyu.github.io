@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1. AAA">
+  <meta name="description" content="1. RemoteViews 的应用场景">
 <meta property="og:type" content="article">
 <meta property="og:title" content="理解 RemoteViews（三）：RemoteViews 的意义">
 <meta property="og:url" content="http://24suixinsuoyu.com/2020/12/03/%E7%90%86%E8%A7%A3-RemoteViews%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9ARemoteViews-%E7%9A%84%E6%84%8F%E4%B9%89/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
-<meta property="og:description" content="1. AAA">
+<meta property="og:description" content="1. RemoteViews 的应用场景">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-02T16:49:31.000Z">
-<meta property="article:modified_time" content="2020-12-02T16:57:32.094Z">
+<meta property="article:modified_time" content="2020-12-04T07:39:43.570Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="理解 RemoteViews">
 <meta property="article:tag" content="RemoteViews 的意义">
@@ -207,10 +207,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-12-03 00:49:31 / 修改时间：00:57:32" itemprop="dateCreated datePublished" datetime="2020-12-03T00:49:31+08:00">2020-12-03</time>
+              <time title="创建时间：2020-12-03 00:49:31" itemprop="dateCreated datePublished" datetime="2020-12-03T00:49:31+08:00">2020-12-03</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-04 15:39:43" itemprop="dateModified" datetime="2020-12-04T15:39:43+08:00">2020-12-04</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -227,14 +233,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5</span>
+              <span>2.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -246,7 +252,28 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-AAA"><a href="#1-AAA" class="headerlink" title="1. AAA"></a>1. AAA</h4><a id="more"></a>
+        <h4 id="1-RemoteViews-的应用场景"><a href="#1-RemoteViews-的应用场景" class="headerlink" title="1. RemoteViews 的应用场景"></a>1. RemoteViews 的应用场景</h4><a id="more"></a>
+
+<ul>
+<li>传统的应用场景：<strong>通知栏</strong>和<strong>桌面小部件</strong></li>
+<li>实际开发需求：现在有两个应用，<strong>一个应用需要能够更新另一个应用中的某个界面</strong><ul>
+<li><strong>AIDL</strong>: 如果对界面的更新比较频繁，此时会有效率问题，同时 AIDL 接口可能会很复杂</li>
+<li><strong>RemoteViews</strong>: 没有 AIDL 的性能问题，但缺点是仅支持常见的 View，不支持自定义 View</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-Demo-实现一个模拟的通知栏效果并实现跨进程的-UI-更新"><a href="#2-Demo-实现一个模拟的通知栏效果并实现跨进程的-UI-更新" class="headerlink" title="2. Demo: 实现一个模拟的通知栏效果并实现跨进程的 UI 更新"></a>2. Demo: 实现一个模拟的通知栏效果并实现跨进程的 UI 更新</h4><ul>
+<li><p>需求</p>
+<ul>
+<li>有 2 个 Activity 分别运行在不同的进程中，一个名字叫 A，一个名字叫 B。其中 A 扮演着模拟通知栏的角色，而 B 则可以不停地发送通知栏消息</li>
+<li>修改 A 的 process 属性使其运行在单独的进程中，这样 A 和 B 就构成了<strong>多进程通信</strong>。在 B 中创建 RemoteViews 对象，然后通知 A 显示这个 RemoteViews 对象</li>
+<li>可以像系统一样采用 Binder 来实现，这里简单起见采用<strong>广播</strong>。B 每发送一次模拟通知，就会发送一个特定的广播，然后 A 接收到广播后就开始显示 B 中定义的 RemoteViews 对象</li>
+</ul>
+</li>
+<li><p>实现</p>
+  <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// B 的实现</span></span><br><span class="line">RemoteViews remoteViews = <span class="keyword">new</span> <span class="constructor">RemoteViews(<span class="params">getPackageName</span>()</span>, <span class="module-access"><span class="module"><span class="identifier">R</span>.</span></span>layout.layout_simulated_notification);</span><br><span class="line">remoteViews.set<span class="constructor">TextViewText(R.<span class="params">id</span>.<span class="params">msg</span>, <span class="string">"msg from process: "</span> + Process.<span class="params">myPid</span>()</span>);</span><br><span class="line">remoteViews.set<span class="constructor">ImageViewResource(R.<span class="params">id</span>.<span class="params">icon</span>, R.<span class="params">drawable</span>.<span class="params">icon1</span>)</span>;</span><br><span class="line">PendingIntent pendingIntent = <span class="module-access"><span class="module"><span class="identifier">PendingIntent</span>.</span></span>get<span class="constructor">Activity(<span class="params">this</span>, 0, <span class="params">new</span> Intent(<span class="params">this</span>, DemoActivity_1.<span class="params">class</span>)</span>, PendingIntent.FLAG_UPDATE_CURRENT);</span><br><span class="line">PendingIntent openActivity2PendingIntent = <span class="module-access"><span class="module"><span class="identifier">PendingIntent</span>.</span></span>get<span class="constructor">Activity(<span class="params">this</span>, 0, <span class="params">new</span> Intent(<span class="params">this</span>, DemoActivity_2.<span class="params">class</span>)</span>, PendingIntent.FLAG_UPDATE_CURRENT);</span><br><span class="line">remoteViews.set<span class="constructor">OnClickPendingIntent(R.<span class="params">id</span>.<span class="params">item_holder</span>, <span class="params">pendingIntent</span>)</span>;</span><br><span class="line">remoteViews.set<span class="constructor">OnClickPendingIntent(R.<span class="params">id</span>.<span class="params">open_activity2</span>, <span class="params">openActivity2PendingIntent</span>)</span>;</span><br><span class="line">Intent intent = <span class="keyword">new</span> <span class="constructor">Intent(MyConstants.REMOTE_ACTION)</span>;</span><br><span class="line">intent.put<span class="constructor">Extra(MyConstants.EXTRA_REMOTE_VIEWS, <span class="params">remoteViews</span>)</span>;</span><br><span class="line">send<span class="constructor">Broadcast(<span class="params">intent</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+  <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// A 的实现</span></span><br><span class="line">public <span class="keyword">class</span> MainActivity extends Activity &#123;</span><br><span class="line">	<span class="keyword">private</span> static final String TAG = <span class="string">"MainActivity"</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">private</span> LinearLayout mRemoteViewsContent;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">private</span> BroadcastReceiver mRemoteViewsReceiver = <span class="keyword">new</span> <span class="constructor">BroadcastReceiver()</span> &#123;</span><br><span class="line">		@Override</span><br><span class="line">		public void on<span class="constructor">Receive(Context <span class="params">context</span>, Intent <span class="params">intent</span>)</span> &#123;</span><br><span class="line">			RemoteViews remoteViews = intent.get<span class="constructor">ParcelableExtra(MyConstatns.EXTRA_REMOTE_VIEWS)</span>;</span><br><span class="line">			<span class="keyword">if</span> (remoteViews != null) &#123;</span><br><span class="line">				update<span class="constructor">UI(<span class="params">remoteViews</span>)</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;;</span><br><span class="line">	</span><br><span class="line">	@Override</span><br><span class="line">	protected void on<span class="constructor">Create(Bundle <span class="params">savedInstanceState</span>)</span> &#123;</span><br><span class="line">		super.on<span class="constructor">Create(<span class="params">savedInstanceState</span>)</span>;</span><br><span class="line">		set<span class="constructor">ContentView(R.<span class="params">layout</span>.<span class="params">activity_main</span>)</span>;</span><br><span class="line">		init<span class="constructor">View()</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">private</span> void init<span class="constructor">View()</span> &#123;</span><br><span class="line">		mRemoteViewsContent = (LinearLayout) find<span class="constructor">ViewById(R.<span class="params">id</span>.<span class="params">remote_views_content</span>)</span>;</span><br><span class="line">		IntentFilter filter = <span class="keyword">new</span> <span class="constructor">IntentFilter(MyConstants.REMOTE_ACTION)</span>;</span><br><span class="line">		register<span class="constructor">Receiver(<span class="params">mRemoteViewsReceiver</span>, <span class="params">filter</span>)</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">private</span> void update<span class="constructor">UI(RemoteViews <span class="params">remoteViews</span>)</span> &#123;</span><br><span class="line">		<span class="comment">// 会有资源 id 不一致的问题</span></span><br><span class="line">		<span class="comment">// View view = remoteViews.apply(this, mRemoteViewsContent); // 加载布局文件并执行更新操作</span></span><br><span class="line">		<span class="comment">// 解决 id 不一致问题：通过资源名称来加载布局文件</span></span><br><span class="line">		<span class="built_in">int</span> layoutId = get<span class="constructor">Resources()</span>.get<span class="constructor">Identifier(<span class="string">"layout_simulated_notification"</span>, <span class="string">"layout"</span>, <span class="params">getPackagename</span>()</span>);</span><br><span class="line">		View view = get<span class="constructor">LayoutInflater()</span>.inflate(layoutId, mRemoteViewsContent, <span class="literal">false</span>);</span><br><span class="line">		remoteViews.reapply(this, view);</span><br><span class="line">		</span><br><span class="line">		mRemoteViewContent.add<span class="constructor">View(<span class="params">view</span>)</span>; <span class="comment">// 将得到的 View 添加到 A 的布局中</span></span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	@Override</span><br><span class="line">	protected void on<span class="constructor">Destroy()</span> &#123;</span><br><span class="line">		unregister<span class="constructor">Receiver(<span class="params">mRemoteViewsReceiver</span>)</span>;</span><br><span class="line">		super.on<span class="constructor">Destroy()</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
@@ -271,12 +298,8 @@
 
 
 
-
-
-
-
-
-
+</li>
+</ul>
 
     </div>
 
@@ -390,7 +413,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-AAA"><span class="nav-text">1. AAA</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-RemoteViews-的应用场景"><span class="nav-text">1. RemoteViews 的应用场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Demo-实现一个模拟的通知栏效果并实现跨进程的-UI-更新"><span class="nav-text">2. Demo: 实现一个模拟的通知栏效果并实现跨进程的 UI 更新</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -490,12 +513,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">622k</span>
+    <span title="站点总字数">625k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9:26</span>
+    <span title="站点阅读时长">9:28</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
