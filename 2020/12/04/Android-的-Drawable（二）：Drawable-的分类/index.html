@@ -31,7 +31,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1gleboo143wj30vu0dsq82.jpg">
 <meta property="article:published_time" content="2020-12-03T17:03:41.000Z">
-<meta property="article:modified_time" content="2020-12-06T11:16:05.729Z">
+<meta property="article:modified_time" content="2020-12-06T16:09:46.054Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Android 的 Drawable">
 <meta property="article:tag" content="Drawable 的分类">
@@ -217,7 +217,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-06 19:16:05" itemprop="dateModified" datetime="2020-12-06T19:16:05+08:00">2020-12-06</time>
+                <time title="修改时间：2020-12-07 00:09:46" itemprop="dateModified" datetime="2020-12-07T00:09:46+08:00">2020-12-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -235,14 +235,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.3k</span>
+              <span>6.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>6 分钟</span>
             </span>
 
         </div>
@@ -259,7 +259,7 @@
 <ul>
 <li><p>BitmapDrawable 几乎是<strong>最简单</strong>的 Drawable，表示的就是<strong>一张图片</strong></p>
 </li>
-<li><p>在实际开发中 ，可以直接引用<strong>原始</strong>的图片，也可以通过 <strong>XML 的 bitmap 标签</strong> 的方式来描述一个 BitmapDrawable，通过 XML 描述可以设置更多的效果：</p>
+<li><p>在实际开发中 ，可以直接引用<strong>原始</strong>的图片，也可以通过 <strong>XML 的 <bitmap> 标签</strong> 的方式来描述一个 BitmapDrawable，通过 XML 描述可以设置更多的效果，<strong>语法</strong>如下：</p>
   <figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"utf-8"</span>?&gt;</span><br><span class="line">&lt;bitmap</span><br><span class="line">	xmlns:android=<span class="string">"http://schema.android.com/apk/res/android"</span></span><br><span class="line">	android:src=<span class="string">"@[package:]drawable/drawable_resource"</span></span><br><span class="line">	android:antialias=[<span class="string">"true"</span> <span class="string">| "</span>false<span class="string">"]</span></span><br><span class="line">	android:dither=[<span class="string">"true"</span> <span class="string">| "</span>false<span class="string">"]</span></span><br><span class="line">	android:filter=[<span class="string">"true"</span> <span class="string">| "</span>false<span class="string">"]</span></span><br><span class="line">	android:gravity=[<span class="string">"top"</span> <span class="string">| "</span>bottom<span class="string">" | "</span>left<span class="string">" | "</span>right<span class="string">" | "</span>center_vertical<span class="string">" | </span></span><br><span class="line">			<span class="string">"fill_vertical"</span> <span class="string">| "</span>center_horizontal<span class="string">" | "</span>fill_horizontal<span class="string">" |</span></span><br><span class="line">			<span class="string">"center"</span> <span class="string">| "</span>fill<span class="string">" | "</span>clip_vertical<span class="string">" | "</span>clip_horizontal<span class="string">"]</span></span><br><span class="line">	android: mipMap=[<span class="string">"true"</span> <span class="string">| "</span>false<span class="string">"]</span></span><br><span class="line">	android:tileMode=[<span class="string">"disabled"</span> <span class="string">| "</span>clamp<span class="string">" | "</span>repeat<span class="string">" | "</span>mirror<span class="string">"] /&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>各个属性的含义</p>
@@ -374,6 +374,172 @@
 </li>
 </ul>
 <h4 id="2-ShapeDrawable-概述"><a href="#2-ShapeDrawable-概述" class="headerlink" title="2. ShapeDrawable 概述"></a>2. ShapeDrawable 概述</h4><ul>
+<li><p>ShapeDrawable 是一种很常见的 Drawable，可以理解为通过<strong>颜色</strong>来构造的图形，既可以是纯色的图形，也可以是具有渐变效果的图形</p>
+</li>
+<li><p>ShapeDrawable 的<strong>语法</strong>：</p>
+  <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">shape</span></span></span><br><span class="line"><span class="tag">		<span class="attr">xmlns:</span> <span class="attr">android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">		<span class="attr">android:shape</span>=<span class="string">[</span>"<span class="attr">rectangle</span>" | "<span class="attr">oval</span>" | "<span class="attr">line</span>" | "<span class="attr">ring</span>"] &gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">corners</span></span></span><br><span class="line"><span class="tag">			<span class="attr">android:radius</span>=<span class="string">"integer"</span></span></span><br><span class="line"><span class="tag">			<span class="attr">android:topLeftRadius</span>=<span class="string">"integer"</span></span></span><br><span class="line"><span class="tag">			<span class="attr">android:topRightRadius</span>=<span class="string">"integer"</span></span></span><br><span class="line"><span class="tag">			<span class="attr">android:bottomLeftRadisu</span>=<span class="string">"integer"</span></span></span><br><span class="line"><span class="tag">			<span class="attr">android:bottomRightRadius</span>=<span class="string">"integer"</span> /&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">gradient</span></span></span><br><span class="line"><span class="tag">			<span class="attr">android:angle</span>=<span class="string">"integer"</span></span></span><br><span class="line"><span class="tag">			<span class="attr">android:centerX</span>=<span class="string">"integer"</span></span></span><br><span class="line"><span class="tag">			<span class="attr">android:centerY</span>=<span class="string">"integer"</span></span></span><br><span class="line"><span class="tag">			<span class="attr">android:centerColor</span>=<span class="string">"integer"</span></span></span><br><span class="line"><span class="tag">			<span class="attr">android:endColor</span>=<span class="string">"color"</span></span></span><br><span class="line"><span class="tag">			<span class="attr">android:gradientRadius</span>=<span class="string">"integer"</span></span></span><br><span class="line"><span class="tag">			<span class="attr">android:startColor</span>=<span class="string">"color"</span></span></span><br><span class="line"><span class="tag">			<span class="attr">android:type</span>=<span class="string">[</span>"<span class="attr">linear</span>" | "<span class="attr">radial</span>" | "<span class="attr">sweep</span>"]</span></span><br><span class="line"><span class="tag">			<span class="attr">android:useLevel</span>=<span class="string">[</span>"<span class="attr">true</span>" | "<span class="attr">false</span>"] /&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">padding</span></span></span><br><span class="line"><span class="tag">			<span class="attr">android:left</span>=<span class="string">"integer"</span></span></span><br><span class="line"><span class="tag">			<span class="attr">android:top</span>=<span class="string">"integer"</span></span></span><br><span class="line"><span class="tag">			<span class="attr">android:right</span>=<span class="string">"integer"</span></span></span><br><span class="line"><span class="tag">			<span class="attr">android:bottom</span>=<span class="string">"integer"</span> /&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">size</span></span></span><br><span class="line"><span class="tag">			<span class="attr">android:width</span>=<span class="string">"integer"</span></span></span><br><span class="line"><span class="tag">			<span class="attr">android:height</span>=<span class="string">"integer"</span> /&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">solid</span></span></span><br><span class="line"><span class="tag">			<span class="attr">android:color</span>=<span class="string">"color"</span> /&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">stroke</span></span></span><br><span class="line"><span class="tag">			<span class="attr">android:width</span>=<span class="string">"integer"</span></span></span><br><span class="line"><span class="tag">			<span class="attr">android:color</span>=<span class="string">"color"</span></span></span><br><span class="line"><span class="tag">			<span class="attr">android:dashWidth</span>=<span class="string">"integer"</span></span></span><br><span class="line"><span class="tag">			<span class="attr">android:dashGap</span>=<span class="string">"integer"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">shape</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>标签 <code>&lt;shape&gt;</code></strong> 创建的 Drawable，实体类实际上是 <strong>GradientDrawable</strong></p>
+</li>
+<li><p><strong><code>android:shape</code></strong>: 表示图形的<strong>形状</strong>，有四个选项：<code>rectangle</code>（矩形）、<code>oval</code>（椭圆）、<code>line</code>（横线）、<code>ring</code>（圆环）。它的<strong>默认值是矩形</strong>，另外 <code>line</code> 和 <code>ring</code> 这两个选项必须要通过 <strong><code>&lt;stroke&gt;</code></strong> 标签来指定线的宽度和颜色等信息，否则将无法达到预期的显示效果。其中，<strong><code>ring</code></strong> 有五个特殊的属性值，如下表：</p>
+<table>
+<thead>
+<tr>
+<th align="center">属性</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>android:innerRadius</code></td>
+<td align="center">圆环的<strong>内半径</strong>，和 <code>android:innerRadiusRatio</code> 同时存在时，以前者为准</td>
+</tr>
+<tr>
+<td align="center"><code>android:thickness</code></td>
+<td align="center">圆环的<strong>厚度</strong>，即外半径减去内半径的大小，和 <code>android:thicknessRatio</code> 同时存在时，以前者为准</td>
+</tr>
+<tr>
+<td align="center"><code>android:innerRadiusRatio</code></td>
+<td align="center">内半径占整个 Drawable 宽度的比例，<strong>默认值为 9</strong>。如果为 n，那么<strong>内半径 = 宽度 / n</strong></td>
+</tr>
+<tr>
+<td align="center"><code>android:thicknessRatio</code></td>
+<td align="center">厚度占整个 Drawable 宽度的比例，<strong>默认值为 3</strong>。如果为 n，那么<strong>厚度 = 宽度 / n</strong></td>
+</tr>
+<tr>
+<td align="center"><code>android:useLevel</code></td>
+<td align="center">一般都应该使用 <strong>false</strong>，否则有可能无法达到预期的显示效果，除非被当作 <strong>LevelListDrawable</strong> 来使用</td>
+</tr>
+</tbody></table>
+</li>
+<li><p><strong><code>&lt;corners&gt;</code></strong>: 表示 shape 的<strong>四个角的角度</strong>，<strong>只适用于矩形 shape</strong>。这里的角度是指圆角的程度，用 <strong>px</strong> 表示，属性值如下表：</p>
+<table>
+<thead>
+<tr>
+<th align="center">属性</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>android:radius</code></td>
+<td align="center">为四个角同时设定相同的角度，<strong>优先级较低，会被其他四个属性覆盖</strong></td>
+</tr>
+<tr>
+<td align="center"><code>android:topLeftRadius</code></td>
+<td align="center">设定左上角的角度</td>
+</tr>
+<tr>
+<td align="center"><code>android:topRightRadius</code></td>
+<td align="center">设定右上角的角度</td>
+</tr>
+<tr>
+<td align="center"><code>android:bottomLeftRadius</code></td>
+<td align="center">设定左下角的角度</td>
+</tr>
+<tr>
+<td align="center"><code>android:bottomRightRadius</code></td>
+<td align="center">设定右下角的角度</td>
+</tr>
+</tbody></table>
+</li>
+<li><p><strong><code>&lt;gradient&gt;</code></strong>: 注意<strong>与 <code>&lt;solid&gt;</code> 标签是互相排斥的</strong>，其中 solid 表示纯色填充，而 gradient 表示<strong>渐变效果</strong>。属性值如下表：</p>
+<table>
+<thead>
+<tr>
+<th align="center">属性</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>android:angle</code></td>
+<td align="center"><strong>渐变的角度</strong>，<strong>默认为 0，其值必须为 45 的倍数</strong>，0 表示从左到右，90 表示从下到上，角度会影响渐变的方向</td>
+</tr>
+<tr>
+<td align="center"><code>android:centerX</code></td>
+<td align="center">渐变的中心点的横坐标</td>
+</tr>
+<tr>
+<td align="center"><code>android:centerY</code></td>
+<td align="center">渐变的中心点的纵坐标</td>
+</tr>
+<tr>
+<td align="center"><code>android:startColor</code></td>
+<td align="center">渐变的起始色</td>
+</tr>
+<tr>
+<td align="center"><code>android:centerColor</code></td>
+<td align="center">渐变的中间色</td>
+</tr>
+<tr>
+<td align="center"><code>android:endColor</code></td>
+<td align="center">渐变的结束色</td>
+</tr>
+<tr>
+<td align="center"><code>android:gradientRadius</code></td>
+<td align="center"><strong>渐变半径，仅当 <code>android:type=&quot;radial&quot;</code> 时有效</strong></td>
+</tr>
+<tr>
+<td align="center"><code>android:useLevel</code></td>
+<td align="center">一般为 <strong>false</strong>，<strong>当 Drawable 作为 <code>StateListDrawable</code> 使用时为 true</strong></td>
+</tr>
+<tr>
+<td align="center"><code>android:type</code></td>
+<td align="center">渐变的类别，有 <strong>linear 线性渐变</strong>、<strong>radial 径向渐变</strong>、<strong>sweep 扫描线渐变</strong> 三种，<strong>默认为线性渐变</strong></td>
+</tr>
+</tbody></table>
+</li>
+<li><p><strong><code>&lt;solid&gt;</code></strong>: 表示<strong>纯色填充</strong>，通过 <code>android:color</code> 指定 shape 中填充的颜色</p>
+</li>
+<li><p><strong><code>&lt;stroke&gt;</code></strong>: shape 的<strong>描边</strong>，属性值如下表：</p>
+<table>
+<thead>
+<tr>
+<th align="center">属性</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>android:width</code></td>
+<td align="center">描边的宽度</td>
+</tr>
+<tr>
+<td align="center"><code>android:color</code></td>
+<td align="center">描边的颜色</td>
+</tr>
+<tr>
+<td align="center"><code>android:dashWidth</code></td>
+<td align="center">组成虚线的线段的宽度</td>
+</tr>
+<tr>
+<td align="center"><code>android:dashGap</code></td>
+<td align="center">组成虚线的线段之间的间隔</td>
+</tr>
+</tbody></table>
+<ul>
+<li>如果 <code>android:dashWidth</code> 和 <code>android:dashGap</code> 有任何一个为 0，那么虚线效果将不能生效</li>
+</ul>
+</li>
+<li><p><strong><code>&lt;padding&gt;</code></strong>: 表示<strong>空白</strong>，但是<strong>它表示的不是 shape 的空白，而是包含它的 View 的空白</strong>，有四个属性：<code>android:left</code>、<code>android:top</code>、<code>android:right</code> 和 <code>android:bottom</code></p>
+</li>
+<li><p><strong><code>&lt;size&gt;</code></strong>: shape 的大小，两个属性：<code>android:width</code> 和 <code>android:height</code> 分别表示 shape 的宽高。这个表示的是 <strong>shape 的固有大小，但是一般来说它并不是 shape 最终显示的大小</strong>，实际上对于 shape 来说他并没有宽高的概念，作为 view 的背景它会自适应 View 的宽高。Drawable 的两个方法 <strong><code>getIntrinsicWidth()</code></strong> 和 <strong><code>getIntrinsicHeight()</code></strong> 表示的是 Drawable 的固有宽高，对于有些 Drawable 比如<strong>图片</strong>来说，它的固有宽高就是图片的尺寸。而对于 <strong>shape</strong> 来说，默认情况下它是没有固有宽高这个概念的，此时 <code>getIntrinsicWidth()</code> 和 <code>getIntrinsicHeight()</code> 会返回 -1，但是如果通过 <code>&lt;size&gt;</code> 标签来指定宽高信息，那这个时候 shape 就有了所谓的宽高。因此，总结来说，<strong><code>&lt;size&gt;</code> 标签设置的宽高就是 ShapeDrawable 的固有宽高，但是作为 View 的背景时，shape 还会被拉伸或者缩小为 View 的大小</strong></p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-LayerDrawable-概述"><a href="#3-LayerDrawable-概述" class="headerlink" title="3. LayerDrawable 概述"></a>3. LayerDrawable 概述</h4><ul>
+<li><p>LayerDrawable 对应的 XML 标签是 <strong><code>&lt;layer-list&gt;</code></strong>，它表示一种<strong>层次化的 Drawable 集合</strong>，通过将不同的 Drawable 放置在不同的层上面从而达到一种<strong>叠加</strong>后的效果，<strong>语法</strong>如下：</p>
+  <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">layer-list</span></span></span><br><span class="line"><span class="tag">	<span class="attr">xmlns:android</span>=<span class="string">"http://shcemas.android.com/apk/res/android"</span> &gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">item</span></span></span><br><span class="line"><span class="tag">		<span class="attr">android:drawable</span>=<span class="string">"@[package:] drawable/drawable_resource"</span></span></span><br><span class="line"><span class="tag">		<span class="attr">android:id</span>=<span class="string">"@[+] [package:] id/resource_name"</span></span></span><br><span class="line"><span class="tag">		<span class="attr">android:top</span>=<span class="string">"dimension"</span></span></span><br><span class="line"><span class="tag">		<span class="attr">android:right</span>=<span class="string">"dimension"</span></span></span><br><span class="line"><span class="tag">		<span class="attr">android:bottom</span>=<span class="string">"dimension"</span></span></span><br><span class="line"><span class="tag">		<span class="attr">android:left</span>=<span class="string">"dimension"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">layer-list</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>一个 layer-list 中可以包含多个 item，每个 item 表示一个 Drawable</p>
+</li>
+<li><p>常用的属性 <code>android:top</code>、<code>android:bottom</code>、<code>android:left</code> 和 <code>android:right</code> 分别表示 Drawable 相对于 View 的上下左右的<strong>偏移量，单位为像素</strong></p>
+</li>
+<li><p><strong>默认情况下，layer-list 中的所有的 Drawable 都会被缩放至 View 的大小</strong>，对于 bitmap 来说，需要使用 android:gravity 属性才能控制图片的显示效果</p>
+</li>
+<li><p>layer-list 有<strong>层次</strong>的概念，<strong>下面的 item 会覆盖上面的 item</strong>，通过合理的分层，可以实现一些特殊的叠加效果</p>
+</li>
+</ul>
+<h4 id="4-StateListDrawable"><a href="#4-StateListDrawable" class="headerlink" title="4. StateListDrawable"></a>4. StateListDrawable</h4><ul>
 <li></li>
 </ul>
 
@@ -489,7 +655,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-BitmapDrawable-概述"><span class="nav-text">1. BitmapDrawable 概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-ShapeDrawable-概述"><span class="nav-text">2. ShapeDrawable 概述</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-BitmapDrawable-概述"><span class="nav-text">1. BitmapDrawable 概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-ShapeDrawable-概述"><span class="nav-text">2. ShapeDrawable 概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-LayerDrawable-概述"><span class="nav-text">3. LayerDrawable 概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-StateListDrawable"><span class="nav-text">4. StateListDrawable</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -589,12 +755,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">641k</span>
+    <span title="站点总字数">645k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9:43</span>
+    <span title="站点阅读时长">9:47</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
