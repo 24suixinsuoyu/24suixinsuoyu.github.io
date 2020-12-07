@@ -31,7 +31,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1gleboo143wj30vu0dsq82.jpg">
 <meta property="article:published_time" content="2020-12-03T17:03:41.000Z">
-<meta property="article:modified_time" content="2020-12-06T16:09:46.054Z">
+<meta property="article:modified_time" content="2020-12-07T04:36:49.969Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Android 的 Drawable">
 <meta property="article:tag" content="Drawable 的分类">
@@ -217,7 +217,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-07 00:09:46" itemprop="dateModified" datetime="2020-12-07T00:09:46+08:00">2020-12-07</time>
+                <time title="修改时间：2020-12-07 12:36:49" itemprop="dateModified" datetime="2020-12-07T12:36:49+08:00">2020-12-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -235,14 +235,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>6.2k</span>
+              <span>8.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>6 分钟</span>
+              <span>8 分钟</span>
             </span>
 
         </div>
@@ -536,10 +536,81 @@
 </li>
 <li><p><strong>默认情况下，layer-list 中的所有的 Drawable 都会被缩放至 View 的大小</strong>，对于 bitmap 来说，需要使用 android:gravity 属性才能控制图片的显示效果</p>
 </li>
-<li><p>layer-list 有<strong>层次</strong>的概念，<strong>下面的 item 会覆盖上面的 item</strong>，通过合理的分层，可以实现一些特殊的叠加效果</p>
+<li><p>layer-list 有<strong>层次</strong>的概念，<strong>下面的 item 会覆盖上面的 item</strong>，通过合理的分层，可以实现一些特殊的<strong>叠加</strong>效果</p>
 </li>
 </ul>
 <h4 id="4-StateListDrawable"><a href="#4-StateListDrawable" class="headerlink" title="4. StateListDrawable"></a>4. StateListDrawable</h4><ul>
+<li><p>StateListDrawable 对应于 <strong><code>&lt;selector&gt;</code> 标签</strong>，也是表示 Drawable 集合，<strong>每个 Drawable 都对应着 View 的一种状态</strong>，这样系统就会根据 View 的状态选择合适的 Drawable</p>
+</li>
+<li><p>StateListDrawable 主要用于设置可单击的 View 的背景，最常见的是 Button，<strong>语法</strong>如下：</p>
+  <figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml <span class="attr">version="1.0"</span> <span class="attr">encoding="utf-8"?&gt;</span></span><br><span class="line">&lt;selector xmlns:<span class="attr">android="http://schemas.android.com/apk/res/android"</span></span><br><span class="line">	android:<span class="attr">constantSize=["true"</span> | <span class="string">"false"</span>]</span><br><span class="line">	android:<span class="attr">dither=["true"</span> | <span class="string">"false"</span>]</span><br><span class="line">	android:<span class="attr">variablePadding=["true"</span> | <span class="string">"false"</span>] &gt;</span><br><span class="line">	&lt;item</span><br><span class="line">		android:<span class="attr">drawable="@[package:]</span> drawable/drawable_resource<span class="string">"</span></span><br><span class="line"><span class="string">		android:state_pressed=["</span><span class="literal">true</span><span class="string">" | "</span><span class="literal">false</span><span class="string">"]</span></span><br><span class="line"><span class="string">		android:state_focused=["</span><span class="literal">true</span><span class="string">" | "</span><span class="literal">false</span><span class="string">"]</span></span><br><span class="line"><span class="string">		android:state_hovered=["</span><span class="literal">true</span><span class="string">" | "</span><span class="literal">false</span><span class="string">"]</span></span><br><span class="line"><span class="string">		android:state_selected=["</span><span class="literal">true</span><span class="string">" | "</span><span class="literal">false</span><span class="string">"]</span></span><br><span class="line"><span class="string">		android:state_checkable=["</span><span class="literal">true</span><span class="string">" | "</span><span class="literal">false</span><span class="string">"]</span></span><br><span class="line"><span class="string">		android:state_checked=["</span><span class="literal">true</span><span class="string">" | "</span><span class="literal">false</span><span class="string">"]</span></span><br><span class="line"><span class="string">		android:state_enabled=["</span><span class="literal">true</span><span class="string">" | "</span><span class="literal">false</span><span class="string">"]</span></span><br><span class="line"><span class="string">		android:state_activated=["</span><span class="literal">true</span><span class="string">" | "</span><span class="literal">false</span><span class="string">"]</span></span><br><span class="line"><span class="string">		android:state_window=["</span><span class="literal">true</span><span class="string">" | "</span><span class="literal">false</span><span class="string">"] /&gt;</span></span><br><span class="line"><span class="string">&lt;/selector&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>StateListDrawable 各个属性的含义</p>
+<table>
+<thead>
+<tr>
+<th align="center">属性</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>android:constantSize</code></td>
+<td align="center">StateListDrawable 的固有大小<strong>是否不</strong>随着其状态的改变而改变，因为状态的改变会导致 StateListDrawable 切换到具体的 Drawable，而不同的 Drawable 具有不同的固有大小。True 表示 StateListDrawable 的固有大小保持不变，这时它的固有大小是内部所有 Drawable 的固有大小的最大值，false 则会随着状态的改变而改变，<strong>默认值为 false</strong></td>
+</tr>
+<tr>
+<td align="center"><code>android:dither</code></td>
+<td align="center">是否开启<strong>抖动</strong>效果，这个在 BitmapDrawable 中也有提到，开启此选项可以让图片在低质量的屏幕上仍然获得较好的显示效果，<strong>默认值为 true</strong></td>
+</tr>
+<tr>
+<td align="center"><code>android:variablePadding</code></td>
+<td align="center">StateListDrawable 的 padding 表示是否随着其状态的改变而改变，true 表示会随着状态的改变而改变，false 表示 StateListDrawable 的 padding 是内部所有 Drawable 的 padding 的最大值。<strong>默认值为 false</strong>，并且<strong>不建议开启</strong>此选项</td>
+</tr>
+<tr>
+<td align="center"><code>&lt;item&gt;</code> 标签</td>
+<td align="center">表示一个具体的 Drawable，其中 <code>android:drawable</code> 是一个已有 Drawable 的资源 id，剩下的属性表示的是 View 的各种状态，<strong>每个 item 表示的都是一种状态下的 Drawable 信息</strong></td>
+</tr>
+</tbody></table>
+</li>
+<li><p>View 的常见状态</p>
+<table>
+<thead>
+<tr>
+<th align="center">状态</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>android:state_pressed</code></td>
+<td align="center">表示按下状态，比如 Button <strong>被按下后仍没有松开</strong>时的状态</td>
+</tr>
+<tr>
+<td align="center"><code>android:state_focused</code></td>
+<td align="center">表示 View 已经获取了<strong>焦点</strong></td>
+</tr>
+<tr>
+<td align="center"><code>android:state_selected</code></td>
+<td align="center">表示用户<strong>选择</strong>了 View</td>
+</tr>
+<tr>
+<td align="center"><code>android:state_checked</code></td>
+<td align="center">表示用户<strong>选中</strong>了 View，一般适用于 CheckBox 这类在选中和非选中状态之间进行切换的 View</td>
+</tr>
+<tr>
+<td align="center"><code>android:state_enabled</code></td>
+<td align="center">表示 View 当前处于<strong>可用</strong>状态</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>Demo:</p>
+  <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-8" ?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">selector</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">item</span> <span class="attr">android:state_pressed</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">		<span class="attr">android:drawable</span>=<span class="string">"@drawable/button_pressed"</span> /&gt;</span>  <span class="comment">&lt;!-- pressed --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">item</span> <span class="attr">android:state_focused</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">		<span class="attr">android:drawable</span>=<span class="string">"@drawable/button_focused"</span> /&gt;</span> <span class="comment">&lt;!-- focused --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">item</span> <span class="attr">android:drawable</span>=<span class="string">"@drawable/button_normal"</span> /&gt;</span> <span class="comment">&lt;!-- default --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">selector</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>系统会根据 View 当前的状态从 selector 中选中对应的 item，每个 item 对应着一个具体的 Drawable，<strong>系统按照从上到下的顺序查找，直至查找到第一条匹配的 item</strong></li>
+<li>一般来说，<strong>默认的 item 都应该放在 selector 的最后一条并且不附带任何的状态</strong>，这样当上面的 item 都无法匹配 View 当前状态时，系统就会选择默认的 item，因为默认的 item 不附带状态，所以它可以匹配 View 的任何状态</li>
+</ul>
+</li>
+</ul>
+<h4 id="5-LevelListDrawable"><a href="#5-LevelListDrawable" class="headerlink" title="5. LevelListDrawable"></a>5. LevelListDrawable</h4><ul>
 <li></li>
 </ul>
 
@@ -655,7 +726,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-BitmapDrawable-概述"><span class="nav-text">1. BitmapDrawable 概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-ShapeDrawable-概述"><span class="nav-text">2. ShapeDrawable 概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-LayerDrawable-概述"><span class="nav-text">3. LayerDrawable 概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-StateListDrawable"><span class="nav-text">4. StateListDrawable</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-BitmapDrawable-概述"><span class="nav-text">1. BitmapDrawable 概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-ShapeDrawable-概述"><span class="nav-text">2. ShapeDrawable 概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-LayerDrawable-概述"><span class="nav-text">3. LayerDrawable 概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-StateListDrawable"><span class="nav-text">4. StateListDrawable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-LevelListDrawable"><span class="nav-text">5. LevelListDrawable</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -755,12 +826,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">647k</span>
+    <span title="站点总字数">650k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9:48</span>
+    <span title="站点阅读时长">9:51</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
