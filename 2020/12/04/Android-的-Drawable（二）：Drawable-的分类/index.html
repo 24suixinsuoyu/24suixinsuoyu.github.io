@@ -31,7 +31,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1gleboo143wj30vu0dsq82.jpg">
 <meta property="article:published_time" content="2020-12-03T17:03:41.000Z">
-<meta property="article:modified_time" content="2020-12-07T04:36:49.969Z">
+<meta property="article:modified_time" content="2020-12-08T11:08:57.618Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Android 的 Drawable">
 <meta property="article:tag" content="Drawable 的分类">
@@ -217,7 +217,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-07 12:36:49" itemprop="dateModified" datetime="2020-12-07T12:36:49+08:00">2020-12-07</time>
+                <time title="修改时间：2020-12-08 19:08:57" itemprop="dateModified" datetime="2020-12-08T19:08:57+08:00">2020-12-08</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -235,14 +235,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>8.5k</span>
+              <span>13k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>8 分钟</span>
+              <span>12 分钟</span>
             </span>
 
         </div>
@@ -611,6 +611,74 @@
 </li>
 </ul>
 <h4 id="5-LevelListDrawable"><a href="#5-LevelListDrawable" class="headerlink" title="5. LevelListDrawable"></a>5. LevelListDrawable</h4><ul>
+<li><p>LevelListDrawable 对应于 <strong><code>&lt;level-list&gt;</code> 标签</strong>，同样表示一个 Drawable 集合，集合中的每个 Drawable 都有一个<strong>等级（level）</strong>的概念</p>
+</li>
+<li><p>根据不同的等级，LevelListDrawable 会切换为对应的 Drawable，<strong>语法</strong>如下：</p>
+  <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">level-list</span></span></span><br><span class="line"><span class="tag">	<span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span> &gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">item</span></span></span><br><span class="line"><span class="tag">		<span class="attr">android:drawable</span>=<span class="string">"@drawable/drawable_resource"</span></span></span><br><span class="line"><span class="tag">		<span class="attr">android:maxLevel</span>=<span class="string">"integer"</span></span></span><br><span class="line"><span class="tag">		<span class="attr">android:minLevel</span>=<span class="string">"integer"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">level-list</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>每个 item 表示一个 Drawable，并且有对应的<strong>等级范围</strong>，由 <code>android:minLevel</code> 和 <code>android:maxLevel</code> 来指定，在最小值和最大值之间的等级会对应此 item 中的 Drawable</li>
+<li>当作为 View 背景时，可以通过 <strong>Drawable 的 <code>setLevel()</code> 方法</strong>来设置不同的等级从而切换具体的 Drawable</li>
+<li>当作为 ImageView 的前景 Drawable 时，可以通过 <strong>ImageView 的 <code>setImageLevel()</code> 方法</strong>来切换 Drawable</li>
+<li>Drawable 的等级是有范围的，<strong>即 0 ~ 10000，最小等级是 0（默认值），最大等级是 10000</strong></li>
+</ul>
+</li>
+<li><p>Demo:</p>
+  <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">level-list</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span> &gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">item</span></span></span><br><span class="line"><span class="tag">		<span class="attr">android:drawable</span>=<span class="string">"@drawable/status_off"</span></span></span><br><span class="line"><span class="tag">		<span class="attr">android:maxLevel</span>=<span class="string">"0"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">item</span></span></span><br><span class="line"><span class="tag">		<span class="attr">android:drawable</span>=<span class="string">"@drawable/status_on"</span></span></span><br><span class="line"><span class="tag">		<span class="attr">android:maxLevel</span>=<span class="string">"1"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">level-list</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="6-TransitionDrawable"><a href="#6-TransitionDrawable" class="headerlink" title="6. TransitionDrawable"></a>6. TransitionDrawable</h4><ul>
+<li><p>TransitionDrawable 对应于 <strong><code>&lt;transition&gt;</code> 标签</strong>，用于实现<strong>两个 Drawable 之间的淡入淡出</strong>的效果，<strong>语法</strong>如下：</p>
+  <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">transition</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span> &gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">item</span></span></span><br><span class="line"><span class="tag">		<span class="attr">android:drawable</span>=<span class="string">"@[package:] drawable/drawable_resource"</span></span></span><br><span class="line"><span class="tag">		<span class="attr">android:id</span>=<span class="string">"@[+] [package:] id/resource_name"</span></span></span><br><span class="line"><span class="tag">		<span class="attr">android:top</span>=<span class="string">"dimension"</span></span></span><br><span class="line"><span class="tag">		<span class="attr">android:right</span>=<span class="string">"dimension"</span></span></span><br><span class="line"><span class="tag">		<span class="attr">android:bottom</span>=<span class="string">"dimension"</span></span></span><br><span class="line"><span class="tag">		<span class="attr">android:left</span>=<span class="string">"dimension"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">transition</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>android:top</code>、<code>android:bottom</code>、<code>android:left</code> 和 <code>android:right</code> 仍然表示的是 <strong>Drawable 四周的偏移量</strong></li>
+</ul>
+</li>
+<li><p>Demo:</p>
+  <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 定义 TransitionDrawable</span><br><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">transition</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">item</span> <span class="attr">android:drawable</span>=<span class="string">"@drawable/drawable1"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">item</span> <span class="attr">android:drawable</span>=<span class="string">"@drawable/drawable2"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">transition</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+  <figure class="highlight gml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用 TransitionDrawable</span></span><br><span class="line">&lt;TextView</span><br><span class="line">	android:<span class="symbol">id</span>=<span class="string">"@+id/button"</span></span><br><span class="line">	android:layout_height=<span class="string">"wrap_content"</span></span><br><span class="line">	android:layout_width=<span class="string">"wrap_content"</span></span><br><span class="line">	android:backgroud=<span class="string">"@drawable/transition_drawable"</span> /&gt;</span><br></pre></td></tr></table></figure>
+
+  <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 实现淡入淡出及其逆过程</span></span><br><span class="line">Textview textView = (TextView) find<span class="constructor">ViewById(R.<span class="params">id</span>.<span class="params">test_transition</span>)</span>;</span><br><span class="line">TransitionDrawable transitionDrawable = (TransitionDrawable) textView.get<span class="constructor">Background()</span>;</span><br><span class="line">transitionDrawable.start<span class="constructor">Transition(1000)</span>; <span class="comment">// reverseTransition();</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="7-InsetDrawable"><a href="#7-InsetDrawable" class="headerlink" title="7. InsetDrawable"></a>7. InsetDrawable</h4><ul>
+<li><p>InsetDrawable 对应于 <strong><code>&lt;inset&gt;</code> 标签</strong>，它可以将其他 Drawable <strong>内嵌</strong>到自己当中，并可以在四周留出一定的<strong>间距</strong></p>
+</li>
+<li><p>当一个 View 希望自己的背景比自己的实际区域小的时候，可以采用 InsetDrawable 来实现。同时，通过 LayerDrawable 也可以实现这种效果，<strong>语法</strong>如下：</p>
+  <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-8" ?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">inset</span></span></span><br><span class="line"><span class="tag">	<span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:drawable</span>=<span class="string">"@drawable/drawable_resource"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:insetTop</span>=<span class="string">"dimension"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:insetRight</span>=<span class="string">"dimension"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">androd:insetBottom</span>=<span class="string">"dimension"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:insetLeft</span>=<span class="string">"dimension"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>android:insetTop</code>、<code>android:insetBottom</code>、<code>android:insetLeft</code> 和 <code>android:insetRight</code> 分别表示顶部、底部、左边和右边<strong>内凹</strong>的大小</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>Demo:</p>
+  <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-8" ?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">inset</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:insetBottom</span>=<span class="string">"15dp"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:insetLeft</span>=<span class="string">"15dp"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:insetRight</span>=<span class="string">"15dp"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:insetTop</span>=<span class="string">"15dp"</span> &gt;</span></span><br><span class="line">	</span><br><span class="line">	<span class="tag">&lt;<span class="name">shape</span> <span class="attr">android:shape</span>=<span class="string">"rectangle"</span> &gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">solid</span> <span class="attr">android:color</span>=<span class="string">"#ff0000"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">shape</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">inset</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="8-ScaleDrawable"><a href="#8-ScaleDrawable" class="headerlink" title="8. ScaleDrawable"></a>8. ScaleDrawable</h4><ul>
+<li><p>ScaleDrawable 对应于 <strong><code>&lt;scale&gt;</code> 标签</strong>，它可以根据自己的<strong>等级（level）</strong>将指定的 Drawable 缩放到一定比例，<strong>语法</strong>如下：</p>
+  <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml <span class="attribute">version</span>=<span class="string">"1.0"</span> <span class="attribute">encoding</span>=<span class="string">"utf-8"</span> ?&gt;</span><br><span class="line">&lt;scale</span><br><span class="line">	xmlns:<span class="attribute">android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span><br><span class="line">	android:<span class="attribute">drawable</span>=<span class="string">"@drawable/drawable_resource"</span></span><br><span class="line">	android:scaleGravity=[<span class="string">"top"</span> | <span class="string">"bottom"</span> | <span class="string">"left"</span> | <span class="string">"right"</span> | <span class="string">"center_vertical"</span> |</span><br><span class="line">		<span class="string">"fill_vertical"</span> | <span class="string">"center_horizontal"</span> | <span class="string">"fill_horizontal"</span> | <span class="string">"center"</span> | <span class="string">"fill"</span> |</span><br><span class="line">		<span class="string">"clip_vertical"</span> | <span class="string">"clip_horizontal"</span>]</span><br><span class="line">	android:<span class="attribute">scaleHeight</span>=<span class="string">"percentage"</span></span><br><span class="line">	android:<span class="attribute">scaleWidth</span>=<span class="string">"percentage"</span> /&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>android:scaleGravity</code> 的含义等同于 shape 中的 <code>androdi:gravity</code>，<code>android:scaleWidth</code> 和 <code>android:scaleHeight</code> 分别表示对指定 Drawable 的宽和高的缩放比例，以<strong>百分比的形式</strong>表示</li>
+<li><strong>等级 0 是默认值，表示不可见；等级 10000 是最大值，表示没有缩放效果</strong>。如果 ScaleDrawable 的级别<strong>（level）</strong>越大，那么内部的 Drawable 看起来就<strong>越大</strong>。如果 ScaleDrawable 的 <strong>XML</strong> 中所定义的缩放比例越大，那么内部的 Drawable 看起来就<strong>越小</strong></li>
+</ul>
+</li>
+<li><p>Demo:</p>
+  <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 近似地将一张图片缩小为原大小的 30%</span><br><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">scale</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:drawable</span>=<span class="string">"@drawable/image1"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:scaleHeight</span>=<span class="string">"70%"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:scaleWidth</span>=<span class="string">"70%"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:scaleGravity</span>=<span class="string">"center"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+  <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 直接使用上面的 drawable 资源是不行的，还必须设置 ScaleDrawable 的等级（level）为大于 0 且小于 10000 的值。否则，由于 Drawable 的默认等级是 0，那么 ScaleDrawable 将无法显示出来</span></span><br><span class="line">View view = find<span class="constructor">ViewById(R.<span class="params">id</span>.<span class="params">test_scale</span>)</span>;</span><br><span class="line">ScaleDrawable scaleDrawable = (ScaleDrawable) view.get<span class="constructor">Background()</span>;</span><br><span class="line">scaleDrawable.set<span class="constructor">Level(1)</span>;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="9-ClipDrawable"><a href="#9-ClipDrawable" class="headerlink" title="9. ClipDrawable"></a>9. ClipDrawable</h4><ul>
 <li></li>
 </ul>
 
@@ -726,7 +794,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-BitmapDrawable-概述"><span class="nav-text">1. BitmapDrawable 概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-ShapeDrawable-概述"><span class="nav-text">2. ShapeDrawable 概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-LayerDrawable-概述"><span class="nav-text">3. LayerDrawable 概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-StateListDrawable"><span class="nav-text">4. StateListDrawable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-LevelListDrawable"><span class="nav-text">5. LevelListDrawable</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-BitmapDrawable-概述"><span class="nav-text">1. BitmapDrawable 概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-ShapeDrawable-概述"><span class="nav-text">2. ShapeDrawable 概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-LayerDrawable-概述"><span class="nav-text">3. LayerDrawable 概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-StateListDrawable"><span class="nav-text">4. StateListDrawable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-LevelListDrawable"><span class="nav-text">5. LevelListDrawable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-TransitionDrawable"><span class="nav-text">6. TransitionDrawable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-InsetDrawable"><span class="nav-text">7. InsetDrawable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-ScaleDrawable"><span class="nav-text">8. ScaleDrawable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-ClipDrawable"><span class="nav-text">9. ClipDrawable</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -826,12 +894,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">652k</span>
+    <span title="站点总字数">656k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9:53</span>
+    <span title="站点阅读时长">9:57</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
