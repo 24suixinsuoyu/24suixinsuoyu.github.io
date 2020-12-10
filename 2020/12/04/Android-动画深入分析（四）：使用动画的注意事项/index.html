@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1. AAAA">
+  <meta name="description" content="1. OOM 问题">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android 动画深入分析（四）：使用动画的注意事项">
 <meta property="og:url" content="http://24suixinsuoyu.com/2020/12/04/Android-%E5%8A%A8%E7%94%BB%E6%B7%B1%E5%85%A5%E5%88%86%E6%9E%90%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%8A%A8%E7%94%BB%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
-<meta property="og:description" content="1. AAAA">
+<meta property="og:description" content="1. OOM 问题">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-04T13:26:52.000Z">
-<meta property="article:modified_time" content="2020-12-05T12:41:52.189Z">
+<meta property="article:modified_time" content="2020-12-10T11:02:35.223Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Android 动画深入分析">
 <meta property="article:tag" content="使用动画的注意事项">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-05 20:41:52" itemprop="dateModified" datetime="2020-12-05T20:41:52+08:00">2020-12-05</time>
+                <time title="修改时间：2020-12-10 19:02:35" itemprop="dateModified" datetime="2020-12-10T19:02:35+08:00">2020-12-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,7 +233,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>6</span>
+              <span>584</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -252,9 +252,30 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-AAAA"><a href="#1-AAAA" class="headerlink" title="1. AAAA"></a>1. AAAA</h4><a id="more"></a>
+        <h4 id="1-OOM-问题"><a href="#1-OOM-问题" class="headerlink" title="1. OOM 问题"></a>1. OOM 问题</h4><a id="more"></a>
 
-
+<ul>
+<li>主要出现在<strong>帧动画</strong>中，当图片数量较多且图片较大时极易出现 OOM，实际开发中要尤其注意，尽量避免使用帧动画</li>
+</ul>
+<h4 id="2-内存泄漏"><a href="#2-内存泄漏" class="headerlink" title="2. 内存泄漏"></a>2. 内存泄漏</h4><ul>
+<li><strong>在属性动画中有一类无限循环的动画</strong>，这类动画需要在 Activity 退出时及时停止，否则将导致 Activity 无法释放从而造成内存泄漏，通过验证后发现 View 动画并不存在这个问题</li>
+</ul>
+<h4 id="3-兼容性问题"><a href="#3-兼容性问题" class="headerlink" title="3. 兼容性问题"></a>3. 兼容性问题</h4><ul>
+<li>动画在 <strong>3.0</strong> 以下的系统上有兼容性问题，在某些特殊场景可能无法正常工作，因此要做好<strong>适配</strong>工作</li>
+</ul>
+<h4 id="4-View-动画的问题"><a href="#4-View-动画的问题" class="headerlink" title="4. View 动画的问题"></a>4. View 动画的问题</h4><ul>
+<li>View 动画是对 <strong>View 的影像</strong>做动画，并不是真正地改变 View 的状态，因此有时会出现动画完成后 View 无法隐藏的现象，即 <strong><code>setVisibility(View.GONE)</code></strong> 失效了，此时只要调用 <strong><code>view.clearAnimation()</code></strong> 清除 View 动画即可解决该问题</li>
+</ul>
+<h4 id="5-不要使用-px"><a href="#5-不要使用-px" class="headerlink" title="5. 不要使用 px"></a>5. 不要使用 px</h4><ul>
+<li>在进行动画的过程中，<strong>尽量使用 dp</strong>，使用 px 会导致适配问题</li>
+</ul>
+<h4 id="6-动画元素的交互"><a href="#6-动画元素的交互" class="headerlink" title="6. 动画元素的交互"></a>6. 动画元素的交互</h4><ul>
+<li>将 View 移动（<strong>平移</strong>）后，在 Android 3.0 以前的系统上，不管是 View 动画还是属性动画，新位置均无法触发单击事件，同时，老位置仍然可以触发单击事件。尽管 View 已经在视觉上不存在了，将 View 移回原位置后，  原位置的单击事件继续生效。</li>
+<li>从 3.0 开始，<strong>属性动画的单击事件</strong>触发位置为移动后的位置，但是 View 动画仍然在原位置</li>
+</ul>
+<h4 id="7-硬件加速"><a href="#7-硬件加速" class="headerlink" title="7. 硬件加速"></a>7. 硬件加速</h4><ul>
+<li>使用动画的过程中，<strong>建议开启硬件加速</strong>，这样会提高动画的<strong>流畅性</strong></li>
+</ul>
 
     </div>
 
@@ -365,7 +386,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-AAAA"><span class="nav-text">1. AAAA</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-OOM-问题"><span class="nav-text">1. OOM 问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-内存泄漏"><span class="nav-text">2. 内存泄漏</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-兼容性问题"><span class="nav-text">3. 兼容性问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-View-动画的问题"><span class="nav-text">4. View 动画的问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-不要使用-px"><span class="nav-text">5. 不要使用 px</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-动画元素的交互"><span class="nav-text">6. 动画元素的交互</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-硬件加速"><span class="nav-text">7. 硬件加速</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
