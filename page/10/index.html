@@ -181,6 +181,105 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/06/06/Java-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E7%B1%BB%E5%8A%A0%E8%BD%BD%E7%9A%84%E5%BA%94%E7%94%A8%EF%BC%9A%E5%8F%AF%E9%85%8D%E7%BD%AE%E7%9A%84%E7%AD%96%E7%95%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="隋钟元">
+      <meta itemprop="description" content="技术创造价值">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="隋钟元’s Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/06/06/Java-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E7%B1%BB%E5%8A%A0%E8%BD%BD%E7%9A%84%E5%BA%94%E7%94%A8%EF%BC%9A%E5%8F%AF%E9%85%8D%E7%BD%AE%E7%9A%84%E7%AD%96%E7%95%A5/" class="post-title-link" itemprop="url">Java 类加载机制（三）：类加载的应用：可配置的策略</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-06 18:48:38" itemprop="dateCreated datePublished" datetime="2020-06-06T18:48:38+08:00">2020-06-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-08 00:32:30" itemprop="dateModified" datetime="2020-06-08T00:32:30+08:00">2020-06-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E3%80%8AJava-%E7%BC%96%E7%A8%8B%E7%9A%84%E9%80%BB%E8%BE%91%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《Java 编程的逻辑》</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>910</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="1-可以通过-ClassLoader-的-loadClass-或-Class-forName-自己加载类，但什么情况需要自己加载类呢"><a href="#1-可以通过-ClassLoader-的-loadClass-或-Class-forName-自己加载类，但什么情况需要自己加载类呢" class="headerlink" title="1. 可以通过 ClassLoader 的 loadClass() 或 Class.forName() 自己加载类，但什么情况需要自己加载类呢"></a>1. 可以通过 ClassLoader 的 loadClass() 或 Class.forName() 自己加载类，但什么情况需要自己加载类呢</h4>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/06/06/Java-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E7%B1%BB%E5%8A%A0%E8%BD%BD%E7%9A%84%E5%BA%94%E7%94%A8%EF%BC%9A%E5%8F%AF%E9%85%8D%E7%BD%AE%E7%9A%84%E7%AD%96%E7%95%A5/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <div>
+      
+    </div>
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/06/06/Java-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E7%90%86%E8%A7%A3-ClassLoader/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1068,105 +1167,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/06/01/Java-%E6%B3%A8%E8%A7%A3%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%9F%A5%E7%9C%8B%E6%B3%A8%E8%A7%A3%E4%BF%A1%E6%81%AF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="隋钟元">
-      <meta itemprop="description" content="技术创造价值">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="隋钟元’s Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/01/Java-%E6%B3%A8%E8%A7%A3%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%9F%A5%E7%9C%8B%E6%B3%A8%E8%A7%A3%E4%BF%A1%E6%81%AF/" class="post-title-link" itemprop="url">Java 注解（四）：查看注解信息</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-01 21:12:44" itemprop="dateCreated datePublished" datetime="2020-06-01T21:12:44+08:00">2020-06-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-06 17:50:24" itemprop="dateModified" datetime="2020-06-06T17:50:24+08:00">2020-06-06</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E3%80%8AJava-%E7%BC%96%E7%A8%8B%E7%9A%84%E9%80%BB%E8%BE%91%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《Java 编程的逻辑》</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>751</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="1-怎样查看注解信息"><a href="#1-怎样查看注解信息" class="headerlink" title="1. 怎样查看注解信息"></a>1. 怎样查看注解信息</h4>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/06/01/Java-%E6%B3%A8%E8%A7%A3%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%9F%A5%E7%9C%8B%E6%B3%A8%E8%A7%A3%E4%BF%A1%E6%81%AF/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <div>
-      
-    </div>
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1239,7 +1239,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">186</span>
+          <span class="site-state-item-count">187</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1252,7 +1252,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">237</span>
+        <span class="site-state-item-count">239</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
