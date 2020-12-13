@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. 属性动画概述">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-04T13:26:30.000Z">
-<meta property="article:modified_time" content="2020-12-11T09:14:28.058Z">
+<meta property="article:modified_time" content="2020-12-13T14:32:38.315Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Android 动画深入分析">
 <meta property="article:tag" content="属性动画">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-11 17:14:28" itemprop="dateModified" datetime="2020-12-11T17:14:28+08:00">2020-12-11</time>
+                <time title="修改时间：2020-12-13 22:32:38" itemprop="dateModified" datetime="2020-12-13T22:32:38+08:00">2020-12-13</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,14 +233,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>279</span>
+              <span>7.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>7 分钟</span>
             </span>
 
         </div>
@@ -262,11 +262,162 @@
 <li><p>属性动画默认时间间隔是 <strong>300ms</strong>，默认帧率是 <strong>10ms/帧</strong>，可以达到的效果是：<strong>在一个时间间隔内完成对象从一个属性值到另一个属性值的改变</strong>。比较常用的动画类是：<strong>ValueAnimator</strong>、<strong>ObjectAnimator</strong>、<strong>AnimatorSet</strong></p>
 </li>
 <li><p>Demo:</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">	</span><br></pre></td></tr></table></figure>
+  <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 改变一个对象的 translationY 属性，让其沿着 Y 轴向上平移一段距离（它的高度），在默认时间内完成</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">ObjectAnimator</span>.</span></span><span class="keyword">of</span><span class="constructor">Float(<span class="params">myObject</span>, <span class="string">"translationY"</span>, -<span class="params">myObject</span>.<span class="params">getHeight</span>()</span>).start<span class="literal">()</span>;</span><br></pre></td></tr></table></figure>
+
+  <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 改变一个对象的背景色属性，让背景色在 3 秒内实现从 0xFFFF8080 到 0xFF8080FF 的渐变，无限循环且反转</span></span><br><span class="line">ValueAnimator colorAnim = <span class="module-access"><span class="module"><span class="identifier">ObjectAnimator</span>.</span></span><span class="keyword">of</span><span class="constructor">Int(<span class="params">this</span>, <span class="string">"background"</span>, <span class="operator">/</span><span class="operator">*</span> Red <span class="operator">*</span><span class="operator">/</span> 0xFFFF808080, <span class="operator">/</span><span class="operator">*</span> Blue <span class="operator">*</span><span class="operator">/</span> 0xFF8080FF)</span>;</span><br><span class="line">colorAnim.set<span class="constructor">Duration(3000)</span>;</span><br><span class="line">colorAnim.set<span class="constructor">Evaluator(<span class="params">new</span> ArgbEvaluator()</span>);</span><br><span class="line">colorAnim.set<span class="constructor">RepeatCount(ValueAnimator.INFINITE)</span>;</span><br><span class="line">colorAnim.set<span class="constructor">RepeatMode(ValueAnimator.REVERSE)</span>;</span><br><span class="line">colorAnim.start<span class="literal">()</span>;</span><br></pre></td></tr></table></figure>
+
+  <figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 动画集合，5 秒内对 View 的旋转、平移、缩放和透明度都进行了改变</span></span><br><span class="line">AnimatorSet set = new AnimatorSet();</span><br><span class="line">set.playTogether(</span><br><span class="line">	ObjectAnimator.ofFloat(myView, <span class="string">"rotationX"</span>, <span class="number">0</span>, <span class="number">360</span>), </span><br><span class="line">	ObjectAnimator.ofFloat(myView, <span class="string">"rotationY"</span>, <span class="number">0</span>, <span class="number">180</span>),</span><br><span class="line">	ObjectAnimator.ofFloat(myView, <span class="string">"rotation"</span>, <span class="number">0</span>, <span class="number">-90</span>),</span><br><span class="line">	ObjectAnimator.ofFloat(myView, <span class="string">"translationX"</span>, <span class="number">0</span>, <span class="number">90</span>),</span><br><span class="line">	ObjectAnimator.ofFloat(myView, <span class="string">"translationY"</span>, <span class="number">0</span>, <span class="number">90</span>),</span><br><span class="line">	ObjectAnimator.ofFloat(myView, <span class="string">"scaleX"</span>, <span class="number">1</span>, <span class="number">1.5</span>f),</span><br><span class="line">	ObjectAnimator.ofFloat(myView, <span class="string">"scaleY"</span>, <span class="number">1</span>, <span class="number">0.5</span>f),</span><br><span class="line">	ObjectAnimator.ofFloat(myView, <span class="string">"alpha"</span>, <span class="number">1</span>, <span class="number">0.25</span>f, <span class="number">1</span>));</span><br><span class="line">set.setDuration(<span class="number">5</span> * <span class="number">1000</span>).start();</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
-<h4 id="2-使用属性动画"><a href="#2-使用属性动画" class="headerlink" title="2. 使用属性动画"></a>2. 使用属性动画</h4><h4 id="3-理解插值器和估值器"><a href="#3-理解插值器和估值器" class="headerlink" title="3. 理解插值器和估值器"></a>3. 理解插值器和估值器</h4><h4 id="4-属性动画的监听器"><a href="#4-属性动画的监听器" class="headerlink" title="4. 属性动画的监听器"></a>4. 属性动画的监听器</h4><h4 id="5-对任意属性做动画"><a href="#5-对任意属性做动画" class="headerlink" title="5. 对任意属性做动画"></a>5. 对任意属性做动画</h4><h4 id="6-属性动画的工作原理"><a href="#6-属性动画的工作原理" class="headerlink" title="6. 属性动画的工作原理"></a>6. 属性动画的工作原理</h4>
+<h4 id="2-使用属性动画"><a href="#2-使用属性动画" class="headerlink" title="2. 使用属性动画"></a>2. 使用属性动画</h4><ul>
+<li><p>属性动画除了通过<strong>代码</strong>实现以外，还可以通过 <strong>XML</strong> 来定义。属性动画需要定义在 <strong><code>res/animator/</code></strong> 目录下，<strong>语法</strong>如下：</p>
+  <figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&lt;set</span><br><span class="line">	android:ordering=[<span class="string">"together"</span> | <span class="string">"sequentially"</span>] &gt;</span><br><span class="line">	&lt;objectAnimator</span><br><span class="line">		android:propertyName=<span class="string">"string"</span></span><br><span class="line">		android:duration=<span class="string">"int"</span></span><br><span class="line">		android:valueFrom=<span class="string">"float | int | color"</span></span><br><span class="line">		android:valueTo=<span class="string">"float | int | color"</span></span><br><span class="line">		android:startOffset=<span class="string">"int"</span></span><br><span class="line">		android:repeatCount=<span class="string">"int"</span></span><br><span class="line">		android:repeatMode=[<span class="string">"repeat"</span> | <span class="string">"reverse"</span>]</span><br><span class="line">		android:valueType=[<span class="string">"intType"</span> | <span class="string">"floatType"</span>] /&gt;</span><br><span class="line">		</span><br><span class="line">	&lt;animator</span><br><span class="line">		android:duration=<span class="string">"int"</span></span><br><span class="line">		android:valueFrom=<span class="string">"float | int | color"</span></span><br><span class="line">		android:valueTo=<span class="string">"float | int | color"</span></span><br><span class="line">		android:startOffset=<span class="string">"int"</span></span><br><span class="line">		android:repeatCount=<span class="string">"int"</span></span><br><span class="line">		android:repeatMode=[<span class="string">"repeat"</span> | <span class="string">"reverse"</span>]</span><br><span class="line">		android:valueType=[<span class="string">"intType"</span> | <span class="string">"floatType"</span>] /&gt;</span><br><span class="line">		</span><br><span class="line">	&lt;set</span><br><span class="line">		...</span><br><span class="line">	&lt;/set&gt;</span><br><span class="line">&lt;/set&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>ValueAnimator</code> 对应 <strong><code>&lt;animator&gt;</code></strong> 标签，<code>ObjectAnimator</code> 对应 <strong><code>&lt;objectAnimator&gt;</code></strong> 标签，<code>AnimatorSet</code> 对应 <strong><code>&lt;set&gt;</code></strong> 标签</p>
+</li>
+<li><p><code>&lt;set&gt;</code> 标签的 <code>android:ordering</code> 属性有两个可选值：<strong><code>together</code></strong> 和 <strong><code>sequentially</code></strong>。<code>together</code> 表示动画集合中的子动画<strong>同时播放</strong>，<code>sequentially</code> 表示动画集合中的子动画按照前后顺序<strong>依次播放</strong>。<strong>默认值是 <code>together</code></strong></p>
+</li>
+<li><p><code>&lt;objectAnimator&gt;</code> 标签的属性及含义</p>
+<table>
+<thead>
+<tr>
+<th align="center">属性</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>android:propertyName</code></td>
+<td align="center">表示属性动画的作用对象的属性的名称</td>
+</tr>
+<tr>
+<td align="center"><code>android:duration</code></td>
+<td align="center">表示动画的时长</td>
+</tr>
+<tr>
+<td align="center"><code>android:valueFrom</code></td>
+<td align="center">表示属性的起始值</td>
+</tr>
+<tr>
+<td align="center"><code>android:valueTo</code></td>
+<td align="center">表示属性的结束值</td>
+</tr>
+<tr>
+<td align="center"><code>android:startOffset</code></td>
+<td align="center">表示动画的延迟时间，当动画开始后，需要延迟多少毫秒才会真正播放此动画</td>
+</tr>
+<tr>
+<td align="center"><code>android:repeatCount</code></td>
+<td align="center">表示动画的重复次数，<strong>默认值为 0，-1 表示无限循环</strong></td>
+</tr>
+<tr>
+<td align="center"><code>android:repeatMode</code></td>
+<td align="center">表示动画的重复模式，有两个选项 <code>repeat</code> 和 <code>reverse</code>，分别表示<strong>连续重复</strong>和<strong>逆向重复</strong>。连续重复就是动画每次都重新开始播放，逆向重复是指第一次播放完以后，第二次会倒着播放动画，第三次再重头开始播放动画，第四次再倒着播放动画，如此反复</td>
+</tr>
+<tr>
+<td align="center"><code>android:valueType</code></td>
+<td align="center">表示 <code>android:propertyName</code> 所指定的属性的类型，有 <code>intType</code> 和 <code>floatType</code> 两个可选项，分别表示属性的类型为<strong>整型</strong>和<strong>浮点型</strong>。另外，如果 <code>android:propertyName</code> 所指定的属性表示的是<strong>颜色</strong>，那么不需要指定 <code>android:valueType</code>，系统会自动对颜色类型的属性做处理</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+</li>
+<li><p>Demo:</p>
+  <figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 通过 XML 定义一个属性动画并将其作用在 View 上</span></span><br><span class="line"><span class="comment">// res/animator/property_animator.xml</span></span><br><span class="line">&lt;<span class="built_in">set</span> android:ordering=<span class="string">"together"</span>&gt;</span><br><span class="line">	&lt;objectAnimator</span><br><span class="line">		android:propertyName=<span class="string">"x"</span></span><br><span class="line">		android:<span class="built_in">duration</span>=<span class="string">"300"</span></span><br><span class="line">		android:valueTo=<span class="string">"200"</span></span><br><span class="line">		android:valueType=<span class="string">"intType"</span> /&gt;</span><br><span class="line">	&lt;objectAnimator</span><br><span class="line">		android:propertyName=<span class="string">"y"</span></span><br><span class="line">		android:<span class="built_in">duration</span><span class="string">"300"</span></span><br><span class="line">		android:valueTo=<span class="string">"300"</span></span><br><span class="line">		android:valueType=<span class="string">"intType"</span> /&gt;</span><br><span class="line">&lt;/<span class="built_in">set</span>&gt;</span><br></pre></td></tr></table></figure>
+
+  <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用上面的属性</span></span><br><span class="line">AnimatorSet set = (AnimatorSet) <span class="module-access"><span class="module"><span class="identifier">AnimatorInflater</span>.</span></span>load<span class="constructor">Animator(<span class="params">myContext</span>, R.<span class="params">anim_property_animator</span>)</span>;</span><br><span class="line">set.set<span class="constructor">Target(<span class="params">mButton</span>)</span>;</span><br><span class="line">set.start<span class="literal">()</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>实际开发中建议采用代码的方式实现属性动画，一方面代码的方式比较简单，另一方面很多方面一个<strong>属性的起始值</strong>是无法提前确定的</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-理解插值器和估值器"><a href="#3-理解插值器和估值器" class="headerlink" title="3. 理解插值器和估值器"></a>3. 理解插值器和估值器</h4><ul>
+<li><p><strong>TimeInterpolator</strong> 为<strong>时间插值器</strong>，作用是根据时间流逝的百分比来计算出当前属性值改变的百分比</p>
+<ul>
+<li>系统预置的有 <strong>LinearInterpolator(线性插值器：匀速动画)</strong>、<strong>AccelerateDecelerateInterpolator(加速减速插值器：动画两头慢中间快)</strong> 和 <strong>DecelerateInterpolator(减速插值器：动画越来越慢)</strong></li>
+</ul>
+</li>
+<li><p><strong>TypeEvaluator</strong> 为<strong>类型估值器</strong>，作用是根据当前属性改变的百分比来计算改变后的属性值</p>
+<ul>
+<li>系统预置的有 <strong>IntEvaluator(针对整型属性)</strong>、<strong>FloatEvaluator(针对浮点型属性)</strong> 和 <strong>ArgbEvaluator(针对 Color 属性)</strong></li>
+</ul>
+</li>
+<li><p>线性插值器 <code>LinearInterpolator</code> 源码：</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LinearInterpolator</span> <span class="keyword">implements</span> <span class="title">Interpolator</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">LinearInterpolator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">LinearInterpolator</span><span class="params">(Context context, AttributeSet attrs)</span> </span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">float</span> <span class="title">getInterpolation</span><span class="params">(<span class="keyword">float</span> input)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> input; <span class="comment">// 线性插值器的返回值和输入值一样</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>整型估值器 <code>IntEvaluator</code> 源码：</p>
+  <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">IntEvaluator</span> <span class="symbol">implements</span> <span class="symbol">TypeEvaluator</span>&lt;<span class="symbol">Integer</span>&gt; &#123;</span><br><span class="line">	<span class="keyword">public</span> Ingeter evaluate(<span class="built_in">float</span> fraction, Integer startValue, Integer endValue) &#123;</span><br><span class="line">		<span class="built_in">int</span> startInt = startValue;</span><br><span class="line">		<span class="keyword">return</span> (<span class="built_in">int</span>) (startInt + fraction * (endValue - startInt));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>自定义插值器和估值器</p>
+<ul>
+<li>属性动画要求对象的该属性有 <code>set</code> 方法和 <code>get</code> 方法（可选）</li>
+<li>插值器和估值器都是一个<strong>接口</strong>，且内部都只有一个方法</li>
+<li>自定义插值器需要实现 <strong>Interpolator</strong> 或者 <strong>TimeInterpolator</strong>，自定义估值器需要实现 <strong>TypeEvaluator</strong></li>
+<li>如果要对其他类型（非 <code>int</code>、<code>float</code>、<code>Color</code>）做动画，必须要自定义类型估值器</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-属性动画的监听器"><a href="#4-属性动画的监听器" class="headerlink" title="4. 属性动画的监听器"></a>4. 属性动画的监听器</h4><ul>
+<li><p>属性动画提供了监听器用于监听动画的播放过程，主要有如下两个接口：<strong><code>AnimatorListener</code></strong> 和 <strong><code>AnimatorUpdateListener</code></strong></p>
+</li>
+<li><p><code>AnimatorListener</code> 定义：</p>
+  <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">interface</span> <span class="title">AnimatorListener</span> &#123;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">onAnimationStart</span>(<span class="params">Animator animation</span>)</span>;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">onAnimationEnd</span>(<span class="params">Animator animation</span>)</span>;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">onAnimationCancel</span>(<span class="params">Animator animation</span>)</span>;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">onAnimationRepeat</span>(<span class="params">Animator animation</span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>AnimatorUpdateListener</code> 定义：</p>
+  <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public static<span class="built_in"> interface </span>AnimatorUpdateListener &#123;</span><br><span class="line">	void onAnimationUpdate(ValueAnimator animation);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>AnimatorUpdateListener</code> 会监听整个动画过程，动画是由许多帧组成的，<strong>每播放一帧，<code>onAnimationUpdate()</code> 就会被调用一次</strong>，利用这个特性，可以做一些特殊的逻辑</li>
+</ul>
+</li>
+</ul>
+<h4 id="5-对任意属性做动画"><a href="#5-对任意属性做动画" class="headerlink" title="5. 对任意属性做动画"></a>5. 对任意属性做动画</h4><ul>
+<li><p>属性动画的原理</p>
+<ul>
+<li>属性动画要求动画作用的对象提供该属性的 <strong><code>get</code> 方法</strong>和 <strong><code>set</code> 方法</strong></li>
+<li>属性动画根据外界传递的该属性的<strong>初始值</strong>和<strong>最终值</strong>，<strong>以动画的效果多次去调用 <code>set</code> 方法</strong></li>
+<li>每次传递给 <code>set</code> 方法的值都不一样，确切来说是随着时间的推移，<strong>所传递的值越来越接近最终值</strong></li>
+</ul>
+</li>
+<li><p>对 <code>object</code> 的属性 <code>abc</code> 做动画，如果想让动画生效，要同时满足两个条件</p>
+<ol>
+<li><strong><code>object</code> 必须要提供 <code>setAbc()</code> 方法</strong>，如果动画的时候没有传递初始值，那么还要提供 <code>getAbc()</code> 方法，因为系统要去读取 <code>abc</code> 属性的初始值（如果这条不满足，程序直接 crash）</li>
+<li><code>object</code> 的 <code>setAbc()</code> 对属性 <code>abc</code> 所做的改变<strong>必须能够通过某种方法反映出来</strong>，比如会带来 UI 的改变之类（如果这条不满足，动画无效果但不会 crash）</li>
+</ol>
+</li>
+<li><p>上述条件 2 的反例：<strong>对 Button 的 width 属性做动画没有效果</strong></p>
+<ul>
+<li>因为 Button 内部虽然提供了 <code>getWidth()</code> 和 <code>setWidth()</code> 方法，但是这个 <code>setWidth()</code> 方法并不是改变视图的大小，<strong>它是 TextView 新添加的方法，View 是没有这个 <code>setWidth()</code> 方法的</strong>。由于 Button 继承了 TextView，所以 Button 也就有了 <code>setWidth()</code> 方法</li>
+<li>分析 <code>getWidth()</code> 和 <code>setWidth()</code> 源码可知，<code>getWidth()</code> 的确是获取 View 的宽度的，但 <strong><code>setWidth()</code> 是 TextView 及其子类的专属方法，它的作用不是设置 View 的宽度，而是设置 TextView 的最大宽度和最小宽度的</strong>，这和 TextView 的宽度不是一个概念</li>
+<li>具体来说，<strong>TextView 的宽度对应 XML 中的 <code>android:layout_width</code> 属性</strong>，而 TextView 还有一个<strong>属性 <code>android:width</code> 对应了 TextView 的 <code>setWidth()</code> 方法</strong></li>
+</ul>
+</li>
+<li><p><strong>官方文档</strong>提供解决上面反例的 3 种方法</p>
+<ul>
+<li><p>如果有<strong>权限</strong>的话，给带操作对象加上 <code>getXxx()</code> 和 <code>setXxx()</code> 方法</p>
+<ul>
+<li>但很多时候我们并没有这个权限，比如我们无法给 Button 加上一个合乎要求的 <code>setWidth()</code> 方法，因为这是 Android SDK 内部实现的。这个方法最简单，但往往是不可行的</li>
+</ul>
+</li>
+<li><p>用一个类来<strong>包装</strong>原始对象，间接为其提供 <code>getXxx()</code> 和 <code>setXxx()</code>  方法</p>
+<ul>
+<li><p>Demo:</p>
+  <figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">private <span class="type">void</span> performAnimate() &#123;</span><br><span class="line">	ViewWrapper <span class="keyword">wrapper</span> = <span class="built_in">new</span> ViewWrapper(mButton);</span><br><span class="line">	ObjectAnimator.ofInt(<span class="keyword">wrapper</span>, "width", <span class="number">500</span>).setDuration(<span class="number">5000</span>).<span class="keyword">start</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line"><span class="built_in">public</span> <span class="type">void</span> onClick(<span class="keyword">View</span> v) &#123;</span><br><span class="line">	<span class="keyword">if</span> (v == mButton) &#123;</span><br><span class="line">		performAnimate();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private static <span class="keyword">class</span> ViewWrapper &#123;</span><br><span class="line">	private <span class="keyword">View</span> mTarget;</span><br><span class="line">	</span><br><span class="line">	<span class="built_in">public</span> ViewWrapper(<span class="keyword">View</span> target) &#123;</span><br><span class="line">		mTarget = target;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="built_in">public</span> <span class="type">int</span> getWidth() &#123;</span><br><span class="line">		<span class="keyword">return</span> mTarget.getLayoutParams().width();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="built_in">public</span> <span class="type">void</span> setWidth(<span class="type">int</span> width) &#123;</span><br><span class="line">		mTarget.getLayoutParams().width = width;</span><br><span class="line">		mTarget.requestLayout();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>* 采用 **`ValueAnimator`**，监听动画过程，自己实现属性的改变
+    * **`ValueAnimator` 本身不作用于任何对象**，即直接使用它没有任何动画效果。它可以对一个值做动画，然后我们可以监听其动画过程，在动画过程中修改对象的属性值，这样也就相当于对对象做了动画
+    * Demo:
+
+        <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> void perform<span class="constructor">Animate(<span class="params">final</span> View <span class="params">target</span>, <span class="params">final</span> <span class="params">int</span> <span class="params">start</span>, <span class="params">final</span> <span class="params">int</span> <span class="params">end</span>)</span> &#123;</span><br><span class="line">	ValueAnimator valueAnimator = <span class="module-access"><span class="module"><span class="identifier">ValueAnimator</span>.</span></span><span class="keyword">of</span><span class="constructor">Int(1, 100)</span>;</span><br><span class="line">	valueAnimator.add<span class="constructor">UpdateListener(<span class="params">new</span> AnimatorUpdateListener()</span> &#123;</span><br><span class="line">		<span class="comment">// 持有一个 IntEvaluator 对象，方面下面估值的时候使用</span></span><br><span class="line">		<span class="keyword">private</span> IntEvaluator mEvaluator = <span class="keyword">new</span> <span class="constructor">IntEvaluator()</span>;</span><br><span class="line">		</span><br><span class="line">		@Override</span><br><span class="line">		public void on<span class="constructor">AnimationUpdate(ValueAnimator <span class="params">animator</span>)</span> &#123;</span><br><span class="line">			<span class="comment">// 获得当前动画的进度值，整型，1~100 之间</span></span><br><span class="line">			<span class="built_in">int</span>  currentValue = (Integer) animator.get<span class="constructor">AnimatedValue()</span>;</span><br><span class="line">			<span class="module-access"><span class="module"><span class="identifier">Log</span>.</span></span>d(TAG, <span class="string">"current value: "</span> + currentValue);</span><br><span class="line">			</span><br><span class="line">			<span class="comment">// 获得当前进度占整个动画过程的比例，浮点型，0~1 之间</span></span><br><span class="line">			<span class="built_in">float</span> fraction = animator.get<span class="constructor">AnimatedFraction()</span>;</span><br><span class="line">			</span><br><span class="line">			<span class="comment">// 直接调用整型估值器，通过比例计算出宽度，然后再设给 Button</span></span><br><span class="line">			target.get<span class="constructor">LayoutParams()</span>.width = mEvaluator.evaluate(fraction, start, <span class="keyword">end</span>);</span><br><span class="line">			target.request<span class="constructor">Layout()</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;);</span><br><span class="line">	</span><br><span class="line">	valueAnimator.set<span class="constructor">Duration(5000)</span>.start<span class="literal">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">public void on<span class="constructor">Click(View <span class="params">v</span>)</span> &#123;</span><br><span class="line">	<span class="keyword">if</span> (v<span class="operator"> == </span>mButton) &#123;</span><br><span class="line">		perform<span class="constructor">Animate(<span class="params">mButton</span>, <span class="params">mButton</span>.<span class="params">getWidth</span>()</span>, <span class="number">500</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></code></pre><h4 id="6-属性动画的工作原理"><a href="#6-属性动画的工作原理" class="headerlink" title="6. 属性动画的工作原理"></a>6. 属性动画的工作原理</h4>
     </div>
 
     
@@ -479,12 +630,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">685k</span>
+    <span title="站点总字数">692k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">10:23</span>
+    <span title="站点阅读时长">10:29</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
