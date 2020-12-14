@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. Window 的概念">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-10T11:09:20.000Z">
-<meta property="article:modified_time" content="2020-12-14T05:16:06.289Z">
+<meta property="article:modified_time" content="2020-12-14T08:07:37.191Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="理解 Window 和 WindowManager">
 <meta property="article:tag" content="Window 和 WindowManager">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-14 13:16:06" itemprop="dateModified" datetime="2020-12-14T13:16:06+08:00">2020-12-14</time>
+                <time title="修改时间：2020-12-14 16:07:37" itemprop="dateModified" datetime="2020-12-14T16:07:37+08:00">2020-12-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,14 +233,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>383</span>
+              <span>2.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -263,7 +263,65 @@
 </ul>
 </li>
 </ul>
-<h4 id="2"><a href="#2" class="headerlink" title="2."></a>2.</h4>
+<h4 id="2-通过-WindowManager-添加-Window"><a href="#2-通过-WindowManager-添加-Window" class="headerlink" title="2. 通过 WindowManager 添加 Window"></a>2. 通过 WindowManager 添加 Window</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Demo: 将一个 Button 添加到屏幕坐标为 (100, 300) 的位置上</span></span><br><span class="line">mFloatingButton = <span class="keyword">new</span> <span class="constructor">Button(<span class="params">this</span>)</span>;</span><br><span class="line">mFloatingButton.set<span class="constructor">Text(<span class="string">"button"</span>)</span>;</span><br><span class="line">mLayoutParam = <span class="keyword">new</span> WindowManager.<span class="constructor">LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 0, 0, PixelFormat.TRANSPARENT)</span>;</span><br><span class="line">mLayoutParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL <span class="pattern-match">| <span class="constructor">LayoutParams</span>.<span class="constructor">FLAG_NOT_FOCUSABLE</span> | <span class="constructor">LayoutParams</span>.<span class="constructor">FLAG_SHOW_WHEN_LOCKED</span></span></span><br><span class="line"><span class="pattern-match">m<span class="constructor">LayoutParams</span>.gravity = <span class="constructor">Gravity</span>.<span class="constructor">LEFT</span> | <span class="constructor">Gravity</span>.<span class="constructor">TOP</span>;</span></span><br><span class="line"><span class="pattern-match">m<span class="constructor">LayoutParams</span>.x = 100;</span></span><br><span class="line"><span class="pattern-match">m<span class="constructor">LayoutParams</span>.y = 300;</span></span><br><span class="line"><span class="pattern-match">m<span class="constructor">WindowManager</span>.add<span class="constructor">View(<span class="params">mFloatingButton</span>, <span class="params">mLayoutParams</span>)</span>;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-WindowManager-LayoutParams-中的-flags"><a href="#3-WindowManager-LayoutParams-中的-flags" class="headerlink" title="3. WindowManager.LayoutParams 中的 flags"></a>3. WindowManager.LayoutParams 中的 flags</h4><ul>
+<li><p>Flags 参数表示 <strong>Window 的属性</strong>，有很多选项，通过这些选项可以<strong>控制 Window 的显示特性</strong></p>
+</li>
+<li><p>Flags 常用的属性值及含义</p>
+<table>
+<thead>
+<tr>
+<th align="center">属性值</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong><code>FLAG_NOT_FOCUSABLE</code></strong></td>
+<td align="center">表示 Window 不需要获取焦点，也不需要接收各种输入事件，此标记会同时启用 <code>FLAG_NOT_TOUCH_MODAL</code>，最终事件会直接传递给下层的具有焦点的 Window</td>
+</tr>
+<tr>
+<td align="center"><strong><code>FLAG_NOT_TOUCH_MODAL</code></strong></td>
+<td align="center">在此模式下，系统会将当前 Window 区域以外的单击事件传递给底层的 Window，当前 Window 区域以内的单击事件则自己处理。这个标记很重要，<strong>一般来说都需要开启此标记</strong>，否则其他 Window 将无法收到单击事件</td>
+</tr>
+<tr>
+<td align="center"><strong><code>FLAG_SHOW_WHEN_LOCKED</code></strong></td>
+<td align="center">开启此模式可以让 Window 显示在锁屏界面上</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h4 id="4-WindowManager-LayoutParam-中的-type"><a href="#4-WindowManager-LayoutParam-中的-type" class="headerlink" title="4. WindowManager.LayoutParam 中的 type"></a>4. WindowManager.LayoutParam 中的 type</h4><ul>
+<li>Type 参数表示 <strong>Window 的类型</strong>，Window 有三种类型，分别是应用 Window、子 Window 和系统 Window</li>
+<li><strong>应用 Window</strong>：对应着一个 <strong>Activity</strong></li>
+<li><strong>子 Window</strong>：不能单独存在，<strong>需要附属</strong>在特定的父 Window 之中，比如常见的一些 <strong>Dialog</strong> 就是一个子 Window</li>
+<li><strong>系统 Window</strong>：需要声明<strong>权限</strong>才能创建的 Window，比如 <strong>Toast</strong> 和<strong>系统状态栏</strong>这些都是系统 Window</li>
+</ul>
+<h4 id="5-Window-的分层概念"><a href="#5-Window-的分层概念" class="headerlink" title="5. Window 的分层概念"></a>5. Window 的分层概念</h4><ul>
+<li><strong>Window 是分层的</strong>，每个 Window 都有对应的 <strong>z-ordered</strong>，<strong>层级大的 Window 会覆盖在层级小的 Window 上面</strong>，这与 HTML 中的 z-index 概念一致</li>
+<li>在三类 Window 中，应用 Window 的层级范围是 <strong>1 ~ 99</strong>；子 Window 的层级范围是 <strong>1000 ~ 1999</strong>；系统 Window 的层级范围是 <strong>2000 ~ 2999</strong>，这些层级范围对应着 <code>WindowManager.LayoutParams</code> 的 <strong><code>type</code></strong> 参数</li>
+<li>很显然系统 Window 的层级是最大的，而且系统层级有很多值，一般可以选用 <strong><code>TYPE_SYSTEM_OVERLAY</code></strong> 或者 <strong><code>TYPE_SYSTEM_ERROR</code></strong><ul>
+<li>如果采用 <code>TYPE_SYSTEM_ERROR</code>，只需要为 type 参数<strong>指定</strong>这个层级即可：<code>mLayoutParams.type = LayoutParams.TYPE_SYSTEM_ERROR;</code></li>
+<li>同时声明<strong>权限</strong>：<code>&lt;uses-permission android:name=&quot;android.permission.SYSTEM_ALERT_WINDOW&quot; /&gt;</code>，因为系统类型的 Window 是需要检查权限的</li>
+</ul>
+</li>
+</ul>
+<h4 id="6-WindowManager-概述"><a href="#6-WindowManager-概述" class="headerlink" title="6. WindowManager 概述"></a>6. WindowManager 概述</h4><ul>
+<li><p>WindowManager 所提供的功能很简单，常用的只有三个方法，即<strong>添加 View</strong>、<strong>更新 View</strong>和<strong>删除 View</strong>。这三个方法定义在 ViewManager 中，而 <strong>WindowManager 继承了 ViewManager</strong></p>
+</li>
+<li><p>ViewManager 定义：</p>
+  <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">ViewManager</span> &#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addView</span>(<span class="params">View view, ViewGroup.LayoutParams <span class="keyword">params</span></span>)</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateViewLayout</span>(<span class="params">View view, ViewGroup.LayoutParams <span class="keyword">params</span></span>)</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">removeView</span>(<span class="params">View view</span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>可见，WindowManager 操作 Window 的过程更像是在操作 Window 中的 View</li>
+</ul>
+</li>
+<li><p>Demo:</p>
+  <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 需求：实现一个可以拖动的 Window 效果</span></span><br><span class="line"><span class="comment">// 思路：给 View 设置 onTouchListener，在 onTouch() 方法中根据手指位置来设置 LayoutParams 中 x 和 y 的值即可不断更新 View 的位置</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> boolean <span class="title">onTouch</span>(<span class="params">View v, MotionEvent <span class="keyword">event</span></span>)</span> &#123;</span><br><span class="line">	<span class="keyword">int</span> rawX = (<span class="keyword">int</span>) <span class="keyword">event</span>.getRawX();</span><br><span class="line">	<span class="keyword">int</span> rawY = (<span class="keyword">int</span>) <span class="keyword">event</span>.getRawY();</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">switch</span>(<span class="keyword">event</span>.getAction()) &#123;</span><br><span class="line">		<span class="keyword">case</span> MotionEvent.ACTION_MOVE:</span><br><span class="line">			mLayoutParams.x = rawX;</span><br><span class="line">			mLayoutParams.y = rawY;</span><br><span class="line">			mWindowManager.updateViewLayout(mFloatingButton, mLayoutParams);</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">default</span>:</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+
     </div>
 
     
@@ -376,7 +434,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Window-的概念"><span class="nav-text">1. Window 的概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2"><span class="nav-text">2.</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Window-的概念"><span class="nav-text">1. Window 的概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-通过-WindowManager-添加-Window"><span class="nav-text">2. 通过 WindowManager 添加 Window</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-WindowManager-LayoutParams-中的-flags"><span class="nav-text">3. WindowManager.LayoutParams 中的 flags</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-WindowManager-LayoutParam-中的-type"><span class="nav-text">4. WindowManager.LayoutParam 中的 type</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-Window-的分层概念"><span class="nav-text">5. Window 的分层概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-WindowManager-概述"><span class="nav-text">6. WindowManager 概述</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -476,12 +534,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">693k</span>
+    <span title="站点总字数">695k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">10:30</span>
+    <span title="站点阅读时长">10:32</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
