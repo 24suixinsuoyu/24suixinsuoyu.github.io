@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1. AAA">
+  <meta name="description" content="1. 四大组件运行状态概述">
 <meta property="og:type" content="article">
 <meta property="og:title" content="四大组件的工作过程（一）：四大组件的运行状态">
 <meta property="og:url" content="http://24suixinsuoyu.com/2020/12/14/%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6%E7%9A%84%E5%B7%A5%E4%BD%9C%E8%BF%87%E7%A8%8B%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6%E7%9A%84%E8%BF%90%E8%A1%8C%E7%8A%B6%E6%80%81/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
-<meta property="og:description" content="1. AAA">
+<meta property="og:description" content="1. 四大组件运行状态概述">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-14T12:35:06.000Z">
-<meta property="article:modified_time" content="2020-12-14T12:41:05.990Z">
+<meta property="article:modified_time" content="2020-12-15T07:24:04.498Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="四大组件的工作过程">
 <meta property="article:tag" content="四大组件的运行状态">
@@ -207,10 +207,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-12-14 20:35:06 / 修改时间：20:41:05" itemprop="dateCreated datePublished" datetime="2020-12-14T20:35:06+08:00">2020-12-14</time>
+              <time title="创建时间：2020-12-14 20:35:06" itemprop="dateCreated datePublished" datetime="2020-12-14T20:35:06+08:00">2020-12-14</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-15 15:24:04" itemprop="dateModified" datetime="2020-12-15T15:24:04+08:00">2020-12-15</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -227,14 +233,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5</span>
+              <span>2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -246,8 +252,50 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-AAA"><a href="#1-AAA" class="headerlink" title="1. AAA"></a>1. AAA</h4><a id="more"></a>
+        <h4 id="1-四大组件运行状态概述"><a href="#1-四大组件运行状态概述" class="headerlink" title="1. 四大组件运行状态概述"></a>1. 四大组件运行状态概述</h4><a id="more"></a>
 
+<ul>
+<li>Android 的四大组件中除了 BroadcastReceiver 以外，其他三种组件都必须在 AndroidManifest.xml 文件中注册。对于 <strong>BroadcastReceiver</strong> 来说，它既可以在 AndroidManifest.xml 中注册也可以通过代码来注册</li>
+<li>在调用方式上，Activity、Service 和 BroadcastReceiver 需要借助 Intent，而 <strong>ContentProvider</strong> 则无须借助 Intent</li>
+</ul>
+<h4 id="2-Activity-运行状态概述"><a href="#2-Activity-运行状态概述" class="headerlink" title="2. Activity 运行状态概述"></a>2. Activity 运行状态概述</h4><ul>
+<li>Activity 是一种<strong>展示型组件</strong>，用于向用户直接展示一个界面，并且可以接收用户的输入信息从而进行交互。Activity 是<strong>最重要</strong>的一种组件，对用户来说，Activity 就是一个 Android 应用的全部，因为其他三大组件对用户来说都是不可感知的</li>
+<li>Activity 的启动由 <strong>Intent</strong> 触发，其中 Intent 可以分为<strong>显示 Intent</strong> 和<strong>隐示 Intent</strong>，显示 Intent 可以明确指向一个 Activity 组件，隐示 Intent 则指向一个或多个目标 Activity 组件，当然也可能没有任何一个 Activity 组件可以处理这个隐示 Intent</li>
+<li>一个 Activity 组件可以具有特定的<strong>启动模式</strong>，同一个 Activity 组件在不同的启动模式下会有不同的效果</li>
+<li>Activity 组件是<strong>可以停止</strong>的，在实际开发中可以通过 Activity 的 <strong><code>finish()</code></strong> 方法来结束一个 Activity 组件的运行</li>
+<li>总结：Activity 组件的主要作用是展示一个界面并和用户交互，它扮演的是一种<strong>前台界面</strong>的角色</li>
+</ul>
+<h4 id="3-Service-运行状态概述"><a href="#3-Service-运行状态概述" class="headerlink" title="3. Service 运行状态概述"></a>3. Service 运行状态概述</h4><ul>
+<li><p>Service 是一种<strong>计算型组件</strong>，用于在后台执行一系列计算任务，由于 Service 组件工作在后台，因此用户无法直接感知它的存在</p>
+</li>
+<li><p>Service 组件有两种状态：<strong>启动状态</strong>和<strong>绑定状态</strong></p>
+<ul>
+<li>当 Service 组件处于启动状态时，此时 Service 内部可以做一些<strong>后台计算</strong>，并且<strong>不需要和外界有直接的交互</strong>。尽管 Service 组件用于执行后台计算，但是<strong>Service 本身运行在主线程中</strong>，因此耗时的后台计算仍然需要在单独的线程中去完成</li>
+<li>当 Service 组件处于绑定状态时，此时 Service 内部同样可以进行<strong>后台计算</strong>，但是处于这种状态时外界<strong>可以很方便地和 Service 组件进行通信</strong></li>
+</ul>
+</li>
+<li><p>Service 组件也是<strong>可以停止</strong>的，停止一个 Service 组件稍显复杂，需要灵活采用 <strong><code>stopService()</code></strong> 和 <strong><code>unBindService()</code></strong> 这两个方法才能完全停止一个 Service 组件</p>
+</li>
+</ul>
+<h4 id="4-BroadcastReceiver-运行状态概述"><a href="#4-BroadcastReceiver-运行状态概述" class="headerlink" title="4. BroadcastReceiver 运行状态概述"></a>4. BroadcastReceiver 运行状态概述</h4><ul>
+<li><p>BroadcastReceiver 是一种<strong>消息型组件</strong>，用于在不同的组件乃至不同的应用之间传递消息。BroadcastReceiver 同样无法被用户直接感知，因为它工作在系统内部</p>
+</li>
+<li><p>BroadcastReceiver 广播的注册有两种方式：<strong>静态注册</strong>和<strong>动态注册</strong></p>
+<ul>
+<li>静态注册时指在 AndroidManifest.xml 文件中注册，这种广播在应用安装时会被系统解析，<strong>静态广播不需要应用启动就可以收到相应的广播</strong></li>
+<li>动态广播需要在代码中通过 <code>Context.registerReceiver()</code> 来实现，并且在不需要的时候要通过 <code>Context.unRegisterReceiver()</code> 来解除广播，<strong>动态广播必须要应用启动才能注册并接收广播</strong>，因为应用不启动就无法注册广播，无法注册广播接收器就无法接收到相应的广播</li>
+</ul>
+</li>
+<li><p>实际开发中通过 Context 的一系列 <code>send()</code> 方法来发送广播，被发送的广播会被系统发送给感兴趣的广播接收者，发送和接收过程的匹配是通过广播接收者的 <strong><code>&lt;intent-filter&gt;</code></strong> 来描述的。因此，BroadcastReceiver 组件可以用来实现<strong>低耦合的观察者模式</strong>，观察者和被观察者之间没有任何耦合</p>
+</li>
+<li><p>由于 BroadcastReceiver 的特性，它<strong>不适合用来执行耗时操作</strong>。BroadcastReceiver 组件一般来说不需要停止，它也<strong>没有停止的概念</strong>而是注册和反注册的概念</p>
+</li>
+</ul>
+<h4 id="5-ContentProvider-运行状态概述"><a href="#5-ContentProvider-运行状态概述" class="headerlink" title="5. ContentProvider 运行状态概述"></a>5. ContentProvider 运行状态概述</h4><ul>
+<li>ContentProvider 是一种<strong>数据共享型组件</strong>，用于向其他组件乃至其他应用共享数据，同样无法被用户直接感知</li>
+<li>对一个 ContentProvider 组件来说，它的内部需要实现<strong>增删改查</strong>这四种操作，在它的内部维护着一份数据集合，<strong>这个内部数据集合既可以通过数据库来实现，也可以采用其他任何类型来实现</strong>，比如 List 和 Map，ContentProvider 对数据的集合的具体实现没有任何要求</li>
+<li>需要注意的是，ContentProvider 组件内部的 <strong><code>insert()</code></strong>、<strong><code>delete()</code></strong>、<strong><code>update()</code></strong> 和 <strong><code>query()</code></strong> 方法需要处理好线程同步，因为<strong>这几个方法是在 Binder 线程池中被调用的</strong>。另外，ContentProvider 组件也不需要手动停止</li>
+</ul>
 
     </div>
 
@@ -361,7 +409,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-AAA"><span class="nav-text">1. AAA</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-四大组件运行状态概述"><span class="nav-text">1. 四大组件运行状态概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Activity-运行状态概述"><span class="nav-text">2. Activity 运行状态概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Service-运行状态概述"><span class="nav-text">3. Service 运行状态概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-BroadcastReceiver-运行状态概述"><span class="nav-text">4. BroadcastReceiver 运行状态概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-ContentProvider-运行状态概述"><span class="nav-text">5. ContentProvider 运行状态概述</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -461,12 +509,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">701k</span>
+    <span title="站点总字数">703k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">10:37</span>
+    <span title="站点阅读时长">10:39</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
