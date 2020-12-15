@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. Activity 的 Window 创建过程">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-10T11:11:16.000Z">
-<meta property="article:modified_time" content="2020-12-15T03:23:58.084Z">
+<meta property="article:modified_time" content="2020-12-15T03:32:54.084Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="理解 Window 和 WindowManager">
 <meta property="article:tag" content="Window 的创建过程">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-15 11:23:58" itemprop="dateModified" datetime="2020-12-15T11:23:58+08:00">2020-12-15</time>
+                <time title="修改时间：2020-12-15 11:32:54" itemprop="dateModified" datetime="2020-12-15T11:32:54+08:00">2020-12-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -332,7 +332,7 @@
 <li>Toast 提供了 <strong><code>show()</code></strong> 和 <strong><code>cancel()</code></strong> 方法分别用于显示和隐藏 Toast，<strong>这两个方法的内部都是一个 IPC 过程</strong></li>
 <li>Toast 的显示和隐藏逻辑底层使用了 <strong>Handler</strong> 切换线程，所以 <strong>Toast 无法在没有 Looper 的线程中弹出</strong>，这是因为 <strong>Handler 需要使用 Looper 才能完成切换线程</strong>的功能</li>
 <li>分析源码，<strong>对于非系统应用来说，mToastQueue 中最多能同时存在 50 个 ToastRecord，这样做是为了防止 DOS(Denial of Service)</strong>。如果不这么做，如果使用大量循环去连续弹出 Toast，这将会导致其他应用没有机会弹出 Toast，那么对于其他应用的 Toast 请求，系统的行为就是拒绝服务</li>
-<li>Toast 显示以后，NMS 还会通过 <code>scheduleTimeoutLocked()</code> 方法来发送一个延时消息，具体的延时时长取决于 Toast 的时长，<strong>LONG_DELAY  是 3.5s，SHORT_DELAY 是 2s</strong></li>
+<li>Toast 显示以后，NMS 还会通过 <code>scheduleTimeoutLocked()</code> 方法来发送一个延时消息，具体的延时时长取决于 Toast 的时长，<strong>LONG_DELAY  是 3.5s</strong>，<strong>SHORT_DELAY 是 2s</strong></li>
 <li>除了 Activity、Dialog 和 Toast 之外，<strong>PopupWindow</strong>、<strong>菜单</strong>及<strong>状态栏</strong>都是通过 Window 来实现的，<strong>任何 View 都是附属在一个 Window 上面的</strong></li>
 </ul>
 
