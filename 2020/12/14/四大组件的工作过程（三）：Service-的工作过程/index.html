@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1. Service 工作过程概述">
+  <meta name="description" content="1. Service 工作状态概述">
 <meta property="og:type" content="article">
 <meta property="og:title" content="四大组件的工作过程（三）：Service 的工作过程">
 <meta property="og:url" content="http://24suixinsuoyu.com/2020/12/14/%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6%E7%9A%84%E5%B7%A5%E4%BD%9C%E8%BF%87%E7%A8%8B%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9AService-%E7%9A%84%E5%B7%A5%E4%BD%9C%E8%BF%87%E7%A8%8B/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
-<meta property="og:description" content="1. Service 工作过程概述">
+<meta property="og:description" content="1. Service 工作状态概述">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-14T12:36:23.000Z">
-<meta property="article:modified_time" content="2020-12-15T09:58:37.375Z">
+<meta property="article:modified_time" content="2020-12-15T12:37:34.274Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="四大组件的工作过程">
 <meta property="article:tag" content="Service 的工作过程">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-15 17:58:37" itemprop="dateModified" datetime="2020-12-15T17:58:37+08:00">2020-12-15</time>
+                <time title="修改时间：2020-12-15 20:37:34" itemprop="dateModified" datetime="2020-12-15T20:37:34+08:00">2020-12-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,14 +233,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>15</span>
+              <span>1.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -252,31 +252,38 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-Service-工作过程概述"><a href="#1-Service-工作过程概述" class="headerlink" title="1. Service 工作过程概述"></a>1. Service 工作过程概述</h4><a id="more"></a>
+        <h4 id="1-Service-工作状态概述"><a href="#1-Service-工作状态概述" class="headerlink" title="1. Service 工作状态概述"></a>1. Service 工作状态概述</h4><a id="more"></a>
 
+<ul>
+<li>Service 分为两种工作状态，一种是<strong>启动状态</strong>，主要用于执行后台计算；另一种是<strong>绑定状态</strong>，主要用于其他组件和 Service 的交互</li>
+<li><strong>Service 的这两种工作状态时可以共存的</strong>，即 Service 既可以处于启动状态也可以同时处于绑定状态</li>
+</ul>
+<h4 id="2-Service-启动过程概述"><a href="#2-Service-启动过程概述" class="headerlink" title="2. Service 启动过程概述"></a>2. Service 启动过程概述</h4><ul>
+<li><p>Service 的启动过程从 <strong>ContextWrapper</strong> 的 <code>startService()</code> 方法开始：</p>
+  <figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function">ComponentName <span class="title">startService</span><span class="params">(Intent service)</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">return</span> mBase.<span class="title">startService</span><span class="params">(service)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<ul>
+<li>从 ContextImpl 的实现可以看出，其大部分操作都是通过 mBase 来实现的，这是一种典型的<strong>桥接模式</strong></li>
+</ul>
+</li>
+<li><p>在 ContextImpl 中，<code>startService()</code> 方法会调用 <strong><code>startServiceCommon()</code></strong> 方法，<code>startServiceCommon()</code> 方法又会通过 <code>ActivityManagerNative.getDefault()</code> 这个对象（实际上就是 <strong>AMS(ActivityManagerService)</strong>）来启动一个服务。<strong>通过 AMS 来启动服务的行为是一个远程过程调用 RPC</strong></p>
+</li>
+<li><p>AMS 会通过 mService 这个对象来完成 Service 后续的启动过程，mService 对象的类型是 ActiveServices。<strong>ActiveServices 是一个辅助 AMS 进行 Service 管理的类</strong>，包括 Service 的启动、绑定和停止等</p>
+</li>
+<li><p><strong>ServiceRecord 描述的是一个 Service 记录</strong>，ServiceRecord 一致贯穿整个 Service 的启动过程。<code>startServiceInnerLocked()</code> 方法并没有完成具体的启动工作，而是把后续的工作交给了 <code>bringUpServiceLocked()</code> 方法来处理，在 <code>bringUpServiceLocked()</code> 方法中又调用了 <strong><code>realStartServiceLocked()</code></strong> 方法</p>
+</li>
+<li><p>在 <code>realStartServiceLocked()</code> 方法中，首先通过 <code>app.thread</code> 的 <code>scheduleCreateService()</code> 方法来创建 Service 对象并调用其 <code>onCreate()</code> 方法，接着再通过 <code>sendServiceArgsLocked()</code> 方法来调用 Service 的其他方法，比如 <code>onStartCommand()</code> 方法，<strong>这两个过程均是 IPC 进程间通信</strong>。<code>app.thread</code> 对象是 IApplicationThread 类型，它实际上是一个 <strong>Binder</strong>，它的具体实现是 ApplicationThread 和 ApplicationThreadNative，<strong>ApplicationThread 继承了 ApplicationThreadNative</strong></p>
+</li>
+<li><p>分析 ApplicationThread 的 <code>scheduleCreateService()</code> 方法源码，这个过程和 Activity 的启动过程是类似的，都是通过发送消息给 <strong>Handler</strong> H 来完成的。H 会接收这个 <code>CREATE_SERVICE</code> 消息并通过 ActivityThread 的 <strong><code>handleCreateService()</code></strong> 方法来完成 Service 的最终启动</p>
+</li>
+</ul>
+<h4 id="3-ActivityThread-的-handleCreateService-方法的主要逻辑"><a href="#3-ActivityThread-的-handleCreateService-方法的主要逻辑" class="headerlink" title="3. ActivityThread 的 handleCreateService() 方法的主要逻辑"></a>3. ActivityThread 的 handleCreateService() 方法的主要逻辑</h4><ol>
+<li>首先通过<strong>类加载器</strong>创建 Service 的实例</li>
+<li>然后创建 Application 对象并调用其 <code>onCreate()</code> 方法，当然 <strong>Application 的创建过程只会有一次</strong></li>
+<li>接着创建 ContextImpl 对象并通过 Service 的 <strong><code>attach()</code></strong> 方法建立二者之间的关系，这个过程和 Activity 实际上是类似的，毕竟 <strong>Service 和 Activity 都是一个 Context</strong></li>
+<li>最后调用 Service 的 <code>onCreate()</code> 方法并将 Service 对象存储到 <strong>ActivityThread</strong> 中的一个列表中</li>
+<li>由于 Service 的 <code>onCreate()</code> 方法被执行了，这也意味着 Service 已经启动了。此外，ActivityThread 中还会通过 <strong><code>handleServiceArgs()</code></strong> 方法调用 Service 的 <code>onStartCommand()</code> 方法</li>
+</ol>
 
     </div>
 
@@ -390,7 +397,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Service-工作过程概述"><span class="nav-text">1. Service 工作过程概述</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Service-工作状态概述"><span class="nav-text">1. Service 工作状态概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Service-启动过程概述"><span class="nav-text">2. Service 启动过程概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-ActivityThread-的-handleCreateService-方法的主要逻辑"><span class="nav-text">3. ActivityThread 的 handleCreateService() 方法的主要逻辑</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -490,12 +497,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">704k</span>
+    <span title="站点总字数">706k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">10:40</span>
+    <span title="站点阅读时长">10:42</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
