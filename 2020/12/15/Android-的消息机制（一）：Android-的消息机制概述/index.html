@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1. AAA">
+  <meta name="description" content="1. Android 消息机制概述">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android 的消息机制（一）：Android 的消息机制概述">
 <meta property="og:url" content="http://24suixinsuoyu.com/2020/12/15/Android-%E7%9A%84%E6%B6%88%E6%81%AF%E6%9C%BA%E5%88%B6%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9AAndroid-%E7%9A%84%E6%B6%88%E6%81%AF%E6%9C%BA%E5%88%B6%E6%A6%82%E8%BF%B0/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
-<meta property="og:description" content="1. AAA">
+<meta property="og:description" content="1. Android 消息机制概述">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-15T13:00:13.000Z">
-<meta property="article:modified_time" content="2020-12-15T13:04:28.330Z">
+<meta property="article:modified_time" content="2020-12-16T13:42:59.780Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Android 的消息机制">
 <meta property="article:tag" content="Android 的消息机制概述">
@@ -207,10 +207,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-12-15 21:00:13 / 修改时间：21:04:28" itemprop="dateCreated datePublished" datetime="2020-12-15T21:00:13+08:00">2020-12-15</time>
+              <time title="创建时间：2020-12-15 21:00:13" itemprop="dateCreated datePublished" datetime="2020-12-15T21:00:13+08:00">2020-12-15</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-16 21:42:59" itemprop="dateModified" datetime="2020-12-16T21:42:59+08:00">2020-12-16</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -227,7 +233,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5</span>
+              <span>1.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -246,9 +252,59 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-AAA"><a href="#1-AAA" class="headerlink" title="1. AAA"></a>1. AAA</h4><a id="more"></a>
+        <h4 id="1-Android-消息机制概述"><a href="#1-Android-消息机制概述" class="headerlink" title="1. Android 消息机制概述"></a>1. Android 消息机制概述</h4><a id="more"></a>
 
-
+<ul>
+<li><p>Android 的消息机制主要是指 <strong>Handler 的运行机制</strong>以及 Handler 所附带的 <strong>MessageQueue</strong> 和 <strong>Looper</strong> 的工作机制，这三者是一个整体</p>
+</li>
+<li><p><strong>Handler 的主要作用是将一个任务切换到某个指定的线程中去执行</strong></p>
+</li>
+<li><p>Android 为什么需要提供在某个具体的线程中执行任务这种功能？</p>
+<ul>
+<li><p>因为 <strong>Android 规定访问 UI 只能在主线程（UI 线程，即 ActivityThread）中进行</strong>，如果在子线程中访问 UI，那么程序会抛出异常</p>
+</li>
+<li><p><strong>ViemRootImpl</strong> 对 UI 操作做了验证，这个验证工作是由 ViewRootImpl 的 <strong><code>checkThread()</code></strong> 方法来完成的：</p>
+  <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">void check<span class="constructor">Thread()</span> &#123;</span><br><span class="line">	<span class="keyword">if</span> (mThread != <span class="module-access"><span class="module"><span class="identifier">Thread</span>.</span></span>current<span class="constructor">Thread()</span>) &#123;</span><br><span class="line">		throw <span class="keyword">new</span> <span class="constructor">CalledFromWrongThreadException(<span class="string">"Only the original thread that created a view hierarchy can touch its views."</span>)</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>Android 建议不要在主线程中进行耗时操作，否则可能导致程序无响应即 <strong>ANR</strong></p>
+</li>
+<li><p>系统之所以提供 <strong>Handler</strong>，<strong>主要原因就是为了解决在子线程中无法访问 UI 的矛盾</strong></p>
+</li>
+</ul>
+<h4 id="2-为什么不允许在子线程中访问-UI"><a href="#2-为什么不允许在子线程中访问-UI" class="headerlink" title="2. 为什么不允许在子线程中访问 UI"></a>2. 为什么不允许在子线程中访问 UI</h4><ul>
+<li>因为 <strong>Android 的 UI 控件不是线程安全的</strong>，如果在多线程中并发访问可能会导致 UI 控件处于不可预期的状态</li>
+</ul>
+<h4 id="3-为什么系统不对-UI-控件的访问加上锁机制"><a href="#3-为什么系统不对-UI-控件的访问加上锁机制" class="headerlink" title="3. 为什么系统不对 UI 控件的访问加上锁机制"></a>3. 为什么系统不对 UI 控件的访问加上锁机制</h4><ul>
+<li><p>缺点有两个：</p>
+<ul>
+<li>首先，加上锁机制会让 UI 访问的逻辑变得<strong>复杂</strong>，而应用的主要逻辑都体现在 UI 交互上</li>
+<li>其次，锁机制会降低 UI 访问的<strong>效率</strong>，因为锁机制会阻塞某些线程的执行</li>
+</ul>
+</li>
+<li><p>因此，<strong>最简单且高效</strong>的方法就是采用<strong>单线程模型</strong>来处理 UI 操作</p>
+</li>
+</ul>
+<h4 id="4-Handler-工作原理概述"><a href="#4-Handler-工作原理概述" class="headerlink" title="4. Handler 工作原理概述"></a>4. Handler 工作原理概述</h4><ul>
+<li><p>Handler 创建时会采用<strong>当前线程的 Looper</strong> 来构建内部的消息循环系统</p>
+<ul>
+<li>如果当前线程没有 Looper 就会报错：<code>java.lang.RuntimeException: Can&#39;t create handler inside thread that has not called Looper.prepare()</code></li>
+<li>解决上述报错的方法：为当前线程创建 Looper 即可，或者在一个有 Looper 的线程中创建 Handler 也行</li>
+</ul>
+</li>
+<li><p><strong>线程是默认没有 Looper 的，如果需要使用 Handler 就必须为线程创建 Looper</strong>。主线程，即 <strong>ActivityThread 被创建时就会初始化 Looper</strong>，这也是在<strong>主线程中默认可以使用 Handler</strong> 的原因</p>
+</li>
+<li><p>Handler 创建完毕后，此时内部的 Looper 以及 MessageQueue 就可以和 Handler 一起协同工作了。然后通过 Handler 的 <strong><code>post()</code></strong> 方法将一个 <strong>Runnable</strong> 投递到 Handler 内部的 Looper 中去处理，也可以通过 Handler 的 <strong><code>send()</code></strong> 方法发送一个消息，这个消息同样会在 Looper 中去处理，其实 <strong><code>post()</code> 方法最终也是通过 <code>send()</code> 方法来完成的</strong></p>
+</li>
+<li><p><code>send()</code> 方法的工作过程：</p>
+<ul>
+<li>当 Handler 的 <code>send()</code> 方法被调用时，它会调用 <strong>MessageQueue 的 <code>enqueueMessage()</code></strong> 方法将这个消息放入消息队列中进行入队操作</li>
+<li>然后 Looper 发现有新消息到来时，就会处理这个消息，最终<strong>消息中的 Runnable 或者 Handler 的 <code>handleMessage()</code> 方法</strong>就会被调用</li>
+<li>注意 <strong>Looper 是运行在创建 Handler 所在的线程中的</strong>，这样一来 Handler 中的业务逻辑就被切换到创建 Handler 所在的线程中去执行了</li>
+</ul>
+</li>
+</ul>
 
     </div>
 
@@ -362,7 +418,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-AAA"><span class="nav-text">1. AAA</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Android-消息机制概述"><span class="nav-text">1. Android 消息机制概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-为什么不允许在子线程中访问-UI"><span class="nav-text">2. 为什么不允许在子线程中访问 UI</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-为什么系统不对-UI-控件的访问加上锁机制"><span class="nav-text">3. 为什么系统不对 UI 控件的访问加上锁机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-Handler-工作原理概述"><span class="nav-text">4. Handler 工作原理概述</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -462,12 +518,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">711k</span>
+    <span title="站点总字数">712k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">10:46</span>
+    <span title="站点阅读时长">10:47</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
