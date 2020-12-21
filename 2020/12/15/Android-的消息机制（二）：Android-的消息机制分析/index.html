@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. ThreadLocal 工作原理概述">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-15T13:00:43.000Z">
-<meta property="article:modified_time" content="2020-12-21T09:18:56.845Z">
+<meta property="article:modified_time" content="2020-12-21T11:25:52.817Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Android 的消息机制">
 <meta property="article:tag" content="Android 的消息机制分析">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-21 17:18:56" itemprop="dateModified" datetime="2020-12-21T17:18:56+08:00">2020-12-21</time>
+                <time title="修改时间：2020-12-21 19:25:52" itemprop="dateModified" datetime="2020-12-21T19:25:52+08:00">2020-12-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,14 +233,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>29k</span>
+              <span>33k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>26 分钟</span>
+              <span>30 分钟</span>
             </span>
 
         </div>
@@ -365,117 +365,265 @@
 </ul>
 <h4 id="5-Handler-工作原理概述"><a href="#5-Handler-工作原理概述" class="headerlink" title="5. Handler 工作原理概述"></a>5. Handler 工作原理概述</h4><ul>
 <li><p><strong>官方文档定义</strong>：</p>
-  <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line">	<span class="comment"><span class="markdown">/**</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>A Handler allows </span>you<span class="markdown"> to send and process &#123;@link Message&#125; and Runnable</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>objects associated with </span>a<span class="markdown"> thread's &#123;@link MessageQueue&#125;. Each Handler</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>instance is associated with </span>a<span class="markdown"> single thread and that thread's message</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>queue. When </span>you<span class="markdown"> create </span>a<span class="markdown"> new Handler it is bound to </span>a<span class="markdown"> &#123;@link Looper&#125;.</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>It </span>will<span class="markdown"> deliver messages and runnables to that Looper's message</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>queue and execute them on that Looper's thread.</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span></span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span><span class="xml"><span class="tag">&lt;<span class="name">p</span>&gt;</span></span>There </span>are<span class="markdown"> two main uses for </span>a<span class="markdown"> Handler: (1) to schedule messages and</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>runnables to be executed at some point in </span>the<span class="markdown"> future; and (2) to enqueue</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span></span>an<span class="markdown"> action to be performed on </span>a<span class="markdown"> different thread than </span>your<span class="markdown"> own.</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span></span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span><span class="xml"><span class="tag">&lt;<span class="name">p</span>&gt;</span></span>Scheduling messages is accomplished with </span>the</span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>&#123;@link #post&#125;, &#123;@link #postAtTime(Runnable, long)&#125;,</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>&#123;@link #postDelayed&#125;, &#123;@link #sendEmptyMessage&#125;,</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>&#123;@link sendMessage&#125;, &#123;@link #sendMessageAtTime&#125;, and</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>&#123;@link #sendMessageDelayed&#125; methods. The <span class="xml"><span class="tag">&lt;<span class="name">em</span>&gt;</span></span>post<span class="xml"><span class="tag">&lt;/<span class="name">em</span>&gt;</span></span> version allow</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span></span>you<span class="markdown"> to enqueue Runnable objects to be called by </span>the<span class="markdown"> message queue when</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span></span>they<span class="markdown"> </span>are<span class="markdown"> received; </span>the<span class="markdown"> <span class="xml"><span class="tag">&lt;<span class="name">em</span>&gt;</span></span>sendMessage<span class="xml"><span class="tag">&lt;/<span class="name">em</span>&gt;</span></span> version allow </span>you<span class="markdown"> to enqueue</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span></span>a<span class="markdown"> &#123;@link Message&#125; object containing </span>a<span class="markdown"> bundle of data that </span>will<span class="markdown"> be</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>processed by </span>the<span class="markdown"> Handler's &#123;@link #handleMessage&#125; method (requiring that</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span></span>you<span class="markdown"> implement </span>a<span class="markdown"> subclass of Handler).</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span></span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span><span class="xml"><span class="tag">&lt;<span class="name">p</span>&gt;</span></span>When posting or sending to </span>a<span class="markdown"> Handler, </span>you<span class="markdown"> can either</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>allow </span>the<span class="markdown"> item to be processed as soon as </span>the<span class="markdown"> message queue is ready</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>to do </span>so<span class="markdown">, or specify </span>a<span class="markdown"> delay before it gets processed or absolute time for</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>it to be processed. The latter two allow </span>you<span class="markdown"> to implement timeouts,</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>ticks, and other timeing-based behavior.</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span></span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span><span class="xml"><span class="tag">&lt;<span class="name">p</span>&gt;</span></span>When </span>a</span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>process is created for </span>your<span class="markdown"> application, its main thread is dedicated to </span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>running </span>a<span class="markdown"> message queue that takes care of managing </span>the<span class="markdown"> top-level</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>application objects(activities, broadcast receivers, etc) and any windows</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span></span>they<span class="markdown"> create. You can create </span>your<span class="markdown"> own threads, and communicate back with</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span></span>the<span class="markdown"> main application thread through </span>a<span class="markdown"> Handler. This is done by calling</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span></span>the<span class="markdown"> same <span class="xml"><span class="tag">&lt;<span class="name">em</span>&gt;</span></span>post<span class="xml"><span class="tag">&lt;/<span class="name">em</span>&gt;</span></span> or <span class="xml"><span class="tag">&lt;<span class="name">em</span>&gt;</span></span>sendMessage<span class="xml"><span class="tag">&lt;/<span class="name">em</span>&gt;</span></span> methods as before, </span>but<span class="markdown"> from</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span></span>your<span class="markdown"> new thread. The given Runnable or Message </span>will<span class="markdown"> then be scheduled</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>in </span>the<span class="markdown"> Handler's message queue and processed when appropriate.</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="code">	 */</span></span></span></span><br><span class="line">	 public <span class="class"><span class="keyword">class</span> <span class="title">Handler</span> </span>&#123;</span><br><span class="line">	 	<span class="comment">// bla bla bla</span></span><br><span class="line">	 	</span><br><span class="line">	 	<span class="meta">@UnsupportedAppUsage</span></span><br><span class="line">	 	<span class="keyword">final</span> Looper mLooper;</span><br><span class="line">	 	<span class="keyword">final</span> MessageQueue mQueue;</span><br><span class="line">	 	<span class="meta">@UnsupportedAppUsage</span></span><br><span class="line">	 	<span class="keyword">final</span> Callback mCallback;</span><br><span class="line">	 	<span class="keyword">final</span> boolean mAsynchronous;</span><br><span class="line">	 	<span class="meta">@UnsupportedAppUsage</span></span><br><span class="line">	 	IMessenger mMessenger;</span><br><span class="line">	 	</span><br><span class="line">	 	<span class="comment"><span class="markdown">/**</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 	 * </span>Callback interface </span>you<span class="markdown"> can use when instantiating </span>a<span class="markdown"> Handler to avoid</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 	 * </span>having to implement </span>your<span class="markdown"> own subclass of Handler.</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="code">	 	 */</span></span></span></span><br><span class="line">	 	public <span class="class"><span class="keyword">interface</span> <span class="title">Callback</span> </span>&#123;</span><br><span class="line">	 		<span class="comment"><span class="markdown">/**</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 		 * </span>@param msg A &#123;@link android.os.Message Message&#125; object</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 		 * </span>@return True if no further handling is desired</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="code">	 		 */</span></span></span></span><br><span class="line">	 		boolean handleMessage(<span class="meta">@NonNull</span> Message msg);</span><br><span class="line">	 	&#125;</span><br><span class="line">	 	</span><br><span class="line">	 	<span class="comment"><span class="markdown">/**</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 	 * </span>Subclass must implement this to receive message.</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="code">	 	 */</span></span></span></span><br><span class="line">	 	public <span class="keyword">void</span> handleMessage(<span class="meta">@NonNull</span> Message msg) &#123;</span><br><span class="line">	 		</span><br><span class="line">	 	&#125;</span><br><span class="line">	 	</span><br><span class="line">	 	<span class="comment"><span class="markdown">/**</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 	 * </span>Handle system messages here.</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="code">	 	 */</span></span></span></span><br><span class="line">	 	public <span class="keyword">void</span> dispatchMessage(<span class="meta">@NonNull</span> Message msg) &#123;</span><br><span class="line">	 		<span class="keyword">if</span> (msg.callback != <span class="keyword">null</span>) &#123;</span><br><span class="line">	 			handleCallback(msg);</span><br><span class="line">	 		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	 			<span class="keyword">if</span> (mCallback != <span class="keyword">null</span>) &#123;</span><br><span class="line">	 				<span class="keyword">if</span> (mCallback.handleMessage(msg)) &#123;</span><br><span class="line">	 					<span class="keyword">return</span>;</span><br><span class="line">	 				&#125;</span><br><span class="line">	 			&#125;</span><br><span class="line">	 			handleMessage(msg);</span><br><span class="line">	 		&#125;</span><br><span class="line">	 	&#125;</span><br><span class="line">	 &#125;</span><br><span class="line">	```	</span><br><span class="line"></span><br><span class="line">* Handler 的工作主要包含消息的**发送**和**接收**过程。消息的发送可以通过 **`post()`** 的一系列方法以及 **`send()`** 的一系列方法来实现，**`post()` 的一系列方法最终是通过 `send()` 的一系列方法来实现的**</span><br><span class="line">* Handler **`post()`** 系列方法源码：</span><br></pre></td></tr></table></figure>
-<p>  /**</p>
+  <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line">	<span class="comment"><span class="markdown">/**</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>A Handler allows </span>you<span class="markdown"> to send and process &#123;@link Message&#125; and Runnable</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>objects associated with </span>a<span class="markdown"> thread's &#123;@link MessageQueue&#125;. Each Handler</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>instance is associated with </span>a<span class="markdown"> single thread and that thread's message</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>queue. When </span>you<span class="markdown"> create </span>a<span class="markdown"> new Handler it is bound to </span>a<span class="markdown"> &#123;@link Looper&#125;.</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>It </span>will<span class="markdown"> deliver messages and runnables to that Looper's message</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>queue and execute them on that Looper's thread.</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span></span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span><span class="xml"><span class="tag">&lt;<span class="name">p</span>&gt;</span></span>There </span>are<span class="markdown"> two main uses for </span>a<span class="markdown"> Handler: (1) to schedule messages and</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>runnables to be executed at some point in </span>the<span class="markdown"> future; and (2) to enqueue</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span></span>an<span class="markdown"> action to be performed on </span>a<span class="markdown"> different thread than </span>your<span class="markdown"> own.</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span></span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span><span class="xml"><span class="tag">&lt;<span class="name">p</span>&gt;</span></span>Scheduling messages is accomplished with </span>the</span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>&#123;@link #post&#125;, &#123;@link #postAtTime(Runnable, long)&#125;,</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>&#123;@link #postDelayed&#125;, &#123;@link #sendEmptyMessage&#125;,</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>&#123;@link sendMessage&#125;, &#123;@link #sendMessageAtTime&#125;, and</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>&#123;@link #sendMessageDelayed&#125; methods. The <span class="xml"><span class="tag">&lt;<span class="name">em</span>&gt;</span></span>post<span class="xml"><span class="tag">&lt;/<span class="name">em</span>&gt;</span></span> version allow</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span></span>you<span class="markdown"> to enqueue Runnable objects to be called by </span>the<span class="markdown"> message queue when</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span></span>they<span class="markdown"> </span>are<span class="markdown"> received; </span>the<span class="markdown"> <span class="xml"><span class="tag">&lt;<span class="name">em</span>&gt;</span></span>sendMessage<span class="xml"><span class="tag">&lt;/<span class="name">em</span>&gt;</span></span> version allow </span>you<span class="markdown"> to enqueue</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span></span>a<span class="markdown"> &#123;@link Message&#125; object containing </span>a<span class="markdown"> bundle of data that </span>will<span class="markdown"> be</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>processed by </span>the<span class="markdown"> Handler's &#123;@link #handleMessage&#125; method (requiring that</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span></span>you<span class="markdown"> implement </span>a<span class="markdown"> subclass of Handler).</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span></span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span><span class="xml"><span class="tag">&lt;<span class="name">p</span>&gt;</span></span>When posting or sending to </span>a<span class="markdown"> Handler, </span>you<span class="markdown"> can either</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>allow </span>the<span class="markdown"> item to be processed as soon as </span>the<span class="markdown"> message queue is ready</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>to do </span>so<span class="markdown">, or specify </span>a<span class="markdown"> delay before it gets processed or absolute time for</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>it to be processed. The latter two allow </span>you<span class="markdown"> to implement timeouts,</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>ticks, and other timeing-based behavior.</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span></span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span><span class="xml"><span class="tag">&lt;<span class="name">p</span>&gt;</span></span>When </span>a</span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>process is created for </span>your<span class="markdown"> application, its main thread is dedicated to </span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>running </span>a<span class="markdown"> message queue that takes care of managing </span>the<span class="markdown"> top-level</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>application objects(activities, broadcast receivers, etc) and any windows</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span></span>they<span class="markdown"> create. You can create </span>your<span class="markdown"> own threads, and communicate back with</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span></span>the<span class="markdown"> main application thread through </span>a<span class="markdown"> Handler. This is done by calling</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span></span>the<span class="markdown"> same <span class="xml"><span class="tag">&lt;<span class="name">em</span>&gt;</span></span>post<span class="xml"><span class="tag">&lt;/<span class="name">em</span>&gt;</span></span> or <span class="xml"><span class="tag">&lt;<span class="name">em</span>&gt;</span></span>sendMessage<span class="xml"><span class="tag">&lt;/<span class="name">em</span>&gt;</span></span> methods as before, </span>but<span class="markdown"> from</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span></span>your<span class="markdown"> new thread. The given Runnable or Message </span>will<span class="markdown"> then be scheduled</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>in </span>the<span class="markdown"> Handler's message queue and processed when appropriate.</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="code">	 */</span></span></span></span><br><span class="line">	 public <span class="class"><span class="keyword">class</span> <span class="title">Handler</span> </span>&#123;</span><br><span class="line">	 	<span class="comment">// bla bla bla</span></span><br><span class="line">	 	</span><br><span class="line">	 	<span class="meta">@UnsupportedAppUsage</span></span><br><span class="line">	 	<span class="keyword">final</span> Looper mLooper;</span><br><span class="line">	 	<span class="keyword">final</span> MessageQueue mQueue;</span><br><span class="line">	 	<span class="meta">@UnsupportedAppUsage</span></span><br><span class="line">	 	<span class="keyword">final</span> Callback mCallback;</span><br><span class="line">	 	<span class="keyword">final</span> boolean mAsynchronous;</span><br><span class="line">	 	<span class="meta">@UnsupportedAppUsage</span></span><br><span class="line">	 	IMessenger mMessenger;</span><br><span class="line">	 	</span><br><span class="line">	 	<span class="comment"><span class="markdown">/**</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 	 * </span>Callback interface </span>you<span class="markdown"> can use when instantiating </span>a<span class="markdown"> Handler to avoid</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 	 * </span>having to implement </span>your<span class="markdown"> own subclass of Handler.</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="code">	 	 */</span></span></span></span><br><span class="line">	 	public <span class="class"><span class="keyword">interface</span> <span class="title">Callback</span> </span>&#123;</span><br><span class="line">	 		<span class="comment"><span class="markdown">/**</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 		 * </span>@param msg A &#123;@link android.os.Message Message&#125; object</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 		 * </span>@return True if no further handling is desired</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="code">	 		 */</span></span></span></span><br><span class="line">	 		boolean handleMessage(<span class="meta">@NonNull</span> Message msg);</span><br><span class="line">	 	&#125;</span><br><span class="line">	 	</span><br><span class="line">	 	<span class="comment"><span class="markdown">/**</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 	 * </span>Subclass must implement this to receive message.</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="code">	 	 */</span></span></span></span><br><span class="line">	 	public <span class="keyword">void</span> handleMessage(<span class="meta">@NonNull</span> Message msg) &#123;</span><br><span class="line">	 		</span><br><span class="line">	 	&#125;</span><br><span class="line">	 	</span><br><span class="line">	 	<span class="comment"><span class="markdown">/**</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 	 * </span>Handle system messages here.</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="code">	 	 */</span></span></span></span><br><span class="line">	 	public <span class="keyword">void</span> dispatchMessage(<span class="meta">@NonNull</span> Message msg) &#123;</span><br><span class="line">	 		<span class="keyword">if</span> (msg.callback != <span class="keyword">null</span>) &#123;</span><br><span class="line">	 			handleCallback(msg);</span><br><span class="line">	 		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	 			<span class="keyword">if</span> (mCallback != <span class="keyword">null</span>) &#123;</span><br><span class="line">	 				<span class="keyword">if</span> (mCallback.handleMessage(msg)) &#123;</span><br><span class="line">	 					<span class="keyword">return</span>;</span><br><span class="line">	 				&#125;</span><br><span class="line">	 			&#125;</span><br><span class="line">	 			handleMessage(msg);</span><br><span class="line">	 		&#125;</span><br><span class="line">	 	&#125;</span><br><span class="line">	 &#125;</span><br><span class="line">	```	</span><br><span class="line">	</span><br><span class="line">* Handler 构造方法 **`Handler()`** 系列源码：</span><br></pre></td></tr></table></figure>
+<p>  /*</p>
 <ul>
-<li><p>Cause the Runnable r to be added to the message queue.</p>
+<li>Set this flag to true to detect anonymous, local or member classes</li>
+<li>that extend this Handler class and that are not static. These kind</li>
+<li>of classes can potentially create leaks.</li>
+<li>/<br>private static fianl boolean FIND_POTENTIAL_LEAKS = false;</li>
+</ul>
 </li>
-<li><p>The runnable will be run on the thread to which this handler is</p>
-</li>
-<li><p>attached.</p>
-</li>
-<li></li>
-<li><p>@param r The Runnable that will be executed.</p>
-</li>
-<li></li>
-<li><p>@return Returns true if the Runnable was successfully placed in to the </p>
-</li>
-<li><p>message queue. Returns false on failure, usually because the</p>
-</li>
-<li><p>looper processing the message queue is exiting.</p>
-</li>
-<li><p>/<br>public final boolean post(@NonNull Runnable r) {<br>   return sendMessageDelayed(getPostMessage(r), 0);<br>} </p>
-<p>private static Message getPostMessage(Runnable r) {<br>   Message m = Message.obtain();<br>   m.callback = r;<br>   return m;<br>}</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">	</span><br></pre></td></tr></table></figure>
-<p>public final boolean postAtTime(@NonNull Runnable r, long uptimeMillis) {<br>   return sendMessageAtTime(getPostMessage(r), uptimeMillis);<br>}</p>
-<p>public final boolean postAtTime(@NonNull Runnable r, @Nullable Object token, long uptimeMillis) {<br>   return sendMessageAtTime(getPostMessage(r, token), uptimeMillis);<br>}</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">	</span><br></pre></td></tr></table></figure>
-<p>public final boolean postDelayed(@NonNull Runnable r, long delayMillis) {<br>   return sendMessageDelayed(getPostMessage(r), delayMillis);<br>}</p>
-<p>public final boolean postDelayed(Runnable r, int what, long delayMillis) {<br>   return sendMessageDelayed(getPostMessage(r).setWhat(what), delayMillis);<br>}</p>
-<p>public final boolean postDelayed(@NonNull Runnable r, @Nulable Object token, long delayMillis) {<br>   return sendMessageDelayed(getPostMessage(r, token), delayMillis);<br>}</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">	</span><br></pre></td></tr></table></figure>
-<p>public final boolean postAtFrontOfQueue(@NonNull Runnable r) {<br>   return sendMessageAtFrontOfQueue(getPostMessage(r));<br>}</p>
-<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="bullet">* </span>Handler *<span class="strong">*`send()`*</span>* 系列方法源码：</span><br></pre></td></tr></table></figure>
-<p>/**</p>
-</li>
-<li><p>Pushs a message onto the end of the message queue after all pending messages</p>
-</li>
-<li><p>before the current time. It will be received in {@link #handleMessage},</p>
-</li>
-<li><p>in the thread attached to this handler.</p>
-</li>
-<li></li>
-<li><p>@return Returns true if the message was successfully placed in to the</p>
-</li>
-<li><p>message queue. Returns false on failure, usually because the </p>
-</li>
-<li><p>looper processing the message queue is exiting.</p>
-</li>
-<li><p>/<br>public final boolean sendMessage(@NonNull Message msg) { return sendMessageDelayed(msg, 0); }</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">	</span><br></pre></td></tr></table></figure>
-<p>/**</p>
-</li>
-<li><p>Send s Message containing only the what value.</p>
-</li>
-<li></li>
-<li><p>@return Returns true if the message was successfully placed in to the</p>
-</li>
-<li><p>message queue. Returns false on failure, usually because the</p>
-</li>
-<li><p>looper processing the message queue is exiting.</p>
-</li>
-<li><p>/<br>public final boolean sendEmptyMessage(int what) { return sendEmptyMessageDelayed(what, 0) }</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">	</span><br></pre></td></tr></table></figure>
-<p>public final boolean sendEmptyMessageDelayed(int what, long delayMillis) {<br>  Message msg = Message.obtain();<br>  msg.what = what;<br>  return sendMessageDelayed(msg, delayMillis);<br>}</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">	</span><br></pre></td></tr></table></figure>
-<p>public final boolean sendEmptyMessageAtTime(int what, long uptimeMillis) {<br>  Message msg = Message.obtain();<br>  msg.what = what;<br>  return sendMessageAtTime(msg, uptimeMillis);<br>}</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">	</span><br></pre></td></tr></table></figure>
-<p>public final boolean sendMessageDelayed(@NonNull Message msg, long delayMillis) {<br>  if (delayMillis &lt; 0) {</p>
-<pre><code>delayMillis = 0;</code></pre><p>  }<br>  return sendMessageAtTime(msg, SystemClock.uptimeMillis() + delayMillis);<br>}</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">	</span><br></pre></td></tr></table></figure>
-<p>public boolean sendMessageAtTime(@NonNull Message msg, long uptimeMillis) {<br>  MessageQueue queue = mQueue;<br>  if (queue == null) {</p>
-<pre><code>RuntimeException e = new RuntimeException(this + &quot; sendMessageAtTime() called with no mQueue&quot;);
-Log.w(&quot;Looper&quot;, e.getMessage(), e);
-return false;</code></pre><p>  }<br>return enqueueMessage(queue, msg, uptimeMillis);<br>}</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">	</span><br></pre></td></tr></table></figure>
-<p>public final boolean sendMessageAtFrontOfQueue(@NonNull Message msg) {<br>  MessageQueue queue = mQueue;<br>  if (queue == null) {</p>
-<pre><code>RuntimeException e = new RuntimeException(this + &quot; sendMessageAtTime() called with no mQueue&quot;);
-Log.w(&quot;Looper&quot;, e.getMessage(), e);
-return false;</code></pre><p>  }<br>  return enqueueMessage(queue, msg, 0);<br>}</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">	</span><br></pre></td></tr></table></figure>
-<p>private boolean enqueueMessage(@NonNull MessageQueue queue, @NonNull Message msg, long uptimeMillis) {<br>  msg.target = this;<br>  msg.workSourceUid = ThreadLocalWorkSource.getUid();</p>
-<p>  if (mAsynchronous) {</p>
-<pre><code>msg.setAsynchronous(true);</code></pre><p>  }<br>  return queue.enqueueMessage(msg, uptimeMillis);<br>}</p>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="bullet">* </span>由上述源码可以发现</span><br><span class="line"><span class="bullet">	* </span>Handler 发送消息的过程仅仅是向消息队列中插入一条消息</span><br><span class="line"><span class="bullet">	* </span>MessageQueue 的 <span class="code">`next()`</span> 方法就会返回这条消息给 Looper，Looper 收到消息后就开始处理</span><br><span class="line"><span class="bullet">	* </span>最终消息由 Looper 交由 Handler 处理，即 Handler 的 <span class="code">`dispathMessage()`</span> 方法会被调用</span><br><span class="line"><span class="bullet">	* </span>这时 Handler 就进入了处理消息的阶段，<span class="code">`dispatchMessage()`</span> 方法内部会调用 <span class="code">`handleMessage()`</span> 方法</span><br><span class="line"></span><br><span class="line"><span class="bullet">* </span>Handler <span class="strong">**`dispatchMessage()`**</span> 方法源码：</span><br></pre></td></tr></table></figure>
-<p>/**</p>
-<ul>
-<li>Handle system messages here.</li>
-<li>/<br>public void dispatchMessage(@NonNull Message msg) {<br>  if (msg.callback != null) {<pre><code>handleCallback(msg);</code></pre>  } else {<pre><code>if (mCallback != null) {
-    if (mCallback.handleMessage(msg)) {
-        return;
+</ul>
+<pre><code>/**
+ * Use the {@link Looper} for the current thread with the specified callback interface
+ * and set whether the handler should be asynchronous.
+ * 
+ * Handlers are synchronous by default unless this constructor is used to make
+ * one that is strictly asynchronous.
+ * 
+ * Asynchronous message represent interrupts or events that do not require global ordering
+ * with respect to synchronous messages. Asynchronous messages are no subject to 
+ * the synchronization barriers introduced by {@link MessageQueue#enqueueSyncBarrier(long)}.
+ * 
+ * @param callback The callback interface in which to handle messages, or null.
+ * @param async If true, the handler calls {@link Message#setAsynchronous(boolean)} for
+ * each {@link Message} that is sent to it or {@link Runnable} that is posted to it.
+ *
+ * @hide
+ */
+public Handler(@Nullable Callback callback, boolean async) {
+    if (FIND_POTENTIAL_LEAKS) {
+        final Class&lt;? extends Handler&gt; klass = getClass(); // 这个 klass 是不是手误。。。
+        if ((klass.isAnonymousClass() || klass.isMemberClass || klass.isLocalClass()) &amp;&amp; 
+            (klass.getModifiers() &amp; Modifier.STATIC == 0)) {
+            Log.w(TAG, &quot;The following Handler class should be static or leaks might occur: &quot; + klass.getCanonicalName());
+        }
     }
+
+    mLooper = Looper.myLooper();
+    if (mLooper == null) {
+        throw new RuntimeException(&quot;Can&apos;t create handler inside thread &quot; + Thread.currentThread() + &quot; that has not called Looper.prepare()&quot;);
+    }
+    mQueue = mLooper.mQueue;
+    mCallback = callback;
+    mAsynchronous = async;
 }
-handleMessage(msg);</code></pre>  }<br>}<pre><code>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">	</span><br></pre></td></tr></table></figure>
+/**
+ * Use the provided {@link Looper} instead of the default one and take a callback
+ * interface in which to handle messages. Also set whether the handler
+ * should be asynchronous.
+ * 
+ * Handlers are synchronous by default unless this constructor is used to make
+ * one that is strictly asynchronous.
+ * 
+ * Asynchronous messages represent interrupts or events that do not require global ordering
+ * with respect to synchronous messages. Asynchronous messages are not subject to
+ * the synchronization barriers introduced by conditions such as display vsync.
+ * 
+ * @param looper The looper, must not be null.
+ * @param callback The callback interface in which to handle messages, or null.
+ * @param async If true, the handler calls {@link Message#setAsynchronous(boolean)} for
+ * each {@link Message} that is sent to it or {@link Runnable} that is posted to it.
+ * 
+ * @hide
+ */ 
+@UnsupportedAppUsage
+public Handler(@NonNull Looper looper, @Nullable Callback callback, boolean async) {
+    mLooper = looper;
+    mQueue = looper.mQueue;
+    mCallback = callback;
+    mAsynchronous = async;
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">	</span><br></pre></td></tr></table></figure>
+/**
+ * Default constructor associates this handler with the {@link Looper} for the
+ * current thread.
+ * 
+ * If this thread does not have a looper, this handle won&apos;t be able to receive messages
+ * so an exception is thrown.
+ * 
+ * @deprecated Implicitly choosing a Looper during Handler construction can lead to bugs
+ * where operations are silently lost (if the Handler is not expecting new tasks and quits),
+ * crashes (if a handler is somtimes created on a thread without a Looper active), or race
+ * conditions, where the thread a handler is associated with is not what the author
+ * anticipated. Instead, use an {@link java.util.concurrent.Executor} or specify the Looper
+ * explicitly, using {@link Looper#getMainLooper}, {link android.view.View#getHandler}, or
+ * similar. If the implicit thread local behavior is required for compatibility, use
+ * {@code new Handler(Looper.myLooper())} to make it clear to readers.
+ * 
+ */
+@Deprecated
+public Handler() { this(null, false); }
 
+@Deprecated
+public Handler(@Nullable Callback callback) { this(callback, false); }
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">	</span><br></pre></td></tr></table></figure>
+/**
+ * Use the provided {@link Looper} instead of the default one.
+ * 
+ * @param looper The looper, must not be null.
+ */
+public Handler(@NonNull Looper looper) { this(looper, null, false); }
 
+public Handler(@NonNull Looper looper, @Nullable Callback callback) { this(looper, callback, false); }
 
+@UnsupportedAppUsage
+public Handler(boolean async) { this(null, async); }
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="bullet">* </span>Handler 的工作主要包含消息的*<span class="strong">*发送*</span><span class="strong">*和*</span><span class="strong">*接收*</span><span class="strong">*过程。消息的发送可以通过 *</span><span class="strong">*`post()`*</span>* 的一系列方法以及 *<span class="strong">*`send()`*</span>* 的一系列方法来实现，*<span class="strong">*`post()` 的一系列方法最终是通过 `send()` 的一系列方法来实现的*</span><span class="strong">*</span></span><br><span class="line"><span class="strong">*</span> Handler *<span class="strong">*`post()`*</span>* 系列方法源码：</span><br></pre></td></tr></table></figure>
+/**
+ * Cause the Runnable r to be added to the message queue.
+ * The runnable will be run on the thread to which this handler is
+ * attached.
+ *
+ * @param r The Runnable that will be executed.
+ *
+ * @return Returns true if the Runnable was successfully placed in to the 
+ *         message queue. Returns false on failure, usually because the
+ *          looper processing the message queue is exiting.
+ */
+ public final boolean post(@NonNull Runnable r) {
+     return sendMessageDelayed(getPostMessage(r), 0);
+ } 
 
+ private static Message getPostMessage(Runnable r) {
+     Message m = Message.obtain();
+     m.callback = r;
+     return m;
+ }
 
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">	</span><br></pre></td></tr></table></figure>
+ public final boolean postAtTime(@NonNull Runnable r, long uptimeMillis) {
+     return sendMessageAtTime(getPostMessage(r), uptimeMillis);
+ }
 
+ public final boolean postAtTime(@NonNull Runnable r, @Nullable Object token, long uptimeMillis) {
+     return sendMessageAtTime(getPostMessage(r, token), uptimeMillis);
+ }
 
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">	</span><br></pre></td></tr></table></figure>
+ public final boolean postDelayed(@NonNull Runnable r, long delayMillis) {
+     return sendMessageDelayed(getPostMessage(r), delayMillis);
+ }
 
+ public final boolean postDelayed(Runnable r, int what, long delayMillis) {
+     return sendMessageDelayed(getPostMessage(r).setWhat(what), delayMillis);
+ }
 
+ public final boolean postDelayed(@NonNull Runnable r, @Nulable Object token, long delayMillis) {
+     return sendMessageDelayed(getPostMessage(r, token), delayMillis);
+ }
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">	</span><br></pre></td></tr></table></figure>
+ public final boolean postAtFrontOfQueue(@NonNull Runnable r) {
+     return sendMessageAtFrontOfQueue(getPostMessage(r));
+ }
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="bullet">* </span>Handler *<span class="strong">*`send()`*</span>* 系列方法源码：</span><br></pre></td></tr></table></figure>
+/**
+ * Pushs a message onto the end of the message queue after all pending messages
+ * before the current time. It will be received in {@link #handleMessage},
+ * in the thread attached to this handler.
+ * 
+ * @return Returns true if the message was successfully placed in to the
+ *         message queue. Returns false on failure, usually because the 
+ *          looper processing the message queue is exiting.
+ */
+ public final boolean sendMessage(@NonNull Message msg) { return sendMessageDelayed(msg, 0); }
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">	</span><br></pre></td></tr></table></figure>
+/**
+ * Send s Message containing only the what value.
+ * 
+ * @return Returns true if the message was successfully placed in to the
+ *         message queue. Returns false on failure, usually because the
+ *          looper processing the message queue is exiting.
+ */
+ public final boolean sendEmptyMessage(int what) { return sendEmptyMessageDelayed(what, 0) }
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">	</span><br></pre></td></tr></table></figure>
+public final boolean sendEmptyMessageDelayed(int what, long delayMillis) {
+    Message msg = Message.obtain();
+    msg.what = what;
+    return sendMessageDelayed(msg, delayMillis);
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">	</span><br></pre></td></tr></table></figure>
+public final boolean sendEmptyMessageAtTime(int what, long uptimeMillis) {
+    Message msg = Message.obtain();
+    msg.what = what;
+    return sendMessageAtTime(msg, uptimeMillis);
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">	</span><br></pre></td></tr></table></figure>
+public final boolean sendMessageDelayed(@NonNull Message msg, long delayMillis) {
+    if (delayMillis &lt; 0) {
+        delayMillis = 0;
+    }
+    return sendMessageAtTime(msg, SystemClock.uptimeMillis() + delayMillis);
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">	</span><br></pre></td></tr></table></figure>
+public boolean sendMessageAtTime(@NonNull Message msg, long uptimeMillis) {
+    MessageQueue queue = mQueue;
+    if (queue == null) {
+        RuntimeException e = new RuntimeException(this + &quot; sendMessageAtTime() called with no mQueue&quot;);
+        Log.w(&quot;Looper&quot;, e.getMessage(), e);
+        return false;
+    }
+return enqueueMessage(queue, msg, uptimeMillis);
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">	</span><br></pre></td></tr></table></figure>
+public final boolean sendMessageAtFrontOfQueue(@NonNull Message msg) {
+    MessageQueue queue = mQueue;
+    if (queue == null) {
+        RuntimeException e = new RuntimeException(this + &quot; sendMessageAtTime() called with no mQueue&quot;);
+        Log.w(&quot;Looper&quot;, e.getMessage(), e);
+        return false;
+    }
+    return enqueueMessage(queue, msg, 0);
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">	</span><br></pre></td></tr></table></figure>
+private boolean enqueueMessage(@NonNull MessageQueue queue, @NonNull Message msg, long uptimeMillis) {
+    msg.target = this;
+    msg.workSourceUid = ThreadLocalWorkSource.getUid();
 
+    if (mAsynchronous) {
+        msg.setAsynchronous(true);
+    }
+    return queue.enqueueMessage(msg, uptimeMillis);
+}
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="bullet">* </span>由上述源码可以发现</span><br><span class="line"><span class="bullet">	* </span>Handler 发送消息的过程仅仅是向消息队列中插入一条消息</span><br><span class="line"><span class="bullet">	* </span>MessageQueue 的 <span class="code">`next()`</span> 方法就会返回这条消息给 Looper，Looper 收到消息后就开始处理</span><br><span class="line"><span class="bullet">	* </span>最终消息由 Looper 交由 Handler 处理，即 Handler 的 <span class="code">`dispathMessage()`</span> 方法会被调用</span><br><span class="line"><span class="bullet">	* </span>这时 Handler 就进入了处理消息的阶段，<span class="code">`dispatchMessage()`</span> 方法内部会调用 <span class="code">`handleMessage()`</span> 方法</span><br><span class="line"></span><br><span class="line"><span class="bullet">* </span>Handler <span class="strong">**`dispatchMessage()`**</span> 方法源码：</span><br></pre></td></tr></table></figure>
+/**
+  * Handle system messages here.
+  */
+ public void dispatchMessage(@NonNull Message msg) {
+     if (msg.callback != null) {
+         handleCallback(msg);
+     } else {
+         if (mCallback != null) {
+             if (mCallback.handleMessage(msg)) {
+                 return;
+             }
+         }
+         handleMessage(msg);
+     }
+ }
+<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">* 首先，检测 Message 的 callback 是否为 null，不为 null 就通过 **`handleCallback()`** 方法来处理消息。**Message 的 callback 是一个 Runnable 对象，实际上就是 Handler 的 `post()` 方法所传递的 Runnable 参数**。`handleCallback()` 方法源码：</span><br></pre></td></tr></table></figure>
+    private static void handleCallback(Message message) {
+        message.callback.run();
+    }
+    <figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="code">	</span></span><br><span class="line"><span class="bullet">* </span>其次，检查 mCallback 是否为 null，不为 null 就调用 *<span class="strong">*mCallback 的 `handleMessage()` 方法*</span><span class="strong">*来处理消息。*</span><span class="strong">*Callback*</span>* 是一个接口，定义如下：</span><br></pre></td></tr></table></figure>
+    /**
+      * Callback interface you can use when instantiating a Handler to avoid
+      * having to implement your own subclass of Handler.
+      */
+     public interface Callback {
+         /**
+          * @param msg A {@link android.os.Message Message} object
+          * @return True if no further handling is desired
+          */
+         boolean handleMessage(@NonNull Message msg);
+     }
+    ```
 
+    * 通过 Callback 可以采用如下方式来创建 Handler 对象：`Handler handler = new Handler(callback);` 。**Callback 的意义是：可以用来创建一个 Handler 的实例但并不需要派生 Handler 的子类**。日常开发中，创建 Handler 最常见的方式就是派生一个 Handler 的子类并重写其 `handleMessage()` 方法来处理具体的消息，而 Callback 提供了另外一种使用 Handler 的方式，**当不想派生子类时，就可以通过 Callback 来实现**
 
-
-</code></pre></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
+* 最后，调用 **Handler 的 `handleMessage()` 方法**来处理消息</code></pre>
     </div>
 
     
@@ -688,12 +836,12 @@ handleMessage(msg);</code></pre>  }<br>}<pre><code>
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">749k</span>
+    <span title="站点总字数">753k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">11:21</span>
+    <span title="站点阅读时长">11:25</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
