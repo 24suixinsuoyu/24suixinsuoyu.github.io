@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. ThreadLocal 工作原理概述">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-15T13:00:43.000Z">
-<meta property="article:modified_time" content="2020-12-24T12:08:19.590Z">
+<meta property="article:modified_time" content="2020-12-24T12:12:47.497Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Android 的消息机制">
 <meta property="article:tag" content="Android 的消息机制分析">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-24 20:08:19" itemprop="dateModified" datetime="2020-12-24T20:08:19+08:00">2020-12-24</time>
+                <time title="修改时间：2020-12-24 20:12:47" itemprop="dateModified" datetime="2020-12-24T20:12:47+08:00">2020-12-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -606,16 +606,27 @@
 </li>
 <li><p>场景：</p>
 <ul>
-<li><a href="http://gityuan.com/2017/02/25/choreographer/" target="_blank" rel="noopener">Choreographer 原理</a></li>
-<li><strong>Choreographer 里所有跟 message 有关的代码，都手动设置了异步消息的标志，</strong>所以这些操作是不受到同步屏障影响的。这样做的原因可能就是为了尽可能保证上层 app 在接收到屏幕刷新信号时，可以在第一时间执行遍历绘制 View 树的工作</li>
-<li><strong>Choreographer 过程中的动作也都是异步消息，这样可以确保 Choreographer 的顺利运转</strong>，也确保了第一时间执行 <code>doTraversal()</code>，这个过程如果有其他同步消息也无法得到处理，都要等到 <code>doTraversal()</code> 之后</li>
-<li>因为<strong>主线程</strong>中如果有太多消息要执行，而这些消息又是根据时间戳进行排序，如果不加一个同步屏障的话，那么遍历绘制 View 树的工作就可能被迫延迟执行，因为它也需要排队，那么久有可能出现当一帧快结束时才开始计算屏幕数据，即时这次的计算时间少于 <strong>16.6ms</strong>，也同样会造成<strong>丢帧</strong>现象</li>
-<li>同步屏障机制只是尽可能去做接收到屏幕刷新信号就及时处理，但并不能保证一定可以第一时间处理。因为<strong>同步屏障是在 <code>scheduleTraversals()</code> 方法被调用时才发送消息到消息队列的</strong>，即只有当某个 View 发起了刷新请求，在这个时刻的后面同步消息才会被拦截掉。如果在 <code>scheduleTraversals()</code> 之前就发送到消息队列里的工作仍然会按顺序依次被取出来执行</li>
-<li>绝大多数 Android 设备屏幕的显示屏的刷新率都是 <strong>60HZ</strong>，所以<strong>场同步周期 vsync period = 1000/60 = 16.6ms</strong>。可通过 <strong><code>Choreographer.getInstance().postFrameCallback()</code></strong> 来监听帧率情况</li>
+<li><p><a href="http://gityuan.com/2017/02/25/choreographer/" target="_blank" rel="noopener">Choreographer 原理</a></p>
+</li>
+<li><p><strong>Choreographer 里所有跟 message 有关的代码，都手动设置了异步消息的标志，</strong>所以这些操作是不受到同步屏障影响的。这样做的原因可能就是为了尽可能保证上层 app 在接收到屏幕刷新信号时，可以在第一时间执行遍历绘制 View 树的工作</p>
+</li>
+<li><p><strong>Choreographer 过程中的动作也都是异步消息，这样可以确保 Choreographer 的顺利运转</strong>，也确保了第一时间执行 <code>doTraversal()</code>，这个过程如果有其他同步消息也无法得到处理，都要等到 <code>doTraversal()</code> 之后</p>
+</li>
+<li><p>因为<strong>主线程</strong>中如果有太多消息要执行，而这些消息又是根据时间戳进行排序，如果不加一个同步屏障的话，那么遍历绘制 View 树的工作就可能被迫延迟执行，因为它也需要排队，那么久有可能出现当一帧快结束时才开始计算屏幕数据，即时这次的计算时间少于 <strong>16.6ms</strong>，也同样会造成<strong>丢帧</strong>现象。造成丢帧大体有两类原因：</p>
+<ul>
+<li>遍历绘制 View 树计算屏幕数据的时间超过了 <strong>16.6ms</strong></li>
+<li><strong>主线程一直在处理其他耗时的消息</strong>，导致遍历绘制 View 树的工作迟迟不能开始，从而超过了 16.6ms 底层切换下一帧画面的时机</li>
 </ul>
+</li>
+<li><p>同步屏障机制只是尽可能去做接收到屏幕刷新信号就及时处理，但并不能保证一定可以第一时间处理。因为<strong>同步屏障是在 <code>scheduleTraversals()</code> 方法被调用时才发送消息到消息队列的</strong>，即只有当某个 View 发起了刷新请求，在这个时刻的后面同步消息才会被拦截掉。如果在 <code>scheduleTraversals()</code> 之前就发送到消息队列里的工作仍然会按顺序依次被取出来执行</p>
+</li>
+<li><p>绝大多数 Android 设备屏幕的显示屏的刷新率都是 <strong>60HZ</strong>，所以<strong>场同步周期 vsync period = 1000/60 = 16.6ms</strong>。可通过 <strong><code>Choreographer.getInstance().postFrameCallback()</code></strong> 来监听帧率情况</p>
 </li>
 </ul>
 </li>
+</ul>
+</li>
+<li></li>
 </ul>
 
     </div>
@@ -830,7 +841,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">770k</span>
+    <span title="站点总字数">771k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
