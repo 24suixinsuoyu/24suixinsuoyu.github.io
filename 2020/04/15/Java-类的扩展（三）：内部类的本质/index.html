@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. 怎样理解内部类">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-04-15T12:30:48.000Z">
-<meta property="article:modified_time" content="2020-04-16T10:32:16.000Z">
+<meta property="article:modified_time" content="2020-12-24T06:22:10.297Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="类的扩展">
 <meta property="article:tag" content="内部类的本质">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-16 18:32:16" itemprop="dateModified" datetime="2020-04-16T18:32:16+08:00">2020-04-16</time>
+                <time title="修改时间：2020-12-24 14:22:10" itemprop="dateModified" datetime="2020-12-24T14:22:10+08:00">2020-12-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,7 +233,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.6k</span>
+              <span>2.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -255,90 +255,90 @@
         <h4 id="1-怎样理解内部类"><a href="#1-怎样理解内部类" class="headerlink" title="1. 怎样理解内部类"></a>1. 怎样理解内部类</h4><a id="more"></a>
 
 <ul>
-<li>一个类放在另一个类的内部，称为内部类。<strong>内部类可以方便地访问外部类的私有变量</strong>。</li>
-<li>内部类只是 <strong>Java 编译器</strong>的概念，<strong>对于 JVM 而言，它是不知道内部类这回事的</strong>，每个内部类<strong>最后都会被编译为一个独立的类</strong>，生成一个独立的字节码文件。</li>
-<li>内部类<strong>本质上都会被转换为独立的类</strong>，但一般而言，它们可以实现<strong>更好的封装</strong>，代码实现上也<strong>更简洁</strong>。</li>
+<li>一个类放在另一个类的内部，称为内部类。<strong>内部类可以方便地访问外部类的私有变量</strong></li>
+<li>内部类只是 <strong>Java 编译器</strong>的概念，<strong>对于 JVM 而言，它是不知道内部类这回事的</strong>，每个内部类<strong>最后都会被编译为一个独立的类</strong>，生成一个独立的字节码文件</li>
+<li>内部类<strong>本质上都会被转换为独立的类</strong>，但一般而言，它们可以实现<strong>更好的封装</strong>，代码实现上也<strong>更简洁</strong></li>
 </ul>
-<h4 id="2-内部类的好处"><a href="#2-内部类的好处" class="headerlink" title="2. 内部类的好处"></a>2. 内部类的好处</h4><p>　可以实现对外部完全<strong>隐藏</strong>，更好的<strong>封装</strong>性，写法上也更<strong>简洁</strong>。</p>
+<h4 id="2-内部类的好处"><a href="#2-内部类的好处" class="headerlink" title="2. 内部类的好处"></a>2. 内部类的好处</h4><p>　可以实现对外部完全<strong>隐藏</strong>，更好的<strong>封装</strong>性，写法上也更<strong>简洁</strong></p>
 <h4 id="3-内部类的分类"><a href="#3-内部类的分类" class="headerlink" title="3. 内部类的分类"></a>3. 内部类的分类</h4><ul>
 <li>根据定义的位置和方式不同，主要有 4 种内部类：<ul>
-<li><strong>静态</strong>内部类。</li>
-<li><strong>成员</strong>内部类。</li>
-<li><strong>方法</strong>内部类。</li>
-<li><strong>匿名</strong>内部类。</li>
+<li><strong>静态</strong>内部类</li>
+<li><strong>成员</strong>内部类</li>
+<li><strong>方法</strong>内部类</li>
+<li><strong>匿名</strong>内部类</li>
 </ul>
 </li>
 </ul>
 <h4 id="4-怎样理解静态内部类"><a href="#4-怎样理解静态内部类" class="headerlink" title="4. 怎样理解静态内部类"></a>4. 怎样理解静态内部类</h4><ul>
-<li>语法上，静态内部类除了位置放在其他类内部外，它<strong>与一个独立的类差别不大</strong>，可以有静态变量、静态方法、成员方法、成员变量、构造方法等。</li>
-<li>静态内部类<strong>与外部类的联系不大</strong>，它<strong>可以访问外部类的静态变量和方法，但不能访问实例变量和方法</strong>。在类内部，可以直接使用内部静态类。</li>
-<li><code>public</code> 静态内部类可以被外部使用，语法是：<strong>外部类.静态内部类（public）</strong>。</li>
+<li>语法上，静态内部类除了位置放在其他类内部外，它<strong>与一个独立的类差别不大</strong>，可以有静态变量、静态方法、成员方法、成员变量、构造方法等</li>
+<li>静态内部类<strong>与外部类的联系不大</strong>，它<strong>可以访问外部类的静态变量和方法，但不能访问实例变量和方法</strong>。在类内部，可以直接使用内部静态类</li>
+<li><code>public</code> 静态内部类可以被外部使用，语法是：<strong>外部类.静态内部类（public）</strong></li>
 </ul>
 <h4 id="5-静态内部类是怎样实现的"><a href="#5-静态内部类是怎样实现的" class="headerlink" title="5. 静态内部类是怎样实现的"></a>5. 静态内部类是怎样实现的</h4><ul>
-<li>静态内部类会被编译为 <strong>Outer$Inner</strong> 的形式。</li>
-<li>静态内部类<strong>访问外部类的私有静态变量</strong>的实现是：Java 自动为外部类生成一个非私有静态方法 <code>access$0</code>，这个方法返回这个私有静态变量。</li>
+<li>静态内部类会被编译为 <strong>Outer$Inner</strong> 的形式</li>
+<li>静态内部类<strong>访问外部类的私有静态变量</strong>的实现是：Java 自动为外部类生成一个非私有静态方法 <code>access$0</code>，这个方法返回这个私有静态变量</li>
 </ul>
 <h4 id="6-静态内部类的使用场景"><a href="#6-静态内部类的使用场景" class="headerlink" title="6. 静态内部类的使用场景"></a>6. 静态内部类的使用场景</h4><ul>
-<li>如果它<strong>与外部类关系密切，且不依赖于外部类实例</strong>，则可以考虑定义为静态内部类。</li>
-<li>场景之一是静态内部类形式的<strong>单例模式</strong>。</li>
+<li>如果它<strong>与外部类关系密切，且不依赖于外部类实例</strong>，则可以考虑定义为静态内部类</li>
+<li>场景之一是静态内部类形式的<strong>单例模式</strong></li>
 </ul>
 <h4 id="7-试举出几个-Java-API-中使用静态内部类的例子"><a href="#7-试举出几个-Java-API-中使用静态内部类的例子" class="headerlink" title="7. 试举出几个 Java API 中使用静态内部类的例子"></a>7. 试举出几个 Java API 中使用静态内部类的例子</h4><ul>
-<li><strong><code>Integer</code></strong> 类内部有一个<strong>私有静态内部类 <code>IntegerCache</code></strong>，用于支持整数的<strong>自动装箱</strong>。</li>
-<li><strong><code>LinkedList</code></strong> 类内部有一个<strong>私有静态内部类 <code>Node</code></strong>，表示链表中的每个<strong>节点</strong>。</li>
-<li><strong><code>Character</code></strong> 类内部有一个<strong>共有静态内部类 <code>UnicodeBlock</code></strong>，用于表示一个 <strong><code>Unicode Block</code></strong>。</li>
+<li><strong><code>Integer</code></strong> 类内部有一个<strong>私有静态内部类 <code>IntegerCache</code></strong>，用于支持整数的<strong>自动装箱</strong></li>
+<li><strong><code>LinkedList</code></strong> 类内部有一个<strong>私有静态内部类 <code>Node</code></strong>，表示链表中的每个<strong>节点</strong></li>
+<li><strong><code>Character</code></strong> 类内部有一个<strong>共有静态内部类 <code>UnicodeBlock</code></strong>，用于表示一个 <strong><code>Unicode Block</code></strong></li>
 </ul>
 <h4 id="8-怎样理解成员内部类"><a href="#8-怎样理解成员内部类" class="headerlink" title="8. 怎样理解成员内部类"></a>8. 怎样理解成员内部类</h4><ul>
-<li>成员内部类没有 <code>static</code> 修饰符。</li>
-<li>与静态内部类不同，除了静态变量和方法，成员内部类还可以直接访问外部类的实例变量和方法。</li>
-<li>如果<strong>和外部类有重名</strong>，成员内部类还可以通过 <strong><code>Outer.this.xxx</code></strong> 的方式引用外部类的实例变量和方法。</li>
+<li>成员内部类没有 <code>static</code> 修饰符</li>
+<li>与静态内部类不同，除了静态变量和方法，成员内部类还可以直接访问外部类的实例变量和方法</li>
+<li>如果<strong>和外部类有重名</strong>，成员内部类还可以通过 <strong><code>Outer.this.xxx</code></strong> 的方式引用外部类的实例变量和方法</li>
 </ul>
 <h4 id="9-怎样创建成员内部类对象"><a href="#9-怎样创建成员内部类对象" class="headerlink" title="9. 怎样创建成员内部类对象"></a>9. 怎样创建成员内部类对象</h4><ul>
-<li>与静态内部类不同，成员内部类对象总是与一个外部类对象相连，在外部使用时，因为不是静态，所以它不能直接通过 <code>new Outer.Inner()</code> 的方式创建对象，而是<strong>要先创建一个外部类对象</strong>。</li>
-<li><strong>语法：外部类对象.new 内部类（）</strong>，如 <code>outer.new Inner()</code>。</li>
+<li>与静态内部类不同，成员内部类对象总是与一个外部类对象相连，在外部使用时，因为不是静态，所以它不能直接通过 <code>new Outer.Inner()</code> 的方式创建对象，而是<strong>要先创建一个外部类对象</strong></li>
+<li><strong>语法：外部类对象.new 内部类（）</strong>，如 <code>outer.new Inner()</code></li>
 </ul>
 <h4 id="10-成员内部类、方法内部类和匿名内部类中都不可以定义静态变量和方法，Java-为什么要有这个规定"><a href="#10-成员内部类、方法内部类和匿名内部类中都不可以定义静态变量和方法，Java-为什么要有这个规定" class="headerlink" title="10. 成员内部类、方法内部类和匿名内部类中都不可以定义静态变量和方法，Java 为什么要有这个规定"></a>10. 成员内部类、方法内部类和匿名内部类中都不可以定义静态变量和方法，Java 为什么要有这个规定</h4><ul>
-<li>可以这么理解，这些内部类是与外部实例相连的，不应独立使用。</li>
-<li>而静态变量和方法作为类的属性和方法，一般是独立使用的，在内部类中意义不大，而如果内部类确实需要静态变量和方法，那么也可以挪到外部类中。</li>
-<li><strong>静态与非静态，一个是类的属性，一个是对象的属性</strong>，二者是泾渭分明的。</li>
+<li>可以这么理解，这些内部类是与外部实例相连的，不应独立使用</li>
+<li>而静态变量和方法作为类的属性和方法，一般是独立使用的，在内部类中意义不大，而如果内部类确实需要静态变量和方法，那么也可以挪到外部类中</li>
+<li><strong>静态与非静态，一个是类的属性，一个是对象的属性</strong>，二者是泾渭分明的</li>
 </ul>
 <h4 id="11-成员内部类是怎么实现的"><a href="#11-成员内部类是怎么实现的" class="headerlink" title="11. 成员内部类是怎么实现的"></a>11. 成员内部类是怎么实现的</h4><ul>
-<li>生成两个类：一个是 <strong><code>Outer</code></strong>，一个是 <strong><code>Outer$Inner</code></strong>。</li>
-<li>外部类一般会相应生成两个<strong>非私有静态方法：<code>access$0</code> 用于访问变量，<code>access$1</code> 用于访问方法</strong>。</li>
+<li>生成两个类：一个是 <strong><code>Outer</code></strong>，一个是 <strong><code>Outer$Inner</code></strong></li>
+<li>外部类一般会相应生成两个<strong>非私有静态方法：<code>access$0</code> 用于访问变量，<code>access$1</code> 用于访问方法</strong></li>
 </ul>
 <h4 id="12-成员内部类有哪些应用场景"><a href="#12-成员内部类有哪些应用场景" class="headerlink" title="12. 成员内部类有哪些应用场景"></a>12. 成员内部类有哪些应用场景</h4><ul>
-<li>如果内部类<strong>与外部类关系密切，需要访问外部类</strong>的实例变量或方法，则可以考虑定义为成员内部类。</li>
-<li><strong>外部类的一些方法的返回值可能是某个接口</strong>。为了返回这个接口，外部类方法可能使用内部类实现这个接口，这个内部类可以被设为 <code>private</code>，对外完全隐藏。</li>
+<li>如果内部类<strong>与外部类关系密切，需要访问外部类</strong>的实例变量或方法，则可以考虑定义为成员内部类</li>
+<li><strong>外部类的一些方法的返回值可能是某个接口</strong>。为了返回这个接口，外部类方法可能使用内部类实现这个接口，这个内部类可以被设为 <code>private</code>，对外完全隐藏</li>
 </ul>
 <h4 id="13-试举出-Java-API-中使用成员内部类的例子"><a href="#13-试举出-Java-API-中使用成员内部类的例子" class="headerlink" title="13. 试举出 Java API 中使用成员内部类的例子"></a>13. 试举出 Java API 中使用成员内部类的例子</h4><ul>
-<li><strong><code>LinkedList</code></strong> 链表类的源码中，它的两个方法 <code>listIterator()</code> 和 <code>descendingIterator()</code> 的返回值都是接口 <code>Iterator</code>，调用者可以通过 <code>Iterator</code> 接口对链表遍历。</li>
-<li><code>listIterator()</code> 和 <code>descendingIterator()</code> 内部分别使用了<strong>成员内部类</strong> <code>ListItr</code> 和 <code>DescendingIterator</code>，这两个内部类都实现了接口 <code>Iterator</code>。</li>
+<li><strong><code>LinkedList</code></strong> 链表类的源码中，它的两个方法 <code>listIterator()</code> 和 <code>descendingIterator()</code> 的返回值都是接口 <code>Iterator</code>，调用者可以通过 <code>Iterator</code> 接口对链表遍历</li>
+<li><code>listIterator()</code> 和 <code>descendingIterator()</code> 内部分别使用了<strong>成员内部类</strong> <code>ListItr</code> 和 <code>DescendingIterator</code>，这两个内部类都实现了接口 <code>Iterator</code></li>
 </ul>
 <h4 id="14-怎样理解方法内部类"><a href="#14-怎样理解方法内部类" class="headerlink" title="14. 怎样理解方法内部类"></a>14. 怎样理解方法内部类</h4><ul>
-<li>内部类还可以<strong>定义在一个方法体</strong>中，即为方法内部类。方法内部类<strong>只能在被被定义的方法内使用</strong>。</li>
-<li>如果方法是<strong>实例方法</strong>，则除了静态变量和方法，方法内部类还可以直接访问外部类的实例变量和方法；如果方法是<strong>静态方法</strong>，则方法内部类只能访问外部类的静态变量和方法。</li>
-<li>方法内部类还可以直接访问方法的<strong>参数</strong>和方法中的<strong>局部变量</strong>，不过，这些变量<strong>必须被声明为 <code>final</code></strong>。</li>
-<li>方法内部类可以用成员内部类代替，至于方法参数，也可以作为参数传递给成员内部类。不过，<strong>如果类只在某个方法内被使用，使用方法内部类，可以实现更好的封装</strong>。</li>
-<li>个人感觉：实际使用中较少，感觉主要是 Java 的一个语法糖，也许 JDK 源码中应用得多些。</li>
+<li>内部类还可以<strong>定义在一个方法体</strong>中，即为方法内部类。方法内部类<strong>只能在被被定义的方法内使用</strong></li>
+<li>如果方法是<strong>实例方法</strong>，则除了静态变量和方法，方法内部类还可以直接访问外部类的实例变量和方法；如果方法是<strong>静态方法</strong>，则方法内部类只能访问外部类的静态变量和方法</li>
+<li>方法内部类还可以直接访问方法的<strong>参数</strong>和方法中的<strong>局部变量</strong>，不过，这些变量<strong>必须被声明为 <code>final</code></strong></li>
+<li>方法内部类可以用成员内部类代替，至于方法参数，也可以作为参数传递给成员内部类。不过，<strong>如果类只在某个方法内被使用，使用方法内部类，可以实现更好的封装</strong></li>
+<li>个人感觉：实际使用中较少，感觉主要是 Java 的一个语法糖，也许 JDK 源码中应用得多些</li>
 </ul>
 <h4 id="15-为什么方法内部类访问外部方法中的参数和局部变量时，这些变量必须被声明为-final"><a href="#15-为什么方法内部类访问外部方法中的参数和局部变量时，这些变量必须被声明为-final" class="headerlink" title="15. 为什么方法内部类访问外部方法中的参数和局部变量时，这些变量必须被声明为 final"></a>15. 为什么方法内部类访问外部方法中的参数和局部变量时，这些变量必须被声明为 final</h4><ul>
-<li>因为实际上，<strong>方法内部类操作的并不是外部的变量，而是它自己的实例变量</strong>。只是这些变量的值和外部一样，<strong>对这些变量赋值，并不会改变外部的值</strong>，为<strong>避免混淆</strong>，所以干脆强制规定必须声明为 <code>final</code>。</li>
-<li>如果的确需要修改外部的变量，那么可以将变量改为<strong>只含该变量的数组</strong>，修改数组中的值。</li>
+<li>因为实际上，<strong>方法内部类操作的并不是外部的变量，而是它自己的实例变量</strong>。只是这些变量的值和外部一样，<strong>对这些变量赋值，并不会改变外部的值</strong>，为<strong>避免混淆</strong>，所以干脆强制规定必须声明为 <code>final</code></li>
+<li>如果的确需要修改外部的变量，那么可以将变量改为<strong>只含该变量的数组</strong>，修改数组中的值</li>
 </ul>
 <h4 id="16-怎样理解匿名内部类"><a href="#16-怎样理解匿名内部类" class="headerlink" title="16. 怎样理解匿名内部类"></a>16. 怎样理解匿名内部类</h4><ul>
-<li>匿名内部类<strong>没有单独的类定义</strong>，它在<strong>创建对象的同时定义类</strong>。匿名内部类<strong>只能被使用一次，用来创建一个对象</strong>。</li>
-<li>匿名内部类<strong>没有名字，没有构造方法</strong>，但可以根据参数列表，调用对应的父类构造方法。</li>
-<li>匿名内部类可以定义实例变量和方法，<strong>可以有初始化代码块</strong>，初始化代码块<strong>可以起到构造方法的作用</strong>，只是构造方法可以有多个，而<strong>初始化代码块只能有一份</strong>。</li>
-<li>因为没有构造方法，它自己<strong>无法接受参数</strong>，如果必须要参数，则应该使用其他内部类。</li>
-<li>与方法内部类一样，匿名内部类也可以访问外部类的所有变量和方法，<strong>可以访问方法中的 <code>final</code> 参数和 <code>final</code> 局部变量</strong>。</li>
+<li>匿名内部类<strong>没有单独的类定义</strong>，它在<strong>创建对象的同时定义类</strong>。匿名内部类<strong>只能被使用一次，用来创建一个对象</strong></li>
+<li>匿名内部类<strong>没有名字，没有构造方法</strong>，但可以根据参数列表，调用对应的父类构造方法</li>
+<li>匿名内部类可以定义实例变量和方法，<strong>可以有初始化代码块</strong>，初始化代码块<strong>可以起到构造方法的作用</strong>，只是构造方法可以有多个，而<strong>初始化代码块只能有一份</strong></li>
+<li>因为没有构造方法，它自己<strong>无法接受参数</strong>，如果必须要参数，则应该使用其他内部类</li>
+<li>与方法内部类一样，匿名内部类也可以访问外部类的所有变量和方法，<strong>可以访问方法中的 <code>final</code> 参数和 <code>final</code> 局部变量</strong></li>
 </ul>
-<h4 id="17-匿名内部类是怎么实现的"><a href="#17-匿名内部类是怎么实现的" class="headerlink" title="17. 匿名内部类是怎么实现的"></a>17. 匿名内部类是怎么实现的</h4><p>　每个匿名内部类也都<strong>被生成一个独立的类</strong>，只是<strong>类的名字以外部类加数字编号</strong>，没有有意义的名字。</p>
+<h4 id="17-匿名内部类是怎么实现的"><a href="#17-匿名内部类是怎么实现的" class="headerlink" title="17. 匿名内部类是怎么实现的"></a>17. 匿名内部类是怎么实现的</h4><p>　每个匿名内部类也都<strong>被生成一个独立的类</strong>，只是<strong>类的名字以外部类加数字编号</strong>，没有有意义的名字</p>
 <h4 id="18-匿名内部类的使用场景"><a href="#18-匿名内部类的使用场景" class="headerlink" title="18. 匿名内部类的使用场景"></a>18. 匿名内部类的使用场景</h4><ul>
-<li>匿名内部类能做的，方法内部类都能做。</li>
-<li>但如果<strong>对象只会创建一次，且不需要构造方法来接收参数</strong>，则可以使用匿名内部类，写法上也<strong>更简洁</strong>。</li>
+<li>匿名内部类能做的，方法内部类都能做</li>
+<li>但如果<strong>对象只会创建一次，且不需要构造方法来接收参数</strong>，则可以使用匿名内部类，写法上也<strong>更简洁</strong></li>
 </ul>
 <h4 id="19-怎么理解回调这个概念"><a href="#19-怎么理解回调这个概念" class="headerlink" title="19. 怎么理解回调这个概念"></a>19. 怎么理解回调这个概念</h4><ul>
-<li>回调即回过头来调用，是相对于一般的<strong>正向调用</strong>而言的。</li>
-<li><strong>匿名内部类是实现回调接口的一种简便方式</strong>。</li>
+<li>回调即回过头来调用，是相对于一般的<strong>正向调用</strong>而言的</li>
+<li><strong>匿名内部类是实现回调接口的一种简便方式</strong></li>
 </ul>
 
     </div>
