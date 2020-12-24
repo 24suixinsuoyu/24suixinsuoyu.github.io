@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. ThreadLocal 工作原理概述">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-15T13:00:43.000Z">
-<meta property="article:modified_time" content="2020-12-24T12:12:47.497Z">
+<meta property="article:modified_time" content="2020-12-24T12:20:38.903Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Android 的消息机制">
 <meta property="article:tag" content="Android 的消息机制分析">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-24 20:12:47" itemprop="dateModified" datetime="2020-12-24T20:12:47+08:00">2020-12-24</time>
+                <time title="修改时间：2020-12-24 20:20:38" itemprop="dateModified" datetime="2020-12-24T20:20:38+08:00">2020-12-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -361,6 +361,7 @@
 <li><strong><code>needWake = mBlocked &amp;&amp; p.target == null &amp;&amp; msg.isAsynchronous();</code></strong> 根据时间顺序，将消息插入到队列的合适位置</li>
 <li>MessageQueue 是有序的，<strong>内部排序的依据是 Message 的 when 字段</strong>，表示一个<strong>相对时间</strong>。设置语句是：<strong><code>msg.when = when;</code></strong></li>
 <li><strong><code>nativeWake(mPtr);</code></strong> 是一个 native 方法，表示唤醒主线程的 loop</li>
+<li>内部通过 <strong>synchronized</strong> 关键字保证插入操作线程安全</li>
 </ul>
 </li>
 <li><p>MessageQueue <strong><code>next()</code></strong> 方法源码：</p>
@@ -370,6 +371,7 @@
 <li>从源码实现来看，<strong><code>next()</code> 方法是一个无限循环的方法</strong>，如果消息队列中没有消息，那么 <code>next()</code> 方法会一直<strong>阻塞</strong>在：<code>nativePollOnce(ptr, nextPollTimeoutMillis);</code>，最终调用到 <strong><code>epoll_wait()</code></strong> 进行阻塞等待</li>
 <li><strong><code>nativePollOnce(ptr, nextPollTimeoutMillis);</code></strong> 是一个 native 方法，<strong>表示阻塞</strong>，直到下一个消息需要处理，或者有新消息入队，内部原理是 <strong>Linux 内核的 pipe/epoll 机制（休眠唤醒，读写阻塞）</strong></li>
 <li><strong>当有新消息到来时会唤醒 MessageQueue，<code>next()</code> 方法会返回这条消息并将其从单链表中移除</strong></li>
+<li>内部通过 <strong>synchronized</strong> 关键字保证取操作线程安全</li>
 </ul>
 </li>
 <li><p>MessageQueue <strong><code>quit()</code></strong> 方法源码：</p>
@@ -626,7 +628,8 @@
 </li>
 </ul>
 </li>
-<li></li>
+<li><p><strong>Handler 中的同步方法</strong>：同步方法 <strong><code>public final boolean runWithScissors(@NonNull Runnable , long timeout)</code></strong> 可以让 <code>Handler#post()</code> 消息执行之后然后再继续往下执行</p>
+</li>
 </ul>
 
     </div>
@@ -846,7 +849,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">11:40</span>
+    <span title="站点阅读时长">11:41</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
