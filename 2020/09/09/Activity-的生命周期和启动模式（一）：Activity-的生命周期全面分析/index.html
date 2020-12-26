@@ -31,7 +31,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1gm14ycz0dqj30tm090gmp.jpg">
 <meta property="article:published_time" content="2020-09-09T15:57:46.000Z">
-<meta property="article:modified_time" content="2020-12-26T11:56:46.352Z">
+<meta property="article:modified_time" content="2020-12-26T13:13:18.224Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Activity 的生命周期和启动模式">
 <meta property="article:tag" content="Activity 的生命周期全面分析">
@@ -217,7 +217,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-26 19:56:46" itemprop="dateModified" datetime="2020-12-26T19:56:46+08:00">2020-12-26</time>
+                <time title="修改时间：2020-12-26 21:13:18" itemprop="dateModified" datetime="2020-12-26T21:13:18+08:00">2020-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -235,14 +235,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5.9k</span>
+              <span>6.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
+              <span>6 分钟</span>
             </span>
 
         </div>
@@ -323,7 +323,7 @@
 <li>简单理解，启动 Activity 的请求会由 <strong>Instrumentation</strong> 来处理，然后它通过 <strong>Binder</strong> 向 <strong>AMS</strong> 发请求</li>
 <li>AMS 内部维护者一个 <strong>ActivityStack</strong> 并负责栈内的 Activity 的状态同步，AMS 通过 <strong>ActivityThread</strong> 去同步 Activity 的状态从而完成生命周期方法的调用</li>
 </ul>
-<h4 id="6-几个常见场景下-Activity-生命周期方法调用顺序"><a href="#6-几个常见场景下-Activity-生命周期方法调用顺序" class="headerlink" title="6. 几个常见场景下 Activity 生命周期方法调用顺序"></a>6. 几个常见场景下 Activity 生命周期方法调用顺序</h4><ul>
+<h4 id="6-几个常见场景下-Activity-生命周期方法调用顺序"><a href="#6-几个常见场景下-Activity-生命周期方法调用顺序" class="headerlink" title="6. 几个常见场景下 Activity 生命周期方法调用顺序"></a>6. 几个常见场景下 Activity 生命周期方法调用顺序</h4><ol>
 <li><p>Activity 正常启动与结束</p>
 <blockquote>
 <p><code>onCreate()</code> —&gt; <code>onStart()</code> —&gt; <code>onResume()</code> —&gt; <code>onPause()</code> —&gt; <code>onStop()</code> —&gt; <code>onDestroy()</code></p>
@@ -350,8 +350,33 @@
 <p><code>B: onDestroy()</code></p>
 </blockquote>
 </li>
-<li></li>
-</ul>
+<li><p>屏幕旋转（开启了允许旋转的 flag）</p>
+<blockquote>
+<p><code>onPause()</code> —&gt; <code>onStop()</code> —&gt; <code>onSaveInstanceState()</code> —&gt; <code>onDestroy()</code></p>
+<p><code>onCreate()</code> —&gt; <code>onStart()</code> —&gt; <code>onRestoreInstanceState()</code> —&gt; <code>onResume()</code></p>
+</blockquote>
+</li>
+<li><p>后台 Activity 被系统杀死并重建</p>
+<blockquote>
+<p><code>Activity 切到后台不可见时: onSaveInstanceState()</code> —&gt; <code>onDestroy()</code></p>
+<p><code>onCreate()</code> —&gt; <code>onStart()</code> —&gt; <code>onRestoreInstanceState()</code> —&gt; <code>onResume()</code></p>
+</blockquote>
+</li>
+<li><p>具有返回值的 Activity 的启动与返回</p>
+<blockquote>
+<p><code>A: startActivityForResult()</code></p>
+<p>—&gt; <code>B: onPause()</code></p>
+<p>———&gt; <code>A: onActivityResult()</code></p>
+<p>———&gt; <code>A: onRestart()</code></p>
+<p>———&gt; <code>A: onStart()</code></p>
+<p>———&gt; <code>A: onResume()</code></p>
+<p>—&gt; <code>B: onStop()</code></p>
+<p>—&gt; <code>B: onDestroy()</code></p>
+</blockquote>
+</li>
+<li><p><a href="https://blog.csdn.net/sinat_29384657/article/details/79615413" target="_blank" rel="noopener">onNewIntent() 方法的调用时机</a>（涉及到启动模式）</p>
+</li>
+</ol>
 <h4 id="7-异常情况-Activity-生命周期包括哪些异常情况"><a href="#7-异常情况-Activity-生命周期包括哪些异常情况" class="headerlink" title="7. 异常情况 Activity 生命周期包括哪些异常情况"></a>7. 异常情况 Activity 生命周期包括哪些异常情况</h4><ul>
 <li>资源相关的<strong>系统配置发生改变</strong>导致 Activity 被杀死并被重新创建</li>
 <li>系统资源<strong>内存不足</strong>导致低优先级的 Activity 被杀死</li>
@@ -361,7 +386,7 @@
 <ul>
 <li><p>由于 Activity 是在异常情况下终止的，系统会调用 <strong><code>onSaveInstanceState()</code></strong> 方法来保存当前 Activity 的状态</p>
 </li>
-<li><p>从源码方法的注释可知，在 <strong>API 28 (Android 9 Pie) 及更高版本</strong><code>onSaveInstanceState()</code> 方法的调用时机是在 <strong><code>onStop()</code> 之后</strong>；在 <strong>API 28 (Android 9 Pie) 之前的版本</strong>调用时机是在 <strong><code>onStop()</code> 之前</strong>。它和 <strong><code>onPause()</code></strong> 没有既定的时序关系，既可能在 <code>onPause()</code> 之前调用，也可能在 <code>onPause()</code> 之后调用</p>
+<li><p>从源码方法的注释可知，在 <strong>API 28 (Android 9 Pie) 及更高版本</strong><code>onSaveInstanceState()</code> 方法的调用时机是在 <strong><code>onStop()</code> 之后</strong>；在 <strong>API 28 (Android 9 Pie) 之前的版本</strong>调用时机是在 <strong><code>onStop()</code> 之前</strong>，同时它和 <strong><code>onPause()</code></strong> 没有既定的时序关系，既可能在 <code>onPause()</code> 之前调用，也可能在 <code>onPause()</code> 之后调用</p>
 </li>
 <li><p>看源码的时候看到下面这段感觉挺奇怪，查了下才知道是电影<strong>《星际迷航》</strong>里的台词，Google 的开发者也是任性：</p>
 <p>  <img src="https://tva1.sinaimg.cn/large/0081Kckwgy1gm14ycz0dqj30tm090gmp.jpg" alt="《星际迷航》"></p>
@@ -695,7 +720,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">773k</span>
+    <span title="站点总字数">774k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
