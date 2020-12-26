@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. ThreadLocal 工作原理概述">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-15T13:00:43.000Z">
-<meta property="article:modified_time" content="2020-12-25T03:04:46.199Z">
+<meta property="article:modified_time" content="2020-12-26T15:36:10.622Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Android 的消息机制">
 <meta property="article:tag" content="Android 的消息机制分析">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-25 11:04:46" itemprop="dateModified" datetime="2020-12-25T11:04:46+08:00">2020-12-25</time>
+                <time title="修改时间：2020-12-26 23:36:10" itemprop="dateModified" datetime="2020-12-26T23:36:10+08:00">2020-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,14 +233,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>46k</span>
+              <span>47k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>42 分钟</span>
+              <span>43 分钟</span>
             </span>
 
         </div>
@@ -333,6 +333,10 @@
 <h4 id="3-MessageQueue-工作原理概述"><a href="#3-MessageQueue-工作原理概述" class="headerlink" title="3. MessageQueue 工作原理概述"></a>3. MessageQueue 工作原理概述</h4><ul>
 <li><p><strong>官方文档定义</strong>：</p>
   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Low-level class holding the list of messages to be dispatched by a</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@link</span> Looper&#125;. Messages are not added directly to a MessageQueue,</span></span><br><span class="line"><span class="comment"> * but rather through &#123;<span class="doctag">@link</span> Handler&#125; objects associated with the Looper.</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * &lt;p&gt;You can retrieve the MessageQueue for the current thread with</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@link</span> Looper#myQueue() Looper.myQueue()&#125;.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">MessageQueue</span> </span>&#123;</span><br><span class="line">	<span class="comment">// bla bla bla</span></span><br><span class="line">	</span><br><span class="line">	<span class="comment">// True if the message queue can be quit.</span></span><br><span class="line">	<span class="meta">@UnsupportedAppUsage</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">boolean</span> mQuitAllowed;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@UnsupportedAppUsage</span></span><br><span class="line">	<span class="meta">@SuppressWarnings</span>(<span class="string">"unused"</span>)</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">long</span> mPtr; <span class="comment">// used by native code</span></span><br><span class="line">	</span><br><span class="line">	<span class="meta">@UnsupportedAppUsage</span></span><br><span class="line">	Message mMessages;</span><br><span class="line">	<span class="meta">@UnsupportedAppUsage</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> ArrayList&lt;IdleHandler&gt; mIdleHandlers = <span class="keyword">new</span> ArrayList&lt;IdleHandler&gt;();</span><br><span class="line">	<span class="keyword">private</span> SparseArray&lt;FileDescriptorRecord&gt; mFileDescriptorRecords;</span><br><span class="line">	<span class="keyword">private</span> IdleHandler[] mPendingIdleHandlers;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">boolean</span> mQuitting;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// Indicates whether next() is blocked waiting in pollOnce() with a non-zero timeout.</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">boolean</span> mBlocked;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">native</span> <span class="keyword">static</span> <span class="keyword">long</span> <span class="title">nativeInit</span><span class="params">()</span></span>;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@UnsupportedAppUsage</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title">nativePollOnce</span><span class="params">(<span class="keyword">long</span> ptr, <span class="keyword">int</span> timeoutMillis)</span></span>; <span class="comment">/*non-static for callbacks*/</span></span><br><span class="line">	</span><br><span class="line">	<span class="comment">// bla bla bla</span></span><br><span class="line">	</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * Callback interface for discovering when a thread is going to block</span></span><br><span class="line"><span class="comment">	 * waiting for more messages.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">interface</span> <span class="title">IdleHandler</span> </span>&#123;</span><br><span class="line">		<span class="comment">/**</span></span><br><span class="line"><span class="comment">		 * Called when the message queue has run out of messages and will now</span></span><br><span class="line"><span class="comment">		 * wait for more. Return true to keep your idle handler active, false</span></span><br><span class="line"><span class="comment">		 * to have it removed. This may be called if there are still messages</span></span><br><span class="line"><span class="comment">		 * pending in the queue, but they are all shceduled to be dispatched</span></span><br><span class="line"><span class="comment">		 * after the current time.</span></span><br><span class="line"><span class="comment">		 */</span></span><br><span class="line">		<span class="function"><span class="keyword">boolean</span> <span class="title">queueIdle</span><span class="params">()</span></span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// bla bla bla</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>IdleHandler 是一个<strong>接口</strong>，它提供了一种机制，<strong>当主线程消息队列空闲时，会执行 IdleHandler 中的回调方法</strong></li>
+</ul>
 </li>
 <li><p>MessageQueue 构造方法 <strong><code>MessageQueue()</code></strong> 源码：</p>
   <figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> android.compat.annotation.UnsupportedAppUsage;</span><br><span class="line"></span><br><span class="line"><span class="comment">// True if the message queue can be quit.</span></span><br><span class="line"><span class="meta">@UnsupportedAppUsage</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">boolean</span> mQuitAllowed;</span><br><span class="line"></span><br><span class="line"><span class="meta">@UnsupportedAppUsage</span></span><br><span class="line"><span class="meta">@SuppressWarnings</span>(<span class="string">"unused"</span>)</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">long</span> mPtr; <span class="comment">// used by native code</span></span><br><span class="line"></span><br><span class="line">MessageQueue(<span class="keyword">boolean</span> quitAllowed) &#123;</span><br><span class="line">	mQuitAllow = quitAllowed;</span><br><span class="line">	mPtr = nativeInit();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">native</span> <span class="keyword">static</span> <span class="function"><span class="keyword">long</span> <span class="title">nativeInit</span><span class="params">()</span></span>; <span class="comment">// native 方法</span></span><br></pre></td></tr></table></figure>
@@ -470,6 +474,11 @@
 </ul>
 </li>
 </ul>
+</li>
+<li><p><strong><code>Looper.getMainLooper().setMessageLogging()</code></strong> 方法可以打印出主线程消息队列中的消息，可方便排查<strong>卡顿方面的性能优化</strong>问题</p>
+  <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">logging.<span class="built_in">println</span>(<span class="string">"&gt;&gt;&gt;&gt;&gt; Dispatching to "</span> + msg.target + <span class="string">" "</span> + msg.callback + <span class="string">": "</span> + msg.what);</span><br><span class="line">logging.<span class="built_in">println</span>(<span class="string">"&lt;&lt;&lt;&lt;&lt; Finished to "</span> + msg.target + <span class="string">" "</span> + msg.callback);</span><br></pre></td></tr></table></figure>
+
+
 </li>
 </ul>
 <h4 id="5-Handler-工作原理概述"><a href="#5-Handler-工作原理概述" class="headerlink" title="5. Handler 工作原理概述"></a>5. Handler 工作原理概述</h4><ul>
@@ -859,7 +868,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">11:43</span>
+    <span title="站点阅读时长">11:44</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
