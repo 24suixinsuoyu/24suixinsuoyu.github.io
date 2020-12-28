@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1. AAA">
+  <meta name="description" content="1. 算法分类">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据结构与算法之美（四）：十大经典排序算法">
 <meta property="og:url" content="http://24suixinsuoyu.com/2020/12/27/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E4%B9%8B%E7%BE%8E%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E5%8D%81%E5%A4%A7%E7%BB%8F%E5%85%B8%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
-<meta property="og:description" content="1. AAA">
+<meta property="og:description" content="1. 算法分类">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-26T16:13:59.000Z">
-<meta property="article:modified_time" content="2020-12-26T16:21:54.324Z">
+<meta property="article:modified_time" content="2020-12-28T04:03:05.073Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="数据结构与算法之美">
 <meta property="article:tag" content="十大经典排序算法">
@@ -207,10 +207,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-12-27 00:13:59 / 修改时间：00:21:54" itemprop="dateCreated datePublished" datetime="2020-12-27T00:13:59+08:00">2020-12-27</time>
+              <time title="创建时间：2020-12-27 00:13:59" itemprop="dateCreated datePublished" datetime="2020-12-27T00:13:59+08:00">2020-12-27</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-28 12:03:05" itemprop="dateModified" datetime="2020-12-28T12:03:05+08:00">2020-12-28</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -227,14 +233,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5</span>
+              <span>6.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>6 分钟</span>
             </span>
 
         </div>
@@ -246,10 +252,310 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-AAA"><a href="#1-AAA" class="headerlink" title="1. AAA"></a>1. AAA</h4><a id="more"></a>
+        <h4 id="1-算法分类"><a href="#1-算法分类" class="headerlink" title="1. 算法分类"></a>1. 算法分类</h4><a id="more"></a>
 
+<h4 id="2-算法总结"><a href="#2-算法总结" class="headerlink" title="2. 算法总结"></a>2. 算法总结</h4><p>排序算法    时间复杂度（最好）    时间复杂度（最坏）    时间复杂度（平均）    空间复杂度    稳定性<br>冒泡排序    O(n)    O(n^2)    O(n^2)    O(1)    ✔️<br>选择排序    O(n^2)    O(n^2)    O(n^2)    O(1)    ✘<br>插入排序    O(n)    O(n^2)    O(n^2)    O(1)    ✔️<br>希尔排序    O(nlogn)    O(nlog^2 n)    O(nlog^2 n)    O(1)    ✘<br>归并排序    O(nlogn)    O(nlogn)    O(nlogn)    O(n)    ✔️<br>快速排序    O(nlogn)    O(n^2)    O(nlogn)    O(logn)    ✘<br>堆排序    O(nlogn)    O(nlogn)    O(nlogn)    O(1)    ✘<br>桶排序    O(n)    O(n^2)    O(n)    O(n<em>k)    ✔️<br>计数排序    O(n+k)    O(n+k)    O(n+k)    O(n+k)    ✔️<br>基数排序    O(n</em>k)    O(n<em>k)    O(n</em>k)    O(n+k)    ✔️</p>
+<h4 id="3-算法实现"><a href="#3-算法实现" class="headerlink" title="3. 算法实现"></a>3. 算法实现</h4><p>冒泡排序<br>动图：</p>
+<p>BubbleSort</p>
+<p>代码：</p>
+<p>public static void bubbleSort(int [] a) {<br>    if(a.length &lt;= 1) {<br>        return;<br>    }<br>    for(int i = 0; i &lt; a.length; i++) {<br>        boolean flag = true; // 提前结束循环标志位<br>        for(int j = 0; j &lt; a.length-1-i; j++) {<br>            if(a[j] &gt; a[j+1]) {<br>                int temp = a[j];<br>                a[j] = a[j+1];<br>                a[j+1] = temp;<br>                flag = false; // 此次冒泡有数据交换<br>            }<br>        }<br>        if(flag) {<br>            break;<br>        }<br>    }<br>}<br>选择排序<br>动图：</p>
+<p>SelectionSort</p>
+<p>代码：</p>
+<p>public static void selectionSort(int [] a) {<br>    if(a.length &lt;= 1) {<br>        return;<br>    }<br>    for(int i=0; i&lt;n-1; i++) {<br>        // 查找最小值<br>        int minIndex = i;<br>        for(int j = i+1; j &lt; n; j++) {<br>            if(a[j] &lt; a[minIndex]) {<br>                minIndex = j;<br>            }<br>        }</p>
+<pre><code>    // 交换
+    if(minIndex != i) {
+        int temp = a[i];
+        a[i] = a[minIndex];
+        a[minIndex] = temp;
+    }
+}</code></pre><p>}<br>插入排序<br>动图：</p>
+<p>InsertionSort</p>
+<p>代码：</p>
+<p>public static void insertionSort(int [] a) {<br>    if(a.length &lt;= 1) {<br>        return;<br>    }</p>
+<pre><code>for (int i = 1; i &lt; arr.length; i++) {
+  int value = a[i];
+    int j = i - 1;
+    // 查找要插入的位置并移动数据
+    for (; j &gt;= 0; j--) {
+       if (a[j] &gt; value) {
+          a[j+1] = a[j];
+           } else {
+              break;
+        }
+  }
 
+  if(j+1 != i) {
+          a[j+1] = value;
+  }</code></pre><p>}<br>希尔排序<br>动图：</p>
+<p>ShellSort</p>
+<p>代码：</p>
+<p>public static void shellSort(int [] arr) {<br>    if(arr.length &lt;= 1) {<br>        return;<br>    }</p>
+<pre><code>int gap = 1;
+while (gap &lt; arr.length) {
+    gap = gap * 3 + 1;
+}
 
+while (gap &gt; 0) {
+    for (int i = gap; i &lt; arr.length; i++) {
+       int tmp = arr[i];
+       int j = i - gap;
+       while (j &gt;= 0 &amp;&amp; arr[j] &gt; tmp) {
+            arr[j + gap] = arr[j];
+            j -= gap;
+       }
+       arr[j + gap] = tmp;
+    }
+    gap = (int) Math.floor(gap / 3);
+}</code></pre><p>}<br>归并排序<br>动图：</p>
+<p>MergeSort</p>
+<p>代码：</p>
+<p>// 归并排序算法, a是数组，n表示数组大小<br>public static void mergeSort(int[] a, int n) {<br>    mergeSortInternally(a, 0, n-1);<br>}</p>
+<p>// 递归调用函数<br>private static void mergeSortInternally(int[] a, int p, int r) {<br>    // 递归终止条件<br>    if (p &gt;= r) return;</p>
+<pre><code>// 取p到r之间的中间位置q,防止（p+r）的和超过int类型最大值
+int q = p + (r - p)/2;
+// 分治递归
+mergeSortInternally(a, p, q);
+mergeSortInternally(a, q+1, r);
+
+// 将A[p...q]和A[q+1...r]合并为A[p...r]
+merge(a, p, q, r);</code></pre><p>}</p>
+<p>private static void merge(int[] a, int p, int q, int r) {<br>    int i = p;<br>    int j = q+1;<br>    int k = 0; // 初始化变量i, j, k<br>    int[] tmp = new int[r-p+1]; // 申请一个大小跟a[p…r]一样的临时数组<br>    while (i&lt;=q &amp;&amp; j&lt;=r) {<br>        if (a[i] &lt;= a[j]) {<br>        tmp[k++] = a[i++]; // i++等于i:=i+1<br>        } else {<br>            tmp[k++] = a[j++];<br>        }<br>    }</p>
+<pre><code>// 判断哪个子数组中有剩余的数据
+int start = i;
+int end = q;
+if (j &lt;= r) {
+    start = j;
+    end = r;
+}
+
+// 将剩余的数据拷贝到临时数组tmp
+while (start &lt;= end) {
+    tmp[k++] = a[start++];
+}
+
+// 将tmp中的数组拷贝回a[p...r]
+for (i = 0; i &lt;= r-p; ++i) {
+    a[p+i] = tmp[i];
+}</code></pre><p>}<br>快速排序<br>动图：</p>
+<p>QuickSort</p>
+<p>代码：</p>
+<p>// 快速排序，a是数组，n表示数组的大小<br>public static void quickSort(int[] a, int n) {<br>    quickSortInternally(a, 0, n-1);<br>}</p>
+<p>// 快速排序递归函数，p,r为下标<br>private static void quickSortInternally(int[] a, int p, int r) {<br>    if (p &gt;= r) return;</p>
+<pre><code>int q = partition(a, p, r); // 获取分区点
+quickSortInternally(a, p, q-1);
+quickSortInternally(a, q+1, r);</code></pre><p>}</p>
+<p>private static int partition(int[] a, int p, int r) {<br>    int pivot = a[r];<br>    int i = p;<br>    for(int j = p; j &lt; r; ++j) {<br>        if (a[j] &lt; pivot) {<br>            if (i == j) {<br>                ++i;<br>            } else {<br>                int tmp = a[i];<br>                a[i++] = a[j];<br>                a[j] = tmp;<br>            }<br>        }<br>    }</p>
+<pre><code>int tmp = a[i];
+a[i] = a[r];
+a[r] = tmp;
+
+System.out.println(&quot;i=&quot; + i);
+return i;</code></pre><p>}<br>堆排序<br>动图：</p>
+<p>HeapSort</p>
+<p>代码：</p>
+<p>public class HeapSort implements IArraySort {</p>
+<pre><code>@Override
+public int[] sort(int[] sourceArray) throws Exception {
+    // 对 arr 进行拷贝，不改变参数内容
+    int[] arr = Arrays.copyOf(sourceArray, sourceArray.length);
+
+    int len = arr.length;
+
+    buildMaxHeap(arr, len);
+
+    for (int i = len - 1; i &gt; 0; i--) {
+        swap(arr, 0, i);
+        len--;
+        heapify(arr, 0, len);
+    }
+    return arr;
+}
+
+private void buildMaxHeap(int[] arr, int len) {
+    for (int i = (int) Math.floor(len / 2); i &gt;= 0; i--) {
+        heapify(arr, i, len);
+    }
+}
+
+private void heapify(int[] arr, int i, int len) {
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+    int largest = i;
+
+    if (left &lt; len &amp;&amp; arr[left] &gt; arr[largest]) {
+        largest = left;
+    }
+
+    if (right &lt; len &amp;&amp; arr[right] &gt; arr[largest]) {
+        largest = right;
+    }
+
+    if (largest != i) {
+        swap(arr, i, largest);
+        heapify(arr, largest, len);
+    }
+}
+
+private void swap(int[] arr, int i, int j) {
+    int temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+}</code></pre><p>}<br>桶排序<br>动图：</p>
+<p>BucketSort</p>
+<p>代码：</p>
+<p> public class BucketSort implements IArraySort {</p>
+<pre><code> private static final InsertSort insertSort = new InsertSort();
+
+ @Override
+ public int[] sort(int[] sourceArray) throws Exception {
+     // 对 arr 进行拷贝，不改变参数内容
+     int[] arr = Arrays.copyOf(sourceArray, sourceArray.length);
+
+    return bucketSort(arr, 5);
+}
+
+private int[] bucketSort(int[] arr, int bucketSize) throws Exception {
+    if (arr.length == 0) {
+        return arr;
+    }
+
+    int minValue = arr[0];
+    int maxValue = arr[0];
+    for (int value : arr) {
+        if (value &lt; minValue) {
+            minValue = value;
+        } else if (value &gt; maxValue) {
+            maxValue = value;
+        }
+    }
+
+    int bucketCount = (int) Math.floor((maxValue - minValue) / bucketSize) + 1;
+    int[][] buckets = new int[bucketCount][0];
+
+   // 利用映射函数将数据分配到各个桶中
+    for (int i = 0; i &lt; arr.length; i++) {
+        int index = (int) Math.floor((arr[i] - minValue) / bucketSize);
+        buckets[index] = arrAppend(buckets[index], arr[i]);
+    }
+
+    int arrIndex = 0;
+    for (int[] bucket : buckets) {
+        if (bucket.length &lt;= 0) {
+            continue;
+        }
+        // 对每个桶进行排序，这里使用了插入排序
+        bucket = insertSort.sort(bucket);
+        for (int value : bucket) {
+            arr[arrIndex++] = value;
+        }
+    }
+
+    return arr;
+}
+
+// 自动扩容，并保存数据
+private int[] arrAppend(int[] arr, int value) {
+    arr = Arrays.copyOf(arr, arr.length + 1);
+    arr[arr.length - 1] = value;
+    return arr;
+}</code></pre><p>}<br>计数排序<br>动图：</p>
+<p>CountingSort</p>
+<p>代码：</p>
+<p>public class CountingSort {</p>
+<p>  // 计数排序，a是数组，n是数组大小。假设数组中存储的都是非负整数。<br>  public static void countingSort(int[] a, int n) {<br>    if (n &lt;= 1) return;</p>
+<pre><code>// 查找数组中数据的范围
+int max = a[0];
+for (int i = 1; i &lt; n; ++i) {
+  if (max &lt; a[i]) {
+    max = a[i];
+  }
+}
+
+// 申请一个计数数组c，下标大小[0,max]
+int[] c = new int[max + 1];
+for (int i = 0; i &lt; max + 1; ++i) {
+  c[i] = 0;
+}
+
+// 计算每个元素的个数，放入c中
+for (int i = 0; i &lt; n; ++i) {
+  c[a[i]]++;
+}
+
+// 依次累加
+for (int i = 1; i &lt; max + 1; ++i) {
+  c[i] = c[i-1] + c[i];
+}
+
+// 临时数组r，存储排序之后的结果
+int[] r = new int[n];
+// 计算排序的关键步骤了，有点难理解
+for (int i = n - 1; i &gt;= 0; --i) {
+  int index = c[a[i]]-1;
+  r[index] = a[i];
+  c[a[i]]--;
+}
+
+// 将结果拷贝会a数组
+for (int i = 0; i &lt; n; ++i) {
+  a[i] = r[i];
+}</code></pre><p>  }</p>
+<p>}<br>基数排序<br>动图：</p>
+<p>Radix</p>
+<p>代码：</p>
+<p> public class RadixSort implements IArraySort {</p>
+<pre><code> @Override
+ public int[] sort(int[] sourceArray) throws Exception {
+     // 对 arr 进行拷贝，不改变参数内容
+     int[] arr = Arrays.copyOf(sourceArray, sourceArray.length);
+
+     int maxDigit = getMaxDigit(arr);
+    return radixSort(arr, maxDigit);
+}
+
+// 获取最高位数
+private int getMaxDigit(int[] arr) {
+    int maxValue = getMaxValue(arr);
+    return getNumLenght(maxValue);
+}
+
+private int getMaxValue(int[] arr) {
+    int maxValue = arr[0];
+    for (int value : arr) {
+        if (maxValue &lt; value) {
+            maxValue = value;
+        }
+    }
+    return maxValue;
+}</code></pre><p>   protected int getNumLenght(long num) {<br>        if (num == 0) {<br>            return 1;<br>        }<br>        int lenght = 0;<br>        for (long temp = num; temp != 0; temp /= 10) {<br>            lenght++;<br>        }<br>        return lenght;<br>    }</p>
+<pre><code>private int[] radixSort(int[] arr, int maxDigit) {
+    int mod = 10;
+    int dev = 1;
+
+    for (int i = 0; i &lt; maxDigit; i++, dev *= 10, mod *= 10) {
+        // 考虑负数的情况，这里扩展一倍队列数，其中 [0-9]对应负数，[10-19]对应正数 (bucket + 10)
+        int[][] counter = new int[mod * 2][0];
+
+        for (int j = 0; j &lt; arr.length; j++) {
+            int bucket = ((arr[j] % mod) / dev) + mod;
+            counter[bucket] = arrayAppend(counter[bucket], arr[j]);
+        }
+
+        int pos = 0;
+        for (int[] bucket : counter) {
+            for (int value : bucket) {
+                arr[pos++] = value;
+            }
+        }
+    }
+
+    return arr;
+}
+private int[] arrayAppend(int[] arr, int value) {
+    arr = Arrays.copyOf(arr, arr.length + 1);
+    arr[arr.length - 1] = value;
+    return arr;
+}</code></pre><p>}</p>
 
     </div>
 
@@ -360,7 +666,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-AAA"><span class="nav-text">1. AAA</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-算法分类"><span class="nav-text">1. 算法分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-算法总结"><span class="nav-text">2. 算法总结</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-算法实现"><span class="nav-text">3. 算法实现</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -460,12 +766,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">810k</span>
+    <span title="站点总字数">816k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">12:17</span>
+    <span title="站点阅读时长">12:22</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
