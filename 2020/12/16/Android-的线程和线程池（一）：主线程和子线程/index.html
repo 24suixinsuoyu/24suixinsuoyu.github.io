@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1. AAA">
+  <meta name="description" content="1. 线程概述">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android 的线程和线程池（一）：主线程和子线程">
 <meta property="og:url" content="http://24suixinsuoyu.com/2020/12/16/Android-%E7%9A%84%E7%BA%BF%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E4%B8%BB%E7%BA%BF%E7%A8%8B%E5%92%8C%E5%AD%90%E7%BA%BF%E7%A8%8B/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
-<meta property="og:description" content="1. AAA">
+<meta property="og:description" content="1. 线程概述">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-16T13:47:06.000Z">
-<meta property="article:modified_time" content="2020-12-25T11:44:20.608Z">
+<meta property="article:modified_time" content="2020-12-29T03:32:54.384Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Android 的线程和线程池">
 <meta property="article:tag" content="主线程和子线程">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-25 19:44:20" itemprop="dateModified" datetime="2020-12-25T19:44:20+08:00">2020-12-25</time>
+                <time title="修改时间：2020-12-29 11:32:54" itemprop="dateModified" datetime="2020-12-29T11:32:54+08:00">2020-12-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,7 +233,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5</span>
+              <span>248</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -252,35 +252,22 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-AAA"><a href="#1-AAA" class="headerlink" title="1. AAA"></a>1. AAA</h4><a id="more"></a>
+        <h4 id="1-线程概述"><a href="#1-线程概述" class="headerlink" title="1. 线程概述"></a>1. 线程概述</h4><a id="more"></a>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<ul>
+<li><p>主线程是指进程所拥有的线程，在 Java 中默认情况下一个进程只有一个线程，这个线程就是主线程</p>
+<ul>
+<li>主线程主要处理界面交互相关的逻辑，要求有较高的响应速度不能执行太耗时任务</li>
+<li>Android 中主线程也叫 <strong>UI 线程</strong>，作用是运行四大组件以及处理它们和用户的交互</li>
+</ul>
+</li>
+<li><p>子线程也叫工作线程，除了主线程以外的线程都是子线程 </p>
+<ul>
+<li>子线程作用是执行耗时任务，比如网络请求、IO 操作等</li>
+<li>从 <strong>Android 3.0</strong> 开始系统要求为避免 ANR 网络访问必须在子线程中进行，否则会抛出 <code>NetworkOnMainThreadException</code> 异常</li>
+</ul>
+</li>
+</ul>
 
     </div>
 
@@ -394,7 +381,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-AAA"><span class="nav-text">1. AAA</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-线程概述"><span class="nav-text">1. 线程概述</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
