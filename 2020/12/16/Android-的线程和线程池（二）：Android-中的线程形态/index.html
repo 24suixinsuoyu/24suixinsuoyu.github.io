@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. AsyncTask 概述">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-16T13:48:31.000Z">
-<meta property="article:modified_time" content="2020-12-30T15:06:45.903Z">
+<meta property="article:modified_time" content="2020-12-30T15:10:57.638Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Android 的线程和线程池">
 <meta property="article:tag" content="Android 中的线程形态">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-30 23:06:45" itemprop="dateModified" datetime="2020-12-30T23:06:45+08:00">2020-12-30</time>
+                <time title="修改时间：2020-12-30 23:10:57" itemprop="dateModified" datetime="2020-12-30T23:10:57+08:00">2020-12-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -306,8 +306,7 @@
 <li><p>AsyncTask 在具体的使用过程中的<strong>条件限制</strong></p>
 <ul>
 <li><strong>AsyncTask 的类必须在主线程中加载</strong>，即第一次访问 AsyncTask 必须发生在主线程，这个过程在 <strong>Android 4.1</strong> 及以上版本中已经被系统自动完成。在 Android 5.0 的源码中 ，可以查看 <strong>ActivityThread 的 <code>main()</code> 方法，它会调用 AsyncTask 的 <code>init()</code> 方法</strong>，这就满足了 AsyncTask 的类必须在主线程中进行加载这个条件</li>
-<li>AsyncTask 的对象必须在<strong>主线程</strong>中创建</li>
-<li>execute() 方法必须在<strong>主线程</strong>中调用</li>
+<li>AsyncTask 的对象必须在<strong>主线程</strong>中创建；<code>execute()</code> 方法必须在<strong>主线程</strong>中调用</li>
 <li><strong>不要在程序中直接调用</strong> <code>onPreExecute()</code>、<code>onPostExecute()</code>、<code>doInBackground()</code> 和 <code>onProgressUpdate()</code> 方法</li>
 <li>一个 AsyncTask 对象只能执行一次，即<strong>只能调用一次 execute() 方法</strong>，否则会报运行时异常</li>
 <li>在 Android 1.6 之前，AsyncTask 是串行执行任务的，Android 1.6 时 AsyncTask 开始采用线程池处理并行任务。但从 Android 3.0 开始，为了避免 AsyncTask 带来的并发错误，AsyncTask 又采用了一个线程来<strong>串行</strong>执行任务。尽管如此，在 Android 3.0 及后续的版本，我们仍然可以通过 AsyncTask 的 <strong><code>executeOnExecutor()</code></strong> 方法来<strong>并行</strong>执行任务</li>
