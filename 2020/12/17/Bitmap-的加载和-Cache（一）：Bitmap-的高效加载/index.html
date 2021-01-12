@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. Bitmap 概念概述">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-17T13:04:10.000Z">
-<meta property="article:modified_time" content="2021-01-12T12:38:52.370Z">
+<meta property="article:modified_time" content="2021-01-12T12:49:17.193Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Bitmap 的加载和 Cache">
 <meta property="article:tag" content="Bitmap 的高效加载">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-01-12 20:38:52" itemprop="dateModified" datetime="2021-01-12T20:38:52+08:00">2021-01-12</time>
+                <time title="修改时间：2021-01-12 20:49:17" itemprop="dateModified" datetime="2021-01-12T20:49:17+08:00">2021-01-12</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -240,7 +240,7 @@
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>9 分钟</span>
+              <span>10 分钟</span>
             </span>
 
         </div>
@@ -320,7 +320,7 @@
 <h4 id="4-高效加载大型位图策略"><a href="#4-高效加载大型位图策略" class="headerlink" title="4. 高效加载大型位图策略"></a>4. 高效加载大型位图策略</h4><ol>
 <li><p><strong>读取位图尺寸和类型</strong></p>
 <ul>
-<li><p><strong>BitmapFactory</strong> 类提供了几种用于从各种来源创建 Bitmap 的解码方法：<code>decodeByteArray()</code>、<code>decodeFile()</code>、<code>decodeResource()</code> 等，根据图片数据源选择最合适的解码方法</p>
+<li><p><strong>BitmapFactory</strong> 类提供了几种用于从各种来源创建 Bitmap 的解码方法：<code>decodeByteArray()</code>、<code>decodeFile()</code>、<code>decodeResource()</code>、<code>decodeResourceStream()</code>、<code>decodeStream()</code>、<code>decodeFileDescriptor()</code> 等，根据图片数据源选择最合适的解码方法</p>
 </li>
 <li><p>这些方法尝试为构造的位图分配内存，因此很容易导致 <strong>OutOfMemory</strong> 异常。每种类型的解码方法都有额外的签名，允许通过 <strong>BitmapFactory.Options</strong> 类指定解码选项</p>
 </li>
