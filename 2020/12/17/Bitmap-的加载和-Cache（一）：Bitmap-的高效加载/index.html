@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. Bitmap 概念概述">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-17T13:04:10.000Z">
-<meta property="article:modified_time" content="2021-01-12T12:12:30.023Z">
+<meta property="article:modified_time" content="2021-01-12T12:38:52.370Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Bitmap 的加载和 Cache">
 <meta property="article:tag" content="Bitmap 的高效加载">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-01-12 20:12:30" itemprop="dateModified" datetime="2021-01-12T20:12:30+08:00">2021-01-12</time>
+                <time title="修改时间：2021-01-12 20:38:52" itemprop="dateModified" datetime="2021-01-12T20:38:52+08:00">2021-01-12</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,14 +233,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>9k</span>
+              <span>10k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>8 分钟</span>
+              <span>9 分钟</span>
             </span>
 
         </div>
@@ -343,37 +343,27 @@
 <li>当前设备的<strong>屏幕</strong>大小和密度</li>
 </ul>
 </li>
-<li><p><strong>要让解码器对图片进行下采样，以将较小版本加载到内存中，应在 BitmapFactory.Options 对象中将 inSampleSize 设置为 true</strong></p>
+<li><p>要让解码器对图片进行<strong>下采样</strong>，以将较小版本加载到内存中，应在 BitmapFactory.Options 对象中将 inSampleSize 设置为 true</p>
 <ul>
 <li>例如，分辨率为 2048*1536 且以 4 作为 inSampleSize 进行解码的图片会生成大约 512<em>384 的位图。将此图片加载到内存中需使用 0.75 MB，而不是完整图片所需的 12 MB（假设位图配置为 *</em>ARGB_8888**）</li>
 </ul>
 </li>
-<li><p>下面的方法用于计算<strong>下采样率值</strong>，即基于目标宽度和高度的 2 的幂</p>
-  <figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> calculateInSampleSize(BitmapFactory.<span class="keyword">Options</span> <span class="keyword">options</span>, <span class="keyword">int</span> reqWidth, <span class="keyword">int</span> reqHeight) &#123;</span><br><span class="line">	<span class="comment">// Raw height</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li><p>下面的方法用于计算<strong>下采样率值</strong>，即基于目标宽度和高度的 2 的幂：</p>
+  <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">calculateInSampleSize</span><span class="params">(BitmapFactory.Options options, <span class="keyword">int</span> reqWidth, <span class="keyword">int</span> reqHeight)</span> </span>&#123;</span><br><span class="line">	<span class="comment">// Raw height and width of image</span></span><br><span class="line">	<span class="keyword">final</span> <span class="keyword">int</span> <span class="built_in">height</span> = options.outHeight;</span><br><span class="line">	<span class="keyword">final</span> <span class="keyword">int</span> <span class="built_in">width</span> = options.outWidth;</span><br><span class="line">	<span class="keyword">int</span> inSampleSize = <span class="number">1</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">height</span> &gt; reqHeight || <span class="built_in">width</span> &gt; reqWidth) &#123;</span><br><span class="line">		<span class="keyword">final</span> <span class="keyword">int</span> halfHeight = <span class="built_in">height</span> / <span class="number">2</span>;</span><br><span class="line">		<span class="keyword">final</span> <span class="keyword">int</span> halfWidth = <span class="built_in">height</span> / <span class="number">2</span>;</span><br><span class="line">		</span><br><span class="line">		<span class="comment">// Calculate the largest inSampleSize value that is a power of 2 and keeps both</span></span><br><span class="line">		<span class="comment">// height and width larger than the requested height and width.</span></span><br><span class="line">		<span class="keyword">while</span> ((halfHeight / inSampleSize) &gt;= reqHeight &amp;&amp; (halfWidth / inSampleSize) &gt;= reqWidth) &#123;</span><br><span class="line">			inSampleSize *= <span class="number">2</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> inSampleSize;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<ul>
+<li>根据 <strong>inSampleSize</strong> 文档，计算 2 的幂的原因是解码器使用的最终值将向下舍入为最接近的 2 的幂</li>
+</ul>
+</li>
+<li><p>要使用方法 <code>calculateInSampleSize()</code>，需要先将 <strong>inJustDecodeBounds</strong> 设为 true 进行解码，传递 <strong>BitmapFactory.Options</strong> 参数，然后使用新的 <strong>inSampleSize</strong> 并将 <strong>inJustDecodeBounds</strong> 设为 false 再次进行解码：</p>
+  <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public static Bitmap decode<span class="constructor">SampledBitmapFromResource(Resource <span class="params">res</span>, <span class="params">int</span> <span class="params">resId</span>, <span class="params">int</span> <span class="params">reqWidth</span>, <span class="params">int</span> <span class="params">reqHeight</span>)</span> &#123;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 1. First decode with inJustDecodeBounds = true to check dimentions</span></span><br><span class="line">	final BitmapFactory.Options options = <span class="keyword">new</span> BitmapFactory.<span class="constructor">Options()</span>;</span><br><span class="line">	options.inJustDecodeBounds = <span class="literal">true</span>;</span><br><span class="line">	<span class="module-access"><span class="module"><span class="identifier">BitmapFactory</span>.</span></span>decode<span class="constructor">Resource(<span class="params">res</span>, <span class="params">resId</span>, <span class="params">options</span>)</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 2. Calculate inSampleSize</span></span><br><span class="line">	options.inSampleSize = calculate<span class="constructor">InSampleSize(<span class="params">options</span>, <span class="params">reqWidth</span>, <span class="params">reqHeight</span>)</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 3. Decode bitmap with inSampleSzie set</span></span><br><span class="line">	options.inJustDecodeBounds = <span class="literal">false</span>;</span><br><span class="line">	return <span class="module-access"><span class="module"><span class="identifier">BitmapFactory</span>.</span></span>decode<span class="constructor">Resource(<span class="params">res</span>, <span class="params">resId</span>, <span class="params">options</span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>采用上面方法，可以轻松地将任意大尺寸的位图加载到显示 100*100 像素缩略图的 ImageView 中，如下 Demo:</p>
+  <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">imageView.set<span class="constructor">ImageBitmap(<span class="params">decodeSampledBitmapFromResource</span>(<span class="params">getResource</span>()</span>, <span class="module-access"><span class="module"><span class="identifier">R</span>.</span></span>id.myimage, <span class="number">100</span>, <span class="number">100</span>));</span><br></pre></td></tr></table></figure>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<ul>
+<li>可以按照类似的流程来解码其他来源的位图，只需根据需要替换相应的 <code>BitmapFactory.decode*()</code> 方法即可 </li>
+</ul>
 </li>
 </ul>
 </li>
@@ -591,12 +581,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">880k</span>
+    <span title="站点总字数">882k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">13:20</span>
+    <span title="站点阅读时长">13:22</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
