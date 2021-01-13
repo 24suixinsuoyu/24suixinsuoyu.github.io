@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1. AAA">
+  <meta name="description" content="1. 内存缓存概述">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Bitmap 的加载和 Cache（二）：Android 中的缓存策略">
 <meta property="og:url" content="http://24suixinsuoyu.com/2020/12/17/Bitmap-%E7%9A%84%E5%8A%A0%E8%BD%BD%E5%92%8C-Cache%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9AAndroid-%E4%B8%AD%E7%9A%84%E7%BC%93%E5%AD%98%E7%AD%96%E7%95%A5/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
-<meta property="og:description" content="1. AAA">
+<meta property="og:description" content="1. 内存缓存概述">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-17T13:04:34.000Z">
-<meta property="article:modified_time" content="2021-01-12T12:40:26.005Z">
+<meta property="article:modified_time" content="2021-01-13T15:26:18.574Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Bitmap 的加载和 Cache">
 <meta property="article:tag" content="Android 中的缓存策略">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-01-12 20:40:26" itemprop="dateModified" datetime="2021-01-12T20:40:26+08:00">2021-01-12</time>
+                <time title="修改时间：2021-01-13 23:26:18" itemprop="dateModified" datetime="2021-01-13T23:26:18+08:00">2021-01-13</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,7 +233,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5</span>
+              <span>768</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -252,31 +252,30 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-AAA"><a href="#1-AAA" class="headerlink" title="1. AAA"></a>1. AAA</h4><a id="more"></a>
+        <h4 id="1-内存缓存概述"><a href="#1-内存缓存概述" class="headerlink" title="1. 内存缓存概述"></a>1. 内存缓存概述</h4><a id="more"></a>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<ul>
+<li><p>内存缓存可以提供对位图的<strong>快速访问</strong>，但代价是会占用宝贵的<strong>应用内存</strong></p>
+</li>
+<li><p><strong>LruCache 是 Android 3.1 提供的一个线程安全的泛型类</strong>（<strong>support-v4</strong> 库中也提供了该类，最低可支持 API 4，建议使用这个版本的 LruCache），非常适合用于：<strong>缓存位图</strong></p>
+</li>
+<li><p>LruCache 缓存位图的原理是其内部<strong>采用一个 LinkedHashMap 以强引用的方式存储外界的缓存对象</strong>，并提供了 <code>get()</code> 和 <code>put()</code> 方法来完成缓存的获取和添加操作，并且在缓存超出其指定大小之前移除<strong>最近最少使用</strong>的对象，然后再添加新的对象</p>
+<ul>
+<li>过去，最常用的内存缓存实现是 <strong>SoftReference</strong> 或 <strong>WeakReference</strong> 位图缓存，但现在已<strong>不建议</strong>使用。从 Android 2.3（API 级别 9）开始，<strong>垃圾回收器</strong>会更积极地回收软引用/弱引用，导致它们效果不佳</li>
+<li>此外，在 <strong>Android 3.0</strong>（API 11）之前，位图的缓存数据存储在<strong>原生内存</strong>中，该内存不会以可预测的方式释放，因此可能导致引用短暂超出其内存限制并崩溃</li>
+</ul>
+</li>
+<li><p>要为 LruCache 选择合适的<strong>缓存容量大小</strong>，需要考虑多种因素：</p>
+<ul>
+<li>Activity 和/或应用的其余部分对内存的占用情况如何</li>
+<li>一次会在屏幕上显示多少张图片，有多少张图片需要准备好随时可以显示在屏幕上</li>
+<li>设备的屏幕尺寸和密度是多少，相比于 Nexus S(hdpi) 这样的设备，超高密度屏幕（xhdpi）设备（如 Galaxy Nexus）需要更大的缓存才能在内存中保存相同数量的图片</li>
+<li>位图的尺寸和配置如何，每个位图会占用多少内存</li>
+<li>图片的访问频率是多少，是否有一些图片的访问频率会高于其他图片，如果是这样，可能需要将某些项始终保留在内存中，甚至为不同的位图组创建多个 LruCache 对象</li>
+<li>能否在质量和数量之间取得平衡，有时存储更多低质量的位图会更有用，这样做可能需要在另一个后台任务中加载更高质量的位图</li>
+</ul>
+</li>
+</ul>
 
     </div>
 
@@ -390,7 +389,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-AAA"><span class="nav-text">1. AAA</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-内存缓存概述"><span class="nav-text">1. 内存缓存概述</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -490,12 +489,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">887k</span>
+    <span title="站点总字数">888k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">13:26</span>
+    <span title="站点阅读时长">13:27</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
