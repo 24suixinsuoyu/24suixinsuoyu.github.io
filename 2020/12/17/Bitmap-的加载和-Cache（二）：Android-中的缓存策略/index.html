@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. 内存缓存概述">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-17T13:04:34.000Z">
-<meta property="article:modified_time" content="2021-01-14T12:15:02.116Z">
+<meta property="article:modified_time" content="2021-01-14T15:55:55.056Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Bitmap 的加载和 Cache">
 <meta property="article:tag" content="Android 中的缓存策略">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-01-14 20:15:02" itemprop="dateModified" datetime="2021-01-14T20:15:02+08:00">2021-01-14</time>
+                <time title="修改时间：2021-01-14 23:55:55" itemprop="dateModified" datetime="2021-01-14T23:55:55+08:00">2021-01-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,7 +233,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>8.8k</span>
+              <span>9.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -296,7 +296,40 @@
 </li>
 </ul>
 <h4 id="2-磁盘缓存概述"><a href="#2-磁盘缓存概述" class="headerlink" title="2. 磁盘缓存概述"></a>2. 磁盘缓存概述</h4><ul>
-<li></li>
+<li><p>内存缓存有助于加快对最近查看过的位图的访问，但开发中<strong>不能依赖</strong>此缓存中保留的图片</p>
+<ul>
+<li><strong>GridView</strong> 这样拥有较大数据集的组件很容易将内存缓存填满</li>
+<li>应用可能被其他任务（如<strong>电话</strong>）中断，而在后台时，应用可能会被终止，而内存缓存则会销毁</li>
+<li>用户恢复操作后，应用必须<strong>重新处理</strong>每张图片</li>
+</ul>
+</li>
+<li><p>在上述情况下，可以使用<strong>磁盘缓存</strong>来保存经过处理的位图，并在图片已不在内存缓存中时帮助减少加载时间。当然，从磁盘获取图片比从内存中加载缓慢，而且应该在<strong>后台线程</strong>中完成，因为磁盘读取时间不可预测</p>
+<ul>
+<li>如果对缓存图片的访问频率较高（例如在图库应用中），则可能更适合将其存储在 <strong>ContentProvider</strong> 中</li>
+</ul>
+</li>
+<li><p>Demo: 在现有的<strong>内存缓存</strong>之外又添加了一个<strong>磁盘缓存</strong></p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">	</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</li>
 </ul>
 
     </div>
@@ -511,7 +544,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">898k</span>
+    <span title="站点总字数">899k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
