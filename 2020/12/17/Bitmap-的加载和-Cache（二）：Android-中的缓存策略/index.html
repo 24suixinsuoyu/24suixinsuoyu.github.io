@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. 内存缓存概述">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-17T13:04:34.000Z">
-<meta property="article:modified_time" content="2021-01-13T15:26:18.574Z">
+<meta property="article:modified_time" content="2021-01-14T03:56:53.738Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Bitmap 的加载和 Cache">
 <meta property="article:tag" content="Android 中的缓存策略">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-01-13 23:26:18" itemprop="dateModified" datetime="2021-01-13T23:26:18+08:00">2021-01-13</time>
+                <time title="修改时间：2021-01-14 11:56:53" itemprop="dateModified" datetime="2021-01-14T11:56:53+08:00">2021-01-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,14 +233,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>768</span>
+              <span>2.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -275,6 +275,25 @@
 <li>能否在质量和数量之间取得平衡，有时存储更多低质量的位图会更有用，这样做可能需要在另一个后台任务中加载更高质量的位图</li>
 </ul>
 </li>
+<li><p>没有适合所有应用的特定大小或公式，应该自行分析使用情况并找到适合的解决方案。<strong>缓存过小</strong>会产生额外的开销且没有任何好处，<strong>缓存过大</strong>又会造成 <code>java.lang.OutOfMemory</code> 异常并让应用的其余部分没有多少内存可用</p>
+</li>
+<li><p>为位图<strong>设置 LruCache</strong> 的 Demo:</p>
+  <figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> LruCache&lt;<span class="keyword">String</span>, Bitmap&gt; memoryCache;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line"><span class="keyword">protected</span> <span class="keyword">void</span> onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">	...</span><br><span class="line">	<span class="comment">// Get max available VM memory, exceeding this amount will throw an</span></span><br><span class="line">	<span class="comment">// OutOfMemory exception. Stored in kilobytes as LruCache takes an</span></span><br><span class="line">	<span class="comment">// int in its constructor.</span></span><br><span class="line">	<span class="keyword">final</span> <span class="built_in">int</span> maxMemory = (<span class="built_in">int</span>) (Runtime.getRuntime().maxMemory() / <span class="number">1024</span>);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// Use 1/8th of the available memory for this memory cache.</span></span><br><span class="line">	<span class="keyword">final</span> <span class="built_in">int</span> cacheSize = maxMemory / <span class="number">8</span>;</span><br><span class="line">	</span><br><span class="line">	memoryCache = <span class="keyword">new</span> LruCache&lt;<span class="keyword">String</span>, Bitmap&gt;(cacheSize) &#123;</span><br><span class="line">		@Override</span><br><span class="line">		<span class="keyword">protected</span> <span class="built_in">int</span> sizeOf(<span class="keyword">String</span> <span class="built_in">key</span>, Bitmap bitmap) &#123;</span><br><span class="line">			<span class="comment">// The cache size will be measured in kilobytes rather than</span></span><br><span class="line">			<span class="comment">// number of items.</span></span><br><span class="line">			<span class="keyword">return</span> bitmap.getByteCount() / <span class="number">1024</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> addBitmapToMemoryCache(<span class="keyword">String</span> <span class="built_in">key</span>, Bitmap bitmap) &#123;</span><br><span class="line">	<span class="keyword">if</span> (getBitmapFromMemCache(<span class="built_in">key</span>) == <span class="keyword">null</span>) &#123;</span><br><span class="line">		memoryCache.put(<span class="built_in">key</span>, bitmap);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> Bitmap getBitmapFromMemCache(<span class="keyword">String</span> <span class="built_in">key</span>) &#123;</span><br><span class="line">	<span class="keyword">return</span> memoryCache.<span class="built_in">get</span>(<span class="built_in">key</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在上面 Demo 中，将 <strong>1/8</strong> 的应用内存分配给了缓存。在普通 /hdpi 设备上，此内存最少为 4MB（32/8）左右。在分辨率为 800*480 的设备上，填充了图片的全屏 GridView 大约会占用 1.5MB（800*480*4 字节）的内存，这会在内存中缓存至少 <strong>2.5</strong> 页的图片</li>
+</ul>
+</li>
+<li><p>将位图<strong>加载到 ImageView</strong> 时，首先会检查 LruCache。如果找到条目，则会立即使用该条目来更新 ImageView，否则会生成一个后台线程来处理图片：</p>
+  <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public void load<span class="constructor">Bitmap(<span class="params">int</span> <span class="params">resId</span>, ImageView <span class="params">imageView</span>)</span> &#123;</span><br><span class="line">	final String imageKey = <span class="module-access"><span class="module"><span class="identifier">String</span>.</span></span>value<span class="constructor">Of(<span class="params">resId</span>)</span>;</span><br><span class="line">	</span><br><span class="line">	final Bitmap bitmap = get<span class="constructor">BitmapFromMemCache(<span class="params">imageKey</span>)</span>;</span><br><span class="line">	<span class="keyword">if</span> (bitmap != null) &#123;</span><br><span class="line">		mImageView.set<span class="constructor">ImageBitmap(<span class="params">bitmap</span>)</span>;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		mImageView.set<span class="constructor">ImageResource(R.<span class="params">drawable</span>.<span class="params">image_placeholder</span>)</span>;</span><br><span class="line">		BitmapWorkerTask task = <span class="keyword">new</span> <span class="constructor">BitmapWorkerTask(<span class="params">mImageView</span>)</span>;</span><br><span class="line">		task.execute(resId);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>此外，需要<strong>更新 BitmapWorkerTask</strong> 才能将条目添加到内存缓存：</p>
+  <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="symbol">BitmapWorkerTask</span> <span class="symbol">extends</span> <span class="symbol">AsyncTask</span>&lt;<span class="symbol">Integer, <span class="symbol">Void</span>, <span class="symbol">Bitmap</span></span>&gt; &#123;</span><br><span class="line">	...</span><br><span class="line">	<span class="comment">// Decode image in background.</span></span><br><span class="line">	@Override</span><br><span class="line">	<span class="keyword">protected</span> Bitmap doInBackground(Integer... params) &#123;</span><br><span class="line">		<span class="keyword">final</span> Bitmap bitmap = decodeSampledBitmapFromResource(getResource(), params[<span class="number">0</span>], <span class="number">100</span>, <span class="number">100</span>);</span><br><span class="line">		addBitmapToMemoryCache(String.valueOf(params[<span class="number">0</span>]), bitmap);</span><br><span class="line">		<span class="keyword">return</span> bitmap;</span><br><span class="line">	&#125;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="2-磁盘缓存概述"><a href="#2-磁盘缓存概述" class="headerlink" title="2. 磁盘缓存概述"></a>2. 磁盘缓存概述</h4><ul>
+<li></li>
 </ul>
 
     </div>
@@ -389,7 +408,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-内存缓存概述"><span class="nav-text">1. 内存缓存概述</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-内存缓存概述"><span class="nav-text">1. 内存缓存概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-磁盘缓存概述"><span class="nav-text">2. 磁盘缓存概述</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -489,12 +508,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">888k</span>
+    <span title="站点总字数">890k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">13:27</span>
+    <span title="站点阅读时长">13:29</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
