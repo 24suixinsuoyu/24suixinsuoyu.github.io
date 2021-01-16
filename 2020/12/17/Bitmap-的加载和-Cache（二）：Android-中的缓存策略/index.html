@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. 内存缓存概述">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-17T13:04:34.000Z">
-<meta property="article:modified_time" content="2021-01-14T15:55:55.056Z">
+<meta property="article:modified_time" content="2021-01-16T09:41:18.710Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Bitmap 的加载和 Cache">
 <meta property="article:tag" content="Android 中的缓存策略">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-01-14 23:55:55" itemprop="dateModified" datetime="2021-01-14T23:55:55+08:00">2021-01-14</time>
+                <time title="修改时间：2021-01-16 17:41:18" itemprop="dateModified" datetime="2021-01-16T17:41:18+08:00">2021-01-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,14 +233,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>9.1k</span>
+              <span>12k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>8 分钟</span>
+              <span>11 分钟</span>
             </span>
 
         </div>
@@ -308,30 +308,21 @@
 <li>如果对缓存图片的访问频率较高（例如在图库应用中），则可能更适合将其存储在 <strong>ContentProvider</strong> 中</li>
 </ul>
 </li>
-<li><p>Demo: 在现有的<strong>内存缓存</strong>之外又添加了一个<strong>磁盘缓存</strong></p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">	</span><br></pre></td></tr></table></figure>
+<li><p>Demo: 使用了从 <a href="https://android.googlesource.com/platform/libcore/+/jb-mr2-release/luni/src/main/java/libcore/io/DiskLruCache.java" target="_blank" rel="noopener">Android 源码</a>中提取的 <strong>DiskLruCache</strong> 实现，在现有的<strong>内存缓存</strong>之外又添加了一个<strong>磁盘缓存</strong></p>
+  <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> DiskLruCache diskLruCache;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Object diskCacheLock = <span class="keyword">new</span> Object();</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">boolean</span> diskCacheStarting = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DISK_CACHE_SIZE = <span class="number">1024</span> * <span class="number">1024</span> * <span class="number">10</span>; <span class="comment">// 10MB</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">String</span> DISK_CACHE_SUBDIR = <span class="string">"thumbnails"</span>;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">	...</span><br><span class="line">	<span class="comment">// Initialize memory cache</span></span><br><span class="line">	...</span><br><span class="line">	<span class="comment">// Initialize disk cache on background thread</span></span><br><span class="line">	<span class="built_in">File</span> cacheDir = getDiskCacheDir(<span class="keyword">this</span>, DISK_CACHE_SUBDIR);</span><br><span class="line">	<span class="keyword">new</span> InitDiskCacheTask().execute(cacheDie);</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">InitDiskCacheTask</span> <span class="title">extends</span> <span class="title">AsyncTask</span>&lt;File, Void, Void&gt; &#123;</span></span><br><span class="line">	@Override</span><br><span class="line">	<span class="function"><span class="keyword">protected</span> Void <span class="title">doInBackground</span><span class="params">(<span class="built_in">File</span>... params)</span> </span>&#123;</span><br><span class="line">		synchronized (diskCacheLock) &#123;</span><br><span class="line">			<span class="built_in">File</span> cacheDie = params[<span class="number">0</span>];</span><br><span class="line">			diskLruCache = DiskLruCache.<span class="built_in">open</span>(cacheDir, DISK_CACHE_SIZE);</span><br><span class="line">			diskCacheStarting = <span class="literal">false</span>; <span class="comment">// Finishing initialization</span></span><br><span class="line">			diskCacheLock.notifyAll(); <span class="comment">// Wake any waiting threads</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> null;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BitmapWorkerTask</span> <span class="title">extends</span> <span class="title">AsyncTask</span>&lt;Integer, Void, Bitmap&gt; &#123;</span></span><br><span class="line">	...</span><br><span class="line">	<span class="comment">// Decode image in background.</span></span><br><span class="line">	@Override</span><br><span class="line">	<span class="function"><span class="keyword">protected</span> Bitmap <span class="title">doInBackground</span><span class="params">(Integer... params)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">final</span> <span class="keyword">String</span> imageKey = <span class="keyword">String</span>.valueOf(params[<span class="number">0</span>]);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">// Check disk cache in background thread</span></span><br><span class="line">		Bitmap bitmap = getBitmapFromDiskCache(imageKey);</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span> (bitmap == null) &#123; <span class="comment">// Not found in disk cache</span></span><br><span class="line">			<span class="comment">// Process as normal</span></span><br><span class="line">			<span class="keyword">final</span> Bitmap bitmap = decodeSampledBitmapFromResource(getResources(), params[<span class="number">0</span>], <span class="number">100</span>, <span class="number">100</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="comment">// Add final bitmap to caches</span></span><br><span class="line">		addBitmapToCache(imageKey, bitmap);</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">return</span> bitmap;</span><br><span class="line">	&#125;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addBitmapToCache</span><span class="params">(<span class="keyword">String</span> key, Bitmap bitmap)</span> </span>&#123;</span><br><span class="line">	<span class="comment">// Add to memory cache as before</span></span><br><span class="line">	<span class="keyword">if</span> (getBitmapFromMemCache(key) == null) &#123;</span><br><span class="line">		memoryCache.<span class="built_in">put</span>(key, bitmap);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// Also add to disk cache</span></span><br><span class="line">	synchronized (diskCacheLock) &#123;</span><br><span class="line">		<span class="keyword">if</span> (diskLruCache != null &amp;&amp; diskLruCache.<span class="built_in">get</span>(key) == null) &#123;</span><br><span class="line">			diskLruCache.<span class="built_in">put</span>(key, bitmap);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> Bitmap <span class="title">getBitmapFromDiskCache</span><span class="params">(<span class="keyword">String</span> key)</span> </span>&#123;</span><br><span class="line">	synchronized (diskCacheLock) &#123;</span><br><span class="line">		<span class="comment">// Wait while disk cache is started from background thread</span></span><br><span class="line">		<span class="keyword">while</span> (diskCacheStarting) &#123;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				diskCacheLock.wait();</span><br><span class="line">			&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (diskLruCache != null) &#123;</span><br><span class="line">			<span class="keyword">return</span> diskLruCache.<span class="built_in">get</span>(key);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> null;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Creates a unique subdirectory of the designed app cache directory. Tries to use external</span></span><br><span class="line"><span class="comment">// but if not mounted, falls back on internal storage.</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">File</span> <span class="title">getDiskCacheDir</span><span class="params">(Context context, <span class="keyword">String</span> uniqueName)</span> </span>&#123;</span><br><span class="line">	<span class="comment">// Check if media is mounted or storage is built-in, if so, try and use external cache dir</span></span><br><span class="line">	<span class="comment">// otherwise use internal cache dir</span></span><br><span class="line">	<span class="keyword">final</span> <span class="keyword">String</span> cachePath =</span><br><span class="line">		Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) ||</span><br><span class="line">			!isExternalStorageRemovable() ? getExternalCacheDir(context).getPath() :</span><br><span class="line">				context.getCacheDir().getPath();</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">File</span>(cachePath + <span class="built_in">File</span>.separator + uniqueName);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<ul>
+<li>DiskLruCache 并不能通过构造方法来创建，它提供了 <strong><code>open()</code></strong> 方法来创建自身，内部实现上也用到了 <strong>LinkedHashMap</strong></li>
+<li>需要注意的是，即使是<strong>初始化磁盘缓存也需要执行磁盘操作</strong>，因此不应在主线程上执行。不过，这也意味着可能会在初始化之前访问该缓存。为了解决这个问题，上述实现利用了一个 lock 对象来确保应用在磁盘缓存初始化之前不会从该缓存中读取数据</li>
+<li>虽然内存缓存是在 UI 线程中检查，但磁盘缓存会在后台线程中检查。<strong>UI 线程上不应执行磁盘操作</strong>。图片处理完毕后，系统会将最终的位图同时添加到<strong>内存缓存</strong>和<strong>磁盘缓存</strong>中以供将来使用</li>
+</ul>
+</li>
+<li><p>DiskLruCache 源码</p>
+  <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="markdown">/**</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span>Copyright (C) 2011 The Android Open Source Project</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span></span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span>bla bla bla</span></span></span><br><span class="line"><span class="comment"><span class="markdown"> */</span></span></span><br><span class="line"></span><br><span class="line">package libcore.io;</span><br><span class="line"></span><br><span class="line"><span class="comment">// import bla bla bla</span></span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="markdown">/**</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span>d</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span>d</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span>d</span></span></span><br><span class="line"><span class="comment"><span class="markdown"> */</span></span></span><br><span class="line">public <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">DiskLruCache</span> <span class="keyword">implements</span> <span class="title">Closeable</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	<span class="comment"><span class="markdown">/**</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>d</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet">	 * </span>d</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="code">	 */</span></span></span></span><br><span class="line">	public <span class="keyword">static</span> DiskLruCache() &#123;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
-
+<h4 id="3-处理配置更改概述"><a href="#3-处理配置更改概述" class="headerlink" title="3. 处理配置更改概述"></a>3. 处理配置更改概述</h4>
     </div>
 
     
@@ -444,7 +435,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-内存缓存概述"><span class="nav-text">1. 内存缓存概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-磁盘缓存概述"><span class="nav-text">2. 磁盘缓存概述</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-内存缓存概述"><span class="nav-text">1. 内存缓存概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-磁盘缓存概述"><span class="nav-text">2. 磁盘缓存概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-处理配置更改概述"><span class="nav-text">3. 处理配置更改概述</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -544,12 +535,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">899k</span>
+    <span title="站点总字数">902k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">13:37</span>
+    <span title="站点阅读时长">13:40</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
