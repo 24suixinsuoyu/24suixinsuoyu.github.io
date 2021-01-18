@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. 内存缓存概述">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-17T13:04:34.000Z">
-<meta property="article:modified_time" content="2021-01-17T15:41:00.208Z">
+<meta property="article:modified_time" content="2021-01-18T09:15:23.575Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Bitmap 的加载和 Cache">
 <meta property="article:tag" content="Android 中的缓存策略">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-01-17 23:41:00" itemprop="dateModified" datetime="2021-01-17T23:41:00+08:00">2021-01-17</time>
+                <time title="修改时间：2021-01-18 17:15:23" itemprop="dateModified" datetime="2021-01-18T17:15:23+08:00">2021-01-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,14 +233,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>18k</span>
+              <span>22k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>17 分钟</span>
+              <span>20 分钟</span>
             </span>
 
         </div>
@@ -322,7 +322,7 @@
 
 </li>
 </ul>
-<h4 id="3-处理配置更改概述"><a href="#3-处理配置更改概述" class="headerlink" title="3. 处理配置更改概述"></a>3. 处理配置更改概述</h4><ul>
+<h4 id="3-处理配置变更概述"><a href="#3-处理配置变更概述" class="headerlink" title="3. 处理配置变更概述"></a>3. 处理配置变更概述</h4><ul>
 <li><p>运行时<strong>配置变更</strong>（例如屏幕方向更改）会导致 Android 销毁并使用新的配置重新启动正在运行的 Activity。需要避免重新处理所有图片，以便用户在配置发生变更时能够获得快速流畅的体验</p>
 </li>
 <li><p>通过构建 一个实用的<strong>位图内存缓存</strong>，可以使用通过调用 <strong><code>setRetainInstance(true)</code></strong> 保留的 Fragment 将该缓存传递给新的 Activity 实例</p>
@@ -330,69 +330,59 @@
 <li><p>重新创建 <strong>Activity</strong> 后，系统会重新附加这个保留的 <strong>Fragment</strong>，并且将可以访问现有的缓存对象，从而能够快速获取图片并将其重新填充到 ImageView 对象中</p>
 </li>
 <li><p>Demo: 使用 Fragment 在配置变更是保留 LruCache 对象</p>
-  <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> LruCache&lt;<span class="keyword">String</span>, Bitmap&gt; memoryCache;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstance)</span> </span>&#123;</span><br><span class="line">	...</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> LruCache&lt;String, Bitmap&gt; memoryCache;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstance)</span> </span>&#123;</span><br><span class="line">	...</span><br><span class="line">	RetainFragment retainFragment =</span><br><span class="line">		RetainFragment.findOrCreateRetainFragment(getFragmentManager());</span><br><span class="line">	memoryCache = retainFragment.retainedCache;</span><br><span class="line">	<span class="keyword">if</span> (memoryCache == <span class="keyword">null</span>) &#123;</span><br><span class="line">		memoryCache = <span class="keyword">new</span> LruCache&lt;String, Bitmap&gt;(cacheSzie) &#123;</span><br><span class="line">			... <span class="comment">// Initialize cache here as usual</span></span><br><span class="line">		&#125;</span><br><span class="line">		retainFragment.retainedCode = memoryCache;</span><br><span class="line">	&#125;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RetainFragment</span> <span class="keyword">extends</span> <span class="title">Fragment</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">"RetainFragment"</span>;</span><br><span class="line">	<span class="keyword">public</span> LruCache&lt;String, Bitmap&gt; retainedCache;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">RetainFragment</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> RetainFragment <span class="title">findOrCreateRetainFragment</span><span class="params">(FragmentManager fm)</span> </span>&#123;</span><br><span class="line">		RetainFragment fragment = (RetainFragment) fm.findFragmentByTag(TAG);</span><br><span class="line">		<span class="keyword">if</span> (fragment == <span class="keyword">null</span>) &#123;</span><br><span class="line">			fragment = <span class="keyword">new</span> RetainFragment();</span><br><span class="line">			fm.beginTransaction().add(fragment, TAG).commit();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> fragment;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">		setRetainInstance(<span class="keyword">true</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<ul>
+<li>对上面 Demo 进行测试的话，可以尝试在保留和不保留 Fragment 的情况下旋转设备。在保留缓存的情况下，几乎会看不到延迟，因为图片会立即从内存填充到 Activity 中</li>
+<li>在内存缓存中找不到的图片有可能在磁盘缓存中，如果不在，系统会照常处理它们</li>
+</ul>
 </li>
 </ul>
+<h4 id="4-优化管理位图内存概述"><a href="#4-优化管理位图内存概述" class="headerlink" title="4. 优化管理位图内存概述"></a>4. 优化管理位图内存概述</h4><ul>
+<li><p>Android 位图内存管理的<strong>演变过程</strong></p>
+<ul>
+<li>在 <strong>Android 2.2</strong>（API 8）及更低版本上，当发生垃圾回收时，应用的线程会停止，这会导致延迟，从而降低性能。<strong>Android 2.3</strong> 添加了并发垃圾回收功能，这意味着系统不再引用位图后，很快就会回收内存</li>
+<li>在 <strong>Android 2.3.3</strong>（API 10）及更低版本上，位图的备份像素数据存储在本地内存中。它与存储在 Dalvik 堆中的位图本身是分开的。本地内存中的像素数据并不以可预测的方式释放，可能会导致应用短暂超出其内存限制并崩溃。<strong>从 Android 3.0（API 11）到 Android 7.1（API 25）</strong>，像素数据会与关联的位图一起存储在 Dalvik 堆中。在 <strong>Android 8.0（API 26）</strong>及更高版本中，位图像素数据存储在原生堆中</li>
+</ul>
+</li>
+<li><p>在 <strong>Android 2.3.3</strong> 及更低版本上管理内存</p>
+<ul>
+<li><p>在 Android 2.3.3（API 10）及更低版本上，建议使用 <strong><code>recycle()</code></strong> 方法，应用可以尽快回收内存，因为当应用中显示大量位图数据时可能会遇到 <code>OutOfMemoryError</code> 异常</p>
+</li>
+<li><p>只有当确定位图<strong>不再使用</strong>时才应该使用 <code>recycle()</code> 方法，如果在调用 <code>recycle()</code> 方法之后尝试绘制位图，则会收到错误：<code>Canvas: trying to use a recycled bitmap</code></p>
+</li>
+<li><p>Demo: <code>recycle()</code> 方法使用示例</p>
+  <figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> cacheRefCount = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> displayRefCount = <span class="number">0</span>;</span><br><span class="line">...</span><br><span class="line"><span class="comment">// Notify the drawable that the displayed state has changed.</span></span><br><span class="line"><span class="comment">// Keep a count to determine when the drawable is no longer displayed.</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">setIsDisplayed</span><span class="params">(<span class="keyword">boolean</span> isDisplayed)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span> (isDisplayed) &#123;</span><br><span class="line">			displayRefCount++;</span><br><span class="line">			hasBeenDisplayed = <span class="keyword">true</span>;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			displayRefCount--;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// Check to see if recycle() can be called.</span></span><br><span class="line">	checkState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Notify the drawable that the cache state has changed.</span></span><br><span class="line"><span class="comment">// Keep a count to determine when the drawable is no longer being cached.</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">setIsCached</span><span class="params">(<span class="keyword">boolean</span> isCached)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span> (isCached) &#123;</span><br><span class="line">			cacheRefCount++;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			cacheRefCount--;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// Check to see if recycle() can be called.</span></span><br><span class="line">	checkState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">synchronized</span> <span class="function"><span class="keyword">void</span> <span class="title">checkState</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="comment">// If the drawable cache and display ref counts = 0, and this drawable</span></span><br><span class="line">	<span class="comment">// has been displayed, then recycle.</span></span><br><span class="line">	<span class="keyword">if</span> (cacheRefCount &lt;= <span class="number">0</span> &amp;&amp; displayRefCount &lt;= <span class="number">0</span> &amp;&amp; hasBeenDisplayed</span><br><span class="line">		&amp;&amp; hasValidBitmap()) &#123;</span><br><span class="line">		getBitmap().recycle();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">synchronized</span> <span class="function"><span class="keyword">boolean</span> <span class="title">hasValidBitmap</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	Bitmap bitmap = getBitmap();</span><br><span class="line">	<span class="keyword">return</span> bitmap != <span class="keyword">null</span> &amp;&amp; !bitmap.isRecycled();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<ul>
+<li>使用<strong>引用计数</strong>（在变量 <code>mDisplayRefCount</code> 和 <code>mCacheRefCount</code> 中）来跟踪位图当前是显示状态还是缓存状态。当满足以下条件时，代码便会回收位图：<ul>
+<li><code>mDisplayRefCount</code> 和 <code>mCacheRefCount</code> 的引用计数均为 0</li>
+<li>位图不是 null，并且尚未被回收</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>在 <strong>Android 3.0</strong> 及更高版本上管理内存</p>
+<ul>
+<li><p><strong><code>BitmapFactory.Options.inBitmap</code></strong> 字段</p>
+<ul>
+<li><strong>Android 3.0</strong>（API 11）引入了 <code>BitmapFactory.Options.inBitmap</code> 字段。如果设置了此选项，那么<strong>采用 Options 对象的解码方法会在加载内容时尝试重复使用现有位图</strong>。这意味着位图的内存得到了重复使用，从而提高了性能，同时移除了内存分配和取消分配</li>
+<li>但是，<strong><code>inBitmap</code></strong> 的使用方式存在某些限制，特别是在 <strong>Android 4.4</strong>（API 19）之前，系统仅支持大小相同的位图，详情可参阅 <a href="https://developer.android.com/reference/android/graphics/BitmapFactory.Options?hl=zh-cn#inBitmap" target="_blank" rel="noopener">inBitmap 文档</a></li>
+</ul>
+</li>
+<li><p>保存位图供稍后使用</p>
+  <figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Set</span>&lt;SoftReference&lt;Bitmap&gt; reusableBitmaps;</span><br><span class="line"><span class="keyword">private</span> LruCache&lt;<span class="keyword">String</span>, BitmapDrawable&gt; memoryCache;</span><br><span class="line"></span><br><span class="line"><span class="comment">//</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>当应用在 <strong>Android 3.0</strong> 或更高版本上运行并且位图从 <strong>LruCache</strong> 删除时，对位图的<strong>软引用</strong>会放置在 <strong>HashSet</strong> 中，以供稍后通过 <strong>inBitmap</strong> 重复使用</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>* 使用现有位图</code></pre>
     </div>
 
     
@@ -505,7 +495,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-内存缓存概述"><span class="nav-text">1. 内存缓存概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-磁盘缓存概述"><span class="nav-text">2. 磁盘缓存概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-处理配置更改概述"><span class="nav-text">3. 处理配置更改概述</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-内存缓存概述"><span class="nav-text">1. 内存缓存概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-磁盘缓存概述"><span class="nav-text">2. 磁盘缓存概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-处理配置变更概述"><span class="nav-text">3. 处理配置变更概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-优化管理位图内存概述"><span class="nav-text">4. 优化管理位图内存概述</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -605,12 +595,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">908k</span>
+    <span title="站点总字数">911k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">13:45</span>
+    <span title="站点阅读时长">13:48</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
