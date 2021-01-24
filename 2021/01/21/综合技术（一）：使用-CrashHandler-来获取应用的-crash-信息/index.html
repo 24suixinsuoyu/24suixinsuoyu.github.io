@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1. AAA">
+  <meta name="description" content="1. Android 系统处理 crash 问题的方法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="综合技术（一）：使用 CrashHandler 来获取应用的 crash 信息">
 <meta property="og:url" content="http://24suixinsuoyu.com/2021/01/21/%E7%BB%BC%E5%90%88%E6%8A%80%E6%9C%AF%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E4%BD%BF%E7%94%A8-CrashHandler-%E6%9D%A5%E8%8E%B7%E5%8F%96%E5%BA%94%E7%94%A8%E7%9A%84-crash-%E4%BF%A1%E6%81%AF/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
-<meta property="og:description" content="1. AAA">
+<meta property="og:description" content="1. Android 系统处理 crash 问题的方法">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-01-21T06:54:26.000Z">
-<meta property="article:modified_time" content="2021-01-21T07:00:28.394Z">
+<meta property="article:modified_time" content="2021-01-24T15:13:43.000Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="综合技术">
 <meta property="article:tag" content="使用 CrashHandler 来获取应用的 crash 信息">
@@ -207,10 +207,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-01-21 14:54:26 / 修改时间：15:00:28" itemprop="dateCreated datePublished" datetime="2021-01-21T14:54:26+08:00">2021-01-21</time>
+              <time title="创建时间：2021-01-21 14:54:26" itemprop="dateCreated datePublished" datetime="2021-01-21T14:54:26+08:00">2021-01-21</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-24 23:13:43" itemprop="dateModified" datetime="2021-01-24T23:13:43+08:00">2021-01-24</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -227,14 +233,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5</span>
+              <span>2.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -246,8 +252,54 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-AAA"><a href="#1-AAA" class="headerlink" title="1. AAA"></a>1. AAA</h4><a id="more"></a>
+        <h4 id="1-Android-系统处理-crash-问题的方法"><a href="#1-Android-系统处理-crash-问题的方法" class="headerlink" title="1. Android 系统处理 crash 问题的方法"></a>1. Android 系统处理 crash 问题的方法</h4><a id="more"></a>
 
+<ul>
+<li><p>Thread 类的方法 <strong><code>setDefaultUncaughtExceptionHandler()</code></strong>（新版本已不支持）:</p>
+  <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="markdown">/**</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span>Set </span>the<span class="markdown"> default handler invoked when </span>a<span class="markdown"> thread abruptly terminates</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span>due to </span>an<span class="markdown"> uncaught exception, and no other handler has been defined</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span>for that thread.</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span></span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span><span class="xml"><span class="tag">&lt;<span class="name">p</span>&gt;</span></span>Uncaught exception handling is controlled first by </span>the<span class="markdown"> thread, then</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span>by </span>the<span class="markdown"> thread's &#123;@link ThreadGroup&#125; object and finally by </span>the<span class="markdown"> default</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span>uncaught exception handler. If </span>the<span class="markdown"> thread does not have </span>an<span class="markdown"> explicit</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span>uncaught exception handler set, and </span>the<span class="markdown"> thread's thread group</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span>(including parent thread groups) does not specialize its</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span><span class="xml"><span class="tag">&lt;<span class="name">tt</span>&gt;</span></span>uncaughtException<span class="xml"><span class="tag">&lt;/<span class="name">tt</span>&gt;</span></span> method, then </span>the<span class="markdown"> default handler's</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span><span class="xml"><span class="tag">&lt;<span class="name">tt</span>&gt;</span></span>uncaughtException<span class="xml"><span class="tag">&lt;/<span class="name">tt</span>&gt;</span></span> method </span>will<span class="markdown"> be invoked.</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span><span class="xml"><span class="tag">&lt;<span class="name">p</span>&gt;</span></span>By setting </span>the<span class="markdown"> default uncaught exception handler, </span>an<span class="markdown"> application</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span>can change </span>the<span class="markdown"> way in which uncaught exceptions </span>are<span class="markdown"> handled (</span>such<span class="markdown"> as</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span>logging to </span>a<span class="markdown"> specific device, or file) for those threads that would</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span>already accept whatever &amp;quot;default&amp;quot; behavior </span>the<span class="markdown"> system</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span>provided.</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span></span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span><span class="xml"><span class="tag">&lt;<span class="name">p</span>&gt;</span></span>Note that </span>the<span class="markdown"> default uncaught exception handler </span>should<span class="markdown"> not usually</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span>defer to </span>the<span class="markdown"> thread's <span class="xml"><span class="tag">&lt;<span class="name">tt</span>&gt;</span></span>ThreadGroup<span class="xml"><span class="tag">&lt;/<span class="name">tt</span>&gt;</span></span> object, as that could cause</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span>infinite recursion.</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span></span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span>@param eh </span>the<span class="markdown"> object to use as </span>the<span class="markdown"> default uncaught exception handler.</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span>If <span class="xml"><span class="tag">&lt;<span class="name">tt</span>&gt;</span></span>null<span class="xml"><span class="tag">&lt;/<span class="name">tt</span>&gt;</span></span> then there is no default handler.</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span></span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span>@throws SecurityException if </span>a<span class="markdown"> security manager is present and it</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * 		</span>denies <span class="xml"><span class="tag">&lt;<span class="name">tt</span>&gt;</span></span>&#123;@link RuntimePermission&#125;</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * 	 	</span>(&amp;quot;setDefaultUncaughtExceptionHandler&amp;quot;)<span class="xml"><span class="tag">&lt;/<span class="name">tt</span>&gt;</span></span></span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span></span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span>@see #setUncaughtExceptionHandler</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span>@see #getUncaughtExceptionHandler</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span>@see ThreadGroup#uncaughtException</span></span></span><br><span class="line"><span class="comment"><span class="markdown"><span class="bullet"> * </span>@since 1.5</span></span></span><br><span class="line"><span class="comment"><span class="markdown"> */</span></span></span><br><span class="line">public <span class="keyword">static</span> <span class="keyword">void</span> setDefaultUncaughtExceptionHandler(UncaughtExceptionHandler eh) &#123;</span><br><span class="line">	<span class="comment">// Android-removed: SecurityManager stubbed out on Android</span></span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">	SecurityManager sm = System.getSecurityManager();</span></span><br><span class="line"><span class="comment">	if (sm != null) &#123;</span></span><br><span class="line"><span class="comment">		sm.checkPermission(</span></span><br><span class="line"><span class="comment">			new RuntimePermission("setDefaultUncaughtExceptionHandler");</span></span><br><span class="line"><span class="comment">		)</span></span><br><span class="line"><span class="comment">	&#125;</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line">	</span><br><span class="line">	defaultUncaughtExceptionHandler = eh;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>当 crash 发生的时候，系统就会回调 <strong>UncaughtExceptionHandler</strong> 的 <strong><code>uncaughtException()</code></strong> 方法，在该方法中就可以捕获并处理异常信息</li>
+</ul>
+</li>
+<li><p>Demo: 典型的异常处理器的实现</p>
+  <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CrashHandler</span> <span class="title">implements</span> <span class="title">UncaughtExceptionHandler</span> &#123;</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">String</span> TAG = <span class="string">"CrashHandler"</span>;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">boolean</span> DEBUG = <span class="literal">true</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">String</span> PATH = Environment.getExternal</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</li>
+</ul>
 
     </div>
 
@@ -361,7 +413,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-AAA"><span class="nav-text">1. AAA</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Android-系统处理-crash-问题的方法"><span class="nav-text">1. Android 系统处理 crash 问题的方法</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -461,12 +513,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">944k</span>
+    <span title="站点总字数">947k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">14:18</span>
+    <span title="站点阅读时长">14:21</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
