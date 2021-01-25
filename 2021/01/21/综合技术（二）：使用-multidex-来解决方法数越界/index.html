@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1. AAA">
+  <meta name="description" content="1. 65536 和 64 K 引用限制">
 <meta property="og:type" content="article">
 <meta property="og:title" content="综合技术（二）：使用 multidex 来解决方法数越界">
 <meta property="og:url" content="http://24suixinsuoyu.com/2021/01/21/%E7%BB%BC%E5%90%88%E6%8A%80%E6%9C%AF%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E4%BD%BF%E7%94%A8-multidex-%E6%9D%A5%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%E6%95%B0%E8%B6%8A%E7%95%8C/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
-<meta property="og:description" content="1. AAA">
+<meta property="og:description" content="1. 65536 和 64 K 引用限制">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-01-21T06:55:26.000Z">
-<meta property="article:modified_time" content="2021-01-21T07:01:45.283Z">
+<meta property="article:modified_time" content="2021-01-25T10:04:46.687Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="综合技术">
 <meta property="article:tag" content="使用 multidex 来解决方法数越界">
@@ -207,10 +207,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-01-21 14:55:26 / 修改时间：15:01:45" itemprop="dateCreated datePublished" datetime="2021-01-21T14:55:26+08:00">2021-01-21</time>
+              <time title="创建时间：2021-01-21 14:55:26" itemprop="dateCreated datePublished" datetime="2021-01-21T14:55:26+08:00">2021-01-21</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-25 18:04:46" itemprop="dateModified" datetime="2021-01-25T18:04:46+08:00">2021-01-25</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -227,14 +233,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5</span>
+              <span>2.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -246,9 +252,66 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-AAA"><a href="#1-AAA" class="headerlink" title="1. AAA"></a>1. AAA</h4><a id="more"></a>
+        <h4 id="1-65536-和-64-K-引用限制"><a href="#1-65536-和-64-K-引用限制" class="headerlink" title="1. 65536 和 64 K 引用限制"></a>1. 65536 和 64 K 引用限制</h4><a id="more"></a>
 
+<ul>
+<li><p>当应用及其引用的库包含的方法数超过 <strong>65536</strong> 时，构建报错：</p>
+  <figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 高版本</span></span><br><span class="line">trouble writing output:</span><br><span class="line">Too many field references: <span class="number">131000</span>; max <span class="keyword">is</span> <span class="number">65536</span>.</span><br><span class="line">You may <span class="keyword">try</span> <span class="keyword">using</span> --multi-dex option.</span><br><span class="line"></span><br><span class="line"><span class="comment">// 低版本</span></span><br><span class="line">Conversion <span class="keyword">to</span> Dalvik format failed:</span><br><span class="line">Unable <span class="keyword">to</span> execute dex: <span class="function"><span class="keyword">method</span> <span class="title">ID</span> <span class="title">not</span> <span class="title">in</span> [0, 0<span class="title">xffff</span>]:</span> <span class="number">65536</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Android 应用（APK）文件包含 <strong>Dalvik Executable(DEX)</strong> 文件形式的<strong>可执行字节码文件</strong>，这些文件包含用来运行应用的<strong>已编译代码</strong></p>
+</li>
+<li><p><strong>Dalvik Executable 规范将可在单个 DEX 文件内引用的方法总数限制为 65536</strong>，其中包括 <strong>Android Framework 方法</strong>、<strong>库方法</strong>以及<strong>应用程序中所有的方法</strong></p>
+</li>
+<li><p>在计算机领域，术语“千”表示 <strong>1024</strong>（即 2^10），由于 <strong>65536 = 64 * 1024</strong>，因此这一限制称为<strong>“64 K 引用限制”</strong></p>
+</li>
+</ul>
+<h4 id="2-针对-Multidex-配置应用"><a href="#2-针对-Multidex-配置应用" class="headerlink" title="2. 针对 Multidex 配置应用"></a>2. 针对 Multidex 配置应用</h4><ul>
+<li><p>Google 在 2014 年提出了 <strong>Multidex</strong> 的解决方案，通过 Multidex 可以很好地解决方法数越界的问题</p>
+</li>
+<li><p>如果 <strong>minSdkVersion 设为 21 或更高版本</strong>，系统会默认启用 Multidex，并且不需要 Multidex 库</p>
+<ul>
+<li>Android 5.0（API 级别 21）及更高版本使用名为 <strong>ART</strong> 的运行时环境，它本身支持从 APK 文件加载多个 DEX 文件</li>
+<li>ART 在应用安装时执行<strong>预编译</strong>，这会扫描查找 <strong>classesN.dex</strong> 文件，并将它们编译成单个 <strong>.oat</strong> 文件，以供 Android 设备执行</li>
+</ul>
+</li>
+<li><p>如果 <strong>minSdkVersion 设为 20 或更低版本</strong>，必须使用 Multidex 库并在代码中做相应配置</p>
+<ol>
+<li><p>gradle 文件配置：修改模块级 <strong>build.gradle</strong> 文件以启用 Multidex，并将 Multidex 库添加为<strong>依赖项</strong></p>
+ <figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">	defaultConfig &#123;</span><br><span class="line">		...</span><br><span class="line">		minSdkVersion <span class="number">15</span></span><br><span class="line">		targetSdkVersion <span class="number">28</span></span><br><span class="line">		<span class="comment">// enable multidex support</span></span><br><span class="line">		multiDexEnabled <span class="keyword">true</span></span><br><span class="line">	&#125;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">dependencies</span> &#123;</span><br><span class="line">	<span class="comment">// 老版本</span></span><br><span class="line">	<span class="keyword">compile</span> <span class="string">'com.android.support:multidex:1.0.0'</span></span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 新版本</span></span><br><span class="line">	implementation <span class="string">"androidx.multidex:multidex:2.0.1"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>代码中配置：执行以下三种之一即可</p>
+<ul>
+<li><p>修改 <strong>manifest</strong> 清单文件的 <code>&lt;application&gt;</code> 标签的 <code>android:name</code> 属性</p>
+  <figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;application</span><br><span class="line">	<span class="comment">// 老版本</span></span><br><span class="line">	android:<span class="built_in">name</span>=<span class="string">"android.support.multidex.MultiDexApplication"</span></span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 新版本</span></span><br><span class="line">	android:<span class="built_in">name</span>=<span class="string">"androidx.multidex.MultiDexApplication"</span> &gt;</span><br><span class="line">&lt;/application&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>让应用的 Application 继承 <strong>MultiDexApplication</strong></p>
+  <figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">MyApplication</span> <span class="keyword">extends</span> <span class="title">MultiDexApplication</span> </span>&#123;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重写 Application 的 <strong><code>attachBaseContext()</code></strong> 方法，并调用 <strong><code>MultiDex.install(this)</code></strong> 以启用 Multidex</p>
+  <figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">MyApplication</span> <span class="keyword">extends</span> <span class="title">SomeOtherApplication</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="keyword">protected</span> void attachBaseContext(<span class="type">Context</span> base) &#123;</span><br><span class="line">		<span class="keyword">super</span>.attachBaseContext(base);</span><br><span class="line">		<span class="type">Multidex</span>.install(<span class="keyword">this</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<ul>
+<li>在 Application 中，<strong><code>attachBaseContext()</code> 比 <code>onCreate()</code> 先执行</strong></li>
+<li>在 <code>MultiDex.install()</code> 完成之前，不要通过反射或 JNI 执行 <code>MultiDex.install()</code> 或其他任何代码。MultiDex 跟踪功能不会追溯这些调用，从而导致出现 <strong><code>ClassNotFoundException</code></strong>，或因 DEX 文件之间的类分区错误而导致<strong>验证错误</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>构建时，Android 构建工具会根据需要构造<strong>主 DEX 文件</strong>（classes.dex）和<strong>辅 DEX 文件</strong>（classes2.dex 和 classes3.dex 等）。然后构建系统会将所有 DEX 文件打包到 APK 中</p>
+</li>
+<li><p>运行时，MultiDex API 会使用<strong>特殊的类加载器</strong>搜索适用程序中方法的所有的 DEX 文件（而不是只在主 classes.dex 文件中搜索）</p>
+</li>
+</ol>
+</li>
+</ul>
+<h4 id="3-Multidex-的局限性"><a href="#3-Multidex-的局限性" class="headerlink" title="3. Multidex 的局限性"></a>3. Multidex 的局限性</h4><ul>
+<li>启动期间在设备的数据分区上安装 DEX 文件的过程相当复杂，如果辅 DEX 文件较大，可能会导致 <strong>ANR</strong>。为避免此问题，应<a href="https://developer.android.com/studio/build/shrink-code?hl=zh-cn" target="_blank" rel="noopener">启用代码缩减</a>以尽量减小 DEX 文件的大小，并移除未使用的代码部分</li>
+<li>当搭载的版本低于 Android 5.0（API 21）时，使用 Multidex 不足以避开 <strong>linearalloc 限制</strong>（<a href="https://issuetracker.google.com/issues/37008143" target="_blank" rel="noopener">问题 78035</a>）。此上限在 Android 4.0（API 14）中有所提高，但这并未完全解决该问题。在低于 Android 4.0 的版本中，可能会在达到 DEX 索引限制之前达到 linearalloc 限制。因此，如果 target API 低于 14，应该在这些版本的平台上进行全面测试，因为应用可能会在启动时或加载特定类组时出现问题。<a href="https://developer.android.com/studio/build/shrink-code?hl=zh-cn" target="_blank" rel="noopener">代码缩减</a>可以减少甚至有可能消除这些问题</li>
+</ul>
+<h4 id="4-声明主-DEX-文件中必需的类"><a href="#4-声明主-DEX-文件中必需的类" class="headerlink" title="4. 声明主 DEX 文件中必需的类"></a>4. 声明主 DEX 文件中必需的类</h4><ul>
+<li>如果主 DEX 文件中未提供启动期间需要的任何类（可能因为使用的库具有复杂的依赖项导致代码路径的可见性较低），则应用会崩溃并报错：<strong><code>java.lang.NoClassDefFoundError</code></strong></li>
+<li>为了避免该报错，可以使用 <strong>multiDexKeepFile</strong> 和 <strong>multiDexKeepProguard</strong> 属性声明这些其他类，以手动方式将这些类指定为主 DEX 文件中的必需类。如果在 multiDexKeepFile 或 multiDexKeepProguard 文件中匹配了某个类，则会将该类添加到主 DEX 文件中</li>
+</ul>
 
     </div>
 
@@ -362,7 +425,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-AAA"><span class="nav-text">1. AAA</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-65536-和-64-K-引用限制"><span class="nav-text">1. 65536 和 64 K 引用限制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-针对-Multidex-配置应用"><span class="nav-text">2. 针对 Multidex 配置应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Multidex-的局限性"><span class="nav-text">3. Multidex 的局限性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-声明主-DEX-文件中必需的类"><span class="nav-text">4. 声明主 DEX 文件中必需的类</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -462,12 +525,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">950k</span>
+    <span title="站点总字数">952k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">14:24</span>
+    <span title="站点阅读时长">14:26</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
