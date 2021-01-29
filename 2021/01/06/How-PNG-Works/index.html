@@ -33,8 +33,9 @@
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gmwhwnxondj303k03h0si.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gmwhypnv5pj30bl01lmx6.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gmwi4lvphbj30qm08hq3q.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gn4f11tki8j306308mdgb.jpg">
 <meta property="article:published_time" content="2021-01-06T15:06:57.000Z">
-<meta property="article:modified_time" content="2021-01-24T10:54:01.284Z">
+<meta property="article:modified_time" content="2021-01-29T04:02:54.120Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Technology">
 <meta property="article:tag" content="PNG">
@@ -220,7 +221,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-01-24 18:54:01" itemprop="dateModified" datetime="2021-01-24T18:54:01+08:00">2021-01-24</time>
+                <time title="修改时间：2021-01-29 12:02:54" itemprop="dateModified" datetime="2021-01-29T12:02:54+08:00">2021-01-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -238,14 +239,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.2k</span>
+              <span>4.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>4 分钟</span>
             </span>
 
         </div>
@@ -289,6 +290,16 @@
 <p>And, it’s important to note that these filters are done, per channel not per-pixel. Meaning that the filter is applied to all the  red values of a pixel for a scanliine, and then separately for all the blue values for a scanline(although all the colors in a row will use the same filter).</p>
 <p>And the PNG format has some nifty ways to pick which filter to use on a channel; While brute force is the most direct, it’s simply right out. Instead, the developers experimented on different image types and came up with some rules of thumb, that are close to optimal; like use None filters for palette images, and sub-8 bit grayscale images. And for the other images, choose the filter that minimizes the sum of absulute differences; Rather than using module-256, instead to standard signed math, then take the abs value, and add them all together for a given row, and compare the sums for the other filter types. Choose the filter that gives the smallest sum.</p>
 <h4 id="2-Compression-DEFATE"><a href="#2-Compression-DEFATE" class="headerlink" title="2. Compression(DEFATE)"></a>2. Compression(DEFATE)</h4><p>Once filtering has occurred on a scaon-line, it’s passed off to a descendant of the LZ77 algorithm, known as DEFLATE; This algorithm combines LZ77 coding alongside a Huffman coder. Which is almost identical to compressors like PKWARE, PKZIP, GZip etc. The implementation is out of the box standard, but has some interesting caveats when it comes to image data.</p>
+<ol>
+<li>Deflate limits match lengths between 3 and 258 symbols; which puts the maximum conceivable compression ratio around 1032:1.</li>
+<li>If the match is less than 3 symbols, then you incur some overhead to represent the symbol.</li>
+</ol>
+<p>The result of these two, means that the size of your image can have an impact in if matches are found in a scanline.</p>
+<p>Consider this image below, the 270*90 version is only 20K, however the 270*92 version is 2x larger.</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gn4f11tki8j306308mdgb.jpg" alt="more matches"></p>
+<p>What’s occurring here, is that in the smaller image, there’s more matches in the scanlines, and thus there’s better compression. However, adjusting the size, slightly, changes the type of matching that can occur; some potential candidates for matching are now outside of our LZ window, and thus aren’t matched, resulting in a larger file.</p>
+<p>If you’re looking to see how well your own images compressed with PNG, check out <a href="http://encode.ru/threads/1725-pngthermal-pseudo-thermal-view-of-PNG-compression-efficiency" target="_blank" rel="noopener">PNGThermal</a>.</p>
+<h3 id="Understanding-the-format"><a href="#Understanding-the-format" class="headerlink" title="Understanding the format"></a>Understanding the format</h3><p>Now, it’s worth noting that PNG is more than just the filtering &amp; compression stages. It’s a pretty extensible container format, that can suport all sorts of iamges types and added data.</p>
 
     </div>
 
@@ -402,7 +413,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Understanding-the-Compression"><span class="nav-text">Understanding the Compression</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Filtering-prediction"><span class="nav-text">1. Filtering(prediction)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Compression-DEFATE"><span class="nav-text">2. Compression(DEFATE)</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Understanding-the-Compression"><span class="nav-text">Understanding the Compression</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Filtering-prediction"><span class="nav-text">1. Filtering(prediction)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Compression-DEFATE"><span class="nav-text">2. Compression(DEFATE)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Understanding-the-format"><span class="nav-text">Understanding the format</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -502,12 +513,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">952k</span>
+    <span title="站点总字数">953k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">14:26</span>
+    <span title="站点阅读时长">14:27</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
