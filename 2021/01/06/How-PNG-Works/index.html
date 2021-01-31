@@ -34,8 +34,9 @@
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gmwhypnv5pj30bl01lmx6.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gmwi4lvphbj30qm08hq3q.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gn4f11tki8j306308mdgb.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gn6z7mylz1j30hc0b974d.jpg">
 <meta property="article:published_time" content="2021-01-06T15:06:57.000Z">
-<meta property="article:modified_time" content="2021-01-29T04:02:54.120Z">
+<meta property="article:modified_time" content="2021-01-31T09:12:59.917Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Technology">
 <meta property="article:tag" content="PNG">
@@ -221,7 +222,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-01-29 12:02:54" itemprop="dateModified" datetime="2021-01-29T12:02:54+08:00">2021-01-29</time>
+                <time title="修改时间：2021-01-31 17:12:59" itemprop="dateModified" datetime="2021-01-31T17:12:59+08:00">2021-01-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -239,14 +240,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.1k</span>
+              <span>7.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
+              <span>7 分钟</span>
             </span>
 
         </div>
@@ -300,6 +301,36 @@
 <p>What’s occurring here, is that in the smaller image, there’s more matches in the scanlines, and thus there’s better compression. However, adjusting the size, slightly, changes the type of matching that can occur; some potential candidates for matching are now outside of our LZ window, and thus aren’t matched, resulting in a larger file.</p>
 <p>If you’re looking to see how well your own images compressed with PNG, check out <a href="http://encode.ru/threads/1725-pngthermal-pseudo-thermal-view-of-PNG-compression-efficiency" target="_blank" rel="noopener">PNGThermal</a>.</p>
 <h3 id="Understanding-the-format"><a href="#Understanding-the-format" class="headerlink" title="Understanding the format"></a>Understanding the format</h3><p>Now, it’s worth noting that PNG is more than just the filtering &amp; compression stages. It’s a pretty extensible container format, that can suport all sorts of iamges types and added data.</p>
+<p>Let’s first start with the fact that the PNG file format can support a series of chunks inside of it which can include various types of data. For example, you’ve got the <strong>PNG Header chunk</strong> which contains simple information about the image like width, height, bit depth &amp; color-type.</p>
+<p>The <strong>Image data chunk</strong> contains the actual image information itself(oh, and note, this information can exist in multiple chunks). Then for color paletted images, there’s a separate chunk for that.</p>
+<p>And finally an <strong>end-of-file chunk</strong>. And those are the main chunks, but there’s also a whole slew of <a href="https://en.wikipedia.org/wiki/Portable_Network_Graphics#.22Chunks.22_within_the_file" target="_blank" rel="noopener">other chunks</a> like:</p>
+<ul>
+<li>Default background color</li>
+<li>Chroma coordinates on how to display white-points</li>
+<li>Gamma spec</li>
+<li>Histogram info</li>
+<li>Text data, with language or Metadata info</li>
+<li>Color space information</li>
+<li>Stereo-image data</li>
+<li>A chunk which notes the last time the file was changed</li>
+<li>And Transparency data.</li>
+</ul>
+<p>Now, these chunks are where you need to watch out, because losts of junk gets put in there by your photo editing app. For example, saving a PNG file from Photoshop results in a chunk that says “<em>this image was made in photoshop.</em>“ That chunk has nothing to do with the visible pixel data, but yet it’s included in the file itself. As such, REMOVING useless chunks is critical to ensuring small file sizes. The image below shows you a 16<em>16 pixel image, *</em>saved** from Photoshop as a regular PNG, and the other-one, using the “<strong>export to web</strong>“ option of photoshop, which removes all the gobbledygook.</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gn6z7mylz1j30hc0b974d.jpg" alt="gobbledygook"></p>
+<h3 id="Pixel-format"><a href="#Pixel-format" class="headerlink" title="Pixel format"></a>Pixel format</h3><p>The PNG format can ALSO support various types of pixel formats so you can create an optimal</p>
+<p>Indexed = 1 channel, can be 1, 2, 4, 8 bpc</p>
+<p>Grayscale = 1 channel, can be 1, 2, 4, 8, 16 bpc</p>
+<p>Grap + Alpha = 2 channel, can be 8 or 16 bpc</p>
+<p>Turecolor(RGB) = 3 channel, can be 8 or 16 bpc</p>
+<p>RGBA = 4 channel, can be 8 or 16 bpc</p>
+<p>Pixel formats are selected by the author of the image file. So it’s not too interesting to discuss, other than making sure you’ve chosen the right pixel format; Sorting a greyscale images as a truecolor w/ alpha, is a bad idea.</p>
+<h3 id="Stor-GIF-and-the-birth-of-PNG"><a href="#Stor-GIF-and-the-birth-of-PNG" class="headerlink" title="Stor: GIF and the birth of PNG"></a>Stor: GIF and the birth of <a href="http://www.libpng.org/pub/png/book/LCH-png-chapter.pdf" target="_blank" rel="noopener">PNG</a></h3><p>When it comes to the relentless bulk of web content, images are by far the largest load bearer today(although there’s an argument to be made that videos have become king as of late).</p>
+<p>But what’s truly interesting is that as much as compression information can help solve some of the congestion, there’s a massive amount of human problems that keep compression from making its way into everyone’s hands.</p>
+<p>Let’s take a trip back to 1985, when Unisys filed a patent for the LZQ compression algorithm, nothing too interesting at the time. A few years later, when CompuServe invented the 89a format(which later became the GIF format), they used LZW as its backbone, not realizing that it was a patented. Unisys didn’t care about this until 1993, when the Netscape browser added support for the IMG HTML tag, alongside with support for the 89a format. Within a year, animated images bacame all the craze on the internet, and Unisys started enforcing its patent. CompuServe and Unisys eventually reached a court agreement in December of 1994, announcing that Unisys would start collecting royalties from all software that used the 89a graphics format. In the months following this decision, a group of engineers developed an entirely new, patent-free format known as the Portable Network Graphics or PNG format.</p>
+<p>In 2004, the patent on LZW finally expired, but for a whole decade, the GIF/PNG image format debate was a hot one among internet folks.</p>
+<h3 id="In-closing"><a href="#In-closing" class="headerlink" title="In closing"></a>In closing</h3><p>PNG is a very flexible and powerful image format type that’s become popular on the web due to it’s ability tu support transparency. But it’s not right for <em>every</em> situation; Basically, make sure you’re using the best tool for the job. If your image is photographic and absolute losslessness is not required, then JPG or an equivalent  lossy method would be more efficient than any lossless approach. On the other hand If you need a smaller bit-format, or need transparency, than PNG would be a dominant win over JPG.</p>
+<p>And if you’re interested in seeing the most bare-bones inplementation of a PNG coder, check out this <a href="https://gist.github.com/mmalex/908299" target="_blank" rel="noopener">awesome gist</a>, which packs the whole thing into 40 lines of code.</p>
+<p>Of course, then there’s WebP, which will give you both. But that’s separate article.</p>
 
     </div>
 
@@ -413,7 +444,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Understanding-the-Compression"><span class="nav-text">Understanding the Compression</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Filtering-prediction"><span class="nav-text">1. Filtering(prediction)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Compression-DEFATE"><span class="nav-text">2. Compression(DEFATE)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Understanding-the-format"><span class="nav-text">Understanding the format</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Understanding-the-Compression"><span class="nav-text">Understanding the Compression</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Filtering-prediction"><span class="nav-text">1. Filtering(prediction)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Compression-DEFATE"><span class="nav-text">2. Compression(DEFATE)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Understanding-the-format"><span class="nav-text">Understanding the format</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pixel-format"><span class="nav-text">Pixel format</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Stor-GIF-and-the-birth-of-PNG"><span class="nav-text">Stor: GIF and the birth of PNG</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#In-closing"><span class="nav-text">In closing</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -513,12 +544,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">953k</span>
+    <span title="站点总字数">957k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">14:27</span>
+    <span title="站点阅读时长">14:30</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
