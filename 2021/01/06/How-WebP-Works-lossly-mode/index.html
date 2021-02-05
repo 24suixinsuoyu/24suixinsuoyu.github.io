@@ -22,19 +22,26 @@
     var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1. AAA">
+  <meta name="description" content="Colt McAnlis · May 27, 2016 · 5 min read">
 <meta property="og:type" content="article">
 <meta property="og:title" content="How WebP Works(lossly mode)">
 <meta property="og:url" content="http://24suixinsuoyu.com/2021/01/06/How-WebP-Works-lossly-mode/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
-<meta property="og:description" content="1. AAA">
+<meta property="og:description" content="Colt McAnlis · May 27, 2016 · 5 min read">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gncnlaq4cvj30pq04nmxv.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gncnr36vulj30hb0chwo3.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gncnupro51j307h055mxc.jpg">
+<meta property="og:image" content="https://miro.medium.com/max/1034/1*a7UAhJ0Eqwuu_QD6g5XFsA.png">
+<meta property="og:image" content="https://miro.medium.com/max/1248/1*6MFpikGkUsdRP3tMklKXQw.png">
+<meta property="og:image" content="https://miro.medium.com/max/988/1*DTFoHqQTNPtt-CPkioEZFg.png">
 <meta property="article:published_time" content="2021-01-06T15:08:05.000Z">
-<meta property="article:modified_time" content="2021-01-06T16:13:45.501Z">
+<meta property="article:modified_time" content="2021-02-05T09:16:28.900Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Technology">
 <meta property="article:tag" content="WebP">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gncnlaq4cvj30pq04nmxv.jpg">
 
 <link rel="canonical" href="http://24suixinsuoyu.com/2021/01/06/How-WebP-Works-lossly-mode/">
 
@@ -215,7 +222,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-01-07 00:13:45" itemprop="dateModified" datetime="2021-01-07T00:13:45+08:00">2021-01-07</time>
+                <time title="修改时间：2021-02-05 17:16:28" itemprop="dateModified" datetime="2021-02-05T17:16:28+08:00">2021-02-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,14 +240,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5</span>
+              <span>3.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>4 分钟</span>
             </span>
 
         </div>
@@ -252,9 +259,56 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-AAA"><a href="#1-AAA" class="headerlink" title="1. AAA"></a>1. AAA</h4><a id="more"></a>
+        <blockquote>
+<p>Colt McAnlis · May 27, 2016 · 5 min read</p>
+</blockquote>
+<a id="more"></a>
 
-
+<p>When it comes to image data on the internet, JPG has been a large standard for some time now. However in 2013, Google(and a set of other open source contributors) were able to create a new image codec algorithm, named WebP, which aimed to compress images smaller than JPG while keeping the same image quality.</p>
+<p>How good is it? I’ve seen WebP’s savings in the 24%-35%, depending on the size &amp; complexity of the image; which is pretty impressive, considering how much <a href="https://medium.freecodecamp.com/how-jpg-works-a4dbd2316f35#.2l56xw83s" target="_blank" rel="noopener">JPG is already getting</a> out of the file.</p>
+<p>For me, the file saving itself is worthy of swapping all my app’s JPGs to WebP. When you add in the fact that WebP is supported in the majority of web browsers, and natively on Android, I’d call it a <a href="https://www.youtube.com/watch?v=nvBevQXI2aQ" target="_blank" rel="noopener">“Slam Dunk”</a> for most applications.(but that’s my <a href="https://www.youtube.com/watch?v=1pkKMiDWwpM" target="_blank" rel="noopener">personal opinion</a>);</p>
+<p>To understand why WebP gets those savings over JPG, we have to take a look at how the codec itself works.</p>
+<h3 id="Where-does-WebP-Come-from"><a href="#Where-does-WebP-Come-from" class="headerlink" title="Where does WebP Come from?"></a>Where does WebP Come from?</h3><p>The WebP Image file format originates from the <a href="http://static.googleusercontent.com/external_content/untrusted_dlcp/research.google.com/en/us/pubs/archive/37073.pdf" target="_blank" rel="noopener">VP8 video codec</a>(you may better know it as <a href="http://www.webmproject.org/" target="_blank" rel="noopener">WebM</a>). One of the strong features of that the VP8 codec is the ability to do <a href="http://blog.webmproject.org/2010/07/inside-webm-technology-vp8-intra-and.html" target="_blank" rel="noopener">intra-frame compression</a>, or rather, each frame of the video is compressed, and then differences between subsequent frames are compressed.</p>
+<p>This is where WebP comes from: It’s a single compressed frame of a WebM file.</p>
+<p>Or, more accurately, the core of WebP comes from WebM. Since it’s release in 2011, there’s been a lot of changes &amp; updates specifically to the WebP file format that have stayed unique to it as a file type. Namely things like Alpha, Lossless mode, and in some oddly ironic twist, animation support.</p>
+<p>Yup, you read that right: WebP is an images format… derived from a video format… which <a href="https://developers.google.com/speed/webp/faq#why_should_i_use_animated_webp" target="_blank" rel="noopener">supports animation</a>.(Check out the <a href="https://storage.googleapis.com/downloads.webmproject.org/webp/images/dancing-banana.gif" target="_blank" rel="noopener">GIF version</a>, vs the <a href="https://storage.googleapis.com/downloads.webmproject.org/webp/images/dancing_banana2.webm" target="_blank" rel="noopener">WebM version</a>, vs the <a href="https://storage.googleapis.com/downloads.webmproject.org/webp/images/dancing_banana2.lossless.webp" target="_blank" rel="noopener">WebP version</a> of a dancing banana)</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gncnlaq4cvj30pq04nmxv.jpg" alt="banana"></p>
+<p>But we’re going to ignore all that extra fancy stuff for now, and just focus on understanding how the lossy mode of the format works.</p>
+<h3 id="Lossy-mode"><a href="#Lossy-mode" class="headerlink" title="Lossy mode"></a>Lossy mode</h3><p>The lossy version of WebP encoding is built to compete with JPG for a still image format. And as such, you’ll notice a number of striking similarities in the formats.</p>
+<h3 id="MacroBlocking"><a href="#MacroBlocking" class="headerlink" title="MacroBlocking"></a>MacroBlocking</h3><p>The first stage of the encoder is to split the image into “macro blocks”. Typical macro block consists of one 16 * 16 block of luma pixels, and two 8*8 block of chroma pixels. This stage is very similar to the JPEG of converting color space, downsampling the chroma channels, and subdividing the image.</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gncnr36vulj30hb0chwo3.jpg" alt="Macro"></p>
+<h3 id="Prediction"><a href="#Prediction" class="headerlink" title="Prediction"></a>Prediction</h3><p>Each 4*4 sub block of a macroblock then has a prediction model(aka <a href="https://en.wikipedia.org/wiki/Delta_encoding" target="_blank" rel="noopener">filtering</a>) applied to it. Filtering is very popular for PNG, which does the same thing per scan-line, however WebP applies filtering using a block method. This is done by defining two sets of pixels around a block: the row above it, A, and the column to the left of it, L.</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gncnupro51j307h055mxc.jpg" alt="Prediction"></p>
+<p>Using A and L, the encoder will fill in a test block of 4*4 pixels, and determine which one produces values closest to the original block. The different ways these blocks can be filled are called “Predictors”:</p>
+<ul>
+<li><p><strong>Horiz prediction</strong> - Each column of the block with a copy of the previous column</p>
+</li>
+<li><p><strong>Vertical Prediction</strong> - fills each row of the block with a copy of a previous row</p>
+</li>
+<li><p><strong>DC Prediction</strong> - fills block with a single value using the average of the pixels in the row above A and the column to the left of L</p>
+</li>
+<li><p><strong>True Motion</strong> prediction - a super advanced mode I’m not getting into right now.</p>
+</li>
+</ul>
+<p>It’s worth nothing, btw 4*4 luma has 6 additional modes, but you get the picture at this point;)</p>
+<p><img src="https://miro.medium.com/max/1034/1*a7UAhJ0Eqwuu_QD6g5XFsA.png" alt="Prediction"></p>
+<h3 id="JPGity-it"><a href="#JPGity-it" class="headerlink" title="JPGity it"></a>JPGity it</h3><p>The final stages of WebP encoding look very similar to our old <a href="https://medium.freecodecamp.com/how-jpg-works-a4dbd2316f35#.st8n7dcuh" target="_blank" rel="noopener">friend JPG</a></p>
+<ul>
+<li><p>A DCT filter is applied to the residual values for a block</p>
+</li>
+<li><p>The DCT basis matrix is then quantized</p>
+</li>
+<li><p>The quantized matrix is then re-ordered, and sent to a statistical compressor.</p>
+</li>
+</ul>
+<p><img src="https://miro.medium.com/max/1248/1*6MFpikGkUsdRP3tMklKXQw.png" alt="JPGity it"></p>
+<p>The two main differences being that:</p>
+<p>1) The input to the DCY stage isn’t the raw block data itself, but rather the output of the prediction phase</p>
+<p>2) The statistical compressor used for WebP is an <a href="https://www.youtube.com/watch?v=FdMoL3PzmSA&index=7&list=PLOU2XLYxmsIJGErt5rrCqaSGTMyyqNt2H" target="_blank" rel="noopener">Arithmetic Compressor</a>, which is similar to the <a href="https://youtu.be/6rnF2Mo80x0?t=16m3s" target="_blank" rel="noopener">Huffman encoder</a> that JPG uses.</p>
+<h3 id="The-result"><a href="#The-result" class="headerlink" title="The result"></a>The result</h3><p>The end result is that WebP feels like kinda like an advanced mode of JPG. The prediction phase seems to be the biggest win to reduce unique color coefficients further so that the rest of the pipeline can compress the image data more efficiently. You can check out the case study of <a href="https://developers.google.com/speed/webp/docs/webp_study" target="_blank" rel="noopener">WebP vs JPG yourself</a>, or trust that a lot of smart people who care about accuracy and graphs, made sure that the image below was a true representation of things.</p>
+<p><img src="https://miro.medium.com/max/988/1*DTFoHqQTNPtt-CPkioEZFg.png" alt="The result"></p>
+<h3 id="In-conclusion"><a href="#In-conclusion" class="headerlink" title="In conclusion"></a>In conclusion</h3><p>The addition of a predictor mode to the JPG process allows WebP to take data compression to a place that JPG simply can’t go, which is why it’s easy to see how WebP can get wins over it’s JPG based cousin.</p>
+<p>As mentioned, there’s a separate lossless webP mode, but that’s a topic for another post.</p>
 
     </div>
 
@@ -368,7 +422,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-AAA"><span class="nav-text">1. AAA</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Where-does-WebP-Come-from"><span class="nav-text">Where does WebP Come from?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lossy-mode"><span class="nav-text">Lossy mode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MacroBlocking"><span class="nav-text">MacroBlocking</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Prediction"><span class="nav-text">Prediction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JPGity-it"><span class="nav-text">JPGity it</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#The-result"><span class="nav-text">The result</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#In-conclusion"><span class="nav-text">In conclusion</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -468,12 +522,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">961k</span>
+    <span title="站点总字数">965k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">14:34</span>
+    <span title="站点阅读时长">14:37</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
