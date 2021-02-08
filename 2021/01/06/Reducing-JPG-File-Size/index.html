@@ -31,8 +31,15 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://miro.medium.com/max/4800/1*sRYE2_-ROxbzz1y1s4M9GQ.png">
 <meta property="og:image" content="https://miro.medium.com/max/1248/1*vZF5gbyfYtDskdRr1MTZXA.png">
+<meta property="og:image" content="https://miro.medium.com/max/1246/1*QCVqIL_ueQju40gyJGXodg.png">
+<meta property="og:image" content="https://miro.medium.com/max/1248/1*5yfAv-aFdneBAZywSUZ1Ag.png">
+<meta property="og:image" content="https://miro.medium.com/max/1246/1*kxVa2DEkM048to6UnUYCfA.png">
+<meta property="og:image" content="https://miro.medium.com/max/1400/1*VwKrI76p9IsLWhJmPQaD6Q.jpeg">
+<meta property="og:image" content="https://miro.medium.com/max/1400/1*BGquAMZw-oEEj5IH-xJEhw.jpeg">
+<meta property="og:image" content="https://miro.medium.com/max/1248/1*sv9wBkOKWzaFIUOEiAHLLQ.png">
+<meta property="og:image" content="https://miro.medium.com/max/1400/0*qFRye2GXhYIH4Vkv.">
 <meta property="article:published_time" content="2021-01-06T15:09:30.000Z">
-<meta property="article:modified_time" content="2021-02-07T13:28:07.288Z">
+<meta property="article:modified_time" content="2021-02-08T16:45:42.841Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Technology">
 <meta property="article:tag" content="JPG">
@@ -218,7 +225,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-02-07 21:28:07" itemprop="dateModified" datetime="2021-02-07T21:28:07+08:00">2021-02-07</time>
+                <time title="修改时间：2021-02-09 00:45:42" itemprop="dateModified" datetime="2021-02-09T00:45:42+08:00">2021-02-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -236,14 +243,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>972</span>
+              <span>9.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>9 分钟</span>
             </span>
 
         </div>
@@ -266,6 +273,71 @@
 <p>While <a href="https://medium.freecodecamp.com/how-jpg-works-a4dbd2316f35#.z4lekhosw" target="_blank" rel="noopener">JPG</a> in its’ own right, how you use it in your application can influence the size of these files significantly. As such I’ve assembled a handy collection of things that can help you squeeze out those last bits, and make a better experience for your users.</p>
 <h3 id="You-should-be-using-an-optimizer-tool"><a href="#You-should-be-using-an-optimizer-tool" class="headerlink" title="You should be using an optimizer tool"></a>You should be using an optimizer tool</h3><p>Once you start looking at <a href="https://medium.freecodecamp.com/how-jpg-works-a4dbd2316f35" target="_blank" rel="noopener">JPG compression methods</a>, and the <a href="https://en.wikipedia.org/wiki/JPEG" target="_blank" rel="noopener">file format</a>, you’ll start to realize that, much like <a href="https://medium.com/@duhroach/reducing-png-file-size-8473480d0476" target="_blank" rel="noopener">PNG files</a>, there’s plenty of room for improvement. For example, check out the file size difference when you save a JPG from photoshop, vs “exporting for web”:</p>
 <p><img src="https://miro.medium.com/max/1248/1*vZF5gbyfYtDskdRr1MTZXA.png" alt="optimizer tool"></p>
+<p>That’s around a 90% file size reduction, for a simple red square. See, much like PNG, JPG also supports some <a href="https://en.wikipedia.org/wiki/JPEG#Syntax_and_structure" target="_blank" rel="noopener">chunk data in the file format</a>, which means photo editors or cameras can <a href="http://dev.exiv2.org/projects/exiv2/wiki/The_Metadata_in_JPEG_files" target="_blank" rel="noopener">insert non picture information into the file</a>. This is why your photo sharing service knows the geolocation of the last <a href="https://www.instagram.com/bestfoodaustin/" target="_blank" rel="noopener">waffle you ate</a>, and what camera <a href="https://exposingtheinvisible.org/resources/obtaining-evidence/image-digging" target="_blank" rel="noopener">you took it with</a>. If your application doesn’t need this extra data, then removing if from the JPG files can yield a significant improvement.</p>
+<p>But it turns out there’s <a href="http://www.elektronik.htw-aalen.de/packjpg/_notes/PCS2007_PJPG_paper_final.pdf" target="_blank" rel="noopener">quite a bit</a> more you can do with the format.</p>
+<p>For starters, tools like <a href="http://www.jpegmini.com/" target="_blank" rel="noopener">JPEGMini</a> are geared towards finding lower quality(lossy) compression w/o disrupting the visual fidelity of your images too much. Which is similar to what the Mozilla folks have done with <a href="https://github.com/mozilla/mozjpeg/" target="_blank" rel="noopener">MOZJpeg</a>(Although they explicitly state that their project does break some compatibility).</p>
+<p>On the other hand, <a href="http://jpegclub.org/" target="_blank" rel="noopener">jpegTran/cjpeg</a> attempt to provide lossless improvements to size, while <a href="http://www.elektronik.htw-aalen.de/packjpg/" target="_blank" rel="noopener">packJPG</a> will repack JPG data into a much smaller form, although it’s a separate file format, and not JPG compatible any more(which is handy if you can do your own decode in the client).</p>
+<p>In addition to those, there’s a whole slew of web-based tools, but I haven’t found those to be any better than the ones listed(or rather, most of them just use the above tools behind the scenes…). And of course, <a href="http://www.imagemagick.org/script/index.php" target="_blank" rel="noopener">ImageMagick</a> has it’s own <a href="http://www.imagemagick.org/script/mogrify.php" target="_blank" rel="noopener">bag of tricks</a>.</p>
+<p>The end result is adopting these tools can often net you 15% and 24% reduction on file sizes, which is a nice improment for a small investment.</p>
+<p><strong>[UPDATE 3/26/2017]</strong> Google just released a new JPG compressor, <a href="https://github.com/google/guetzli" target="_blank" rel="noopener">Guetzli</a>, which can reduce files by an extra ~35% while still keeping the format compatible with standards. <a href="https://arxiv.org/abs/1703.04421" target="_blank" rel="noopener">Guetzli works much like it’s cousin</a>, <a href="https://github.com/google/zopfli" target="_blank" rel="noopener">Zopfli</a>, in that this size reduction comes at the cost of extra processing time during encoding.</p>
+<h3 id="Find-the-optimal-quality-value"><a href="#Find-the-optimal-quality-value" class="headerlink" title="Find the optimal quality value."></a>Find the optimal quality value.</h3><p>Let’s be clear about this: you should never ship JPGs @ 100 quality.</p>
+<p>The power of JPG comes from the fact that you can tune the quality vs file-size ratio with a scalar value. The trick, is finding out what the correct quality value is for your images. Given a random images, how do you determine the ideal setting?</p>
+<p>As the <a href="https://github.com/rflynn/imgmin" target="_blank" rel="noopener">imgmin</a> project points out, there’s generally only a small change in user-perceived quality for JPG compression between levels 75 and 100:</p>
+<blockquote>
+<p>For an average JPEG there is a very minor, mostly insignificant change in  apparent quality form 100-75, but a significant filesize difference for each step down. This means that many images look good to the casual viewer at quality 75, but are half as large than they would be at quality 95 As quality drops below 75 there are larger apparent visual changes and reduced saving in filesize.</p>
+</blockquote>
+<p>So, starting at a quality setting of 75 is an obvious initial state; but we’re missing a bigger problem here: We can’t expect people to fine-tune this value by hand.</p>
+<p>For large media application that upload and re-send millions of JPGs a day, you can’t expect that someone will hand-tune their values for each asset. As such, most  developers create buckets of quality settings, and compress their images according to that bucket.</p>
+<p>For example, thumbnails may have a quality setting of 35, since the smaller image hides more of the compression artifacts. And maybe full-screen profile photos get a different setting that previews of Music album covers, etc etc.</p>
+<p>And you can see this effect live and in the field: The <a href="https://github.com/rflynn/imgmin" target="_blank" rel="noopener">imgmin</a> project further goes to show that most large websites tend to oscillate their images around this quality=75 marks for almost all of their JPG images:</p>
+<p>Google Images thumbnails:74-76</p>
+<p>Facebook full-size images:85</p>
+<p>Yahoo frontpage JPGs:69-91</p>
+<p>YouTube frontpage JPGs:70-82</p>
+<p>Wikipedia images:80</p>
+<p>Windows live background:82</p>
+<p>Twitter user JPEG images:30-100</p>
+<p><strong>The issue here is that the values chosen aren’t ideal.</strong></p>
+<p>They are usually the result of a single quality value chosen in a vacuum and then applied to all images coming through the system. In reality, some images could be compressed further with negligent quality loss, while other images will be compressed too much and not look good; The quality value should changes, per-images, in order to find the ideal sweet spot.</p>
+<p><strong>What if</strong> there was a way to measure the visual degradation that compression has on an image?</p>
+<p><strong>What if</strong> you could test that value against the quality metric to find out if it’s a good level?</p>
+<p><strong>What if</strong> you could automate the above two, to run on your server?</p>
+<p>There <strong>is</strong>.</p>
+<p>Can <strong>do</strong>.</p>
+<p>Totally <strong>possible</strong>.</p>
+<p>This all starts with something known as the <a href="http://ieeexplore.ieee.org/xpl/login.jsp?tp=&arnumber=6530010&url=http%3A%2F%2Fieeexplore.ieee.org%2Fiel7%2F6523355%2F6529997%2F06530010.pdf%3Farnumber%3D6530010" target="_blank" rel="noopener">Psychovisual Error Threshold</a>, which basically denotes how much degradation can be inserted into an image before the human eye starts to notice it.</p>
+<p>There’s a few measurements of this, notably the <a href="https://en.wikipedia.org/wiki/Peak_signal-to-noise_ratio" target="_blank" rel="noopener">PSNR</a> and <a href="https://en.wikipedia.org/wiki/Structural_similarity" target="_blank" rel="noopener">SSIM</a> metrics. Each has their own nuances with respect to evaluation measurement, which is why I rather prefer the new <a href="http://goo.gl/1ehQOi" target="_blank" rel="noopener">Butteraugli</a> project. After testing it on a corpus of images, I found that the metric is a lot more understandable to me in terms of visual quality.</p>
+<p>To do this, you write a simple script to:</p>
+<ul>
+<li>Save a JPG file at various quality values</li>
+<li>Use <a href="">Butteraugli</a> to test for the <a href="">Psychovisual Error Threshold</a></li>
+<li>Stop once the output value is &gt; 1.1</li>
+<li>And save the final image using that quality value</li>
+</ul>
+<p>The result is the smallest JPG file possible that doesn’t impact the PET more than significantly noticeable. For the image below, the difference is 170k in saving, but visually it looks the same.</p>
+<p><img src="https://miro.medium.com/max/1246/1*QCVqIL_ueQju40gyJGXodg.png" alt="PET"></p>
+<p>Of course, you could go even further than this. Maybe your goal is to allow a lot more visual loss in order to conserve bandwidth. You could easily continue on with this, but there’s madness there. As of right now, the <a href="">Butteraugli</a> denotes that any result &gt; 1.1 is deemed “bad looking” and doesn’t try to define what any of that looks like, from a numerical authority. So you could run the script to stop once visual quality hits 2.0(see the image below) but at that point, it’s unclear what the visual scalar is that you’re testing against.</p>
+<p><img src="https://miro.medium.com/max/1248/1*5yfAv-aFdneBAZywSUZ1Ag.png" alt="PET"></p>
+<h3 id="Blurring-Chroma"><a href="#Blurring-Chroma" class="headerlink" title="Blurring Chroma"></a>Blurring Chroma</h3><p>One of the reasons that JPG is so powerful, is that expects there to be little visual variance in an 8*8 block. Directly, the human eye is more attuned to visual changes in the Luminosity channel of the <a href="">YCbCr</a> image. As such, if you can reduce the amount of variation in chroma across your 8*8 blocks, you’ll end up producing less visual artifacts, and better compression. The simplest way to do this is to apply a median filter to high-contrast areas of your chroma channel. Let’s take a look at this process with the sample image below.</p>
+<p><img src="https://miro.medium.com/max/1246/1*kxVa2DEkM048to6UnUYCfA.png" alt="Blurring Chroma"></p>
+<p>One trick here is that most photo editing programs don’t support editing in <a href="">YCbCr</a> colorspace; but they do support <a href="">LAB</a>. The L channel represents Lightness(which is close to the Y channel, luminosity) while the A and B channels represent Red/Green and Blue/Yellow, similar components to Cb and Cr. By converting your image to LAB, you should see the following channels:</p>
+<p><img src="https://miro.medium.com/max/1400/1*VwKrI76p9IsLWhJmPQaD6Q.jpeg" alt="channels"></p>
+<p>What we’d like to do is smooth out the sharp transitions in the A/B channels. Doing so will give the compressor more homogeneous values to work with. To do this, we select the areas of high detail in each of those channels, and apply a 1-3 pixel blur to that area. The result will smooth out the information significantly, without hurting the visual impact on the image much.</p>
+<p><img src="https://miro.medium.com/max/1400/1*BGquAMZw-oEEj5IH-xJEhw.jpeg" alt="channels"></p>
+<p>The main point here is that by slightly blurring the A/B modes of our image, we can reduce the amount of visual variance in those channels, such that when JPG goes through its’ down sampling phase, your image gets less unique information in the CbCr channels. You can see the result of that below.</p>
+<p><img src="https://miro.medium.com/max/1248/1*sv9wBkOKWzaFIUOEiAHLLQ.png" alt="channels"></p>
+<p>The top image is our source file, and the bottom, we blurred some of the Cb/CR data in the image, producing a file that’s smaller by ~50%.</p>
+<h3 id="Use-Guetzli"><a href="#Use-Guetzli" class="headerlink" title="Use Guetzli"></a>Use Guetzli</h3><p>[update] Since writing this article originally, Google’s compression team has released <a href="">Guetzli</a>, which IMHO is one of the most impressive JPG codec’s I’ve seen in a while. It’s currently state-of-the-art, generating 20-30% smaller JPG images than libJPEG, which puts it on par w/WebP(see below) without having to support a unique format. I haven’t had a chance to dig into how the encoder works, just yet, but I’m eager to find some time to figure it out;)</p>
+<h3 id="Consider-WebP"><a href="#Consider-WebP" class="headerlink" title="Consider WebP"></a>Consider WebP</h3><p>At this point, <a href="https://developers.google.com/speed/webp/" target="_blank" rel="noopener">WebP</a> shouldn’t be news to you. I’ve been suggesting <a href="https://www.youtube.com/watch?v=1pkKMiDWwpM" target="_blank" rel="noopener">folks use it</a> for some time now, because it’s a really impressive codec. One of the <a href="https://developers.google.com/speed/webp/docs/webp_study#introduction" target="_blank" rel="noopener">original studies compared WebP to JPG</a>, showing that the files can be 25%-33% smaller with the same SSIM index, which is a great amount of savings for just swapping file formats.</p>
+<p>Regardless if you’re a web developer, or mobile developer, the support and saving from WebP denotes a firm evaluation for your pipeline.</p>
+<h3 id="“Science-the-shit-out-of-it”"><a href="#“Science-the-shit-out-of-it”" class="headerlink" title="“Science the shit out of it”"></a>“Science the shit out of it”</h3><p><a href="https://www.youtube.com/watch?v=d6lYeTWdYLw" target="_blank" rel="noopener">Thanks Mark</a>, I sent you some potatoes; LMK when they arrive.</p>
+<p>One of the biggest problems with modern image compression is that most engineering is done in the vacuum of “the file.” That is, pixel data comes in, compressed image format goes out.</p>
+<p>Done.Move on.</p>
+<p>But that’s really only half the story. Modern application consume images at various places and methods, for various needs. There is no single “one size fits all” solution, and certainly there’s opportunities to leverage the internet as a medium to transfer information.</p>
+<p>That’s why it’s so impressive that the engineers over @ <a href="https://code.facebook.com/posts/991252547593574/the-technology-behind-preview-photos/" target="_blank" rel="noopener">Facebook</a> figured out a hell of a way to leverage every type of trick they could to compress their images. The result <a href="https://code.facebook.com/posts/991252547593574/the-technology-behind-preview-photos/" target="_blank" rel="noopener">has to be my favorite posts on the internet</a>, reducing their preview photos to only 200 bytes each.</p>
+<p><img src="https://miro.medium.com/max/1400/0*qFRye2GXhYIH4Vkv." alt="leverage"></p>
+<p>The magic behind this solution came from a lot of analysis of the JPG header data(which they were able to remove &amp; hard-code in the codec) alongside an aggressive Blurring &amp; scaling process that occurs @ load time. <strong>200 bytes is insane</strong>. I haven’t seen anything that crazy since the <a href="http://stackoverflow.com/questions/891643/twitter-image-encoding-challenge" target="_blank" rel="noopener">Twitter Image Encoding challenge</a>, which figured out you can evolve the <a href="https://rogeralsing.com/2008/12/07/genetic-programming-evolution-of-mona-lisa/" target="_blank" rel="noopener">Mona Lisa using genetic programming</a>. Proof that thinking just in the space of an image codec may be limiting the ability to do truly amazing things with your data compression.</p>
+<h3 id="The-takeaway"><a href="#The-takeaway" class="headerlink" title="The takeaway"></a>The takeaway</h3><p>At the end of the day, your company needs to find a middle ground between automatic bucketing of quality values, against hand-optimizing them, and even figuring out how to compress data further. The result is going to be a reduction in cost for your send the content, store the content, and clients to receive the content.</p>
 
     </div>
 
@@ -379,7 +451,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#You-should-be-using-an-optimizer-tool"><span class="nav-text">You should be using an optimizer tool</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#You-should-be-using-an-optimizer-tool"><span class="nav-text">You should be using an optimizer tool</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Find-the-optimal-quality-value"><span class="nav-text">Find the optimal quality value.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Blurring-Chroma"><span class="nav-text">Blurring Chroma</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Use-Guetzli"><span class="nav-text">Use Guetzli</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Consider-WebP"><span class="nav-text">Consider WebP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#“Science-the-shit-out-of-it”"><span class="nav-text">“Science the shit out of it”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#The-takeaway"><span class="nav-text">The takeaway</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -479,12 +551,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">966k</span>
+    <span title="站点总字数">974k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">14:38</span>
+    <span title="站点阅读时长">14:46</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
