@@ -22,20 +22,22 @@
     var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1. AAA">
+  <meta name="description" content="Colt McAnlis · Apr 20,2016 · 3min read">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Smaller PNGs, and Android&#39;s AAPT tool">
 <meta property="og:url" content="http://24suixinsuoyu.com/2021/01/06/Smaller-PNGs-and-Android-s-AAPT-tool/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
-<meta property="og:description" content="1. AAA">
+<meta property="og:description" content="Colt McAnlis · Apr 20,2016 · 3min read">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://miro.medium.com/max/942/0*i1CkU0kksf5Uhvsg.">
 <meta property="article:published_time" content="2021-01-06T15:10:46.000Z">
-<meta property="article:modified_time" content="2021-01-06T16:14:17.209Z">
+<meta property="article:modified_time" content="2021-02-09T12:20:18.866Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Technology">
 <meta property="article:tag" content="PNG">
 <meta property="article:tag" content="AAPT">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://miro.medium.com/max/942/0*i1CkU0kksf5Uhvsg.">
 
 <link rel="canonical" href="http://24suixinsuoyu.com/2021/01/06/Smaller-PNGs-and-Android-s-AAPT-tool/">
 
@@ -216,7 +218,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-01-07 00:14:17" itemprop="dateModified" datetime="2021-01-07T00:14:17+08:00">2021-01-07</time>
+                <time title="修改时间：2021-02-09 20:20:18" itemprop="dateModified" datetime="2021-02-09T20:20:18+08:00">2021-02-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -234,14 +236,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5</span>
+              <span>2.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -253,9 +255,33 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-AAA"><a href="#1-AAA" class="headerlink" title="1. AAA"></a>1. AAA</h4><a id="more"></a>
+        <blockquote>
+<p>Colt McAnlis · Apr 20,2016 · 3min read</p>
+</blockquote>
+<a id="more"></a>
 
+<p><img src="https://miro.medium.com/max/942/0*i1CkU0kksf5Uhvsg." alt="tool"></p>
+<p>Great queation <a href="https://twitter.com/danlew42" target="_blank" rel="noopener">Dan</a>. I hope that you were contemplating this while you took your profile picture;)</p>
+<p>And yes, it’s true, the android toolchain does in fact run some PNG optimization. <a href="http://developer.android.com/guide/topics/graphics/2d-graphics.html#drawables" target="_blank" rel="noopener">Check out the official docs</a>:</p>
+<p><em>Image resources placed in res/drawable/ may be automatically optimized with lossless image compression by the aapt tool during the build process. For example, a true-color PNG that does not require more than 256 colors may be converted to an 8-bit PNG with a color palette. This will result in an image of equal quality but which requires less memory. So be aware that the image binaries placed in this directory can change during the build.</em></p>
+<p>Hmm.. so that’s nice.. Images with &lt; 256 colors will get converted to indexed mode… but is that all? To find out, we need to dig into the source code.</p>
+<h3 id="What-the-AAPT-tool-does-with-PNGs"><a href="#What-the-AAPT-tool-does-with-PNGs" class="headerlink" title="What the AAPT tool does with PNGs"></a>What the AAPT tool does with PNGs</h3><p>A nice thing about Android is that most of the tools are open source, so we can look directly at the AAPT <a href="https://android.googlesource.com/platform/frameworks/base/+/marshmallow-dev/tools/aapt2/" target="_blank" rel="noopener">source code</a>, to see what it really does. Tracking down the <strong>analyze_image</strong> function inside of <a href="https://android.googlesource.com/platform/frameworks/base/+/marshmallow-dev/tools/aapt2/Png.cpp" target="_blank" rel="noopener">png.cpp</a> we can see that it checks for three specific optimizations:</p>
+<ol>
+<li>Every pixel has R == G == B(grayscale)</li>
+<li>Every pixel has A == 255(opaque)</li>
+<li>There are no more than 256 distinct RGBA colors</li>
+</ol>
+<p>So AAPT will load your PNG, test if it can convert it to grayscale, test if it’s fully opaque, or test if it can be converted to an indexed variant. That’s it.</p>
+<p>These checks make a lot of sense when you consider the fact that most of the PNG assets inside of an APK typically are either grayscale, opaque, or limited in color uniqueness; Having the ability to take these knows formats, and convert them to smaller PNG files, seems like a good deal.</p>
+<h3 id="But-what-if-I-want-more-than-that"><a href="#But-what-if-I-want-more-than-that" class="headerlink" title="But what if I want more than that?"></a>But what if I want more than that?</h3><p>Probably more interesting, is all the stuff that AAPT doesn’t do; which includes anything that A) will alter the visual perception of your image(potentially making it lower quality) and B) anything more advanced than color mode swapping.</p>
+<p>This is the exact reason I discuss <a href="https://medium.com/@duhroach/reducing-png-file-size-8473480d0476" target="_blank" rel="noopener">using more advanced tools in my previous article</a>. Applying these to your pipeline can help reduce PNG file size in a way that the standard AAPT tool can’t.</p>
+<h3 id="HUGE-WARNING"><a href="#HUGE-WARNING" class="headerlink" title="HUGE WARNING"></a>HUGE WARNING</h3><p>It’s important to remember that with the modern data compression algorithms, <a href="">recursive data compression isn’t possible</a>. If you take a piece of data that you’ve compressed, and try to compress it again, you’ll usually end up making it larger and at best, just keep it the same size.</p>
+<p>So, if you’ve applied an optimization process to PNGs, prior to them being  tossed to AAPT, they <a href="">may end up getting inflated</a>, sometimes <a href="">by 10+%</a>. Which seems like a raw deal: If you’ve taken all this time to shrink your PNG files, they shouldn’t get inflated later:\</p>
+<p>The solution to this issue is using the cruncherEnabled flag in your Gradle files to disable this process for PNG files:</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">aaptOptions</span> &#123;</span><br><span class="line">	<span class="attribute">cruncherEnabled</span> = <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p>This will turn off the AAPT png optimization for non-9patch PNG files inside of your APK(I haven’t figured out what it does with 9Patches yet…)</p>
+<p>The result, is that you can use your own custom PNG optimizer scripts, shrinking them as small as possible, and know that the AAPT tool won’t accidentally inflate them later.</p>
 
     </div>
 
@@ -370,7 +396,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-AAA"><span class="nav-text">1. AAA</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#What-the-AAPT-tool-does-with-PNGs"><span class="nav-text">What the AAPT tool does with PNGs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#But-what-if-I-want-more-than-that"><span class="nav-text">But what if I want more than that?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HUGE-WARNING"><span class="nav-text">HUGE WARNING</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -470,12 +496,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">983k</span>
+    <span title="站点总字数">986k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">14:54</span>
+    <span title="站点阅读时长">14:56</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
