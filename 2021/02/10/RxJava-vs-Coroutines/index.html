@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="DAN LEW · 28 JAN 2021 · 4 MIN READ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RxJava vs. Coroutines">
+<meta property="og:url" content="http://24suixinsuoyu.com/2021/02/10/RxJava-vs-Coroutines/index.html">
+<meta property="og:site_name" content="隋钟元’s Blog">
+<meta property="og:description" content="DAN LEW · 28 JAN 2021 · 4 MIN READ">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-02-10T07:34:08.000Z">
+<meta property="article:modified_time" content="2021-02-10T09:06:04.562Z">
+<meta property="article:author" content="隋钟元">
+<meta property="article:tag" content="RxJava">
+<meta property="article:tag" content="Coroutines">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://24suixinsuoyu.com/2021/02/10/RxJava-vs-Coroutines/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>RxJava vs. Coroutines | 隋钟元’s Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">隋钟元’s Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-university"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th-list"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-english">
+
+    <a href="/english/" rel="section"><i class="fa fa-fw fa-graduation-cap"></i>英语</a>
+
+  </li>
+        <li class="menu-item menu-item-life">
+
+    <a href="/life/" rel="section"><i class="fa fa-fw fa-balance-scale"></i>生活</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/" rel="section"><i class="fa fa-fw fa-user-circle-o"></i>简历</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/commonweal/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/24suixinsuoyu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2021/02/10/RxJava-vs-Coroutines/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="隋钟元">
+      <meta itemprop="description" content="技术创造价值">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="隋钟元’s Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          RxJava vs. Coroutines
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-02-10 15:34:08 / 修改时间：17:06:04" itemprop="dateCreated datePublished" datetime="2021-02-10T15:34:08+08:00">2021-02-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E3%80%8ATechnology-Articles%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《Technology Articles》</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>DAN LEW · 28 JAN 2021 · 4 MIN READ</p>
+</blockquote>
+<a id="more"></a>
+
+<p>At Trello Android, we’ve been considering switching from RxJava to coroutines.</p>
+<p>We’ve already been using coroutines here and there, but it wasn’t something that we could consider replacing RxJava with until recently because of missing functionality. Now, with the addition of <a href="https://blog.jetbrains.com/kotlin/2020/10/kotlinx-coroutines-1-4-0-introducing-stateflow-and-sharedflow/" target="_blank" rel="noopener">StateFlow and ShareFlow</a>, coroutines are comparable to RxJava.</p>
+<p>In order to evaluate a move from RxJava to coroutines, I wrote down a list of pros/cons for each framework.</p>
+<h3 id="RxJava-Advantages"><a href="#RxJava-Advantages" class="headerlink" title="RxJava Advantages"></a>RxJava Advantages</h3><h4 id="Mature-And-Battle-Tested"><a href="#Mature-And-Battle-Tested" class="headerlink" title="Mature And Battle-Tested"></a>Mature And Battle-Tested</h4><p>RxJava works for us and many others. We are already using RxJava throughout our app successfully. We’ve written utilities on top of RxJava. Our team is experienced with RxJava. We know how to avoid its pitfalls and work around its quirks.</p>
+<p>Kotlin coroutines are a younger, unproven technology. We don’t know for sure that it’ll work for every use case. Switching to coroutines would require some period of education(of the team) and discovery(of best patterns). We would have to rewrite some tools to support coroutines instead of RxJava(e.g. <a href="https://github.com/spotify/mobius" target="_blank" rel="noopener">Mobius</a>). We don’t know its corner cases or quirks.</p>
+<h4 id="Stable"><a href="#Stable" class="headerlink" title="Stable"></a>Stable</h4><p>RxJava’s API is stable.</p>
+<p>Coroutines are filled with APIs that are marked as experimental and may still change.</p>
+<h4 id="“Easier”-Debugging"><a href="#“Easier”-Debugging" class="headerlink" title="“Easier” Debugging"></a>“Easier” Debugging</h4><p>RxJava is famously difficult to debug, but Kotlin coroutine stack traces give RxJava’s a run for its money. We are already experienced in debugging RxJava; we’ll have to relearn how to do so with coroutines(though <a href="https://kotlinlang.org/docs/tutorials/coroutines/debug-coroutines-with-idea.html" target="_blank" rel="noopener">tools that make debugging easier are coming soon</a>).</p>
+<h4 id="Java-Compatible"><a href="#Java-Compatible" class="headerlink" title="Java Compatible"></a>Java Compatible</h4><p>RxJava can be used with any Java-compatible languages, whereas Kotlin coroutines can <em>only</em> be written in Kotlin. This is not a concern for Trello Android, as we are all-in on Kotlin, but could be a concern fot others.</p>
+<p>(Note that this just applies to <em>writing</em> code, not <em>consuming</em> it. A library could use coroutines internally but expose a normal Java API to consumers.)</p>
+<h3 id="Coroutine-Advantages"><a href="#Coroutine-Advantages" class="headerlink" title="Coroutine Advantages"></a>Coroutine Advantages</h3><h4 id="Kotlin-Multiplatform"><a href="#Kotlin-Multiplatform" class="headerlink" title="Kotlin Multiplatform"></a>Kotlin Multiplatform</h4><p>RxJava is, as it says on the lin, limited to Java. Coroutines works on any Kotlin-supported platform, so if we ever want to share asynchronous code between Android and iOS we could do it with coroutines.</p>
+<h4 id="Simpler-API"><a href="#Simpler-API" class="headerlink" title="Simpler API"></a>Simpler API</h4><p>RxJava has many different streaming types(<em>Observable</em>, <em>Flowable</em>, <em>Maybe</em>, <em>Single</em>, <em>Completable</em>) in order to represent eacy type of asynchronous streams. Kotlin coroutines can model the same streams with only two cases: suspend fun and <em>Flow</em>.</p>
+<p>This is dramatically simpler for consumers, not only because there are fewer types, but also because you can always just call suspending functions in operator lambdas(vs. combining multiple RxJava streams via complex operator chainin).</p>
+<p>Any tool building on top of coroutines will have a simpler implementation, too - it is common in RxJava to write the same utility five times(one for each stream type), whereas that would be unheard of in coroutines.</p>
+<h4 id="Simpler-Operators"><a href="#Simpler-Operators" class="headerlink" title="Simpler Operators"></a>Simpler Operators</h4><p>Writing custom operators in RxJava is a gigantic PITA. To truly get it right, you have to understand the internals of RxJava(due to complicating factors like back-pressure), which is an extremely high bar achieved by <a href="https://github.com/akarnokd" target="_blank" rel="noopener">only one person</a>(…I’m only partially joking).</p>
+<p>By contrast, Flow operators are typically just written like normal code. For example, compare RxJava’s <em>map()</em>(<a href="https://github.com/ReactiveX/RxJava/blob/v3.0.8/src/main/java/io/reactivex/rxjava3/internal/operators/observable/ObservableMap.java" target="_blank" rel="noopener">an entire class</a>) to Flow’s <em>map()</em>(<a href="https://github.com/Kotlin/kotlinx.coroutines/blob/1.4.2/kotlinx-coroutines-core/common/src/flow/operators/Transform.kt#L44-L49" target="_blank" rel="noopener">a few lines of code</a>).</p>
+<h4 id="Structured-Concurrency"><a href="#Structured-Concurrency" class="headerlink" title="Structured Concurrency"></a>Structured Concurrency</h4><p>RxJava streams are prone to leaks, where a stream continues to process items even when you no longer care. Kotlin coroutines use <a href="https://kotlinlang.org/docs/reference/coroutines/basics.html#structured-concurrency" target="_blank" rel="noopener">structured concurrency</a>, which makes it much easier to manage the lifecycle of all your concurrent code.</p>
+<h4 id="Easier-Back-Pressure-Handing"><a href="#Easier-Back-Pressure-Handing" class="headerlink" title="Easier Back-Pressure Handing"></a>Easier Back-Pressure Handing</h4><p>Back-pressure happens when the source of a stream emits items faster than the downstream can consume them. It’s <a href="https://github.com/ReactiveX/RxJava/wiki/Backpressure" target="_blank" rel="noopener">a nasty problem in RxJava</a> and the source of a lot of complication in its codebase because downstream consumers are constantly having to collaborate with upstream producers to avoid backpressure issues.</p>
+<p>Flow handle back-pressure in a much simpler way by <a href="https://elizarov.medium.com/simple-design-of-kotlin-flow-4725e7398c4c" target="_blank" rel="noopener">suspending producers when consumers become inundated with too much data</a>. That means you don’t have to concern yourself with backpressure details nearly as often in coroutine code.</p>
+<h4 id="Performance"><a href="#Performance" class="headerlink" title="Performance"></a>Performance</h4><p>Flow has at least as good(if not better) performance than RxJava.</p>
+<p>Reactive Scrabble is the usual benchmark tool for streaming comparison, and <a href="https://github.com/Kotlin/kotlinx.coroutines/tree/1.4.2/benchmarks/src/jmh/kotlin/benchmarks/flow/scrabble" target="_blank" rel="noopener">Kotlin has a version of the benchmark in their repository</a>. By their metrics(lower score is better), Flow outperforms RxJava in both the standard and optimized setups.</p>
+<h3 id="Interoperability"><a href="#Interoperability" class="headerlink" title="Interoperability"></a>Interoperability</h3><p>It’s worth nothing that there is very good interoperability between RxJava and coroutines.</p>
+<p><a href="https://github.com/Kotlin/kotlinx.coroutines/tree/master/reactive/kotlinx-coroutines-rx2" target="_blank" rel="noopener">Kotlin provides a bunch of converters between RxJava and Flow</a>. Without them, you’d have to migrate a codebase wholesale, an unfathomable prospect. Due to the converters, you can transition incrementally to Flow. It also means you can continue to consume RxJava-based libraries even if you are otherwise using Flow.</p>
+<p>Flow also includes a migration tool: <a href="https://github.com/Kotlin/kotlinx.coroutines/blob/1.4.2/kotlinx-coroutines-core/common/src/flow/Migration.kt" target="_blank" rel="noopener">deprecated functions that can automatically replace RxJava operators with their Flow equivalents</a>. You just turn the base RxJava stream into a Flow and these replacements will start popping up in the IDE.(Note that this is NOT a compatibility tool - the deprecated function are no-ops.)</p>
+<h3 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h3><p>The major downside for switching from RxJava to coroutines is that they are a cutting edge technology and you <em>will</em> get cut by it. You will have to learn to use a new technology. You will have to figure out new patterns and best practices. You have to write new utilities. And you will definitely, someday, write a major bug(or two, or three) because you didn’t know about some corner case of how coroutines work.</p>
+<p>These are all short-term concersn though. There are big upside to coroutines: multiplatform support, simpler API, structured concurrency - in the long run, these advantages will pay dividends. For me, <strong>the overall argument between the two frameworks is one of maturity vs. features</strong>. Coroutines will eventually be as mature as RxJava, but RxJava is never going to be able to integrate some of coroutines’ best features.</p>
+<p>For our part, Trello Android is going to start slowly adopting coroutines as a replacement for RxJava. <a href="">As with every major change, we’re taking it step-by-step in case unexpected dilemmas arise</a>, but so far things are looking good. That said, depending on your risk tolerance, you may want to delay replacing RxJava with coroutines until it’s been slightly more battle-tested and stabilized.</p>
+<hr>
+<p><em>Many thanks to all my Trello coworkers for our many discussions comparing RxJava to coroutines which honed my thoughts on the matter; and <a href="https://twitter.com/manuelvicnt" target="_blank" rel="noopener">Manuel Vivo</a> for reviewing a draft of this article</em></p>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;margin-top:80px">-------------------- 本文结束<i class="fa fa-paw"></i>感谢您的阅读 --------------------</div>
+    
+</div>
+      
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>隋钟元
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://24suixinsuoyu.com/2021/02/10/RxJava-vs-Coroutines/" title="RxJava vs. Coroutines">http://24suixinsuoyu.com/2021/02/10/RxJava-vs-Coroutines/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/RxJava/" rel="tag"><i class="fa fa-tag"></i> RxJava</a>
+              <a href="/tags/Coroutines/" rel="tag"><i class="fa fa-tag"></i> Coroutines</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/21/%E7%BB%BC%E5%90%88%E6%8A%80%E6%9C%AF%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E5%8F%8D%E7%BC%96%E8%AF%91%E5%88%9D%E6%AD%A5/" rel="prev" title="综合技术（四）：反编译初步">
+      <i class="fa fa-chevron-left"></i> 综合技术（四）：反编译初步
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#RxJava-Advantages"><span class="nav-text">RxJava Advantages</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Mature-And-Battle-Tested"><span class="nav-text">Mature And Battle-Tested</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Stable"><span class="nav-text">Stable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#“Easier”-Debugging"><span class="nav-text">“Easier” Debugging</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java-Compatible"><span class="nav-text">Java Compatible</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Coroutine-Advantages"><span class="nav-text">Coroutine Advantages</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Kotlin-Multiplatform"><span class="nav-text">Kotlin Multiplatform</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Simpler-API"><span class="nav-text">Simpler API</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Simpler-Operators"><span class="nav-text">Simpler Operators</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Structured-Concurrency"><span class="nav-text">Structured Concurrency</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Easier-Back-Pressure-Handing"><span class="nav-text">Easier Back-Pressure Handing</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Performance"><span class="nav-text">Performance</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Interoperability"><span class="nav-text">Interoperability</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Conclusion"><span class="nav-text">Conclusion</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="隋钟元"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">隋钟元</p>
+  <div class="site-description" itemprop="description">技术创造价值</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">226</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">290</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:24suixinsuoyu@gmail.com" title="E-Mail → mailto:24suixinsuoyu@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/24suixinsuoyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;24suixinsuoyu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/24sxsy" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;24sxsy" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/guolin_blog" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;guolin_blog" rel="noopener" target="_blank">郭霖</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/lmj623565791/" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;lmj623565791&#x2F;" rel="noopener" target="_blank">鸿洋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.520monkey.com/" title="http:&#x2F;&#x2F;www.520monkey.com&#x2F;" rel="noopener" target="_blank">姜维</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://daimajia.com/" title="https:&#x2F;&#x2F;daimajia.com&#x2F;" rel="noopener" target="_blank">代码家</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://kmxz.net/" title="https:&#x2F;&#x2F;kmxz.net&#x2F;" rel="noopener" target="_blank">孔祥舟</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yangwenbo.com/" title="http:&#x2F;&#x2F;yangwenbo.com&#x2F;" rel="noopener" target="_blank">杨文博</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">隋钟元</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">992k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">15:02</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+
