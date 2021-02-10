@@ -30,7 +30,7 @@
 <meta property="og:description" content="DAN LEW · 28 JAN 2021 · 4 MIN READ">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-02-10T07:34:08.000Z">
-<meta property="article:modified_time" content="2021-02-10T09:12:07.197Z">
+<meta property="article:modified_time" content="2021-02-10T16:14:22.420Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="RxJava">
 <meta property="article:tag" content="Coroutines">
@@ -208,10 +208,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-02-10 15:34:08 / 修改时间：17:12:07" itemprop="dateCreated datePublished" datetime="2021-02-10T15:34:08+08:00">2021-02-10</time>
+              <time title="创建时间：2021-02-10 15:34:08" itemprop="dateCreated datePublished" datetime="2021-02-10T15:34:08+08:00">2021-02-10</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-02-11 00:14:22" itemprop="dateModified" datetime="2021-02-11T00:14:22+08:00">2021-02-11</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -263,7 +269,7 @@
 <h4 id="Java-Compatible"><a href="#Java-Compatible" class="headerlink" title="Java Compatible"></a>Java Compatible</h4><p>RxJava can be used with any Java-compatible languages, whereas Kotlin coroutines can <em>only</em> be written in Kotlin. This is not a concern for Trello Android, as we are all-in on Kotlin, but could be a concern fot others.</p>
 <p>(Note that this just applies to <em>writing</em> code, not <em>consuming</em> it. A library could use coroutines internally but expose a normal Java API to consumers.)</p>
 <h3 id="Coroutine-Advantages"><a href="#Coroutine-Advantages" class="headerlink" title="Coroutine Advantages"></a>Coroutine Advantages</h3><h4 id="Kotlin-Multiplatform"><a href="#Kotlin-Multiplatform" class="headerlink" title="Kotlin Multiplatform"></a>Kotlin Multiplatform</h4><p>RxJava is, as it says on the lin, limited to Java. Coroutines works on any Kotlin-supported platform, so if we ever want to share asynchronous code between Android and iOS we could do it with coroutines.</p>
-<h4 id="Simpler-API"><a href="#Simpler-API" class="headerlink" title="Simpler API"></a>Simpler API</h4><p>RxJava has many different streaming types(<em>Observable</em>, <em>Flowable</em>, <em>Maybe</em>, <em>Single</em>, <em>Completable</em>) in order to represent eacy type of asynchronous streams. Kotlin coroutines can model the same streams with only two cases: suspend fun and <em>Flow</em>.</p>
+<h4 id="Simpler-API"><a href="#Simpler-API" class="headerlink" title="Simpler API"></a>Simpler API</h4><p>RxJava has many different streaming types(<em>Observable</em>, <em>Flowable</em>, <em>Maybe</em>, <em>Single</em>, <em>Completable</em>) in order to represent eacy type of asynchronous streams. Kotlin coroutines can model the same streams with only two cases: <em>suspend fun</em> and <em>Flow</em>.</p>
 <p>This is dramatically simpler for consumers, not only because there are fewer types, but also because you can always just call suspending functions in operator lambdas(vs. combining multiple RxJava streams via complex operator chainin).</p>
 <p>Any tool building on top of coroutines will have a simpler implementation, too - it is common in RxJava to write the same utility five times(one for each stream type), whereas that would be unheard of in coroutines.</p>
 <h4 id="Simpler-Operators"><a href="#Simpler-Operators" class="headerlink" title="Simpler Operators"></a>Simpler Operators</h4><p>Writing custom operators in RxJava is a gigantic PITA. To truly get it right, you have to understand the internals of RxJava(due to complicating factors like back-pressure), which is an extremely high bar achieved by <a href="https://github.com/akarnokd" target="_blank" rel="noopener">only one person</a>(…I’m only partially joking).</p>
