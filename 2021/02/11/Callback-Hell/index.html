@@ -30,7 +30,7 @@
 <meta property="og:description" content="A guide to writing asynchronous JavaScript programs">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-02-10T16:44:12.000Z">
-<meta property="article:modified_time" content="2021-02-14T15:59:17.539Z">
+<meta property="article:modified_time" content="2021-02-14T16:16:34.036Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Callback">
 <meta property="article:tag" content="JavaScript">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-02-14 23:59:17" itemprop="dateModified" datetime="2021-02-14T23:59:17+08:00">2021-02-14</time>
+                <time title="修改时间：2021-02-15 00:16:34" itemprop="dateModified" datetime="2021-02-15T00:16:34+08:00">2021-02-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,14 +233,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.1k</span>
+              <span>2.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -261,7 +261,47 @@
 <figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">fs.readdir(<span class="keyword">source</span>, <span class="function"><span class="keyword">function</span><span class="params">(err, files)</span>) &#123;</span></span><br><span class="line">	<span class="keyword">if</span> (err) &#123;</span><br><span class="line">		console.<span class="built_in">log</span>(<span class="string">'Error finding files: '</span> + err)</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">files</span>.forEach(<span class="function"><span class="keyword">function</span><span class="params">(filename, fileIndex)</span> &#123;</span></span><br><span class="line">			console.<span class="built_in">log</span>(filename)</span><br><span class="line">			gm(<span class="keyword">source</span> + filename).size(<span class="function"><span class="keyword">function</span><span class="params">(err, values)</span> &#123;</span></span><br><span class="line">				<span class="keyword">if</span> (err) &#123;</span><br><span class="line">					console.<span class="built_in">log</span>(<span class="string">'Error identifying file size: '</span> + err)</span><br><span class="line">				&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">					console.<span class="built_in">log</span>(filename + <span class="string">' : '</span> + <span class="built_in">values</span>)</span><br><span class="line">					aspect = (<span class="built_in">values</span>.width / <span class="built_in">values</span>.height)</span><br><span class="line">					widths.forEach(<span class="function"><span class="keyword">function</span> <span class="params">(width, widthIndex)</span> &#123;</span></span><br><span class="line">						height = Math.<span class="built_in">round</span>(width / aspect)</span><br><span class="line">						console.<span class="built_in">log</span>(<span class="string">'resizing '</span> + filename + <span class="string">'to '</span> + height + <span class="string">'x'</span> + height)</span><br><span class="line">						this.<span class="keyword">resize</span>(width, height).<span class="keyword">write</span>(dest + <span class="string">'w'</span> + width + <span class="string">'_'</span> + filename, <span class="function"><span class="keyword">function</span><span class="params">(err)</span> &#123;</span></span><br><span class="line">							<span class="keyword">if</span> (err) console.<span class="built_in">log</span>(<span class="string">'Error writing file: '</span> + err)</span><br><span class="line">						&#125;)</span><br><span class="line">					&#125;.bind(this))</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>See the pyramid shape and all the <code>})</code> at the end? Eek! This is affectionately known as <strong>callback hell</strong>.</p>
-<p>The cause of callback hell is when people try to write JavaScript in a way where execution happens </p>
+<p>The cause of callback hell is when people try to write JavaScript in a way where execution happens visually from top to bottom. Lots of people make this mistake! In other languages like C, Ruby or Python there is the expectation that whatever happens on line 1 will finish before the code on line 2 starts running and so on down the file. As you will learn, JavaScript is different.</p>
+<h3 id="What-are-callbacks"><a href="#What-are-callbacks" class="headerlink" title="What are callbacks?"></a>What are callbacks?</h3><p>Callbacks are just the name of a convention for using JavaSript functions. There isn’t a special thing called a ‘callback’ in the JavaScript language, it’s just a convention. Instead of immediately returning some result like most functions, functions that use callbacks take some time to produce a result. The word ‘asynchronous’, aka ‘async’ just means ‘takes some time’ or ‘happens in the future, not right now’. Usually callbacks are only used when doing I/O, e.g. downloading things, reading files, talking to databases, etc.</p>
+<p>When you call a normal function you can use its return value:</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var <span class="built_in">result</span> = multiplyTwoNumbers(<span class="number">5</span>, <span class="number">10</span>)</span><br><span class="line">console.<span class="built_in">log</span>(<span class="built_in">result</span>)</span><br><span class="line">// <span class="number">50</span> gets printed out</span><br></pre></td></tr></table></figure>
+
+<p>However, functions that are async and use callbacks don’t return anything right away.</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var photo = download<span class="constructor">Photo('<span class="params">http</span>:<span class="operator">/</span><span class="operator">/</span><span class="params">coolcats</span>.<span class="params">com</span><span class="operator">/</span><span class="params">cat</span>.<span class="params">gif</span>')</span></span><br><span class="line"><span class="comment">// photo is 'undefined'!</span></span><br></pre></td></tr></table></figure>
+
+<p>In this case the gif might take a very long time to download, and you don’t want your program to pause(aka ‘block’) while waiting for the download to finish.</p>
+<p>Instead, you store the code that should run after the download is complete in a function. This is the callback! You give it to the <code>downloadPhoto</code> function and it will run your callback(e.g. ‘call you back later’) when the download is complete, and pass in the photo(or an error if something went wrong).</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">downloadPhoto(<span class="string">'http://coolcats.com/cat.gif'</span>, handlePhoto)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handlePhoto</span><span class="params">(error, photo)</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">error</span>) console.<span class="built_in">error</span>(<span class="string">'Download error!'</span>, <span class="built_in">error</span>)</span><br><span class="line">	<span class="keyword">else</span> console.<span class="built_in">log</span>(<span class="string">'Download finished'</span>, photo)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">console.<span class="built_in">log</span>(<span class="string">'Download started'</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     </div>
 
@@ -375,7 +415,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#What-is-“callback-hell”"><span class="nav-text">What is “callback hell”?</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#What-is-“callback-hell”"><span class="nav-text">What is “callback hell”?</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#What-are-callbacks"><span class="nav-text">What are callbacks?</span></a></div>
       </div>
       <!--/noindex-->
 
@@ -480,7 +520,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">15:18</span>
+    <span title="站点阅读时长">15:20</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
