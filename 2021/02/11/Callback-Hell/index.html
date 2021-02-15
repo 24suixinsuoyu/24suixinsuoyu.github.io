@@ -30,7 +30,7 @@
 <meta property="og:description" content="A guide to writing asynchronous JavaScript programs">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-02-10T16:44:12.000Z">
-<meta property="article:modified_time" content="2021-02-15T03:17:45.069Z">
+<meta property="article:modified_time" content="2021-02-15T07:54:34.397Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Callback">
 <meta property="article:tag" content="JavaScript">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-02-15 11:17:45" itemprop="dateModified" datetime="2021-02-15T11:17:45+08:00">2021-02-15</time>
+                <time title="修改时间：2021-02-15 15:54:34" itemprop="dateModified" datetime="2021-02-15T15:54:34+08:00">2021-02-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,14 +233,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>10k</span>
+              <span>12k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>9 分钟</span>
+              <span>11 分钟</span>
             </span>
 
         </div>
@@ -341,11 +341,20 @@
 <li>Ask more experienced coders you know to show you examples of good modules until you have a good idea of what they look like. If it takes more than a few minutes to understand what is happening, it probably isn’t a very good module.</li>
 </ul>
 <p><strong>More reading</strong></p>
-<p>Try reading my <a href="">longer introduction to callbacks</a>, or try out some of <a href="">nodeschool</a> tutorials.</p>
-<p>Also check out the <a href="">browserify-handbook</a> for examples of writing modular code.</p>
+<p>Try reading my <a href="https://github.com/maxogden/art-of-node#callbacks" target="_blank" rel="noopener">longer introduction to callbacks</a>, or try out some of <a href="http://nodeschool.io/" target="_blank" rel="noopener">nodeschool</a> tutorials.</p>
+<p>Also check out the <a href="https://github.com/substack/browserify-handbook" target="_blank" rel="noopener">browserify-handbook</a> for examples of writing modular code.</p>
 </br>
 
 <p><strong>What about promises/generators/ES6 etc?</strong></p>
+<p>Before looking at more advanced solutions, remember that callbacks are a fundamental part of JavaScript(since they are just functions) and you should learn how to read and write them before moving on to more advanced language features, since they all depend on an understanding of callbacks. If you can’t yet write maintainable callback code, keep working at it!</p>
+<p>If you really want your async code to read top-to-bottom, there are some fancy things you can try. Note that <strong>these may introduce performance and/or cross platform runtime compatibility issues</strong>, so make sure to do your research.</p>
+<p><strong>Promises</strong> are a way to write async code that still appears as though it is executing in a top-down way, and handles more types of errors due to encouraged use of <code>try/catch</code> style error handling.</p>
+<p><strong>Generators</strong> let you ‘pause’ individual functions without pausing the state of the whole program, which at the cost of slightly more complex to understand code lets your async code appear to execute in a top-down fashion. Check out <a href="https://github.com/mappum/watt" target="_blank" rel="noopener">watt</a> for an example of this approach.</p>
+<p><strong>Async functions</strong> are a proposed ES7 feature that will further wrap generators and promises in a higher level syntax. Check them out if that sounds interesting to you.</p>
+<p>Personally, I use callbacks for 90% of the async code I write and when things get complicated I bring in something like <a href="https://github.com/feross/run-parallel" target="_blank" rel="noopener">run-parallel</a> or <a href="https://github.com/feross/run-series" target="_blank" rel="noopener">run-series</a>. I don’t think callbacks vs promises vs whatever else really make a difference for me, the biggest impact comes from keeping code simple, not nested and split up into small modules.</p>
+<p>Regardless of the method you choose, always <strong>handle every error</strong> and <strong>keep your code simple</strong>.</p>
+<p><strong>Remember, only you can prevent callback hell and forest fires</strong></p>
+<p>You can find the source for this <a href="http://github.com/maxogden/callback-hell" target="_blank" rel="noopener">on github</a>.</p>
 
     </div>
 
@@ -564,7 +573,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">15:27</span>
+    <span title="站点阅读时长">15:28</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
