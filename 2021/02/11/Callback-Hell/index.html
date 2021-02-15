@@ -30,7 +30,7 @@
 <meta property="og:description" content="A guide to writing asynchronous JavaScript programs">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-02-10T16:44:12.000Z">
-<meta property="article:modified_time" content="2021-02-14T16:18:19.943Z">
+<meta property="article:modified_time" content="2021-02-15T03:17:45.069Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Callback">
 <meta property="article:tag" content="JavaScript">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-02-15 00:18:19" itemprop="dateModified" datetime="2021-02-15T00:18:19+08:00">2021-02-15</time>
+                <time title="修改时间：2021-02-15 11:17:45" itemprop="dateModified" datetime="2021-02-15T11:17:45+08:00">2021-02-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,14 +233,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.6k</span>
+              <span>10k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>9 分钟</span>
             </span>
 
         </div>
@@ -257,7 +257,7 @@
 </blockquote>
 <a id="more"></a>
 
-<h4 id="What-is-“callback-hell”"><a href="#What-is-“callback-hell”" class="headerlink" title="What is “callback hell”?"></a>What is “callback hell”?</h4><p>Asynchronous JavaScript, or JavaScript that uses callbacks, is hard to get right intuitively. A lot of code ends up looking like this:</p>
+<h3 id="What-is-“callback-hell”"><a href="#What-is-“callback-hell”" class="headerlink" title="What is “callback hell”?"></a>What is “callback hell”?</h3><p>Asynchronous JavaScript, or JavaScript that uses callbacks, is hard to get right intuitively. A lot of code ends up looking like this:</p>
 <figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">fs.readdir(<span class="keyword">source</span>, <span class="function"><span class="keyword">function</span><span class="params">(err, files)</span>) &#123;</span></span><br><span class="line">	<span class="keyword">if</span> (err) &#123;</span><br><span class="line">		console.<span class="built_in">log</span>(<span class="string">'Error finding files: '</span> + err)</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">files</span>.forEach(<span class="function"><span class="keyword">function</span><span class="params">(filename, fileIndex)</span> &#123;</span></span><br><span class="line">			console.<span class="built_in">log</span>(filename)</span><br><span class="line">			gm(<span class="keyword">source</span> + filename).size(<span class="function"><span class="keyword">function</span><span class="params">(err, values)</span> &#123;</span></span><br><span class="line">				<span class="keyword">if</span> (err) &#123;</span><br><span class="line">					console.<span class="built_in">log</span>(<span class="string">'Error identifying file size: '</span> + err)</span><br><span class="line">				&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">					console.<span class="built_in">log</span>(filename + <span class="string">' : '</span> + <span class="built_in">values</span>)</span><br><span class="line">					aspect = (<span class="built_in">values</span>.width / <span class="built_in">values</span>.height)</span><br><span class="line">					widths.forEach(<span class="function"><span class="keyword">function</span> <span class="params">(width, widthIndex)</span> &#123;</span></span><br><span class="line">						height = Math.<span class="built_in">round</span>(width / aspect)</span><br><span class="line">						console.<span class="built_in">log</span>(<span class="string">'resizing '</span> + filename + <span class="string">'to '</span> + height + <span class="string">'x'</span> + height)</span><br><span class="line">						this.<span class="keyword">resize</span>(width, height).<span class="keyword">write</span>(dest + <span class="string">'w'</span> + width + <span class="string">'_'</span> + filename, <span class="function"><span class="keyword">function</span><span class="params">(err)</span> &#123;</span></span><br><span class="line">							<span class="keyword">if</span> (err) console.<span class="built_in">log</span>(<span class="string">'Error writing file: '</span> + err)</span><br><span class="line">						&#125;)</span><br><span class="line">					&#125;.bind(this))</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>See the pyramid shape and all the <code>})</code> at the end? Eek! This is affectionately known as <strong>callback hell</strong>.</p>
@@ -273,35 +273,79 @@
 <p>Instead, you store the code that should run after the download is complete in a function. This is the callback! You give it to the <code>downloadPhoto</code> function and it will run your callback(e.g. ‘call you back later’) when the download is complete, and pass in the photo(or an error if something went wrong).</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">downloadPhoto(<span class="string">'http://coolcats.com/cat.gif'</span>, handlePhoto)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handlePhoto</span><span class="params">(error, photo)</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">error</span>) console.<span class="built_in">error</span>(<span class="string">'Download error!'</span>, <span class="built_in">error</span>)</span><br><span class="line">	<span class="keyword">else</span> console.<span class="built_in">log</span>(<span class="string">'Download finished'</span>, photo)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">console.<span class="built_in">log</span>(<span class="string">'Download started'</span>)</span><br></pre></td></tr></table></figure>
 
+<p>The biggest hurdle people when trying to understand callbacks is understanding the order that things execute as a program runs. In this example three major things happen. First the <code>handlePhoto</code> function is declared, then the <code>downloadPhoto</code> function is invoked and passed the <code>handlePhoto</code> as its callback, and finally <code>&#39;Download started&#39;</code> is printed out.</p>
+<p>Note that the <code>handlePhoto</code> is not invoked yet, it is just created and passed as a callback into <code>downloadPhoto</code>. But it won’t run until <code>downloadPhoto</code> finished doing its task, which could take a long time depending on how fast the Internet connection is.</p>
+<p>This example is meant to illustrate two important concepts:</p>
+<ul>
+<li>The <code>handlePhoto</code> callback is just a way to store some things to do at a later time</li>
+<li>The order in which things happen does not read top-to-bottom, it jumps around based on when things complete</li>
+</ul>
+<h3 id="How-do-I-fix-callbak-hell"><a href="#How-do-I-fix-callbak-hell" class="headerlink" title="How do I fix callbak hell?"></a>How do I fix callbak hell?</h3><p>Callback hell is caused by poor coding practices. Luckily writing better code isn’t that hard!</p>
+<p>You only need to follow <strong>three rules</strong>:</p>
+<h4 id="1-Keep-your-code-shallow"><a href="#1-Keep-your-code-shallow" class="headerlink" title="1. Keep your code shallow"></a>1. Keep your code shallow</h4><p>Here is some messy browser JavaScript that uses <a href="https://github.com/iriscouch/browser-request" target="_blank" rel="noopener">browser-request</a> to make an AJAX request to a server:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> form = <span class="built_in">document</span>.querySelector(<span class="string">'form'</span>)</span><br><span class="line">form.onsubmit = <span class="function"><span class="keyword">function</span>(<span class="params">submitEvent</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> name = <span class="built_in">document</span>.querySelector(<span class="string">'input'</span>).value</span><br><span class="line">	request(&#123;</span><br><span class="line">		uri: <span class="string">"http://example.com/upload"</span>,</span><br><span class="line">		body: name,</span><br><span class="line">		method: <span class="string">"POST"</span></span><br><span class="line">	&#125;, <span class="function"><span class="keyword">function</span>(<span class="params">err, response, body</span>) </span>&#123;</span><br><span class="line">		bar statusMessage = <span class="built_in">document</span>.querySelector(<span class="string">'.status'</span>)</span><br><span class="line">		<span class="keyword">if</span> (err) <span class="keyword">return</span> statusMessage.value = err</span><br><span class="line">		statusMessage.value = body</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p>This code has two anonymous function. Let’s give em names!</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> form = <span class="built_in">document</span>.querySelector(<span class="string">'form'</span>)</span><br><span class="line">form.onsubmit = <span class="function"><span class="keyword">function</span> <span class="title">formSubmit</span>(<span class="params">submitEvent</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> name = <span class="built_in">document</span>.querySelector(<span class="string">'input'</span>).value</span><br><span class="line">	request (&#123;</span><br><span class="line">		uri: <span class="string">"http://example.com/upload"</span>,</span><br><span class="line">		body: name,</span><br><span class="line">		method: <span class="string">"POST"</span></span><br><span class="line">	&#125;, <span class="function"><span class="keyword">function</span> <span class="title">postResponse</span> (<span class="params">err, response, body</span>) </span>&#123;</span><br><span class="line">		<span class="keyword">var</span> statusMessage = <span class="built_in">document</span>.querySelector(<span class="string">'.status'</span>)</span><br><span class="line">		<span class="keyword">if</span> (err) <span class="keyword">return</span> statusMessage.value = err</span><br><span class="line">		statusMessage.value = body</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p>As you can see naming functions is super easy and has some immediate benefits:</p>
+<ul>
+<li>makes code easier to read thanks to the descriptive function names</li>
+<li>when exception happen you will get stacktraces that reference actual function names into instead of “anonymous”</li>
+<li>allows you to move the functions and reference them by their names</li>
+</ul>
+<p>Now we can move the functions to the top level of our program:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.querySelector(<span class="string">'form'</span>).onsubmit = formSubmit</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">formSubmit</span> (<span class="params">submitEvent</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> name = <span class="built_in">document</span>.querySelector(<span class="string">'input'</span>).value</span><br><span class="line">	request (&#123;</span><br><span class="line">		uri: <span class="string">"http://example.com/upload"</span>,</span><br><span class="line">		body: name,</span><br><span class="line">		method: <span class="string">"POST"</span></span><br><span class="line">	&#125;, postResponse)	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">postResponse</span> (<span class="params">err, response, body</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> statusMessage = <span class="built_in">document</span>.querySelector(<span class="string">'.status'</span>)</span><br><span class="line">	<span class="keyword">if</span> (err) <span class="keyword">return</span> statusMessage.value = err</span><br><span class="line">	statusMessage.value = body</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p>Note that the <code>function</code> declarations here are defined at the bottom of the file. This is thanks to <a href="https://gist.github.com/maxogden/4bed247d9852de93c94c" target="_blank" rel="noopener">function hoisting</a>.</p>
+<h4 id="2-Modularize"><a href="#2-Modularize" class="headerlink" title="2. Modularize"></a>2. Modularize</h4><p>This is the most important part: <strong>Anyone is capable of creating modules</strong>(aka libraries). To quote <a href="http://twitter.com/izs" target="_blank" rel="noopener">Isaac Schlueter</a>(of the node.js project): “Write small modules that each do one thing, and assemble them into other modules that do a bigger thing. You can’t get into callback hell if you don’t go there.”</p>
+<p>Let’s take out the boilerplate code from above and turn it into a module by splitting it up into a couple of files. I’ll show a module pattern that works for either browser code or server code(or code that works in both):</p>
+<p>Here is a new file called <code>formuploader.js</code> that contains our two functions from before:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports.submit = formSubmit</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">formSubmit</span>(<span class="params">submitEvent</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> name = <span class="built_in">document</span>.querySelector(<span class="string">'input'</span>).value</span><br><span class="line">	request (&#123;</span><br><span class="line">		uri: <span class="string">"http://example.com/upload"</span>,</span><br><span class="line">		body: name,</span><br><span class="line">		method: <span class="string">"POST"</span></span><br><span class="line">	&#125;, postResponse)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">postResponse</span> (<span class="params">err, response, body</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> statusMessage = <span class="built_in">document</span>.querySelector(<span class="string">'.status'</span>)</span><br><span class="line">	<span class="keyword">if</span> (err) <span class="keyword">return</span> statusMessage.value = err</span><br><span class="line">	statusMessage.value = body</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p>The <code>module.exports</code> bit is an example of the node.js module system which works in node, Electron and the browser using <a href="https://github.com/substack/node-browserify" target="_blank" rel="noopener">browserify</a>. I quite like this style of modules because it works everywhere, is very simple to understand and doesn’t require complex configuration files or scripts.</p>
+<p>Now that we have <code>formploader.js</code>(and it is loaded in the page as a script tag after being browserified) we just need to require it and use it! Here is how our application specific code looks now:</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> formuploader = require(<span class="string">'formuploader'</span>)</span><br><span class="line"><span class="built_in">document</span>.<span class="built_in">querySelector</span>(<span class="string">'form'</span>).onsubmit = formUploader.submit</span><br></pre></td></tr></table></figure>
 
+<p>Now our application is only two lines of code and has the following benefits:</p>
+<ul>
+<li>easier for new developers to understand – they won’t geet bogged down by having to read through all of the <code>formuploader</code> functions</li>
+<li><code>formuploader</code> can get used in other places without duplicating code and can easily be shared on github or npm</li>
+</ul>
+<h4 id="3-Handle-every-single-error"><a href="#3-Handle-every-single-error" class="headerlink" title="3. Handle every single error"></a>3. Handle every single error</h4><p>There are different types of errors: syntax errors caused by the programmer(usually caught when you try to first run the program), runtime errors caused by the programmer(the code ran but had a bug that caused something to mess up), platform errors caused by things like invalid file permissions, hard drive failure, no network connection etc. This section is only meant to address this last class of errors.</p>
+<p>The first two rules are primarily about making your code readable, but this one is about making your code stable. When dealing with callbacks you are by definition dealing with tasks that get dispatched, go off and do something in the background, and then complete successfully or abort due to failure. Any experienced developer will tell you that you can never know when these errors happen, so you have to plan on them always happening.</p>
+<p>With callbacks the most popular way to handle errors is the Node.js style where the first argument to the callback is always reserved for an error.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>)</span><br><span class="line"></span><br><span class="line">fs.readFile(<span class="string">'/Does/not/exist'</span>, handleFile)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handleFile</span> (<span class="params">error, file</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (error) <span class="keyword">return</span> <span class="built_in">console</span>.error(<span class="string">'Uhoh, there was an error'</span>, error)</span><br><span class="line">	<span class="comment">// otherwise, continue on and use 'fle' in your code</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p>Having the first argument be the <code>error</code> is a simple convention that encourages you to remember to handle your errors. If it was the second argument you could write code like <code>function hanleFile(file) {}</code> and more easily ignore the error.</p>
+<p>Code linters can also be configured to help you remember to handle callback errors. The simplest one to use is called <a href="http://standardjs.com/" target="_blank" rel="noopener">standard</a>. All you have to do is run <code>$ standard</code> in your code folder and it will show you every callback in your code with an unhandled error.</p>
+</br>
 
+<p><strong>Summary</strong></p>
+<ol>
+<li>Don’t nest functions. Give them names and place them at the top level of your program</li>
+<li>Use <a href="https://gist.github.com/maxogden/4bed247d9852de93c94c" target="_blank" rel="noopener">function hoisting</a> to your advantage to move functions ‘below the fold’</li>
+<li>Handle <strong>every single error</strong> in every one of your callbacks. Use a linter like <a href="http://standardjs.com/" target="_blank" rel="noopener">standard</a> to help you with this.</li>
+<li>Create reusable functions and place them in a module to reduce the cognitive load required to understand your code. Splitting your code into small pieces like this also helps you handle errors, write tests, forces you to create a stable and documented public API for your code, and helps with refactoring.</li>
+</ol>
+<p>The most important aspect of avoiding callback hell is <strong>moving functions out of the way</strong> so that the programs flow can be more easily understood without newcomers having to wade through all the detail of the functions to get to the meat of what the program is trying to do.</p>
+<p>You can start by moving the functions to the bottom of the file, then graduate to moving them into another file that you load in using a relative require like <code>require(&#39;./photo-helpers.js&#39;)</code> and then finally move them into a standalone module like <code>require(j&#39;image-resize&#39;)</code>.</p>
+<p>Here are some rules of thumb when creating a module:</p>
+<ul>
+<li>Start by moving repeatedly used code into a function</li>
+<li>When your function(or a group of functions related to the same theme) get big enough, move them into another file and expose them using <code>module.exports</code>. You can load this using a relative require</li>
+<li>If you have some code that can be used across multiple projects give it it’s own readme, tests and <code>package.json</code> and public it to github and npm. There are too many awesome benefits to this specific approach to list here!</li>
+<li>A good module is small and focuses on one problem</li>
+<li>Individual files in a module should not be longer than around 150 lines of JavaScript</li>
+<li>A modlue shouldn’t have more than one level of nested folders full of JavaScript files. If it does, it is probably doing too many things</li>
+<li>Ask more experienced coders you know to show you examples of good modules until you have a good idea of what they look like. If it takes more than a few minutes to understand what is happening, it probably isn’t a very good module.</li>
+</ul>
+<p><strong>More reading</strong></p>
+<p>Try reading my <a href="">longer introduction to callbacks</a>, or try out some of <a href="">nodeschool</a> tutorials.</p>
+<p>Also check out the <a href="">browserify-handbook</a> for examples of writing modular code.</p>
+</br>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<p><strong>What about promises/generators/ES6 etc?</strong></p>
 
     </div>
 
@@ -415,7 +459,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#What-is-“callback-hell”"><span class="nav-text">What is “callback hell”?</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#What-are-callbacks"><span class="nav-text">What are callbacks?</span></a></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#What-is-“callback-hell”"><span class="nav-text">What is “callback hell”?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#What-are-callbacks"><span class="nav-text">What are callbacks?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#How-do-I-fix-callbak-hell"><span class="nav-text">How do I fix callbak hell?</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Keep-your-code-shallow"><span class="nav-text">1. Keep your code shallow</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Modularize"><span class="nav-text">2. Modularize</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Handle-every-single-error"><span class="nav-text">3. Handle every single error</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -520,7 +564,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">15:20</span>
+    <span title="站点阅读时长">15:27</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
