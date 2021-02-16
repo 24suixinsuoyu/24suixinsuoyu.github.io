@@ -30,7 +30,7 @@
 <meta property="og:description" content="Jean-Marc Valin · Mozilla Corporation · Mountain View, CA, USA · jmvalin@jmvalin.ca">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-02-10T16:47:07.000Z">
-<meta property="article:modified_time" content="2021-02-16T06:21:49.627Z">
+<meta property="article:modified_time" content="2021-02-16T10:02:27.753Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="RNNoise">
 <meta property="article:tag" content="Deep Learning">
@@ -216,7 +216,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-02-16 14:21:49" itemprop="dateModified" datetime="2021-02-16T14:21:49+08:00">2021-02-16</time>
+                <time title="修改时间：2021-02-16 18:02:27" itemprop="dateModified" datetime="2021-02-16T18:02:27+08:00">2021-02-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -234,14 +234,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>72</span>
+              <span>3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -258,6 +258,19 @@
 </blockquote>
 <a id="more"></a>
 
+<p><strong>Abstract-Despite noise suppression being a mature area in signal processing, it remains highly dependent on fine tuning of estimator algorithms and parameters. In this paper, we demonstrate a hybrid DSP/deep learning approach to noise suppression. We focus strongly on keeping the complexity as low as possible, while still achieving high-quality enhanced speech. A deep recurrent neural network with four hidden layers is used to estimate ideal critical band gains, while a more traditional pitch filter attenuates noise between pitch harmonics. The approach achieves significantly higher quality than a traditional minimum mean squared error spectral estimator, while keeping the complexity low enough for real-time operation at 48 kHz on a low-power CPU.</strong></p>
+<p><strong>Index Terms-noise suppression, recurrent neural network</strong></p>
+<h3 id="Ⅰ-INTRODUCTION"><a href="#Ⅰ-INTRODUCTION" class="headerlink" title="Ⅰ. INTRODUCTION"></a>Ⅰ. INTRODUCTION</h3><p>Noise suppression has been a topic of interest since at least the 70s. Despite significant improments in quality, the high level structure has remained mostly the same. Some form of spectral estimation technique relies on a noise spectral estimator, itself driven by a voice activity detector(VAD) or similar algorithm, as shown in Fig.1. Each of the 3 components requires accurate estimators and are difficult to tune. For example, the crude initial noise estimators and the spectral estimators based on spectral subtraction[1] have been replaced by more accurate noise estimators[2],[3] and spectral amplitude estimators[4]. Despite the improvements, these estimators have remained difficult to design and have required significant manual tuning effort. That is why recent advanced in deep learning techniques are appealing for noise suppression.</p>
+<p>Deep learning techniques are already being used for noise suppression[5],[6],[7],[8],[9]. Many of the proposed approached target automatic speech recognition(ASR) applications, where low latency is not required. Also, in many cases, the large size of the neural network makes a real-time implementation difficult without a GPU. In the proposed approach we focus on real-time applications(e.g. video-conference) with low complexity. We also focus on full-band(48 kHz) speech. To achieve these goals we choose a hybrid approach(Sec.Ⅱ), where we rely on proven signal processing techniques and use deep learning(Sec.Ⅲ) to replace the estimators that have traditionally been hard to correctly tune. The approach contrasts with so-called <em>end-to-end</em> systems where most or all of the signal processing operations are replaced by machine learning. These end-to-end system have clearly demonstrated the capabilities of deep learning, but they often come at the cost of significantly increased complexity.</p>
+<p>We show that the proposed approach has an acceptable complexity(Sec.Ⅳ) and that it provides better quality than more conventional approaches(Sec.Ⅴ). We conclude in Sec.Ⅵ with directions for further improvements to this approach.</p>
+<h3 id="Ⅱ-SIGNAL-MODEL"><a href="#Ⅱ-SIGNAL-MODEL" class="headerlink" title="Ⅱ . SIGNAL MODEL"></a>Ⅱ . SIGNAL MODEL</h3><p>We propose a hybrid approach to noise suppression. The goal is to use deep learning for the aspects of noise suppression that require careful tuning while using basic signal processing building blocks for parts that do not.</p>
+<p>The main processing loop is basd on 20 ms windows with 50% overlap(10ms offset). Both analysis and synthesis use the same Vorbis window[10], which satisfies the Princen-Bradley criterion[11]. The window is defined as</p>
+<p>where <em>N</em> is the window length.</p>
+<p>Ⅲ</p>
+<p>Ⅳ</p>
+<p>Ⅴ </p>
+<p>Ⅵ </p>
+<p>Ⅶ</p>
 
     </div>
 
@@ -369,6 +382,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Ⅰ-INTRODUCTION"><span class="nav-text">Ⅰ. INTRODUCTION</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ⅱ-SIGNAL-MODEL"><span class="nav-text">Ⅱ . SIGNAL MODEL</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -473,7 +487,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">15:33</span>
+    <span title="站点阅读时长">15:36</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
