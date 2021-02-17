@@ -30,7 +30,7 @@
 <meta property="og:description" content="Jean-Marc Valin · Mozilla Corporation · Mountain View, CA, USA · jmvalin@jmvalin.ca">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-02-10T16:47:07.000Z">
-<meta property="article:modified_time" content="2021-02-16T10:02:27.753Z">
+<meta property="article:modified_time" content="2021-02-17T04:10:20.548Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="RNNoise">
 <meta property="article:tag" content="Deep Learning">
@@ -216,7 +216,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-02-16 18:02:27" itemprop="dateModified" datetime="2021-02-16T18:02:27+08:00">2021-02-16</time>
+                <time title="修改时间：2021-02-17 12:10:20" itemprop="dateModified" datetime="2021-02-17T12:10:20+08:00">2021-02-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -234,14 +234,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3k</span>
+              <span>11k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>10 分钟</span>
             </span>
 
         </div>
@@ -266,8 +266,38 @@
 <h3 id="Ⅱ-SIGNAL-MODEL"><a href="#Ⅱ-SIGNAL-MODEL" class="headerlink" title="Ⅱ . SIGNAL MODEL"></a>Ⅱ . SIGNAL MODEL</h3><p>We propose a hybrid approach to noise suppression. The goal is to use deep learning for the aspects of noise suppression that require careful tuning while using basic signal processing building blocks for parts that do not.</p>
 <p>The main processing loop is basd on 20 ms windows with 50% overlap(10ms offset). Both analysis and synthesis use the same Vorbis window[10], which satisfies the Princen-Bradley criterion[11]. The window is defined as</p>
 <p>where <em>N</em> is the window length.</p>
-<p>Ⅲ</p>
-<p>Ⅳ</p>
+<p>The signal-level block diagram for the system is shown in Fig.2. The bulk of the suppression is performed on a low-resolution spectral envelope using gains computed from a recurrent neural network(RNN). Those gains are simply the square root of the ideal ratio mask(IRM). A finer suppression step attenuates the noise between pitch harmonics using a pitch comb filter.</p>
+<p><em>A. Band structure</em></p>
+<p>In the approach taken by [5], a neural network is used to directly estimate magnitudes of frequency bins and requires a total of 6144 hidden units and close to 10 million weights to process 8 kHz speech. Scaling to 48 kHz speech using 20 ms frames would require a network with 400 outputs(0 to 20 kHz), which clearly results in a higher complexity than we can afford.</p>
+<p>One way to avoid the problem is to assume that the spectral envelopes of the speech and noise and noise are sufficiently flat to use a coarser resolution than frequency bins. Also, rather than directly estimating spectral magnitudes, we instead estimate ideal critical band gains, which have the significant advantage of being bounded between 0 and 1. We choose to divide the spectrum into the same approximation of the Bark scale[12] as the Opus codec[13] uses. That is, the bands follow the Bark scale at high frequencies, but are always at least 4 bins at low frequencies. Rather than rectangular bands, we use triangular bands, with the peak response being at the boundary between bands. This results in a total of 22 bands. Our network therefore requires only 22 output values in the [0,1] range.</p>
+<p>Let w<sub>b</sub>(k) be the amplitude of band b at frequency k, we have Σ<sub>b</sub>w<sub>b</sub>(k) = 1. For a transformed signal X(k), the energy in a band is given by </p>
+<p>The per-band gain is defined as g<sub>b</sub></p>
+<p>where E<sub>s</sub>(b) is the energy of the clean(ground truth) speech and E<sub>x</sub>(b) is the energy of the input(noisy) speech. Considering an ideal band gain g^b, the following interpolated gain is applied to each frequency bin k:</p>
+<p><em>B. Pitch filtering</em></p>
+<p>The main disadvantage of using Bark-derived bands to compute the gain is that we cannot model finer details in the spectrum. In practice, this prevents noise suppression between pitch harmonics. As an alternative, we can use a comb filter at the pitch period to cancel the inter-harmonic noise in a similar way that speech codec post-filters operate[14]. Since the periodicity of speech signal depends heavily on frequency(especially for 48 kHz sampling rate), the pitch filter operates in the frequency domain based on a per-band filtering coefficient α<sub>b</sub>. Let P(k) be the windowed DFT of the pitch-delayed signal x(n - T), the filtering is performed by computing X(k) + α<sub>b</sub>P(k) and then renormalizing the resulting signal to have thte same energy in each band as the original signal X(k).</p>
+<p>The pitch correlation for band b is defined as</p>
+<p>where donotes the real part of a complex value and .* donotes the complex conjugate. Note that for a single band, (5) would be equivalent to the time-domain pitch correlation.</p>
+<p>Deriving the optimal values for the filtering coefficient α<sub>b</sub> is hard and the values that minimize mean squared error are not perceptually optimal. Instead, we use a heuristic based on the following constraints and observations. Since noise causes a decrease in the pitch correlation, we do not expect p<sub>b</sub> to be greater than gb on average, so for any band that has p<sub>b</sub> &gt; g<sbu>b</sub>, we use α<sub>b</sub> = 1. When there is no noise, we do not want to distort the signal, so when g<sub>b</sub> = 1, we use α<sub>b</sub> = 0. Similarly, when  p<sub>b</sub> = 0, we have no pitch to enhance, so α<sub>b</sub> = 0. Using the following expression for the filtering coefficient respects all these constraints with smooth behavior between them:</p>
+<p>Even though we use an FIR pitch filter here, it is also possible to compute P(k) based on an IIR pitch filter of the form H(z) = 1/(1  - βz<sup>-T</sup>), attenuation between harmonics at the cost of slightly increased distortion.</p>
+<p><em>C. Feature extraction</em></p>
+<p>In only makes sense for the input of the network to include the log spectrum of the noisy signal based on the same bands used for the output. To improve the conditioning of the training data, we apply a DCT on the log spectrum, which results in 22 Bark-frequency cepstral codfficients(BFCC). In addition to these, we also include the temporal derivative and the second temporal derivative of the first 6 BFCCs. Since we already need to compute the pitch in (5), we compute the DCT of the pitch correlation across frequency bands and include the first 6 coefficients in our set of features. At last, we include the pitch period as well as a spectral non-stationarity metric that can help in speech detection. In total we use 42 input features.</p>
+<p>Unlike the features typically used in speech recognition, these features do not use cepstral mean normalization and do include the first cepstral coefficient. The choice is deliberate given that we have to track the absolute level of the noise, but it does make the features sensitive to the absolute amplitude of the signal and to the channel frequency response. This is addressed in Sec.Ⅲ-A.</p>
+<h3 id="Ⅲ-DEEP-LEARNING-ARCHITECTURE"><a href="#Ⅲ-DEEP-LEARNING-ARCHITECTURE" class="headerlink" title="Ⅲ. DEEP LEARNING ARCHITECTURE"></a>Ⅲ. DEEP LEARNING ARCHITECTURE</h3><p>The neural network closely follows the traditional structure of noise suppression algorithms, as shown in Fig.3. The design is based on the assumption that the three recurrent layers are each responsible for one of the basic components from Fig.1. Of course, in practice the neural network is free to deviate from this assumption(and likely does to some extent). It includes a total of 215 units, 4 hidden layers, with the largest layer having 96 units. We find that increasing the number of units does not significanty improve the quality of the noise suppression. However, the loss function and the way we construct the training data have a large impact on the final quality. We find that gated recurrent unit(GRU)[15] slightly outperforms LSTM on this task, while also being simpler.</p>
+<p>Despite the fact that it is not strictly necessary, the network includes a VAD output. The extra complexity cost is very small(24 additional weights) and it improves training by ensuring that the corresponding GRU indeed learns to discriminate speech from noise.</p>
+<p><em>A. Training data</em></p>
+<p>Since the ground truth for the gains requires both the noisy speech and the clean speech, the training data has to be constructed artificailly by adding noise to clean speech data. For speech data, we use the McGill TSP speech database(French and English) and the NTT Multi-Lingual Speech Database for Telephonometry(21 languages). Various sources of noise are used, including computer fans, office, crowd, airplane, car, train, construction. The noise is mixed at different levels to produce a wide range of signal-to-noise ratios, iincluding clean speech and noise-only segments.</p>
+<p>Since we do not use epstral mean normalization, we use data augmentation to make the network robust to variations in frequency responses. This is achieved by filtering the noise and speech signal independently for each training example using a second order filter of the form</p>
+<p>where each of r<sub>1</sub>…r<sub>4</sub> are random values uniformly distributed in the [-3/8, 3/8] range. Robustness to the signal amplitude is achieved by varying the final level of the mixed signal.</p>
+<p>We have a total of 6 hours of speech and 4 hours of noise data, which we use to produce 140 hours of noisy speech by using various combinations of gains and filters and by resampling the data to frequencies between 40 kHz and 54 kHz.</p>
+<p><em>B. Optimization process</em></p>
+<p>The loss function used for training determines how the network weighs excessive attenuation versus insufficient attenuation when it cannot exactly determine the correct gains. Although it is common to use the binary cross-entropy function when optimizing for values in the [0, 1] range, this does not produce good results for the gains because it does not match their perceptual effect. For a gain estimate g<sub>b</sub> and the corresponding ground truth g<sub>b</sub>, we instead train with the loss function</p>
+<p>where the exponent γ is a perceptual parameter that controls how aggressively to suppress noise. Since minimizes the mean-squared error on the log-energy, which would make the suppression too aggressive given the lack of a floor on the gain. In practice, the value γ = 1 / 2 provides a good trade-off and is equivalent to minimizing the mean squared error on the energy raised to the power 1 / 4. Sometimes, there may be no noise and no speech in a particular band. This is common either when the input is silent or at high frequency when the signal is low-pass filtered. When that happens, the ground truth gain is explicitly marked as underfined and the loss function for that gain is ignored to avoid hurting the training process.</p>
+<p>For the VAD output of the network, we use the standard cross-entropy loss function. Training is performed using the Keras library with the Tensorflow backend.</p>
+<p><em>C. Gain smoothing</em></p>
+<p>When using the gain g<sub>b</sub> to suppress noise, the output signal can sometimes sound overly dry, lacking the minimum expected level of reverberation. The problem is easily remedied by limiting the decay of gb across frames. The smoothed gains g<sub>b</sub> are obtained as</p>
+<p>where is the filtered gain of the previous frame and the decay factor λ = 0.6 is equivalent to a reverberation time of 135 ms.</p>
+<h3 id="Ⅳ-COOMPLEXITY-ANALYSIS"><a href="#Ⅳ-COOMPLEXITY-ANALYSIS" class="headerlink" title="Ⅳ. COOMPLEXITY ANALYSIS"></a>Ⅳ. COOMPLEXITY ANALYSIS</h3><p>To make it easy to deploy noise suppression algorithms, it is desirable to keep both the size and the complexity low. The size of the executable is dominated by the 87,503 weights needed to represent the 215 units in the neural networks. To keep the size as small as possible, the weights can be quantized to 8 bits with no loss of performance. This makes it possible to fit all weights in the L2 cache of a CPU.</p>
+<p>Since each weight is used exactly once per frame in a multiply-add operation, the neural network requires 175,000 floating-point operations(we count a multiply-add as two operations) per frame, so 17.5 Mflops for real-time use. The IFFT and the two FFTs per frame require around 7.5 Mflops and the pitch search(which operates at 12 kHz) requires around 10 Mflops. The total complexity of the algorithm is around 40 Mflops, which is comparable to that of a full-band speech coder.</p>
 <p>Ⅴ </p>
 <p>Ⅵ </p>
 <p>Ⅶ</p>
@@ -382,7 +412,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Ⅰ-INTRODUCTION"><span class="nav-text">Ⅰ. INTRODUCTION</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ⅱ-SIGNAL-MODEL"><span class="nav-text">Ⅱ . SIGNAL MODEL</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Ⅰ-INTRODUCTION"><span class="nav-text">Ⅰ. INTRODUCTION</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ⅱ-SIGNAL-MODEL"><span class="nav-text">Ⅱ . SIGNAL MODEL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ⅲ-DEEP-LEARNING-ARCHITECTURE"><span class="nav-text">Ⅲ. DEEP LEARNING ARCHITECTURE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ⅳ-COOMPLEXITY-ANALYSIS"><span class="nav-text">Ⅳ. COOMPLEXITY ANALYSIS</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -487,7 +517,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">15:36</span>
+    <span title="站点阅读时长">15:44</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
