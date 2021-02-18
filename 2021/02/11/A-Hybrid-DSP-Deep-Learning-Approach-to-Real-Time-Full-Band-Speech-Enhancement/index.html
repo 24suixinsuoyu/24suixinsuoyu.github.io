@@ -30,7 +30,7 @@
 <meta property="og:description" content="Jean-Marc Valin · Mozilla Corporation · Mountain View, CA, USA · jmvalin@jmvalin.ca">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-02-10T16:47:07.000Z">
-<meta property="article:modified_time" content="2021-02-17T04:10:20.548Z">
+<meta property="article:modified_time" content="2021-02-18T03:26:02.685Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="RNNoise">
 <meta property="article:tag" content="Deep Learning">
@@ -216,7 +216,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-02-17 12:10:20" itemprop="dateModified" datetime="2021-02-17T12:10:20+08:00">2021-02-17</time>
+                <time title="修改时间：2021-02-18 11:26:02" itemprop="dateModified" datetime="2021-02-18T11:26:02+08:00">2021-02-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -234,14 +234,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>11k</span>
+              <span>16k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>10 分钟</span>
+              <span>15 分钟</span>
             </span>
 
         </div>
@@ -298,9 +298,29 @@
 <p>where is the filtered gain of the previous frame and the decay factor λ = 0.6 is equivalent to a reverberation time of 135 ms.</p>
 <h3 id="Ⅳ-COOMPLEXITY-ANALYSIS"><a href="#Ⅳ-COOMPLEXITY-ANALYSIS" class="headerlink" title="Ⅳ. COOMPLEXITY ANALYSIS"></a>Ⅳ. COOMPLEXITY ANALYSIS</h3><p>To make it easy to deploy noise suppression algorithms, it is desirable to keep both the size and the complexity low. The size of the executable is dominated by the 87,503 weights needed to represent the 215 units in the neural networks. To keep the size as small as possible, the weights can be quantized to 8 bits with no loss of performance. This makes it possible to fit all weights in the L2 cache of a CPU.</p>
 <p>Since each weight is used exactly once per frame in a multiply-add operation, the neural network requires 175,000 floating-point operations(we count a multiply-add as two operations) per frame, so 17.5 Mflops for real-time use. The IFFT and the two FFTs per frame require around 7.5 Mflops and the pitch search(which operates at 12 kHz) requires around 10 Mflops. The total complexity of the algorithm is around 40 Mflops, which is comparable to that of a full-band speech coder.</p>
-<p>Ⅴ </p>
-<p>Ⅵ </p>
-<p>Ⅶ</p>
+<p>A non-vectorized C implementation of the algorithm requires around 1.3% of a single x86 core(Haswell i7-4800MQ) to perform 48 kHz noise suppression of a single channel. The real-time complexity of the same floating-point code on a 1.2 GHz ARM Cortex-A53 core(Raspberry Pi 3) is 14%.</p>
+<p>As a comparison, the 16 kHz speech enhancement approach in [9] uses 3 hidden layers, each with 2048 units. This requires 12.5 million weights and results in a complexity of 1600 Mflops. Even if quantized to 8 bits, the weights do not fit the cache of most CPUs, requiring around 800 MB/s of memory bandwidth for real-time operation.</p>
+<h3 id="Ⅴ-RESULTS"><a href="#Ⅴ-RESULTS" class="headerlink" title="Ⅴ. RESULTS"></a>Ⅴ. RESULTS</h3><p>We test the quality of the noise suppression using speech and noise data not used in the training set. We compare it to the MMSE-based noise suppressor in the SpeexDSP library. Although the noise suppression operates at 48 kHz, the output has to be resampled to 16 kHz due to the limitations of wideband PESQ[16]. The objective results in Fig.5 show a significant improvement in quality from the use of deep learning, especially for non-stationary noise types. The improvement is confirmed by casual listening of the samples. Fig.4 shows the effect of the noise suppression on an example.</p>
+<p>An interactive demonstration of the proposed system is available at <a href="https://people.xiph.org/~jm/demo/rnnoise/" target="_blank" rel="noopener">https://people.xiph.org/~jm/demo/rnnoise/</a>, including a real-time Javasript implementation. The software implementing the proposed system can be obtained under a BSD license at <a href="https://github.com/xiph/rnnoise/" target="_blank" rel="noopener">https://github.com/xiph/rnnoise/</a> and the results were produced using commit hash 91ef401.</p>
+<h3 id="Ⅵ-CONCLUSION"><a href="#Ⅵ-CONCLUSION" class="headerlink" title="Ⅵ. CONCLUSION"></a>Ⅵ. CONCLUSION</h3><p>This paper demonstrates a noise suppression approach that combines DSP-based techniques with deep learning. By using deep learning only for the aspects of noise suppression that are hard to tune, the problem is simplified to computing only 22 ideal critical band gains, which can be done efficiently using few units. The coarse resolution of the bands is then addressed by using a simple pitch filter. The resulting low complexity makes the approach suitable for use in mobile or embeded devices and the latency is low enough for use in video-conferencing systems. We also demonstrate that the quality is significantly higher than that of a pure signal processing-based approach.</p>
+<p>We believe that the technique can be easily extended to residual echo suppression, for example by adding to the input features the cepstrum of the far end signal or the filtered far end signal. Similarly, it should be applicable to microphone array post-filtering by augmenting the input features  with leakage estimates like in [17].</p>
+<h3 id="Ⅶ-REFERENCES"><a href="#Ⅶ-REFERENCES" class="headerlink" title="Ⅶ. REFERENCES"></a>Ⅶ. REFERENCES</h3><p>[1] S. Boll, “Suppresion of acoustic noise in speech using spectral subtraction”, <em>IEEE Transactions on acoustics, speech, and signal processing</em>, vol. 27, no. 2, pp. 113-120, 1979.</p>
+<p>[2] H.-G. Hirsch and C. Ehrlicher, “Noise estimation techniques for robust speech recognition,” in <em>Proc. ICASSP</em>, 1995, vol. 1, pp. 153-156.</p>
+<p>[3] T. Gerkmann and R.C. Hendriks, “Unbiased MMSE-based noise power estimation with low complexity and low tracking delay,” <em>IEEE Transactions on Audio, Speech, and Language Processing</em>, vol. 20, no. 4, pp. 1383-1393, 2012.</p>
+<p>[4] Y. Ephraim and D. Malah, “Speech enhancement using a minimum mean-square error log-spectral amplitude estimator,” <em>IEEE Transactions on Acoustics, Speech, and Signal Processing</em>, vol. 33, no. 2, pp. 443-445, 1985.</p>
+<p>[5] A. Maas, Q.V. Le, T.M. O’Neil, O. Vinyals, P. Nguyen, and A.Y. Ng, “Recurrent neural networks for noise reduction in robust ASR,” in <em>Proc. INTERSPEECH</em>, 2012.</p>
+<p>[6] D. Liu, P. Smaragdis, and M. Kim, “Experiments on deep learning for speech denoising,” in <em>Proc. Fifteenth Annual Conference of the International Speech Communication Association</em>, 2014.</p>
+<p>[7] Y.Xu, J. Du, L.-R. Dai, and C.-H.Lee, “A regression approach to speech enhancement based on deep neural networks,” <em>IEEE Transactions on Audio, Speech and Language Processing</em>, vol. 23, no. 1, pp. 7-19, 2015.</p>
+<p>[8] A. Narayanan and D. Wang, “Ideal ratio mask estimation using deep neural networks for robust speech recognition,” in <em>Proc. ICASSP</em>, 2013, pp. 7092-7096.</p>
+<p>[9]  S. Mirsamadi and I. Tashev, “Causal speech enhancement combining data-driven learning and suppression rule estimation,” in <em>Proc. INTERSPEECH</em>, 2016, pp. 2087-2874.</p>
+<p>[10] C. Montgomery, “Vorbis I specification,” 2004.</p>
+<p>[11] J. Princen and A. Bradley, “Analysis/synthesis filter bank design based on time domain aliasing cancellation,” <em>IEEE Tran. on Acoustics, Speech, and Signal Processing</em>, vol. 34, no. 5, pp. 1153-1161, 1986.</p>
+<p>[12] B.C.J. Moore, <em>An introduction to the psychology of hearing</em>, Brill, 2012.</p>
+<p>[13] J.-M. Valin, G. Maxwell, T. B. Terriberry, and K. Vos, “High-quality, low-delay music coding in the Opus codec,” in <em>Proc. 135th AES Convention</em>, 2013.</p>
+<p>[14] Juin-Hwey Chen and Allen Gersho, “Adaptive postfiltering for quality enhancement of coded speech,” <em>IEEE Transactions on Speech and Audio Processing</em>, vol. 3, no. 1, pp. 59-71, 1995.</p>
+<p>[15] K. Cho, B. Van Merrienboer, D. Bahdanau, and Y. Bengio, “On the properties of neural machine translation: Encoder-decoder approaches,” in <em>Proc. Eighth Workshop on Syntax, Semantics and Structure in Statistical Translation(SSST-8)</em>, 2014.</p>
+<p>[16] ITU-T, <em>Perceptual evaluation of speech quality(PESQ): An objective method for end-to-end speech quality assessment of narrow-band telephone networks and speech codecs</em>, 2001.</p>
+<p>[17] J.-M. Valin, J. Rouat, and F. Michaud, “Microphone array post-filter for separation of simultaneous non-stationary sources,” in <em>Proc, ICASSP</em>, 2004.</p>
 
     </div>
 
@@ -412,7 +432,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Ⅰ-INTRODUCTION"><span class="nav-text">Ⅰ. INTRODUCTION</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ⅱ-SIGNAL-MODEL"><span class="nav-text">Ⅱ . SIGNAL MODEL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ⅲ-DEEP-LEARNING-ARCHITECTURE"><span class="nav-text">Ⅲ. DEEP LEARNING ARCHITECTURE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ⅳ-COOMPLEXITY-ANALYSIS"><span class="nav-text">Ⅳ. COOMPLEXITY ANALYSIS</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Ⅰ-INTRODUCTION"><span class="nav-text">Ⅰ. INTRODUCTION</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ⅱ-SIGNAL-MODEL"><span class="nav-text">Ⅱ . SIGNAL MODEL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ⅲ-DEEP-LEARNING-ARCHITECTURE"><span class="nav-text">Ⅲ. DEEP LEARNING ARCHITECTURE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ⅳ-COOMPLEXITY-ANALYSIS"><span class="nav-text">Ⅳ. COOMPLEXITY ANALYSIS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ⅴ-RESULTS"><span class="nav-text">Ⅴ. RESULTS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ⅵ-CONCLUSION"><span class="nav-text">Ⅵ. CONCLUSION</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ⅶ-REFERENCES"><span class="nav-text">Ⅶ. REFERENCES</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -517,7 +537,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">15:44</span>
+    <span title="站点阅读时长">15:48</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
