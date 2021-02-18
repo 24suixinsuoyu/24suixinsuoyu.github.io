@@ -29,13 +29,28 @@
 <meta property="og:site_name" content="隋钟元’s Blog">
 <meta property="og:description" content="Jean-Marc Valin · Mozilla Corporation · Mountain View, CA, USA · jmvalin@jmvalin.ca">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gnrjriwwm0j30vk0kcabv.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gnrjturj6qj30qs0443yt.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gnrjv6s7tij30z60jitar.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gnrjwp0dbqj30qs04caac.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gnrjx70kx8j30nu05ojrr.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gnrjxqw3srj30ps04kt8x.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gnrjyadecbj30y605yq3o.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gnrjzg8ohdj30v405q3z5.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gnrk0624exj30uk0u0q6x.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gnrk5h3v3aj30ti046dg6.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gnrkbkhpuhj30rs03yaa8.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gnrkff9om7j30qy03y74k.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gnrkb540z0j30x20u0kjs.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gnrkg75u3qj32080po43s.jpg">
 <meta property="article:published_time" content="2021-02-10T16:47:07.000Z">
-<meta property="article:modified_time" content="2021-02-18T03:26:02.685Z">
+<meta property="article:modified_time" content="2021-02-18T04:19:43.518Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="RNNoise">
 <meta property="article:tag" content="Deep Learning">
 <meta property="article:tag" content="Speech Enhancement">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gnrjriwwm0j30vk0kcabv.jpg">
 
 <link rel="canonical" href="http://24suixinsuoyu.com/2021/02/11/A-Hybrid-DSP-Deep-Learning-Approach-to-Real-Time-Full-Band-Speech-Enhancement/">
 
@@ -216,7 +231,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-02-18 11:26:02" itemprop="dateModified" datetime="2021-02-18T11:26:02+08:00">2021-02-18</time>
+                <time title="修改时间：2021-02-18 12:19:43" itemprop="dateModified" datetime="2021-02-18T12:19:43+08:00">2021-02-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -234,7 +249,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>16k</span>
+              <span>17k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -262,45 +277,69 @@
 <p><strong>Index Terms-noise suppression, recurrent neural network</strong></p>
 <h3 id="Ⅰ-INTRODUCTION"><a href="#Ⅰ-INTRODUCTION" class="headerlink" title="Ⅰ. INTRODUCTION"></a>Ⅰ. INTRODUCTION</h3><p>Noise suppression has been a topic of interest since at least the 70s. Despite significant improments in quality, the high level structure has remained mostly the same. Some form of spectral estimation technique relies on a noise spectral estimator, itself driven by a voice activity detector(VAD) or similar algorithm, as shown in Fig.1. Each of the 3 components requires accurate estimators and are difficult to tune. For example, the crude initial noise estimators and the spectral estimators based on spectral subtraction[1] have been replaced by more accurate noise estimators[2],[3] and spectral amplitude estimators[4]. Despite the improvements, these estimators have remained difficult to design and have required significant manual tuning effort. That is why recent advanced in deep learning techniques are appealing for noise suppression.</p>
 <p>Deep learning techniques are already being used for noise suppression[5],[6],[7],[8],[9]. Many of the proposed approached target automatic speech recognition(ASR) applications, where low latency is not required. Also, in many cases, the large size of the neural network makes a real-time implementation difficult without a GPU. In the proposed approach we focus on real-time applications(e.g. video-conference) with low complexity. We also focus on full-band(48 kHz) speech. To achieve these goals we choose a hybrid approach(Sec.Ⅱ), where we rely on proven signal processing techniques and use deep learning(Sec.Ⅲ) to replace the estimators that have traditionally been hard to correctly tune. The approach contrasts with so-called <em>end-to-end</em> systems where most or all of the signal processing operations are replaced by machine learning. These end-to-end system have clearly demonstrated the capabilities of deep learning, but they often come at the cost of significantly increased complexity.</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gnrjriwwm0j30vk0kcabv.jpg" alt="Figure 1"></p>
+<center style="font-size:14px;color:#C0C0C0;text-decoration:underline">Figure 1. High-level structure of most noise suppression algorithms.</center>
+
 <p>We show that the proposed approach has an acceptable complexity(Sec.Ⅳ) and that it provides better quality than more conventional approaches(Sec.Ⅴ). We conclude in Sec.Ⅵ with directions for further improvements to this approach.</p>
 <h3 id="Ⅱ-SIGNAL-MODEL"><a href="#Ⅱ-SIGNAL-MODEL" class="headerlink" title="Ⅱ . SIGNAL MODEL"></a>Ⅱ . SIGNAL MODEL</h3><p>We propose a hybrid approach to noise suppression. The goal is to use deep learning for the aspects of noise suppression that require careful tuning while using basic signal processing building blocks for parts that do not.</p>
 <p>The main processing loop is basd on 20 ms windows with 50% overlap(10ms offset). Both analysis and synthesis use the same Vorbis window[10], which satisfies the Princen-Bradley criterion[11]. The window is defined as</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gnrjturj6qj30qs0443yt.jpg" alt="1"></p>
 <p>where <em>N</em> is the window length.</p>
 <p>The signal-level block diagram for the system is shown in Fig.2. The bulk of the suppression is performed on a low-resolution spectral envelope using gains computed from a recurrent neural network(RNN). Those gains are simply the square root of the ideal ratio mask(IRM). A finer suppression step attenuates the noise between pitch harmonics using a pitch comb filter.</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gnrjv6s7tij30z60jitar.jpg" alt="Figure 2"></p>
+<center style="font-size:14px;color:#C0C0C0;text-decoration:underline">Figure 2. Block diagram.</center>
+
 <p><em>A. Band structure</em></p>
 <p>In the approach taken by [5], a neural network is used to directly estimate magnitudes of frequency bins and requires a total of 6144 hidden units and close to 10 million weights to process 8 kHz speech. Scaling to 48 kHz speech using 20 ms frames would require a network with 400 outputs(0 to 20 kHz), which clearly results in a higher complexity than we can afford.</p>
 <p>One way to avoid the problem is to assume that the spectral envelopes of the speech and noise and noise are sufficiently flat to use a coarser resolution than frequency bins. Also, rather than directly estimating spectral magnitudes, we instead estimate ideal critical band gains, which have the significant advantage of being bounded between 0 and 1. We choose to divide the spectrum into the same approximation of the Bark scale[12] as the Opus codec[13] uses. That is, the bands follow the Bark scale at high frequencies, but are always at least 4 bins at low frequencies. Rather than rectangular bands, we use triangular bands, with the peak response being at the boundary between bands. This results in a total of 22 bands. Our network therefore requires only 22 output values in the [0,1] range.</p>
 <p>Let w<sub>b</sub>(k) be the amplitude of band b at frequency k, we have Σ<sub>b</sub>w<sub>b</sub>(k) = 1. For a transformed signal X(k), the energy in a band is given by </p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gnrjwp0dbqj30qs04caac.jpg" alt="2"></p>
 <p>The per-band gain is defined as g<sub>b</sub></p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gnrjx70kx8j30nu05ojrr.jpg" alt="3"></p>
 <p>where E<sub>s</sub>(b) is the energy of the clean(ground truth) speech and E<sub>x</sub>(b) is the energy of the input(noisy) speech. Considering an ideal band gain g^b, the following interpolated gain is applied to each frequency bin k:</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gnrjxqw3srj30ps04kt8x.jpg" alt="4"></p>
 <p><em>B. Pitch filtering</em></p>
 <p>The main disadvantage of using Bark-derived bands to compute the gain is that we cannot model finer details in the spectrum. In practice, this prevents noise suppression between pitch harmonics. As an alternative, we can use a comb filter at the pitch period to cancel the inter-harmonic noise in a similar way that speech codec post-filters operate[14]. Since the periodicity of speech signal depends heavily on frequency(especially for 48 kHz sampling rate), the pitch filter operates in the frequency domain based on a per-band filtering coefficient α<sub>b</sub>. Let P(k) be the windowed DFT of the pitch-delayed signal x(n - T), the filtering is performed by computing X(k) + α<sub>b</sub>P(k) and then renormalizing the resulting signal to have thte same energy in each band as the original signal X(k).</p>
 <p>The pitch correlation for band b is defined as</p>
-<p>where donotes the real part of a complex value and .* donotes the complex conjugate. Note that for a single band, (5) would be equivalent to the time-domain pitch correlation.</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gnrjyadecbj30y605yq3o.jpg" alt="5"></p>
+<p>where R[·] donotes the real part of a complex value and .* donotes the complex conjugate. Note that for a single band, (5) would be equivalent to the time-domain pitch correlation.</p>
 <p>Deriving the optimal values for the filtering coefficient α<sub>b</sub> is hard and the values that minimize mean squared error are not perceptually optimal. Instead, we use a heuristic based on the following constraints and observations. Since noise causes a decrease in the pitch correlation, we do not expect p<sub>b</sub> to be greater than gb on average, so for any band that has p<sub>b</sub> &gt; g<sbu>b</sub>, we use α<sub>b</sub> = 1. When there is no noise, we do not want to distort the signal, so when g<sub>b</sub> = 1, we use α<sub>b</sub> = 0. Similarly, when  p<sub>b</sub> = 0, we have no pitch to enhance, so α<sub>b</sub> = 0. Using the following expression for the filtering coefficient respects all these constraints with smooth behavior between them:</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gnrjzg8ohdj30v405q3z5.jpg" alt="6"></p>
 <p>Even though we use an FIR pitch filter here, it is also possible to compute P(k) based on an IIR pitch filter of the form H(z) = 1/(1  - βz<sup>-T</sup>), attenuation between harmonics at the cost of slightly increased distortion.</p>
 <p><em>C. Feature extraction</em></p>
 <p>In only makes sense for the input of the network to include the log spectrum of the noisy signal based on the same bands used for the output. To improve the conditioning of the training data, we apply a DCT on the log spectrum, which results in 22 Bark-frequency cepstral codfficients(BFCC). In addition to these, we also include the temporal derivative and the second temporal derivative of the first 6 BFCCs. Since we already need to compute the pitch in (5), we compute the DCT of the pitch correlation across frequency bands and include the first 6 coefficients in our set of features. At last, we include the pitch period as well as a spectral non-stationarity metric that can help in speech detection. In total we use 42 input features.</p>
 <p>Unlike the features typically used in speech recognition, these features do not use cepstral mean normalization and do include the first cepstral coefficient. The choice is deliberate given that we have to track the absolute level of the noise, but it does make the features sensitive to the absolute amplitude of the signal and to the channel frequency response. This is addressed in Sec.Ⅲ-A.</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gnrk0624exj30uk0u0q6x.jpg" alt="Figure 3"></p>
+<center style="font-size:14px;color:#C0C0C0;text-decoration:underline">Figure 3. Architecture of the neural network, showing the feed-forward, fully connected(dense) layers and the recurrent layers, along with the activation function and the number of units for each layer.</center>
+
 <h3 id="Ⅲ-DEEP-LEARNING-ARCHITECTURE"><a href="#Ⅲ-DEEP-LEARNING-ARCHITECTURE" class="headerlink" title="Ⅲ. DEEP LEARNING ARCHITECTURE"></a>Ⅲ. DEEP LEARNING ARCHITECTURE</h3><p>The neural network closely follows the traditional structure of noise suppression algorithms, as shown in Fig.3. The design is based on the assumption that the three recurrent layers are each responsible for one of the basic components from Fig.1. Of course, in practice the neural network is free to deviate from this assumption(and likely does to some extent). It includes a total of 215 units, 4 hidden layers, with the largest layer having 96 units. We find that increasing the number of units does not significanty improve the quality of the noise suppression. However, the loss function and the way we construct the training data have a large impact on the final quality. We find that gated recurrent unit(GRU)[15] slightly outperforms LSTM on this task, while also being simpler.</p>
 <p>Despite the fact that it is not strictly necessary, the network includes a VAD output. The extra complexity cost is very small(24 additional weights) and it improves training by ensuring that the corresponding GRU indeed learns to discriminate speech from noise.</p>
 <p><em>A. Training data</em></p>
 <p>Since the ground truth for the gains requires both the noisy speech and the clean speech, the training data has to be constructed artificailly by adding noise to clean speech data. For speech data, we use the McGill TSP speech database(French and English) and the NTT Multi-Lingual Speech Database for Telephonometry(21 languages). Various sources of noise are used, including computer fans, office, crowd, airplane, car, train, construction. The noise is mixed at different levels to produce a wide range of signal-to-noise ratios, iincluding clean speech and noise-only segments.</p>
 <p>Since we do not use epstral mean normalization, we use data augmentation to make the network robust to variations in frequency responses. This is achieved by filtering the noise and speech signal independently for each training example using a second order filter of the form</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gnrk5h3v3aj30ti046dg6.jpg" alt="7"></p>
 <p>where each of r<sub>1</sub>…r<sub>4</sub> are random values uniformly distributed in the [-3/8, 3/8] range. Robustness to the signal amplitude is achieved by varying the final level of the mixed signal.</p>
 <p>We have a total of 6 hours of speech and 4 hours of noise data, which we use to produce 140 hours of noisy speech by using various combinations of gains and filters and by resampling the data to frequencies between 40 kHz and 54 kHz.</p>
 <p><em>B. Optimization process</em></p>
 <p>The loss function used for training determines how the network weighs excessive attenuation versus insufficient attenuation when it cannot exactly determine the correct gains. Although it is common to use the binary cross-entropy function when optimizing for values in the [0, 1] range, this does not produce good results for the gains because it does not match their perceptual effect. For a gain estimate g<sub>b</sub> and the corresponding ground truth g<sub>b</sub>, we instead train with the loss function</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gnrkbkhpuhj30rs03yaa8.jpg" alt="8"></p>
 <p>where the exponent γ is a perceptual parameter that controls how aggressively to suppress noise. Since minimizes the mean-squared error on the log-energy, which would make the suppression too aggressive given the lack of a floor on the gain. In practice, the value γ = 1 / 2 provides a good trade-off and is equivalent to minimizing the mean squared error on the energy raised to the power 1 / 4. Sometimes, there may be no noise and no speech in a particular band. This is common either when the input is silent or at high frequency when the signal is low-pass filtered. When that happens, the ground truth gain is explicitly marked as underfined and the loss function for that gain is ignored to avoid hurting the training process.</p>
 <p>For the VAD output of the network, we use the standard cross-entropy loss function. Training is performed using the Keras library with the Tensorflow backend.</p>
 <p><em>C. Gain smoothing</em></p>
 <p>When using the gain g<sub>b</sub> to suppress noise, the output signal can sometimes sound overly dry, lacking the minimum expected level of reverberation. The problem is easily remedied by limiting the decay of gb across frames. The smoothed gains g<sub>b</sub> are obtained as</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gnrkff9om7j30qy03y74k.jpg" alt="9"></p>
 <p>where is the filtered gain of the previous frame and the decay factor λ = 0.6 is equivalent to a reverberation time of 135 ms.</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gnrkb540z0j30x20u0kjs.jpg" alt="Figure 4"></p>
+<center style="font-size:14px;color:#C0C0C0;text-decoration:underline">Figure 4. Example of noise suppression for babble noise at 15dB SNR. Spectrogram of the noisy(top), denoised(middle), and clean(bottom) speech. For the sake of clarity, only the 0-12 kHz band is shown.</center>
+
 <h3 id="Ⅳ-COOMPLEXITY-ANALYSIS"><a href="#Ⅳ-COOMPLEXITY-ANALYSIS" class="headerlink" title="Ⅳ. COOMPLEXITY ANALYSIS"></a>Ⅳ. COOMPLEXITY ANALYSIS</h3><p>To make it easy to deploy noise suppression algorithms, it is desirable to keep both the size and the complexity low. The size of the executable is dominated by the 87,503 weights needed to represent the 215 units in the neural networks. To keep the size as small as possible, the weights can be quantized to 8 bits with no loss of performance. This makes it possible to fit all weights in the L2 cache of a CPU.</p>
 <p>Since each weight is used exactly once per frame in a multiply-add operation, the neural network requires 175,000 floating-point operations(we count a multiply-add as two operations) per frame, so 17.5 Mflops for real-time use. The IFFT and the two FFTs per frame require around 7.5 Mflops and the pitch search(which operates at 12 kHz) requires around 10 Mflops. The total complexity of the algorithm is around 40 Mflops, which is comparable to that of a full-band speech coder.</p>
 <p>A non-vectorized C implementation of the algorithm requires around 1.3% of a single x86 core(Haswell i7-4800MQ) to perform 48 kHz noise suppression of a single channel. The real-time complexity of the same floating-point code on a 1.2 GHz ARM Cortex-A53 core(Raspberry Pi 3) is 14%.</p>
 <p>As a comparison, the 16 kHz speech enhancement approach in [9] uses 3 hidden layers, each with 2048 units. This requires 12.5 million weights and results in a complexity of 1600 Mflops. Even if quantized to 8 bits, the weights do not fit the cache of most CPUs, requiring around 800 MB/s of memory bandwidth for real-time operation.</p>
 <h3 id="Ⅴ-RESULTS"><a href="#Ⅴ-RESULTS" class="headerlink" title="Ⅴ. RESULTS"></a>Ⅴ. RESULTS</h3><p>We test the quality of the noise suppression using speech and noise data not used in the training set. We compare it to the MMSE-based noise suppressor in the SpeexDSP library. Although the noise suppression operates at 48 kHz, the output has to be resampled to 16 kHz due to the limitations of wideband PESQ[16]. The objective results in Fig.5 show a significant improvement in quality from the use of deep learning, especially for non-stationary noise types. The improvement is confirmed by casual listening of the samples. Fig.4 shows the effect of the noise suppression on an example.</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gnrkg75u3qj32080po43s.jpg" alt="Figure 5"></p>
+<center style="font-size:14px;color:#C0C0C0;text-decoration:underline">Figure 5. PESQ-MQS_LQO quality evaluation for babble, car and street noise.</center>
+
 <p>An interactive demonstration of the proposed system is available at <a href="https://people.xiph.org/~jm/demo/rnnoise/" target="_blank" rel="noopener">https://people.xiph.org/~jm/demo/rnnoise/</a>, including a real-time Javasript implementation. The software implementing the proposed system can be obtained under a BSD license at <a href="https://github.com/xiph/rnnoise/" target="_blank" rel="noopener">https://github.com/xiph/rnnoise/</a> and the results were produced using commit hash 91ef401.</p>
 <h3 id="Ⅵ-CONCLUSION"><a href="#Ⅵ-CONCLUSION" class="headerlink" title="Ⅵ. CONCLUSION"></a>Ⅵ. CONCLUSION</h3><p>This paper demonstrates a noise suppression approach that combines DSP-based techniques with deep learning. By using deep learning only for the aspects of noise suppression that are hard to tune, the problem is simplified to computing only 22 ideal critical band gains, which can be done efficiently using few units. The coarse resolution of the bands is then addressed by using a simple pitch filter. The resulting low complexity makes the approach suitable for use in mobile or embeded devices and the latency is low enough for use in video-conferencing systems. We also demonstrate that the quality is significantly higher than that of a pure signal processing-based approach.</p>
 <p>We believe that the technique can be easily extended to residual echo suppression, for example by adding to the input features the cepstrum of the far end signal or the filtered far end signal. Similarly, it should be applicable to microphone array post-filtering by augmenting the input features  with leakage estimates like in [17].</p>
