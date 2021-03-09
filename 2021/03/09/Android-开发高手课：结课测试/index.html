@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. 关于 Android 崩溃，哪个描述是正确的（）">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-03-09T01:54:50.000Z">
-<meta property="article:modified_time" content="2021-03-09T03:27:00.041Z">
+<meta property="article:modified_time" content="2021-03-09T03:31:42.159Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="结课测试">
 <meta property="article:tag" content="Android 开发高手">
@@ -209,7 +209,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-03-09 09:54:50 / 修改时间：11:27:00" itemprop="dateCreated datePublished" datetime="2021-03-09T09:54:50+08:00">2021-03-09</time>
+              <time title="创建时间：2021-03-09 09:54:50 / 修改时间：11:31:42" itemprop="dateCreated datePublished" datetime="2021-03-09T09:54:50+08:00">2021-03-09</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -249,13 +249,11 @@
         <h4 id="1-关于-Android-崩溃，哪个描述是正确的（）"><a href="#1-关于-Android-崩溃，哪个描述是正确的（）" class="headerlink" title="1. 关于 Android 崩溃，哪个描述是正确的（）"></a>1. 关于 Android 崩溃，哪个描述是正确的（）</h4><a id="more"></a>
 
 <ul>
-<li><p>所有的异常都可以被捕获</p>
-</li>
-<li><p>崩溃率越低越好，所以要尽量把所有崩溃都 catch 掉</p>
-</li>
-<li><p>因为系统导致的崩溃，我们无法解决</p>
-</li>
-<li><p><strong>崩溃率是衡量应用稳定性的一个基础指标，崩溃率高低与应用时长、复杂的等因素都有关</strong></p>
+<li>所有的异常都可以被捕获</li>
+<li>崩溃率越低越好，所以要尽量把所有崩溃都 catch 掉</li>
+<li>因为系统导致的崩溃，我们无法解决</li>
+<li><strong>崩溃率是衡量应用稳定性的一个基础指标，崩溃率高低与应用时长、复杂的等因素都有关</strong></li>
+</ul>
 <blockquote>
 <p>题目解析</p>
 <p>A 选项，并不是所有的异常都可以被捕获，例如系统重启、用户强杀等都无法捕获，所以增加了异常率的统计</p>
@@ -263,16 +261,12 @@
 <p>C 选项，很多系统 ROM 导致的崩溃，都可以通过反射或者 hook 解决</p>
 <p>D 选项，崩溃率是衡量应用稳定性的基础指标，但是不同类型的应用崩溃率不太好直接比较，跟应用复杂度、用户时长等都有关系</p>
 </blockquote>
-</li>
-</ul>
 <h4 id="2-关于内存优化，哪些描述是错误的（）"><a href="#2-关于内存优化，哪些描述是错误的（）" class="headerlink" title="2. 关于内存优化，哪些描述是错误的（）"></a>2. 关于内存优化，哪些描述是错误的（）</h4><ul>
-<li><p><strong>手机内存越来越大，内存优化的意义并不大</strong></p>
-</li>
-<li><p><strong>内存越大越好，6G 内存一定比 4G 内存好</strong></p>
-</li>
-<li><p><strong>内存占用越少越好，占用越少应用的性能越好</strong></p>
-</li>
-<li><p><strong>Native 内存并不会造成虚拟机 OOM，可以随意使用</strong></p>
+<li><strong>手机内存越来越大，内存优化的意义并不大</strong></li>
+<li><strong>内存越大越好，6G 内存一定比 4G 内存好</strong></li>
+<li><strong>内存占用越少越好，占用越少应用的性能越好</strong></li>
+<li><strong>Native 内存并不会造成虚拟机 OOM，可以随意使用</strong></li>
+</ul>
 <blockquote>
 <p>题目解析</p>
 <p>A 选项，虽然当前设备内存越来越大，但是应用复杂度也越来越大，合理地使用内存对应用依然重要</p>
@@ -280,16 +274,12 @@
 <p>C 选项，内存占用并不是越少越好，当系统内存充足的时候，我们可以多用一些内存来获得更好的性能</p>
 <p>D 选项，Native 内存滥用可能会导致系统物理内存不足</p>
 </blockquote>
-</li>
-</ul>
 <h4 id="3-关于卡顿优化，哪个描述是正确的（）"><a href="#3-关于卡顿优化，哪个描述是正确的（）" class="headerlink" title="3. 关于卡顿优化，哪个描述是正确的（）"></a>3. 关于卡顿优化，哪个描述是正确的（）</h4><ul>
-<li><p>卡顿主要是主线程，其他线程可以随意使用</p>
-</li>
-<li><p>现在 CPU 越来越强大，卡顿优化变得不太重要</p>
-</li>
-<li><p><strong>导致卡顿的原因可能会有很多，建立全面的卡顿监控可以帮助我们更好地解决卡顿问题</strong></p>
-</li>
-<li><p>Traceview 和 Systrace 都是 instrument 类型的卡顿排查工具</p>
+<li>卡顿主要是主线程，其他线程可以随意使用</li>
+<li>现在 CPU 越来越强大，卡顿优化变得不太重要</li>
+<li><strong>导致卡顿的原因可能会有很多，建立全面的卡顿监控可以帮助我们更好地解决卡顿问题</strong></li>
+<li>Traceview 和 Systrace 都是 instrument 类型的卡顿排查工具</li>
+</ul>
 <blockquote>
 <p>题目解析</p>
 <p>A 选项，因为线程调度、锁等原因，其他线程也可能会影响到主线程</p>
@@ -297,16 +287,12 @@
 <p>C 选项，函数耗时、I/O 非常慢、线程间的竞争或者锁等原因都可能引起卡顿，建立全面的监控非常重要</p>
 <p>D 选项，Systrace 不是 instrument 类型工具，属于 sample 类型</p>
 </blockquote>
-</li>
-</ul>
 <h4 id="4-关于启动优化，哪些描述是正确的（）"><a href="#4-关于启动优化，哪些描述是正确的（）" class="headerlink" title="4. 关于启动优化，哪些描述是正确的（）"></a>4. 关于启动优化，哪些描述是正确的（）</h4><ul>
-<li><p><strong>启动速度是我们应用尤为关键的一个指标</strong></p>
-</li>
-<li><p><strong>启动优化要从用户的真实体验出发，要着眼从点击图标到用户可操作性的整个过程</strong></p>
-</li>
-<li><p><strong>影响启动速度的因素有很多，我们要从多个维度去做启动优化</strong></p>
-</li>
-<li><p><strong>准确的启动耗时统计非常重要，我们不能只关注平均启动时间这个指标</strong></p>
+<li><strong>启动速度是我们应用尤为关键的一个指标</strong></li>
+<li><strong>启动优化要从用户的真实体验出发，要着眼从点击图标到用户可操作性的整个过程</strong></li>
+<li><strong>影响启动速度的因素有很多，我们要从多个维度去做启动优化</strong></li>
+<li><strong>准确的启动耗时统计非常重要，我们不能只关注平均启动时间这个指标</strong></li>
+</ul>
 <blockquote>
 <p>题目解析</p>
 <p>A 选项，启动耗时可能会直接影响留存和转化等核心数据，非常重要</p>
@@ -314,16 +300,12 @@
 <p>C 选项，CPU/IO/网络/线程调度/锁/GC，我们要学会从多个维度去拆解</p>
 <p>D 选项，采用平均启动时间之后，一些体验很差的用户很有可能是被平均了</p>
 </blockquote>
-</li>
-</ul>
 <h4 id="5-以下哪些属于文件系统（）"><a href="#5-以下哪些属于文件系统（）" class="headerlink" title="5. 以下哪些属于文件系统（）"></a>5. 以下哪些属于文件系统（）</h4><ul>
-<li><p><strong>APFS</strong></p>
-</li>
-<li><p><strong>ext4</strong></p>
-</li>
-<li><p><strong>F2FS</strong></p>
-</li>
-<li><p><strong>HFS</strong></p>
+<li><strong>APFS</strong></li>
+<li><strong>ext4</strong></li>
+<li><strong>F2FS</strong></li>
+<li><strong>HFS</strong></li>
+</ul>
 <blockquote>
 <p>题目解析</p>
 <p>A 选项是 iOS 10.3 系统之后，苹果使用的文件系统</p>
@@ -331,213 +313,153 @@
 <p>C 选项是华为和三星一些 Android 设备使用的文件系统</p>
 <p>D 选项是苹果过去使用的文件系统</p>
 </blockquote>
-</li>
-</ul>
 <h4 id="6-以下哪一种不是常见的-I-O-方式（）"><a href="#6-以下哪一种不是常见的-I-O-方式（）" class="headerlink" title="6. 以下哪一种不是常见的 I/O 方式（）"></a>6. 以下哪一种不是常见的 I/O 方式（）</h4><ul>
-<li><p>标准 I/O</p>
-</li>
-<li><p>直接 I/O</p>
-</li>
-<li><p>mmap</p>
-</li>
-<li><p><strong>binder</strong></p>
+<li>标准 I/O</li>
+<li>直接 I/O</li>
+<li>mmap</li>
+<li><strong>binder</strong></li>
+</ul>
 <blockquote>
 <p>题目解析</p>
 <p>D  选项，binder 是 Android 的通信方式，并不是 I/O 方式</p>
 </blockquote>
-</li>
-</ul>
 <h4 id="7-以下哪些是常见-I-O-不良读写行为（）"><a href="#7-以下哪些是常见-I-O-不良读写行为（）" class="headerlink" title="7. 以下哪些是常见 I/O 不良读写行为（）"></a>7. 以下哪些是常见 I/O 不良读写行为（）</h4><ul>
-<li><p><strong>主线程 I/O</strong></p>
-</li>
-<li><p><strong>资源泄漏</strong></p>
-</li>
-<li><p><strong>读写 buffer 过小</strong></p>
-</li>
-<li><p><strong>重复读</strong></p>
+<li><strong>主线程 I/O</strong></li>
+<li><strong>资源泄漏</strong></li>
+<li><strong>读写 buffer 过小</strong></li>
+<li><strong>重复读</strong></li>
+</ul>
 <blockquote>
 <p>题目解析</p>
 <p>以上均是不良的 I/O 读写行为</p>
 </blockquote>
-</li>
-</ul>
 <h4 id="8-以下哪个因素不是我们在选取存储方式时主要考虑的（）"><a href="#8-以下哪个因素不是我们在选取存储方式时主要考虑的（）" class="headerlink" title="8. 以下哪个因素不是我们在选取存储方式时主要考虑的（）"></a>8. 以下哪个因素不是我们在选取存储方式时主要考虑的（）</h4><ul>
-<li><p>正确性</p>
-</li>
-<li><p>性能</p>
-</li>
-<li><p><strong>是否高大上</strong></p>
-</li>
-<li><p>安全性</p>
+<li>正确性</li>
+<li>性能</li>
+<li><strong>是否高大上</strong></li>
+<li>安全性</li>
+</ul>
 <blockquote>
 <p>题目解析</p>
 <p>C 选项，是否高大上并不是我们选择存储方式的主要考虑因素</p>
 </blockquote>
-</li>
-</ul>
 <h4 id="9-以下哪些是-Android-常用的数据存储方法（）"><a href="#9-以下哪些是-Android-常用的数据存储方法（）" class="headerlink" title="9. 以下哪些是 Android 常用的数据存储方法（）"></a>9. 以下哪些是 Android 常用的数据存储方法（）</h4><ul>
-<li><p><strong>SharedPreferences</strong></p>
-</li>
-<li><p><strong>ContentProvider</strong></p>
-</li>
-<li><p><strong>文件</strong></p>
-</li>
-<li><p><strong>数据库</strong></p>
+<li><strong>SharedPreferences</strong></li>
+<li><strong>ContentProvider</strong></li>
+<li><strong>文件</strong></li>
+<li><strong>数据库</strong></li>
+</ul>
 <blockquote>
 <p>题目解析</p>
 <p>以上都是 Android 常用的数据存储方法</p>
 </blockquote>
-</li>
-</ul>
 <h4 id="10-以下哪种方式可以让-myfield-索引生效（）"><a href="#10-以下哪种方式可以让-myfield-索引生效（）" class="headerlink" title="10. 以下哪种方式可以让 myfield 索引生效（）"></a>10. 以下哪种方式可以让 myfield 索引生效（）</h4><ul>
-<li><p>SELECT * FROM mytable WHERE myfield BETWEEN 10 and 20;</p>
-</li>
-<li><p>SELECT * FROM mytable WHERE myfield LIKE 1%;</p>
-</li>
-<li><p><strong>SELECT * FROM mytable WHERE myfield &gt;= 10 AND myfield &lt;= 20;</strong></p>
-</li>
-<li><p>SELECT * FROM mytable WHERE myfield &gt;= 10 OR  myfield &lt;= 5;</p>
+<li>SELECT * FROM mytable WHERE myfield BETWEEN 10 and 20;</li>
+<li>SELECT * FROM mytable WHERE myfield LIKE 1%;</li>
+<li><strong>SELECT * FROM mytable WHERE myfield &gt;= 10 AND myfield &lt;= 20;</strong></li>
+<li>SELECT * FROM mytable WHERE myfield &gt;= 10 OR  myfield &lt;= 5;</li>
+</ul>
 <blockquote>
 <p>题目解析</p>
 <p>ABD 选项，用了 BETWEEN、LIKE、OR 这些操作符，或者使用表达式或者 case when 等，索引都无法生效</p>
 </blockquote>
-</li>
-</ul>
 <h4 id="11-以下哪一种不是无线网络类型（）"><a href="#11-以下哪一种不是无线网络类型（）" class="headerlink" title="11. 以下哪一种不是无线网络类型（）"></a>11. 以下哪一种不是无线网络类型（）</h4><ul>
-<li><p>Wi-Fi</p>
-</li>
-<li><p><strong>光纤</strong></p>
-</li>
-<li><p>NFC</p>
-</li>
-<li><p>蓝牙</p>
+<li>Wi-Fi</li>
+<li><strong>光纤</strong></li>
+<li>NFC</li>
+<li>蓝牙</li>
+</ul>
 <blockquote>
 <p>题目解析</p>
 <p>B 选项，光纤并不是无线网络类型</p>
 </blockquote>
-</li>
-</ul>
 <h4 id="12-以下哪一种不是多路复用-I-O-的常见实现方式（）"><a href="#12-以下哪一种不是多路复用-I-O-的常见实现方式（）" class="headerlink" title="12. 以下哪一种不是多路复用 I/O 的常见实现方式（）"></a>12. 以下哪一种不是多路复用 I/O 的常见实现方式（）</h4><ul>
-<li><p>epoll</p>
-</li>
-<li><p>poll</p>
-</li>
-<li><p>select</p>
-</li>
-<li><p><strong>mmap</strong></p>
+<li>epoll</li>
+<li>poll</li>
+<li>select</li>
+<li><strong>mmap</strong></li>
+</ul>
 <blockquote>
 <p>题目解析</p>
 <p>D 选项，mmap 是常见的 I/O 方式，并不是多路复用 I/O 的实现方式</p>
 </blockquote>
-</li>
-</ul>
 <h4 id="13-IPv6-主要为了解决什么问题（）"><a href="#13-IPv6-主要为了解决什么问题（）" class="headerlink" title="13. IPv6 主要为了解决什么问题（）"></a>13. IPv6 主要为了解决什么问题（）</h4><ul>
-<li><p>连接资源</p>
-</li>
-<li><p><strong>IP 资源</strong></p>
-</li>
-<li><p>安全</p>
-</li>
-<li><p>DNS 解析</p>
+<li>连接资源</li>
+<li><strong>IP 资源</strong></li>
+<li>安全</li>
+<li>DNS 解析</li>
+</ul>
 <blockquote>
 <p>题目解析</p>
 <p>A 选项，IPv6 的普及可以在一定程度上提升网络连接速度，但这并不是它最主要的目的</p>
 <p>B 选项，IPv6 主要为了解决 IPv4 IP 资源将要耗尽的问题</p>
 </blockquote>
-</li>
-</ul>
 <h4 id="14-以下哪些是电池的关键指标（）"><a href="#14-以下哪些是电池的关键指标（）" class="headerlink" title="14. 以下哪些是电池的关键指标（）"></a>14. 以下哪些是电池的关键指标（）</h4><ul>
-<li><p>电池容量</p>
-</li>
-<li><p>充电时间</p>
-</li>
-<li><p>寿命</p>
-</li>
-<li><p>安全性</p>
+<li>电池容量</li>
+<li>充电时间</li>
+<li>寿命</li>
+<li>安全性</li>
+</ul>
 <blockquote>
 <p>题目解析</p>
 <p>ABCD 选项，虽然电池技术在不断发展，但是容量、充电时间、寿命和安全性，这些依然都是电池的基本指标</p>
 </blockquote>
-</li>
-</ul>
 <h4 id="15-Doze-模式是从哪个-Android-版本开始推出的（）"><a href="#15-Doze-模式是从哪个-Android-版本开始推出的（）" class="headerlink" title="15. Doze 模式是从哪个 Android 版本开始推出的（）"></a>15. Doze 模式是从哪个 Android 版本开始推出的（）</h4><ul>
-<li><p>Lollipop</p>
-</li>
-<li><p><strong>Marshmallow</strong></p>
-</li>
-<li><p>Nougat</p>
-</li>
-<li><p>Orea</p>
+<li>Lollipop</li>
+<li><strong>Marshmallow</strong></li>
+<li>Nougat</li>
+<li>Orea</li>
+</ul>
 <blockquote>
 <p>题目解析</p>
 <p>B 选项，Doze 模式是从 Marshmallow(Android 6.0) 开始推出的</p>
 </blockquote>
-</li>
-</ul>
 <h4 id="16-以下哪一个是-dpi-的正确描述（）"><a href="#16-以下哪一个是-dpi-的正确描述（）" class="headerlink" title="16. 以下哪一个是 dpi 的正确描述（）"></a>16. 以下哪一个是 dpi 的正确描述（）</h4><ul>
-<li><p>像素点，如手机分辨率 320*480 表示宽有 320 像素，高有 480 像素</p>
-</li>
-<li><p><strong>像素密度，是系统软件上指定单位尺寸的像素数量</strong></p>
-</li>
-<li><p>基于屏幕物理分辨率的一个抽象单位，用于说明密度无关的尺寸和位置</p>
-</li>
-<li><p>密度，屏幕上每平方英寸所含有的像素点数量</p>
+<li>像素点，如手机分辨率 320*480 表示宽有 320 像素，高有 480 像素</li>
+<li><strong>像素密度，是系统软件上指定单位尺寸的像素数量</strong></li>
+<li>基于屏幕物理分辨率的一个抽象单位，用于说明密度无关的尺寸和位置</li>
+<li>密度，屏幕上每平方英寸所含有的像素点数量</li>
+</ul>
 <blockquote>
 <p>题目解析</p>
 <p>A 选项是 px 的描述，B 选项是 dpi 的正确描述，C 选项是 dp 的描述，D 选项是 density 的描述</p>
 </blockquote>
-</li>
-</ul>
 <h4 id="17-以下哪些工具可以用来编译插桩（）"><a href="#17-以下哪些工具可以用来编译插桩（）" class="headerlink" title="17. 以下哪些工具可以用来编译插桩（）"></a>17. 以下哪些工具可以用来编译插桩（）</h4><ul>
-<li><p><strong>ASM</strong></p>
-</li>
-<li><p><strong>AspectJ</strong></p>
-</li>
-<li><p>Buck</p>
-</li>
-<li><p><strong>Redex</strong></p>
+<li><strong>ASM</strong></li>
+<li><strong>AspectJ</strong></li>
+<li>Buck</li>
+<li><strong>Redex</strong></li>
+</ul>
 <blockquote>
 <p>题目解析</p>
 <p>C 选项，此为 Facebook 的编译工具，并不是用来插桩的</p>
 </blockquote>
-</li>
-</ul>
 <h4 id="18-以下哪些是架构选型需要考虑的因素（）"><a href="#18-以下哪些是架构选型需要考虑的因素（）" class="headerlink" title="18. 以下哪些是架构选型需要考虑的因素（）"></a>18. 以下哪些是架构选型需要考虑的因素（）</h4><ul>
-<li><p><strong>框架的成熟度</strong></p>
-</li>
-<li><p><strong>工具链的成熟度</strong></p>
-</li>
-<li><p><strong>学习和使用成本</strong></p>
-</li>
-<li><p><strong>文档是否完备</strong></p>
+<li><strong>框架的成熟度</strong></li>
+<li><strong>工具链的成熟度</strong></li>
+<li><strong>学习和使用成本</strong></li>
+<li><strong>文档是否完备</strong></li>
+</ul>
 <blockquote>
 <p>题目解析</p>
 <p>均为架构选型需要考虑的因素</p>
 </blockquote>
-</li>
-</ul>
 <h4 id="19-以下哪种不属于-Native-Hook-技术（）"><a href="#19-以下哪种不属于-Native-Hook-技术（）" class="headerlink" title="19. 以下哪种不属于 Native Hook 技术（）"></a>19. 以下哪种不属于 Native Hook 技术（）</h4><ul>
-<li><p>GOT Hook</p>
-</li>
-<li><p>Inline Hook</p>
-</li>
-<li><p><strong>Xposed</strong></p>
-</li>
-<li><p>PLT Hook</p>
+<li>GOT Hook</li>
+<li>Inline Hook</li>
+<li><strong>Xposed</strong></li>
+<li>PLT Hook</li>
+</ul>
 <blockquote>
 <p>题目解析</p>
 <p>C 选项，Xposed 是一个用来修改系统或者应用功能的框架，并不是 Native Hook 技术</p>
 </blockquote>
-</li>
-</ul>
 <h4 id="20-以下哪一个不是移动深度学习框架（）"><a href="#20-以下哪一个不是移动深度学习框架（）" class="headerlink" title="20. 以下哪一个不是移动深度学习框架（）"></a>20. 以下哪一个不是移动深度学习框架（）</h4><ul>
-<li><p>MNN</p>
-</li>
-<li><p>NCNN</p>
-</li>
-<li><p>MACE</p>
-</li>
-<li><p><strong>TensorFlow</strong></p>
+<li>MNN</li>
+<li>NCNN</li>
+<li>MACE</li>
+<li><strong>TensorFlow</strong></li>
+</ul>
 <blockquote>
 <p>题目解析</p>
 <p>A 选项，阿里开源的移动深度学习框架</p>
@@ -545,8 +467,6 @@
 <p>C 选项，小米开源的移动深度学习框架</p>
 <p>D 选项，Google 开源的深度学习框架，TensorFlow Lite 才是专门为移动端打造的</p>
 </blockquote>
-</li>
-</ul>
 
     </div>
 
