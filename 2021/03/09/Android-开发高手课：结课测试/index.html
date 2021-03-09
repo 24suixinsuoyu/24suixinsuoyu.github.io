@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1. 关于 Android 崩溃，哪个描述是正确的（）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 开发高手课：结课测试">
+<meta property="og:url" content="http://24suixinsuoyu.com/2021/03/09/Android-%E5%BC%80%E5%8F%91%E9%AB%98%E6%89%8B%E8%AF%BE%EF%BC%9A%E7%BB%93%E8%AF%BE%E6%B5%8B%E8%AF%95/index.html">
+<meta property="og:site_name" content="隋钟元’s Blog">
+<meta property="og:description" content="1. 关于 Android 崩溃，哪个描述是正确的（）">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-09T01:54:50.000Z">
+<meta property="article:modified_time" content="2021-03-09T03:27:00.041Z">
+<meta property="article:author" content="隋钟元">
+<meta property="article:tag" content="结课测试">
+<meta property="article:tag" content="Android 开发高手">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://24suixinsuoyu.com/2021/03/09/Android-%E5%BC%80%E5%8F%91%E9%AB%98%E6%89%8B%E8%AF%BE%EF%BC%9A%E7%BB%93%E8%AF%BE%E6%B5%8B%E8%AF%95/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Android 开发高手课：结课测试 | 隋钟元’s Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">隋钟元’s Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-university"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th-list"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-english">
+
+    <a href="/english/" rel="section"><i class="fa fa-fw fa-graduation-cap"></i>英语</a>
+
+  </li>
+        <li class="menu-item menu-item-life">
+
+    <a href="/life/" rel="section"><i class="fa fa-fw fa-balance-scale"></i>生活</a>
+
+  </li>
+        <li class="menu-item menu-item-resume">
+
+    <a href="/resume/" rel="section"><i class="fa fa-fw fa-user-circle-o"></i>简历</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/commonweal/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/24suixinsuoyu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2021/03/09/Android-%E5%BC%80%E5%8F%91%E9%AB%98%E6%89%8B%E8%AF%BE%EF%BC%9A%E7%BB%93%E8%AF%BE%E6%B5%8B%E8%AF%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="隋钟元">
+      <meta itemprop="description" content="技术创造价值">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="隋钟元’s Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android 开发高手课：结课测试
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-09 09:54:50 / 修改时间：11:27:00" itemprop="dateCreated datePublished" datetime="2021-03-09T09:54:50+08:00">2021-03-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E3%80%8AAndroid-%E5%BC%80%E5%8F%91%E9%AB%98%E6%89%8B%E8%AF%BE%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《Android 开发高手课》</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="1-关于-Android-崩溃，哪个描述是正确的（）"><a href="#1-关于-Android-崩溃，哪个描述是正确的（）" class="headerlink" title="1. 关于 Android 崩溃，哪个描述是正确的（）"></a>1. 关于 Android 崩溃，哪个描述是正确的（）</h4><a id="more"></a>
+
+<ul>
+<li><p>所有的异常都可以被捕获</p>
+</li>
+<li><p>崩溃率越低越好，所以要尽量把所有崩溃都 catch 掉</p>
+</li>
+<li><p>因为系统导致的崩溃，我们无法解决</p>
+</li>
+<li><p><strong>崩溃率是衡量应用稳定性的一个基础指标，崩溃率高低与应用时长、复杂的等因素都有关</strong></p>
+<blockquote>
+<p>题目解析</p>
+<p>A 选项，并不是所有的异常都可以被捕获，例如系统重启、用户强杀等都无法捕获，所以增加了异常率的统计</p>
+<p>B 选项，我们并不是直接追求崩溃率这个数值，所以直接 catch 了大部分崩溃，可能造成用户有其他问题，也不会去排查</p>
+<p>C 选项，很多系统 ROM 导致的崩溃，都可以通过反射或者 hook 解决</p>
+<p>D 选项，崩溃率是衡量应用稳定性的基础指标，但是不同类型的应用崩溃率不太好直接比较，跟应用复杂度、用户时长等都有关系</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="2-关于内存优化，哪些描述是错误的（）"><a href="#2-关于内存优化，哪些描述是错误的（）" class="headerlink" title="2. 关于内存优化，哪些描述是错误的（）"></a>2. 关于内存优化，哪些描述是错误的（）</h4><ul>
+<li><p><strong>手机内存越来越大，内存优化的意义并不大</strong></p>
+</li>
+<li><p><strong>内存越大越好，6G 内存一定比 4G 内存好</strong></p>
+</li>
+<li><p><strong>内存占用越少越好，占用越少应用的性能越好</strong></p>
+</li>
+<li><p><strong>Native 内存并不会造成虚拟机 OOM，可以随意使用</strong></p>
+<blockquote>
+<p>题目解析</p>
+<p>A 选项，虽然当前设备内存越来越大，但是应用复杂度也越来越大，合理地使用内存对应用依然重要</p>
+<p>B 选项，6G 内存不一定比 4G 要好，内存带宽跟材质、标准这些都有关系</p>
+<p>C 选项，内存占用并不是越少越好，当系统内存充足的时候，我们可以多用一些内存来获得更好的性能</p>
+<p>D 选项，Native 内存滥用可能会导致系统物理内存不足</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="3-关于卡顿优化，哪个描述是正确的（）"><a href="#3-关于卡顿优化，哪个描述是正确的（）" class="headerlink" title="3. 关于卡顿优化，哪个描述是正确的（）"></a>3. 关于卡顿优化，哪个描述是正确的（）</h4><ul>
+<li><p>卡顿主要是主线程，其他线程可以随意使用</p>
+</li>
+<li><p>现在 CPU 越来越强大，卡顿优化变得不太重要</p>
+</li>
+<li><p><strong>导致卡顿的原因可能会有很多，建立全面的卡顿监控可以帮助我们更好地解决卡顿问题</strong></p>
+</li>
+<li><p>Traceview 和 Systrace 都是 instrument 类型的卡顿排查工具</p>
+<blockquote>
+<p>题目解析</p>
+<p>A 选项，因为线程调度、锁等原因，其他线程也可能会影响到主线程</p>
+<p>B 选项，即使硬件越来越强大，用户体验依然很重要</p>
+<p>C 选项，函数耗时、I/O 非常慢、线程间的竞争或者锁等原因都可能引起卡顿，建立全面的监控非常重要</p>
+<p>D 选项，Systrace 不是 instrument 类型工具，属于 sample 类型</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="4-关于启动优化，哪些描述是正确的（）"><a href="#4-关于启动优化，哪些描述是正确的（）" class="headerlink" title="4. 关于启动优化，哪些描述是正确的（）"></a>4. 关于启动优化，哪些描述是正确的（）</h4><ul>
+<li><p><strong>启动速度是我们应用尤为关键的一个指标</strong></p>
+</li>
+<li><p><strong>启动优化要从用户的真实体验出发，要着眼从点击图标到用户可操作性的整个过程</strong></p>
+</li>
+<li><p><strong>影响启动速度的因素有很多，我们要从多个维度去做启动优化</strong></p>
+</li>
+<li><p><strong>准确的启动耗时统计非常重要，我们不能只关注平均启动时间这个指标</strong></p>
+<blockquote>
+<p>题目解析</p>
+<p>A 选项，启动耗时可能会直接影响留存和转化等核心数据，非常重要</p>
+<p>B 选项，启动优化不能过于 KPI 化，要从用户的真实体验触发</p>
+<p>C 选项，CPU/IO/网络/线程调度/锁/GC，我们要学会从多个维度去拆解</p>
+<p>D 选项，采用平均启动时间之后，一些体验很差的用户很有可能是被平均了</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="5-以下哪些属于文件系统（）"><a href="#5-以下哪些属于文件系统（）" class="headerlink" title="5. 以下哪些属于文件系统（）"></a>5. 以下哪些属于文件系统（）</h4><ul>
+<li><p><strong>APFS</strong></p>
+</li>
+<li><p><strong>ext4</strong></p>
+</li>
+<li><p><strong>F2FS</strong></p>
+</li>
+<li><p><strong>HFS</strong></p>
+<blockquote>
+<p>题目解析</p>
+<p>A 选项是 iOS 10.3 系统之后，苹果使用的文件系统</p>
+<p>B 选项是常见的文件系统，大部分 Android 手机目前依然在使用它</p>
+<p>C 选项是华为和三星一些 Android 设备使用的文件系统</p>
+<p>D 选项是苹果过去使用的文件系统</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="6-以下哪一种不是常见的-I-O-方式（）"><a href="#6-以下哪一种不是常见的-I-O-方式（）" class="headerlink" title="6. 以下哪一种不是常见的 I/O 方式（）"></a>6. 以下哪一种不是常见的 I/O 方式（）</h4><ul>
+<li><p>标准 I/O</p>
+</li>
+<li><p>直接 I/O</p>
+</li>
+<li><p>mmap</p>
+</li>
+<li><p><strong>binder</strong></p>
+<blockquote>
+<p>题目解析</p>
+<p>D  选项，binder 是 Android 的通信方式，并不是 I/O 方式</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="7-以下哪些是常见-I-O-不良读写行为（）"><a href="#7-以下哪些是常见-I-O-不良读写行为（）" class="headerlink" title="7. 以下哪些是常见 I/O 不良读写行为（）"></a>7. 以下哪些是常见 I/O 不良读写行为（）</h4><ul>
+<li><p><strong>主线程 I/O</strong></p>
+</li>
+<li><p><strong>资源泄漏</strong></p>
+</li>
+<li><p><strong>读写 buffer 过小</strong></p>
+</li>
+<li><p><strong>重复读</strong></p>
+<blockquote>
+<p>题目解析</p>
+<p>以上均是不良的 I/O 读写行为</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="8-以下哪个因素不是我们在选取存储方式时主要考虑的（）"><a href="#8-以下哪个因素不是我们在选取存储方式时主要考虑的（）" class="headerlink" title="8. 以下哪个因素不是我们在选取存储方式时主要考虑的（）"></a>8. 以下哪个因素不是我们在选取存储方式时主要考虑的（）</h4><ul>
+<li><p>正确性</p>
+</li>
+<li><p>性能</p>
+</li>
+<li><p><strong>是否高大上</strong></p>
+</li>
+<li><p>安全性</p>
+<blockquote>
+<p>题目解析</p>
+<p>C 选项，是否高大上并不是我们选择存储方式的主要考虑因素</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="9-以下哪些是-Android-常用的数据存储方法（）"><a href="#9-以下哪些是-Android-常用的数据存储方法（）" class="headerlink" title="9. 以下哪些是 Android 常用的数据存储方法（）"></a>9. 以下哪些是 Android 常用的数据存储方法（）</h4><ul>
+<li><p><strong>SharedPreferences</strong></p>
+</li>
+<li><p><strong>ContentProvider</strong></p>
+</li>
+<li><p><strong>文件</strong></p>
+</li>
+<li><p><strong>数据库</strong></p>
+<blockquote>
+<p>题目解析</p>
+<p>以上都是 Android 常用的数据存储方法</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="10-以下哪种方式可以让-myfield-索引生效（）"><a href="#10-以下哪种方式可以让-myfield-索引生效（）" class="headerlink" title="10. 以下哪种方式可以让 myfield 索引生效（）"></a>10. 以下哪种方式可以让 myfield 索引生效（）</h4><ul>
+<li><p>SELECT * FROM mytable WHERE myfield BETWEEN 10 and 20;</p>
+</li>
+<li><p>SELECT * FROM mytable WHERE myfield LIKE 1%;</p>
+</li>
+<li><p><strong>SELECT * FROM mytable WHERE myfield &gt;= 10 AND myfield &lt;= 20;</strong></p>
+</li>
+<li><p>SELECT * FROM mytable WHERE myfield &gt;= 10 OR  myfield &lt;= 5;</p>
+<blockquote>
+<p>题目解析</p>
+<p>ABD 选项，用了 BETWEEN、LIKE、OR 这些操作符，或者使用表达式或者 case when 等，索引都无法生效</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="11-以下哪一种不是无线网络类型（）"><a href="#11-以下哪一种不是无线网络类型（）" class="headerlink" title="11. 以下哪一种不是无线网络类型（）"></a>11. 以下哪一种不是无线网络类型（）</h4><ul>
+<li><p>Wi-Fi</p>
+</li>
+<li><p><strong>光纤</strong></p>
+</li>
+<li><p>NFC</p>
+</li>
+<li><p>蓝牙</p>
+<blockquote>
+<p>题目解析</p>
+<p>B 选项，光纤并不是无线网络类型</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="12-以下哪一种不是多路复用-I-O-的常见实现方式（）"><a href="#12-以下哪一种不是多路复用-I-O-的常见实现方式（）" class="headerlink" title="12. 以下哪一种不是多路复用 I/O 的常见实现方式（）"></a>12. 以下哪一种不是多路复用 I/O 的常见实现方式（）</h4><ul>
+<li><p>epoll</p>
+</li>
+<li><p>poll</p>
+</li>
+<li><p>select</p>
+</li>
+<li><p><strong>mmap</strong></p>
+<blockquote>
+<p>题目解析</p>
+<p>D 选项，mmap 是常见的 I/O 方式，并不是多路复用 I/O 的实现方式</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="13-IPv6-主要为了解决什么问题（）"><a href="#13-IPv6-主要为了解决什么问题（）" class="headerlink" title="13. IPv6 主要为了解决什么问题（）"></a>13. IPv6 主要为了解决什么问题（）</h4><ul>
+<li><p>连接资源</p>
+</li>
+<li><p><strong>IP 资源</strong></p>
+</li>
+<li><p>安全</p>
+</li>
+<li><p>DNS 解析</p>
+<blockquote>
+<p>题目解析</p>
+<p>A 选项，IPv6 的普及可以在一定程度上提升网络连接速度，但这并不是它最主要的目的</p>
+<p>B 选项，IPv6 主要为了解决 IPv4 IP 资源将要耗尽的问题</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="14-以下哪些是电池的关键指标（）"><a href="#14-以下哪些是电池的关键指标（）" class="headerlink" title="14. 以下哪些是电池的关键指标（）"></a>14. 以下哪些是电池的关键指标（）</h4><ul>
+<li><p>电池容量</p>
+</li>
+<li><p>充电时间</p>
+</li>
+<li><p>寿命</p>
+</li>
+<li><p>安全性</p>
+<blockquote>
+<p>题目解析</p>
+<p>ABCD 选项，虽然电池技术在不断发展，但是容量、充电时间、寿命和安全性，这些依然都是电池的基本指标</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="15-Doze-模式是从哪个-Android-版本开始推出的（）"><a href="#15-Doze-模式是从哪个-Android-版本开始推出的（）" class="headerlink" title="15. Doze 模式是从哪个 Android 版本开始推出的（）"></a>15. Doze 模式是从哪个 Android 版本开始推出的（）</h4><ul>
+<li><p>Lollipop</p>
+</li>
+<li><p><strong>Marshmallow</strong></p>
+</li>
+<li><p>Nougat</p>
+</li>
+<li><p>Orea</p>
+<blockquote>
+<p>题目解析</p>
+<p>B 选项，Doze 模式是从 Marshmallow(Android 6.0) 开始推出的</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="16-以下哪一个是-dpi-的正确描述（）"><a href="#16-以下哪一个是-dpi-的正确描述（）" class="headerlink" title="16. 以下哪一个是 dpi 的正确描述（）"></a>16. 以下哪一个是 dpi 的正确描述（）</h4><ul>
+<li><p>像素点，如手机分辨率 320*480 表示宽有 320 像素，高有 480 像素</p>
+</li>
+<li><p><strong>像素密度，是系统软件上指定单位尺寸的像素数量</strong></p>
+</li>
+<li><p>基于屏幕物理分辨率的一个抽象单位，用于说明密度无关的尺寸和位置</p>
+</li>
+<li><p>密度，屏幕上每平方英寸所含有的像素点数量</p>
+<blockquote>
+<p>题目解析</p>
+<p>A 选项是 px 的描述，B 选项是 dpi 的正确描述，C 选项是 dp 的描述，D 选项是 density 的描述</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="17-以下哪些工具可以用来编译插桩（）"><a href="#17-以下哪些工具可以用来编译插桩（）" class="headerlink" title="17. 以下哪些工具可以用来编译插桩（）"></a>17. 以下哪些工具可以用来编译插桩（）</h4><ul>
+<li><p><strong>ASM</strong></p>
+</li>
+<li><p><strong>AspectJ</strong></p>
+</li>
+<li><p>Buck</p>
+</li>
+<li><p><strong>Redex</strong></p>
+<blockquote>
+<p>题目解析</p>
+<p>C 选项，此为 Facebook 的编译工具，并不是用来插桩的</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="18-以下哪些是架构选型需要考虑的因素（）"><a href="#18-以下哪些是架构选型需要考虑的因素（）" class="headerlink" title="18. 以下哪些是架构选型需要考虑的因素（）"></a>18. 以下哪些是架构选型需要考虑的因素（）</h4><ul>
+<li><p><strong>框架的成熟度</strong></p>
+</li>
+<li><p><strong>工具链的成熟度</strong></p>
+</li>
+<li><p><strong>学习和使用成本</strong></p>
+</li>
+<li><p><strong>文档是否完备</strong></p>
+<blockquote>
+<p>题目解析</p>
+<p>均为架构选型需要考虑的因素</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="19-以下哪种不属于-Native-Hook-技术（）"><a href="#19-以下哪种不属于-Native-Hook-技术（）" class="headerlink" title="19. 以下哪种不属于 Native Hook 技术（）"></a>19. 以下哪种不属于 Native Hook 技术（）</h4><ul>
+<li><p>GOT Hook</p>
+</li>
+<li><p>Inline Hook</p>
+</li>
+<li><p><strong>Xposed</strong></p>
+</li>
+<li><p>PLT Hook</p>
+<blockquote>
+<p>题目解析</p>
+<p>C 选项，Xposed 是一个用来修改系统或者应用功能的框架，并不是 Native Hook 技术</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="20-以下哪一个不是移动深度学习框架（）"><a href="#20-以下哪一个不是移动深度学习框架（）" class="headerlink" title="20. 以下哪一个不是移动深度学习框架（）"></a>20. 以下哪一个不是移动深度学习框架（）</h4><ul>
+<li><p>MNN</p>
+</li>
+<li><p>NCNN</p>
+</li>
+<li><p>MACE</p>
+</li>
+<li><p><strong>TensorFlow</strong></p>
+<blockquote>
+<p>题目解析</p>
+<p>A 选项，阿里开源的移动深度学习框架</p>
+<p>B 选项，腾讯开源的移动深度学习框架</p>
+<p>C 选项，小米开源的移动深度学习框架</p>
+<p>D 选项，Google 开源的深度学习框架，TensorFlow Lite 才是专门为移动端打造的</p>
+</blockquote>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;margin-top:80px">-------------------- 本文结束<i class="fa fa-paw"></i>感谢您的阅读 --------------------</div>
+    
+</div>
+      
+    </div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>隋钟元
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://24suixinsuoyu.com/2021/03/09/Android-%E5%BC%80%E5%8F%91%E9%AB%98%E6%89%8B%E8%AF%BE%EF%BC%9A%E7%BB%93%E8%AF%BE%E6%B5%8B%E8%AF%95/" title="Android 开发高手课：结课测试">http://24suixinsuoyu.com/2021/03/09/Android-开发高手课：结课测试/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E7%BB%93%E8%AF%BE%E6%B5%8B%E8%AF%95/" rel="tag"><i class="fa fa-tag"></i> 结课测试</a>
+              <a href="/tags/Android-%E5%BC%80%E5%8F%91%E9%AB%98%E6%89%8B/" rel="tag"><i class="fa fa-tag"></i> Android 开发高手</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/06/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E7%AC%AC%E5%9B%9B%E9%98%B6%E6%AE%B5%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" rel="prev" title="数据结构与算法学习（四）：第四阶段知识总结">
+      <i class="fa fa-chevron-left"></i> 数据结构与算法学习（四）：第四阶段知识总结
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-关于-Android-崩溃，哪个描述是正确的（）"><span class="nav-text">1. 关于 Android 崩溃，哪个描述是正确的（）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-关于内存优化，哪些描述是错误的（）"><span class="nav-text">2. 关于内存优化，哪些描述是错误的（）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-关于卡顿优化，哪个描述是正确的（）"><span class="nav-text">3. 关于卡顿优化，哪个描述是正确的（）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-关于启动优化，哪些描述是正确的（）"><span class="nav-text">4. 关于启动优化，哪些描述是正确的（）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-以下哪些属于文件系统（）"><span class="nav-text">5. 以下哪些属于文件系统（）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-以下哪一种不是常见的-I-O-方式（）"><span class="nav-text">6. 以下哪一种不是常见的 I&#x2F;O 方式（）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-以下哪些是常见-I-O-不良读写行为（）"><span class="nav-text">7. 以下哪些是常见 I&#x2F;O 不良读写行为（）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-以下哪个因素不是我们在选取存储方式时主要考虑的（）"><span class="nav-text">8. 以下哪个因素不是我们在选取存储方式时主要考虑的（）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-以下哪些是-Android-常用的数据存储方法（）"><span class="nav-text">9. 以下哪些是 Android 常用的数据存储方法（）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-以下哪种方式可以让-myfield-索引生效（）"><span class="nav-text">10. 以下哪种方式可以让 myfield 索引生效（）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-以下哪一种不是无线网络类型（）"><span class="nav-text">11. 以下哪一种不是无线网络类型（）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-以下哪一种不是多路复用-I-O-的常见实现方式（）"><span class="nav-text">12. 以下哪一种不是多路复用 I&#x2F;O 的常见实现方式（）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-IPv6-主要为了解决什么问题（）"><span class="nav-text">13. IPv6 主要为了解决什么问题（）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-以下哪些是电池的关键指标（）"><span class="nav-text">14. 以下哪些是电池的关键指标（）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#15-Doze-模式是从哪个-Android-版本开始推出的（）"><span class="nav-text">15. Doze 模式是从哪个 Android 版本开始推出的（）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#16-以下哪一个是-dpi-的正确描述（）"><span class="nav-text">16. 以下哪一个是 dpi 的正确描述（）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#17-以下哪些工具可以用来编译插桩（）"><span class="nav-text">17. 以下哪些工具可以用来编译插桩（）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#18-以下哪些是架构选型需要考虑的因素（）"><span class="nav-text">18. 以下哪些是架构选型需要考虑的因素（）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#19-以下哪种不属于-Native-Hook-技术（）"><span class="nav-text">19. 以下哪种不属于 Native Hook 技术（）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#20-以下哪一个不是移动深度学习框架（）"><span class="nav-text">20. 以下哪一个不是移动深度学习框架（）</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="隋钟元"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">隋钟元</p>
+  <div class="site-description" itemprop="description">技术创造价值</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">248</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">359</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:24suixinsuoyu@gmail.com" title="E-Mail → mailto:24suixinsuoyu@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/24suixinsuoyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;24suixinsuoyu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/24sxsy" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;24sxsy" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/guolin_blog" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;guolin_blog" rel="noopener" target="_blank">郭霖</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/lmj623565791/" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;lmj623565791&#x2F;" rel="noopener" target="_blank">鸿洋</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.520monkey.com/" title="http:&#x2F;&#x2F;www.520monkey.com&#x2F;" rel="noopener" target="_blank">姜维</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://daimajia.com/" title="https:&#x2F;&#x2F;daimajia.com&#x2F;" rel="noopener" target="_blank">代码家</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://kmxz.net/" title="https:&#x2F;&#x2F;kmxz.net&#x2F;" rel="noopener" target="_blank">孔祥舟</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://yangwenbo.com/" title="http:&#x2F;&#x2F;yangwenbo.com&#x2F;" rel="noopener" target="_blank">杨文博</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">隋钟元</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.1m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">16:08</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
+
