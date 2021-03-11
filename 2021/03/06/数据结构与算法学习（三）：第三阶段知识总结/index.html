@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="AAA">
+  <meta name="description" content="1. 动态规划概述">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据结构与算法学习（三）：第三阶段知识总结">
 <meta property="og:url" content="http://24suixinsuoyu.com/2021/03/06/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E7%AC%AC%E4%B8%89%E9%98%B6%E6%AE%B5%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
-<meta property="og:description" content="AAA">
+<meta property="og:description" content="1. 动态规划概述">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-03-06T15:18:39.000Z">
-<meta property="article:modified_time" content="2021-03-06T15:34:52.155Z">
+<meta property="article:modified_time" content="2021-03-11T10:43:11.223Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="数据结构与算法之美">
 <meta property="article:tag" content="动态规划">
@@ -215,10 +215,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-03-06 23:18:39 / 修改时间：23:34:52" itemprop="dateCreated datePublished" datetime="2021-03-06T23:18:39+08:00">2021-03-06</time>
+              <time title="创建时间：2021-03-06 23:18:39" itemprop="dateCreated datePublished" datetime="2021-03-06T23:18:39+08:00">2021-03-06</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-11 18:43:11" itemprop="dateModified" datetime="2021-03-11T18:43:11+08:00">2021-03-11</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -235,7 +241,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3</span>
+              <span>1.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -254,11 +260,187 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <ol>
-<li>AAA</li>
-</ol>
-<a id="more"></a>
+        <h4 id="1-动态规划概述"><a href="#1-动态规划概述" class="headerlink" title="1. 动态规划概述"></a>1. 动态规划概述</h4><a id="more"></a>
 
+<ol>
+<li><p>概念</p>
+<ul>
+<li><p>一个模型（<strong>多阶段决策最优解模型</strong>）</p>
+<ol>
+<li>解决问题的过程，需要经历多个决策阶段</li>
+<li>每个决策阶段都对应着一组状态</li>
+<li>寻找一组<strong>决策序列</strong>，经过这组决策序列，能够产生最终期望求解的<strong>最优值</strong></li>
+</ol>
+</li>
+<li><p>三个特征</p>
+<ol>
+<li><p><strong>最优子结构</strong></p>
+<ul>
+<li>通过子问题的最优解，推导出问题的最优解</li>
+</ul>
+</li>
+<li><p><strong>无后效性</strong></p>
+<ol>
+<li>在推导后面阶段的状态的时候，只关心前面阶段的状态值，不关心是怎么一步一步推导出来的</li>
+<li>某阶段状态一旦确定，就不受之后阶段的决策影响</li>
+</ol>
+</li>
+<li><p><strong>重复子问题</strong></p>
+<ul>
+<li>不同的决策序列，到达某个相同的阶段时，可能会产生重复的状态</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p>特点</p>
+<ol>
+<li>从最简单的问题开始，一点一点把问题复杂起来，在这个过程中寻找复杂问题是如何依赖简单问题的</li>
+<li>需要记忆前面简单问题的解，然后用简单问题的解解决后面复杂问题的解</li>
+</ol>
+</li>
+<li><p>和分治的区别</p>
+<ol>
+<li><strong>分治是自顶向下解决问题</strong></li>
+<li><strong>动态规划是自底向上解决问题</strong></li>
+</ol>
+</li>
+<li><p>解题思路</p>
+<ol>
+<li><strong>状态转移表法</strong>：回溯算法实现-定义状态-画递归树-找重复子问题-画状态转移表-根据递推关系填表-将填表过程翻译成代码</li>
+<li><strong>状态方程法</strong>：找最优子结构-写状态转移方程-将状态转移方程翻译成代码</li>
+</ol>
+</li>
+</ol>
+<h4 id="2-贪心算法概述"><a href="#2-贪心算法概述" class="headerlink" title="2. 贪心算法概述"></a>2. 贪心算法概述</h4><ol>
+<li><p>概念</p>
+<ul>
+<li><strong>每一步选择都采取当前状态下最有利的选择，从而希望结果是最优的</strong></li>
+</ul>
+</li>
+<li><p>应用</p>
+<ol>
+<li>适用的场景比较有限，更多的是指导设计基础算法</li>
+<li>经典应用有：<strong>霍夫曼编码</strong>、Prim 和 Kruskal <strong>最小生成树算法</strong>、<strong>Dijkstra 单源最短路径算法</strong></li>
+</ol>
+</li>
+<li><p>解题步骤</p>
+<ol>
+<li>当遇到问题的时候，首先要联想到贪心算法</li>
+<li>尝试看这个问题是否可以用贪心算法解决</li>
+<li>举几个例子看贪心算法产生的结果是否是最优的</li>
+</ol>
+</li>
+</ol>
+<h4 id="3-分治算法概述"><a href="#3-分治算法概述" class="headerlink" title="3. 分治算法概述"></a>3. 分治算法概述</h4><ol>
+<li><p>概念</p>
+<ol>
+<li>将原问题划分成 n 个规模较小、结构与原问题相似的子问题</li>
+<li>递归解决这些子问题，然后再合并其结果，得到原问题的解</li>
+</ol>
+</li>
+<li><p>和递归的区别</p>
+<ol>
+<li><strong>分治算法是一种处理问题的思想</strong></li>
+<li><strong>递归时一种编程技巧</strong></li>
+<li><strong>分治算法一般都比较适合用递归来实现</strong></li>
+</ol>
+</li>
+<li><p>实现</p>
+<ol>
+<li><strong>分解</strong>：将原问题分解为一系列子问题</li>
+<li><strong>解决</strong>：递归求解各个子问题，若子问题足够小，则直接求解</li>
+<li><strong>合并</strong>：将子问题的结果合并成原问题</li>
+</ol>
+</li>
+<li><p>应用条件</p>
+<ol>
+<li>原问题与分解成的小问题具有相同的模式</li>
+<li>原问题分解成的子问题可以独立求解，子问题之间没有相关性</li>
+<li>具有分解终止条件</li>
+<li>可以将子问题合并成原问题</li>
+</ol>
+</li>
+</ol>
+<h4 id="4-回溯算法概述"><a href="#4-回溯算法概述" class="headerlink" title="4. 回溯算法概述"></a>4. 回溯算法概述</h4><ol>
+<li><p>概念</p>
+<ol>
+<li>类似枚举搜索，<strong>枚举所有解</strong>，找到满足期望的解</li>
+<li>把问题求解的过程分为多个阶段，每个阶段都会面对一个岔路口，先随意选一条路走</li>
+<li>当发现这条路走不通的时候（不符合期望的解），就回退到上一个岔路口，另选一种走法</li>
+</ol>
+</li>
+<li><p>实现</p>
+<ul>
+<li><strong>递归</strong></li>
+</ul>
+</li>
+<li><p>和深度优先的区别</p>
+<ol>
+<li><strong>深度优先遍历的目的是“遍历”，本质是无序的</strong></li>
+<li><strong>回溯的目的是“求解过程”，本质是有序的</strong></li>
+</ol>
+</li>
+<li><p>应用</p>
+<ul>
+<li>深度优先搜索</li>
+<li>八皇后</li>
+<li>0-1 背包</li>
+<li>图的着色</li>
+<li>旅行商问题</li>
+<li>数独</li>
+<li>全排列</li>
+<li>正则表达式匹配</li>
+</ul>
+</li>
+</ol>
+<h4 id="5-跳表概述"><a href="#5-跳表概述" class="headerlink" title="5. 跳表概述"></a>5. 跳表概述</h4><ol>
+<li><p>概念</p>
+<ul>
+<li><strong>链表加多级索引结构</strong></li>
+</ul>
+</li>
+<li><p>优点</p>
+<ol>
+<li>支持快速插入、删除、查找操作，写起来不复杂，时间复杂度是 <strong>O(logn)</strong></li>
+<li>实现非常灵活，可以通过改变索引构建策略，有效平衡执行效率和内存消耗</li>
+<li>为了代码的简单、易读，会用跳表替代红黑树</li>
+</ol>
+</li>
+</ol>
+<h4 id="6-搜索概述"><a href="#6-搜索概述" class="headerlink" title="6. 搜索概述"></a>6. 搜索概述</h4><ol>
+<li><p><strong>图上的搜索算法</strong></p>
+<ul>
+<li>在图中找出从一个顶点出发，到另一个顶点的路径</li>
+</ul>
+</li>
+<li><p><strong>Dijkstra 算法</strong></p>
+<ul>
+<li><p>概念</p>
+<ol>
+<li><strong>计算一个节点到其他所有节点的最短路径</strong></li>
+<li><strong>一种单源最短路劲算法</strong></li>
+</ol>
+</li>
+<li><p>复杂度</p>
+<ul>
+<li><strong>时间复杂度是 <code>O(E*logV)</code></strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>A* 算法</strong></p>
+<ul>
+<li>和 Dijkstra 算法代码的 3 点区别<ol>
+<li>优先级队列构建的方式不同</li>
+<li>A* 算法在更新顶点 dist 值的时候，会同步更新 f 值</li>
+<li>循环结束的条件不一样</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
 
     </div>
 
@@ -380,6 +562,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-动态规划概述"><span class="nav-text">1. 动态规划概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-贪心算法概述"><span class="nav-text">2. 贪心算法概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-分治算法概述"><span class="nav-text">3. 分治算法概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-回溯算法概述"><span class="nav-text">4. 回溯算法概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-跳表概述"><span class="nav-text">5. 跳表概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-搜索概述"><span class="nav-text">6. 搜索概述</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -484,7 +667,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">16:25</span>
+    <span title="站点阅读时长">16:26</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
