@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. MAC 地址和 IP 地址分别有什么作用 ★★★">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-03-11T16:02:32.000Z">
-<meta property="article:modified_time" content="2021-03-14T16:55:57.338Z">
+<meta property="article:modified_time" content="2021-03-17T13:30:18.712Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="计算机网络">
 <meta property="article:tag" content="数据链路层">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-15 00:55:57" itemprop="dateModified" datetime="2021-03-15T00:55:57+08:00">2021-03-15</time>
+                <time title="修改时间：2021-03-17 21:30:18" itemprop="dateModified" datetime="2021-03-17T21:30:18+08:00">2021-03-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,14 +233,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>181</span>
+              <span>1.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -254,9 +254,64 @@
       
         <h4 id="1-MAC-地址和-IP-地址分别有什么作用-★★★"><a href="#1-MAC-地址和-IP-地址分别有什么作用-★★★" class="headerlink" title="1. MAC 地址和 IP 地址分别有什么作用 ★★★"></a>1. MAC 地址和 IP 地址分别有什么作用 ★★★</h4><a id="more"></a>
 
+<ul>
+<li>MAC 地址是<strong>数据链路层</strong>和<strong>物理层</strong>使用的地址，<strong>是写在网卡上的物理地址</strong>。MAC 地址用来定义网络设备的位置</li>
+<li>IP 地址是<strong>网络层和以上各层</strong>使用的地址，是一种<strong>逻辑地址</strong>。IP 地址用来区别网络上的计算机</li>
+</ul>
+<h4 id="2-为什么有了-MAC-地址还需要-IP-地址-★★★★"><a href="#2-为什么有了-MAC-地址还需要-IP-地址-★★★★" class="headerlink" title="2. 为什么有了 MAC 地址还需要 IP 地址 ★★★★"></a>2. 为什么有了 MAC 地址还需要 IP 地址 ★★★★</h4><ul>
+<li>如果只使用 MAC 地址进行寻址的话，我们需要路由器记住每个 MAC 地址属于哪一个子网，不然每一次路由器收到数据包时都要满世界寻找 MAC 地址。<strong>因为 MAC 地址的长度为 48 位，也就是说最多总共有 2 的 48 次方个 MAC 地址</strong>，这就意味着每个路由器需要 256 T 的内存，这显然是不现实的</li>
+<li><strong>IP 地址是和地域相关的</strong>，在一个子网中的设备，我们给其分配的 <strong>IP 地址前缀</strong>都是一样的，这样路由器就能根据 IP 地址的前缀知道这个设备属于哪个子网，<strong>剩下的寻址就交给子网内部实现</strong>，从而大大减少了路由器所需要的内存</li>
+</ul>
+<h4 id="3-为什么有了-IP-地址还需要-MAC-地址-★★★★"><a href="#3-为什么有了-IP-地址还需要-MAC-地址-★★★★" class="headerlink" title="3. 为什么有了 IP 地址还需要 MAC 地址 ★★★★"></a>3. 为什么有了 IP 地址还需要 MAC 地址 ★★★★</h4><ul>
+<li><strong>只有当设备接入网络时</strong>，才能根据进入的那个子网来为其分配 IP 地址</li>
+<li>在设备还没有 IP 地址的时候或者在分配 IP 地址的过程中，<strong>需要 MAC 地址来区别不同的设备</strong></li>
+</ul>
+<h4 id="4-私网地址和公网地址之间进行转换：同一个局域网内的两个私网地址，经过转换之后外面看到的一样吗-★★★"><a href="#4-私网地址和公网地址之间进行转换：同一个局域网内的两个私网地址，经过转换之后外面看到的一样吗-★★★" class="headerlink" title="4. 私网地址和公网地址之间进行转换：同一个局域网内的两个私网地址，经过转换之后外面看到的一样吗 ★★★"></a>4. 私网地址和公网地址之间进行转换：同一个局域网内的两个私网地址，经过转换之后外面看到的一样吗 ★★★</h4><ul>
+<li>当采用<strong>静态转换</strong>或者<strong>动态转换</strong>时，由于一个私网 IP 地址对应一个公网地址，因此经过转换之后的公网 IP 地址是不同的</li>
+<li>采用<strong>端口复用方式转换</strong>，在一个子网中的所有地址都采用一个公网地址，但是使用的端口是不同的</li>
+</ul>
+<h4 id="5-以太网中的-CSMA-CD-协议-★★"><a href="#5-以太网中的-CSMA-CD-协议-★★" class="headerlink" title="5. 以太网中的 CSMA/CD 协议 ★★"></a>5. 以太网中的 CSMA/CD 协议 ★★</h4><ul>
+<li><p><strong>概念</strong></p>
+<ul>
+<li><strong>CSMA/CD 为载波监听多路访问/冲突检测</strong>，是像以太网这种广播网络采用的一种机制</li>
+<li>在以太网中多台主机在同一个信道中进行数据传输，CSMA/CD 很好地解决了<strong>共享信道通信</strong>中出现的问题</li>
+</ul>
+</li>
+<li><p><strong>原理</strong></p>
+<ul>
+<li><strong>载波监听</strong>：当使用 CSMA/CD 协议时，<strong>总线上的各个节点都在监听信道上是否有信号在传输</strong>。如果有的话，表明信道处于忙碌状态，继续保持监听，直到信道空闲为止。如果发现信道是空闲的，就立即发送数据</li>
+<li><strong>冲突检测</strong>：当两个或两个以上节点同时监听到信道空闲时，便开始发送数据，此时就会发生碰撞（数据的传输延迟也可能引发碰撞）。<strong>当两个帧发生冲突时，数据帧就会被破坏从而失去了继续传输的意义</strong>。在数据的发送过程中，以太网是一直监听信道的，当检测到当前<strong>信道冲突</strong>，就立即停止这次传输，避免造成网络资源浪费，同时向信道发送一个<strong>「冲突」信号</strong>，确保其它节点也发现该冲突。之后采用一种二进制退避策略让待发送数据的节点随机退避一段时间之后重新发送</li>
+</ul>
+</li>
+</ul>
+<h4 id="6-数据链路层上的三个基本问题-★"><a href="#6-数据链路层上的三个基本问题-★" class="headerlink" title="6. 数据链路层上的三个基本问题 ★"></a>6. 数据链路层上的三个基本问题 ★</h4><ul>
+<li><strong>封装成帧</strong>：将网络层传下来的分组前后分别<strong>添加首部和尾部，这样就构成了帧</strong>。首部和尾部的一个重要作用是<strong>帧定界</strong>，也携带了一些必要的<strong>控制信息</strong>，对于每种数据链路层协议都规定了<strong>帧的数据部分的最大长度</strong></li>
+<li><strong>透明传输</strong>：帧使用首部和尾部进行定界，如果帧的数据部分含有和首部尾部相同的内容，那么帧的开始和结束的位置就会判断错误，因此需要在数据部分中出现有歧义的内容前边插入<strong>转义字符</strong>，如果数据部分出现转义字符，则在该转义字符前再加一个转义字符。在接收端进行处理之后可以还原出原始数据。这个过程透明传输的内容是转义字符，用户察觉不到转义字符的存在</li>
+<li><strong>差错检测</strong>：目前数据链路层广泛使用<strong>循环冗余检验（CRC）</strong>来检查数据传输过程中是否产生<strong>比特差错</strong></li>
+</ul>
+<h4 id="7-PPP-点对点协议概述-★"><a href="#7-PPP-点对点协议概述-★" class="headerlink" title="7. PPP 点对点协议概述 ★"></a>7. PPP 点对点协议概述 ★</h4><ul>
+<li><p>概念</p>
+<ul>
+<li>互联网用户通常需要连接到某个 ISP 之后才能接入到互联网，<strong>PPP（点对点）协议是用户计算机和 ISP 进行通信时所使用的数据链路层协议</strong></li>
+<li>点对点协议为点对点连接上传输多协议数据包提供了一个标准方法，该协议设计的目的主要是用来<strong>通过拨号或专线方式建立点对点连接发送数据</strong>，使其成为各种主机、网桥和路由器之间<strong>简单连接</strong>的一种解决方案</li>
+</ul>
+</li>
+<li><p>特点</p>
+<ul>
+<li>PPP 协议<strong>具有动态分配 IP 地址的能力</strong>，其允许在连接时刻协商 IP 地址</li>
+<li>PPP 协议<strong>支持多种网络协议</strong>，例如 TCP/IP、NETBEUI 等</li>
+<li>PPP 协议<strong>具有差错检测能力，但不具备纠错能力</strong>，所以 PPP 是<strong>不可靠</strong>传输协议</li>
+<li><strong>无重传</strong>的机制，网络开销小、速度快</li>
+<li>PPP 具有<strong>身份验证</strong>的功能</li>
+</ul>
+</li>
+</ul>
+<h4 id="8-为什么-PPP-协议不使用序号和确认机制-★"><a href="#8-为什么-PPP-协议不使用序号和确认机制-★" class="headerlink" title="8. 为什么 PPP 协议不使用序号和确认机制 ★"></a>8. 为什么 PPP 协议不使用序号和确认机制 ★</h4><ul>
+<li>IETF 在设计因特网体系结构时把其中最复杂的部分放在了 TCP 协议中，而网际协议 IP 则相对比较简单，它提供的是不可靠的数据包服务。在这种情况下，<strong>数据链路层没有必要提供比 IP 协议更多的功能</strong>。若使用能够实现可靠传输的数据链路层协议，则开销就要增大，这在数据链路层出现差错概率不大时是得不偿失的</li>
+<li>即使数据链路层实现了可靠传输，但其也<strong>不能保证网络的传输也是可靠的</strong>，当数据帧在路由器中从数据链路层上升到网络层后，仍有可能因为网络层拥塞而被丢弃</li>
+<li>PPP 协议在帧格式中有<strong>帧检验序列</strong>，对每一个收到的帧，PPP 都会进行<strong>差错检测</strong>，若发现差错，则丢弃该帧</li>
+</ul>
 
-
-<h4 id="2-为什么有了-MAC-地址还需要-IP-地址-★★★★"><a href="#2-为什么有了-MAC-地址还需要-IP-地址-★★★★" class="headerlink" title="2. 为什么有了 MAC 地址还需要 IP 地址 ★★★★"></a>2. 为什么有了 MAC 地址还需要 IP 地址 ★★★★</h4><h4 id="3-为什么有了-IP-地址还需要-MAC-地址-★★★★"><a href="#3-为什么有了-IP-地址还需要-MAC-地址-★★★★" class="headerlink" title="3. 为什么有了 IP 地址还需要 MAC 地址 ★★★★"></a>3. 为什么有了 IP 地址还需要 MAC 地址 ★★★★</h4><h4 id="4-私网地址和公网地址之间进行转换：同一个局域网内的两个私网地址，经过转换之后外面看到的一样吗-★★★"><a href="#4-私网地址和公网地址之间进行转换：同一个局域网内的两个私网地址，经过转换之后外面看到的一样吗-★★★" class="headerlink" title="4. 私网地址和公网地址之间进行转换：同一个局域网内的两个私网地址，经过转换之后外面看到的一样吗 ★★★"></a>4. 私网地址和公网地址之间进行转换：同一个局域网内的两个私网地址，经过转换之后外面看到的一样吗 ★★★</h4><h4 id="5-以太网中的-CSMA-CD-协议-★★"><a href="#5-以太网中的-CSMA-CD-协议-★★" class="headerlink" title="5. 以太网中的 CSMA/CD 协议 ★★"></a>5. 以太网中的 CSMA/CD 协议 ★★</h4><h4 id="6-数据链路层上的三个基本问题-★"><a href="#6-数据链路层上的三个基本问题-★" class="headerlink" title="6. 数据链路层上的三个基本问题 ★"></a>6. 数据链路层上的三个基本问题 ★</h4><h4 id="7-PPP-协议-★"><a href="#7-PPP-协议-★" class="headerlink" title="7. PPP 协议 ★"></a>7. PPP 协议 ★</h4><h4 id="8-为什么-PPP-协议不使用序号和确认机制-★"><a href="#8-为什么-PPP-协议不使用序号和确认机制-★" class="headerlink" title="8. 为什么 PPP 协议不使用序号和确认机制 ★"></a>8. 为什么 PPP 协议不使用序号和确认机制 ★</h4>
     </div>
 
     
@@ -369,7 +424,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-MAC-地址和-IP-地址分别有什么作用-★★★"><span class="nav-text">1. MAC 地址和 IP 地址分别有什么作用 ★★★</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-为什么有了-MAC-地址还需要-IP-地址-★★★★"><span class="nav-text">2. 为什么有了 MAC 地址还需要 IP 地址 ★★★★</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-为什么有了-IP-地址还需要-MAC-地址-★★★★"><span class="nav-text">3. 为什么有了 IP 地址还需要 MAC 地址 ★★★★</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-私网地址和公网地址之间进行转换：同一个局域网内的两个私网地址，经过转换之后外面看到的一样吗-★★★"><span class="nav-text">4. 私网地址和公网地址之间进行转换：同一个局域网内的两个私网地址，经过转换之后外面看到的一样吗 ★★★</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-以太网中的-CSMA-CD-协议-★★"><span class="nav-text">5. 以太网中的 CSMA&#x2F;CD 协议 ★★</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-数据链路层上的三个基本问题-★"><span class="nav-text">6. 数据链路层上的三个基本问题 ★</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-PPP-协议-★"><span class="nav-text">7. PPP 协议 ★</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-为什么-PPP-协议不使用序号和确认机制-★"><span class="nav-text">8. 为什么 PPP 协议不使用序号和确认机制 ★</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-MAC-地址和-IP-地址分别有什么作用-★★★"><span class="nav-text">1. MAC 地址和 IP 地址分别有什么作用 ★★★</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-为什么有了-MAC-地址还需要-IP-地址-★★★★"><span class="nav-text">2. 为什么有了 MAC 地址还需要 IP 地址 ★★★★</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-为什么有了-IP-地址还需要-MAC-地址-★★★★"><span class="nav-text">3. 为什么有了 IP 地址还需要 MAC 地址 ★★★★</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-私网地址和公网地址之间进行转换：同一个局域网内的两个私网地址，经过转换之后外面看到的一样吗-★★★"><span class="nav-text">4. 私网地址和公网地址之间进行转换：同一个局域网内的两个私网地址，经过转换之后外面看到的一样吗 ★★★</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-以太网中的-CSMA-CD-协议-★★"><span class="nav-text">5. 以太网中的 CSMA&#x2F;CD 协议 ★★</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-数据链路层上的三个基本问题-★"><span class="nav-text">6. 数据链路层上的三个基本问题 ★</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-PPP-点对点协议概述-★"><span class="nav-text">7. PPP 点对点协议概述 ★</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-为什么-PPP-协议不使用序号和确认机制-★"><span class="nav-text">8. 为什么 PPP 协议不使用序号和确认机制 ★</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -474,7 +529,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">17:02</span>
+    <span title="站点阅读时长">17:03</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
