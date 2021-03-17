@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1goky71gxjuj216y0jodgo.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24ely1gom2dpdiowj21ce0tj755.jpg">
 <meta property="article:published_time" content="2021-03-11T16:01:20.000Z">
-<meta property="article:modified_time" content="2021-03-16T16:20:24.591Z">
+<meta property="article:modified_time" content="2021-03-17T02:02:52.627Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="计算机网络">
 <meta property="article:tag" content="传输层">
@@ -221,7 +221,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-17 00:20:24" itemprop="dateModified" datetime="2021-03-17T00:20:24+08:00">2021-03-17</time>
+                <time title="修改时间：2021-03-17 10:02:52" itemprop="dateModified" datetime="2021-03-17T10:02:52+08:00">2021-03-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -239,14 +239,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>11k</span>
+              <span>13k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>10 分钟</span>
+              <span>12 分钟</span>
             </span>
 
         </div>
@@ -561,7 +561,33 @@
 <li>SYN Flood 是种典型的 Dos（拒绝服务）攻击，其目的是通过消耗服务器所有可用资源使服务器无法用于处理合法请求</li>
 <li>通过重复发送初始连接请求（SYN）数据包，攻击者能够压倒目标服务器上的所有可用端口，导致目标设备根本不响应合法请求</li>
 </ul>
-<h4 id="24-为什么服务端易收到-SYN-攻击-★★★"><a href="#24-为什么服务端易收到-SYN-攻击-★★★" class="headerlink" title="24. 为什么服务端易收到 SYN 攻击 ★★★"></a>24. 为什么服务端易收到 SYN 攻击 ★★★</h4><h4 id="25-高并发服务器客户端主动关闭连接和服务端主动关闭连接的区别-★"><a href="#25-高并发服务器客户端主动关闭连接和服务端主动关闭连接的区别-★" class="headerlink" title="25. 高并发服务器客户端主动关闭连接和服务端主动关闭连接的区别 ★"></a>25. 高并发服务器客户端主动关闭连接和服务端主动关闭连接的区别 ★</h4>
+<h4 id="24-为什么服务端易收到-SYN-攻击-★★★"><a href="#24-为什么服务端易收到-SYN-攻击-★★★" class="headerlink" title="24. 为什么服务端易收到 SYN 攻击 ★★★"></a>24. 为什么服务端易收到 SYN 攻击 ★★★</h4><p>在 TCP 建立连接的过程中，因为服务器不确定自己发给客户端的 SYN-ACK 消息或客户端反馈的 ACK 消息是否会丢在半路，所以会给每个待完成的半开连接状态设一个定时器，如果超过时间还没有收到客户端的 ACK 消息，则重新发送一个 SYN-ACK 消息给客户端，直到重试超过一定次数时才会放弃</p>
+<p>服务端为了维持半开连接状态，需要分配内核资源维护半开连接。当攻击者伪造海量的虚假 IP 向服务端发送 SYN 包时，就形成了 SYN FLOOD 攻击。攻击者故意不响应 ACK 消息，导致服务端被大量注定不能完成的半开连接占据，直到资源耗尽，停止响应正常的连接请求</p>
+<p><strong>解决方法</strong></p>
+<ul>
+<li>直接的方法是提高 TCP 端口容量的同时减少半开连接的资源占用时间，然而该方法只是稍稍提高了防御能力</li>
+<li>部署能够辨别恶意 IP 的路由器，将伪造 IP 地址的发送方发送的 SYN 消息过滤掉，该方案作用一般不是太大</li>
+</ul>
+<p>上述两种方法虽然在一定程度上能够提高服务器的防御能力，但是没有从根本上解决服务器资源消耗殆尽的问题，而以下几种方法的出发点都是在发送方发送确认回复后才开始分配传输资源，从而避免服务器资源消耗殆尽</p>
+<ul>
+<li><strong>SYN Cache</strong>：该方法首先构造一个全局 Hash Table，用来缓存系统当前所有的半开连接信息。在 Hash Table 中的每个桶的容量大小是有限制的，当桶满时，会主动丢掉早来的信息。当服务端收到一个 SYN 消息后，会通过一个映射函数生成一个相应的 Key 值，使得当前半连接信息存入相应的桶中。当收到客户端正确的确认报文后，服务端才开始分配传输资源块，并将相应的半开连接信息从表中删除。和服务器传输资源相比，维护表的开销要小得多</li>
+<li><strong>SYN Cookies</strong>：该方案原理和 HTTP Cookies 技术类似，服务端通过特定的算法将半开连接信息编码成序列号或者时间戳，用作服务端给客户端的消息编号，随 SYN-ACK 消息一同返回给连接发起方，这样在连接建立完成前服务端不保存任何信息，直到发送方发送 ACK 确认报文并且服务端成功验证编码信息后，服务端才开始分配传输资源。若请求方式攻击者，则不会向服务端发送 ACK 消息，由于未成功建立连接，因此服务端并没有花费任何额外的开销</li>
+</ul>
+<p>然而该方案也存在一些缺点，由于服务端并不保存半开连接状态，因此也就丧失了超时重传的能力，这在一定程度上降低了正常用户的连接成功率。此外，客户端发送给服务端的确认报文存在传输丢失的可能，当 ACK 确认报文丢失时，服务端和客户端会对连接的成功与否产生歧义，此时就需要上层应用采取相应的策略进行处理了</p>
+<ul>
+<li><strong>SYN Proxy</strong>：在客户端和服务器之间部署一个代理服务器，类似于防火墙的作用。通过代理服务器与客户端进行建立连接的过程，之后代理服务器充当客户端将成功建立连接的客户端信息发送给服务器。这种方法基于不消化服务器的资源，但是建立连接的时间变长了（总共需要 6 次握手）</li>
+</ul>
+<h4 id="25-高并发服务器客户端主动关闭连接和服务端主动关闭连接的区别-★"><a href="#25-高并发服务器客户端主动关闭连接和服务端主动关闭连接的区别-★" class="headerlink" title="25. 高并发服务器客户端主动关闭连接和服务端主动关闭连接的区别 ★"></a>25. 高并发服务器客户端主动关闭连接和服务端主动关闭连接的区别 ★</h4><p>以下是针对 TCP 服务来说的</p>
+<ul>
+<li><strong>服务端主动关闭连接</strong></li>
+</ul>
+<p>在高并发场景下，当服务端主动关闭连接时，此时服务器上就会有大量的连接处于 TIME-WAIT 状态（详见问题 7、8、9）</p>
+<ul>
+<li><strong>客户端主动关闭连接</strong></li>
+</ul>
+<p>当客户端主动关闭连接时，我们并不需要关系 TIME-WAIT 状态过多造成的问题，但是需要关注服务端保持大量的 CLOSE-WAIT 状态时会产生的问题（见问题 10 的解决方法）</p>
+<p>无论是客户端还是服务器主动关闭连接，从本质上来说，在高并发场景下主要关心的就是服务端的资源占用问题，而这也是采用 TCP 传输协议必须要面对的问题，其问题解决的出发点也是如何处理好服务质量和资源消耗之间的关系</p>
+
     </div>
 
     
@@ -779,7 +805,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">16:57</span>
+    <span title="站点阅读时长">16:59</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
