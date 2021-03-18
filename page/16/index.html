@@ -181,7 +181,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/09/01/%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E4%BA%8C%E6%96%B9%E5%BA%93%E4%BE%9D%E8%B5%96/">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/12/03/%E7%90%86%E8%A7%A3-RemoteViews%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9ARemoteViews-%E7%9A%84%E5%BA%94%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -195,7 +195,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/09/01/%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E4%BA%8C%E6%96%B9%E5%BA%93%E4%BE%9D%E8%B5%96/" class="post-title-link" itemprop="url">工程结构（二）：二方库依赖</a>
+            <a href="/2020/12/03/%E7%90%86%E8%A7%A3-RemoteViews%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9ARemoteViews-%E7%9A%84%E5%BA%94%E7%94%A8/" class="post-title-link" itemprop="url">理解 RemoteViews（一）：RemoteViews 的应用</a>
         </h1>
 
         <div class="post-meta">
@@ -205,14 +205,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-09-01 02:25:29" itemprop="dateCreated datePublished" datetime="2020-09-01T02:25:29+08:00">2020-09-01</time>
+              <time title="创建时间：2020-12-03 00:48:29" itemprop="dateCreated datePublished" datetime="2020-12-03T00:48:29+08:00">2020-12-03</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-08 16:11:32" itemprop="dateModified" datetime="2020-09-08T16:11:32+08:00">2020-09-08</time>
+                <time title="修改时间：2020-12-04 00:46:40" itemprop="dateModified" datetime="2020-12-04T00:46:40+08:00">2020-12-04</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -220,7 +220,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E3%80%8A%E9%98%BF%E9%87%8C-Java-%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%EF%BC%88%E5%B5%A9%E5%B1%B1%E7%89%88%EF%BC%89%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《阿里 Java 开发手册（嵩山版）》</span></a>
+                  <a href="/categories/%E3%80%8AAndroid-%E5%BC%80%E5%8F%91%E8%89%BA%E6%9C%AF%E6%8E%A2%E7%B4%A2%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《Android 开发艺术探索》</span></a>
                 </span>
             </span>
 
@@ -230,7 +230,304 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.7k</span>
+              <span>8.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>8 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="1-RemoteViews-的概念"><a href="#1-RemoteViews-的概念" class="headerlink" title="1. RemoteViews 的概念"></a>1. RemoteViews 的概念</h4>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/03/%E7%90%86%E8%A7%A3-RemoteViews%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9ARemoteViews-%E7%9A%84%E5%BA%94%E7%94%A8/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <div>
+      
+    </div>
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/11/30/View-%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E8%87%AA%E5%AE%9A%E4%B9%89-View/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="隋钟元">
+      <meta itemprop="description" content="技术创造价值">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="隋钟元’s Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/30/View-%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E8%87%AA%E5%AE%9A%E4%B9%89-View/" class="post-title-link" itemprop="url">View 的工作原理（四）：自定义 View</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-30 19:09:42" itemprop="dateCreated datePublished" datetime="2020-11-30T19:09:42+08:00">2020-11-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-14 11:44:11" itemprop="dateModified" datetime="2020-12-14T11:44:11+08:00">2020-12-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E3%80%8AAndroid-%E5%BC%80%E5%8F%91%E8%89%BA%E6%9C%AF%E6%8E%A2%E7%B4%A2%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《Android 开发艺术探索》</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>12k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>11 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="1-自定义-View-常见的分类"><a href="#1-自定义-View-常见的分类" class="headerlink" title="1. 自定义 View 常见的分类"></a>1. 自定义 View 常见的分类</h4>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/30/View-%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E8%87%AA%E5%AE%9A%E4%B9%89-View/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <div>
+      
+    </div>
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/11/30/View-%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9AView-%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="隋钟元">
+      <meta itemprop="description" content="技术创造价值">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="隋钟元’s Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/30/View-%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9AView-%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B/" class="post-title-link" itemprop="url">View 的工作原理（三）：View 的工作流程</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-30 19:08:11" itemprop="dateCreated datePublished" datetime="2020-11-30T19:08:11+08:00">2020-11-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-02 02:12:00" itemprop="dateModified" datetime="2020-12-02T02:12:00+08:00">2020-12-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E3%80%8AAndroid-%E5%BC%80%E5%8F%91%E8%89%BA%E6%9C%AF%E6%8E%A2%E7%B4%A2%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《Android 开发艺术探索》</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="1-View-的工作流程的概念"><a href="#1-View-的工作流程的概念" class="headerlink" title="1. View 的工作流程的概念"></a>1. View 的工作流程的概念</h4>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/30/View-%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9AView-%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <div>
+      
+    </div>
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/11/30/View-%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E7%90%86%E8%A7%A3-MeasureSpec/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="隋钟元">
+      <meta itemprop="description" content="技术创造价值">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="隋钟元’s Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/30/View-%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E7%90%86%E8%A7%A3-MeasureSpec/" class="post-title-link" itemprop="url">View 的工作原理（二）：理解 MeasureSpec</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-30 19:07:25" itemprop="dateCreated datePublished" datetime="2020-11-30T19:07:25+08:00">2020-11-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-14 11:52:38" itemprop="dateModified" datetime="2020-12-14T11:52:38+08:00">2020-12-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E3%80%8AAndroid-%E5%BC%80%E5%8F%91%E8%89%BA%E6%9C%AF%E6%8E%A2%E7%B4%A2%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《Android 开发艺术探索》</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -249,10 +546,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h4 id="1-【强制】定义-GAV-遵从一下规则："><a href="#1-【强制】定义-GAV-遵从一下规则：" class="headerlink" title="1. 【强制】定义 GAV 遵从一下规则："></a>1. 【强制】定义 GAV 遵从一下规则：</h4>
+          <h4 id="1-MeasureSpec-的概念"><a href="#1-MeasureSpec-的概念" class="headerlink" title="1. MeasureSpec 的概念"></a>1. MeasureSpec 的概念</h4>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/09/01/%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E4%BA%8C%E6%96%B9%E5%BA%93%E4%BE%9D%E8%B5%96/#more" rel="contents">
+              <a class="btn" href="/2020/11/30/View-%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E7%90%86%E8%A7%A3-MeasureSpec/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -280,7 +577,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/09/01/%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%BA%94%E7%94%A8%E5%88%86%E5%B1%82/">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/11/30/View-%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%88%9D%E8%AF%86-ViewRoot-%E5%92%8C-DecorView/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -294,7 +591,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/09/01/%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%BA%94%E7%94%A8%E5%88%86%E5%B1%82/" class="post-title-link" itemprop="url">工程结构（一）：应用分层</a>
+            <a href="/2020/11/30/View-%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%88%9D%E8%AF%86-ViewRoot-%E5%92%8C-DecorView/" class="post-title-link" itemprop="url">View 的工作原理（一）：初识 ViewRoot 和 DecorView</a>
         </h1>
 
         <div class="post-meta">
@@ -304,14 +601,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-09-01 02:24:58" itemprop="dateCreated datePublished" datetime="2020-09-01T02:24:58+08:00">2020-09-01</time>
+              <time title="创建时间：2020-11-30 19:06:53" itemprop="dateCreated datePublished" datetime="2020-11-30T19:06:53+08:00">2020-11-30</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-08 11:22:28" itemprop="dateModified" datetime="2020-09-08T11:22:28+08:00">2020-09-08</time>
+                <time title="修改时间：2020-12-14 11:47:22" itemprop="dateModified" datetime="2020-12-14T11:47:22+08:00">2020-12-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -319,304 +616,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E3%80%8A%E9%98%BF%E9%87%8C-Java-%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%EF%BC%88%E5%B5%A9%E5%B1%B1%E7%89%88%EF%BC%89%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《阿里 Java 开发手册（嵩山版）》</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.1k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="1-【推荐】根据业务架构实践，结合业界分层规范与流行技术框架分析，推荐分层结构如下图所示。默认上层依赖于下层，箭头关系表示可直接依赖，如：开放-API-层可依赖-Web-层（Controller-层），也可以直接依赖于-Service-层。以此类推："><a href="#1-【推荐】根据业务架构实践，结合业界分层规范与流行技术框架分析，推荐分层结构如下图所示。默认上层依赖于下层，箭头关系表示可直接依赖，如：开放-API-层可依赖-Web-层（Controller-层），也可以直接依赖于-Service-层。以此类推：" class="headerlink" title="1. 【推荐】根据业务架构实践，结合业界分层规范与流行技术框架分析，推荐分层结构如下图所示。默认上层依赖于下层，箭头关系表示可直接依赖，如：开放 API 层可依赖 Web 层（Controller 层），也可以直接依赖于 Service 层。以此类推："></a>1. 【推荐】根据业务架构实践，结合业界分层规范与流行技术框架分析，推荐分层结构如下图所示。默认上层依赖于下层，箭头关系表示可直接依赖，如：开放 API 层可依赖 Web 层（Controller 层），也可以直接依赖于 Service 层。以此类推：</h4>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/09/01/%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%BA%94%E7%94%A8%E5%88%86%E5%B1%82/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <div>
-      
-    </div>
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/09/01/MySQL-%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9AORM-%E6%98%A0%E5%B0%84/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="隋钟元">
-      <meta itemprop="description" content="技术创造价值">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="隋钟元’s Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/01/MySQL-%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9AORM-%E6%98%A0%E5%B0%84/" class="post-title-link" itemprop="url">MySQL 数据库（四）：ORM 映射</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-09-01 02:11:32" itemprop="dateCreated datePublished" datetime="2020-09-01T02:11:32+08:00">2020-09-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-07 21:10:26" itemprop="dateModified" datetime="2020-09-07T21:10:26+08:00">2020-09-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E3%80%8A%E9%98%BF%E9%87%8C-Java-%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%EF%BC%88%E5%B5%A9%E5%B1%B1%E7%89%88%EF%BC%89%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《阿里 Java 开发手册（嵩山版）》</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.1k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="1-【强制】在表查询中，一律不要使用-作为查询的字段列表，需要哪些字段必须明确写明"><a href="#1-【强制】在表查询中，一律不要使用-作为查询的字段列表，需要哪些字段必须明确写明" class="headerlink" title="1. 【强制】在表查询中，一律不要使用 * 作为查询的字段列表，需要哪些字段必须明确写明"></a>1. 【强制】在表查询中，一律不要使用 * 作为查询的字段列表，需要哪些字段必须明确写明</h4>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/09/01/MySQL-%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9AORM-%E6%98%A0%E5%B0%84/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <div>
-      
-    </div>
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/09/01/MySQL-%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9ASQL-%E8%AF%AD%E5%8F%A5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="隋钟元">
-      <meta itemprop="description" content="技术创造价值">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="隋钟元’s Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/01/MySQL-%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9ASQL-%E8%AF%AD%E5%8F%A5/" class="post-title-link" itemprop="url">MySQL 数据库（三）：SQL 语句</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-09-01 02:11:00" itemprop="dateCreated datePublished" datetime="2020-09-01T02:11:00+08:00">2020-09-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-07 20:20:20" itemprop="dateModified" datetime="2020-09-07T20:20:20+08:00">2020-09-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E3%80%8A%E9%98%BF%E9%87%8C-Java-%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%EF%BC%88%E5%B5%A9%E5%B1%B1%E7%89%88%EF%BC%89%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《阿里 Java 开发手册（嵩山版）》</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.8k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="1-【强制】不要使用-count-列名-或-count-常量-来代替-count-，count-是-SQL92-定义的标准统计行数的语法，跟数据库无关，跟-NULL-和-非NULL-无关"><a href="#1-【强制】不要使用-count-列名-或-count-常量-来代替-count-，count-是-SQL92-定义的标准统计行数的语法，跟数据库无关，跟-NULL-和-非NULL-无关" class="headerlink" title="1. 【强制】不要使用 count(列名) 或 count(常量) 来代替 count(*)，count(*) 是 SQL92 定义的标准统计行数的语法，跟数据库无关，跟 NULL 和 非NULL 无关"></a>1. 【强制】不要使用 <code>count(列名)</code> 或 <code>count(常量)</code> 来代替 <code>count(*)</code>，<code>count(*)</code> 是 SQL92 定义的标准统计行数的语法，跟数据库无关，跟 <code>NULL</code> 和 <code>非NULL</code> 无关</h4>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/09/01/MySQL-%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9ASQL-%E8%AF%AD%E5%8F%A5/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <div>
-      
-    </div>
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/09/01/MySQL-%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E7%B4%A2%E5%BC%95%E8%A7%84%E7%BA%A6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="隋钟元">
-      <meta itemprop="description" content="技术创造价值">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="隋钟元’s Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/01/MySQL-%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E7%B4%A2%E5%BC%95%E8%A7%84%E7%BA%A6/" class="post-title-link" itemprop="url">MySQL 数据库（二）：索引规约</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-09-01 02:10:32" itemprop="dateCreated datePublished" datetime="2020-09-01T02:10:32+08:00">2020-09-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-07 17:18:02" itemprop="dateModified" datetime="2020-09-07T17:18:02+08:00">2020-09-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E3%80%8A%E9%98%BF%E9%87%8C-Java-%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%EF%BC%88%E5%B5%A9%E5%B1%B1%E7%89%88%EF%BC%89%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《阿里 Java 开发手册（嵩山版）》</span></a>
+                  <a href="/categories/%E3%80%8AAndroid-%E5%BC%80%E5%8F%91%E8%89%BA%E6%9C%AF%E6%8E%A2%E7%B4%A2%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《Android 开发艺术探索》</span></a>
                 </span>
             </span>
 
@@ -645,10 +645,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h4 id="1-【强制】业务上具有唯一特性的字段，即使是组合字段，也必须建成唯一索引"><a href="#1-【强制】业务上具有唯一特性的字段，即使是组合字段，也必须建成唯一索引" class="headerlink" title="1. 【强制】业务上具有唯一特性的字段，即使是组合字段，也必须建成唯一索引"></a>1. 【强制】业务上具有唯一特性的字段，即使是组合字段，也必须建成唯一索引</h4>
+          <h4 id="1-ViewRoot-的概念"><a href="#1-ViewRoot-的概念" class="headerlink" title="1. ViewRoot 的概念"></a>1. ViewRoot 的概念</h4>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/09/01/MySQL-%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E7%B4%A2%E5%BC%95%E8%A7%84%E7%BA%A6/#more" rel="contents">
+              <a class="btn" href="/2020/11/30/View-%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%88%9D%E8%AF%86-ViewRoot-%E5%92%8C-DecorView/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -676,7 +676,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/09/01/MySQL-%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%BB%BA%E8%A1%A8%E8%A7%84%E7%BA%A6/">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/11/28/Bitcoin-A-Peer-to-Peer-Electronic-Cash-System/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -690,7 +690,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/09/01/MySQL-%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%BB%BA%E8%A1%A8%E8%A7%84%E7%BA%A6/" class="post-title-link" itemprop="url">MySQL 数据库（一）：建表规约</a>
+            <a href="/2020/11/28/Bitcoin-A-Peer-to-Peer-Electronic-Cash-System/" class="post-title-link" itemprop="url">Bitcoin：A Peer-to-Peer Electronic Cash System</a>
         </h1>
 
         <div class="post-meta">
@@ -700,14 +700,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-09-01 02:10:12" itemprop="dateCreated datePublished" datetime="2020-09-01T02:10:12+08:00">2020-09-01</time>
+              <time title="创建时间：2020-11-28 22:31:11" itemprop="dateCreated datePublished" datetime="2020-11-28T22:31:11+08:00">2020-11-28</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-09 09:17:44" itemprop="dateModified" datetime="2020-09-09T09:17:44+08:00">2020-09-09</time>
+                <time title="修改时间：2021-01-12 20:13:26" itemprop="dateModified" datetime="2021-01-12T20:13:26+08:00">2021-01-12</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -715,7 +715,108 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E3%80%8A%E9%98%BF%E9%87%8C-Java-%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%EF%BC%88%E5%B5%A9%E5%B1%B1%E7%89%88%EF%BC%89%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《阿里 Java 开发手册（嵩山版）》</span></a>
+                  <a href="/categories/%E3%80%8AElegant-English%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《Elegant English》</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>16k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>15 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>Satoshi Nakamoto · <a href="mailto:satoshin@gmx.com">satoshin@gmx.com</a> · <a href="http://www.bitcoin.org" target="_blank" rel="noopener">www.bitcoin.org</a></p>
+</blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/28/Bitcoin-A-Peer-to-Peer-Electronic-Cash-System/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <div>
+      
+    </div>
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/11/28/%E3%80%8AYou-Raise-Me-Up%E3%80%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="隋钟元">
+      <meta itemprop="description" content="技术创造价值">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="隋钟元’s Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/28/%E3%80%8AYou-Raise-Me-Up%E3%80%8B/" class="post-title-link" itemprop="url">《You Raise Me Up》</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-28 20:07:42" itemprop="dateCreated datePublished" datetime="2020-11-28T20:07:42+08:00">2020-11-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-20 22:28:06" itemprop="dateModified" datetime="2020-12-20T22:28:06+08:00">2020-12-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E3%80%8AMelodious-Music%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《Melodious Music》</span></a>
                 </span>
             </span>
 
@@ -744,10 +845,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h4 id="1-【强制】表达是与否概念的字段，必须使用-is-xxx-的方式命名，数据类型是-unsigned-tinyint-（1-表示是，0-表示否）"><a href="#1-【强制】表达是与否概念的字段，必须使用-is-xxx-的方式命名，数据类型是-unsigned-tinyint-（1-表示是，0-表示否）" class="headerlink" title="1. 【强制】表达是与否概念的字段，必须使用 is_xxx 的方式命名，数据类型是 unsigned tinyint （1 表示是，0 表示否）"></a>1. 【强制】表达是与否概念的字段，必须使用 is_xxx 的方式命名，数据类型是 unsigned tinyint （1 表示是，0 表示否）</h4>
+          <blockquote>
+<p>Westlife · an Irish boy band · disbanded in 2012 and reunited in 2018</p>
+</blockquote>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/09/01/MySQL-%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%BB%BA%E8%A1%A8%E8%A7%84%E7%BA%A6/#more" rel="contents">
+              <a class="btn" href="/2020/11/28/%E3%80%8AYou-Raise-Me-Up%E3%80%8B/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -775,7 +878,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/09/01/%E5%AE%89%E5%85%A8%E8%A7%84%E7%BA%A6/">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/11/27/%E3%80%8AShape-Of-My-Heart%E3%80%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -789,7 +892,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/09/01/%E5%AE%89%E5%85%A8%E8%A7%84%E7%BA%A6/" class="post-title-link" itemprop="url">安全规约</a>
+            <a href="/2020/11/27/%E3%80%8AShape-Of-My-Heart%E3%80%8B/" class="post-title-link" itemprop="url">《Shape Of My Heart》</a>
         </h1>
 
         <div class="post-meta">
@@ -799,14 +902,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-09-01 02:06:14" itemprop="dateCreated datePublished" datetime="2020-09-01T02:06:14+08:00">2020-09-01</time>
+              <time title="创建时间：2020-11-27 13:25:50" itemprop="dateCreated datePublished" datetime="2020-11-27T13:25:50+08:00">2020-11-27</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-06 20:13:20" itemprop="dateModified" datetime="2020-09-06T20:13:20+08:00">2020-09-06</time>
+                <time title="修改时间：2020-12-21 22:43:03" itemprop="dateModified" datetime="2020-12-21T22:43:03+08:00">2020-12-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -814,7 +917,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E3%80%8A%E9%98%BF%E9%87%8C-Java-%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%EF%BC%88%E5%B5%A9%E5%B1%B1%E7%89%88%EF%BC%89%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《阿里 Java 开发手册（嵩山版）》</span></a>
+                  <a href="/categories/%E3%80%8AMelodious-Music%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《Melodious Music》</span></a>
                 </span>
             </span>
 
@@ -824,106 +927,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>855</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="1-【强制】隶属于用户个人的页面或者功能必须进行权限控制校验"><a href="#1-【强制】隶属于用户个人的页面或者功能必须进行权限控制校验" class="headerlink" title="1. 【强制】隶属于用户个人的页面或者功能必须进行权限控制校验"></a>1. 【强制】隶属于用户个人的页面或者功能必须进行权限控制校验</h4>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/09/01/%E5%AE%89%E5%85%A8%E8%A7%84%E7%BA%A6/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <div>
-      
-    </div>
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/09/01/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="隋钟元">
-      <meta itemprop="description" content="技术创造价值">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="隋钟元’s Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/01/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" class="post-title-link" itemprop="url">单元测试</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-09-01 02:04:19" itemprop="dateCreated datePublished" datetime="2020-09-01T02:04:19+08:00">2020-09-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-03 14:36:06" itemprop="dateModified" datetime="2020-09-03T14:36:06+08:00">2020-09-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E3%80%8A%E9%98%BF%E9%87%8C-Java-%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%EF%BC%88%E5%B5%A9%E5%B1%B1%E7%89%88%EF%BC%89%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《阿里 Java 开发手册（嵩山版）》</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.8k</span>
+              <span>1.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -942,10 +946,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h4 id="1-【强制】好的单元测试必须遵守-AIR-原则"><a href="#1-【强制】好的单元测试必须遵守-AIR-原则" class="headerlink" title="1. 【强制】好的单元测试必须遵守 AIR 原则"></a>1. 【强制】好的单元测试必须遵守 AIR 原则</h4>
+          <blockquote>
+<p>Sting · born 2 October 1951 · English musician · <a href="https://www.sting.com/" target="_blank" rel="noopener">sting.com</a></p>
+</blockquote>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/09/01/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/#more" rel="contents">
+              <a class="btn" href="/2020/11/27/%E3%80%8AShape-Of-My-Heart%E3%80%8B/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -973,7 +979,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/09/01/%E5%BC%82%E5%B8%B8%E6%97%A5%E5%BF%97%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E6%97%A5%E5%BF%97%E8%A7%84%E7%BA%A6/">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/11/23/A-letter-to-our-daughter/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -987,7 +993,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/09/01/%E5%BC%82%E5%B8%B8%E6%97%A5%E5%BF%97%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E6%97%A5%E5%BF%97%E8%A7%84%E7%BA%A6/" class="post-title-link" itemprop="url">异常日志（三）：日志规约</a>
+            <a href="/2020/11/23/A-letter-to-our-daughter/" class="post-title-link" itemprop="url">A Letter To Our Daughter</a>
         </h1>
 
         <div class="post-meta">
@@ -997,14 +1003,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-09-01 01:58:14" itemprop="dateCreated datePublished" datetime="2020-09-01T01:58:14+08:00">2020-09-01</time>
+              <time title="创建时间：2020-11-23 17:12:50" itemprop="dateCreated datePublished" datetime="2020-11-23T17:12:50+08:00">2020-11-23</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-02 22:02:16" itemprop="dateModified" datetime="2020-09-02T22:02:16+08:00">2020-09-02</time>
+                <time title="修改时间：2020-11-28 22:24:21" itemprop="dateModified" datetime="2020-11-28T22:24:21+08:00">2020-11-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1012,7 +1018,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E3%80%8A%E9%98%BF%E9%87%8C-Java-%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%EF%BC%88%E5%B5%A9%E5%B1%B1%E7%89%88%EF%BC%89%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《阿里 Java 开发手册（嵩山版）》</span></a>
+                  <a href="/categories/%E3%80%8AElegant-English%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《Elegant English》</span></a>
                 </span>
             </span>
 
@@ -1022,14 +1028,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.5k</span>
+              <span>11k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>10 分钟</span>
             </span>
 
         </div>
@@ -1041,10 +1047,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h4 id="1-应用中不可直接使用日志系统（Log4j、Logback）中的-API，而应依赖使用日志框架（SLF4J、JCL–Jakarta-Commons-Logging）中的-API。使用门面模式的日志框架，有利于维护和各个类的日志处理方式统一"><a href="#1-应用中不可直接使用日志系统（Log4j、Logback）中的-API，而应依赖使用日志框架（SLF4J、JCL–Jakarta-Commons-Logging）中的-API。使用门面模式的日志框架，有利于维护和各个类的日志处理方式统一" class="headerlink" title="1. 应用中不可直接使用日志系统（Log4j、Logback）中的 API，而应依赖使用日志框架（SLF4J、JCL–Jakarta Commons Logging）中的 API。使用门面模式的日志框架，有利于维护和各个类的日志处理方式统一"></a>1. 应用中不可直接使用日志系统（Log4j、Logback）中的 API，而应依赖使用日志框架（SLF4J、JCL–Jakarta Commons Logging）中的 API。使用门面模式的日志框架，有利于维护和各个类的日志处理方式统一</h4>
+          <blockquote>
+<p>Mark Zuckerberg · Last edited December 2, 2015 · 10 minute read</p>
+</blockquote>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/09/01/%E5%BC%82%E5%B8%B8%E6%97%A5%E5%BF%97%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E6%97%A5%E5%BF%97%E8%A7%84%E7%BA%A6/#more" rel="contents">
+              <a class="btn" href="/2020/11/23/A-letter-to-our-daughter/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1072,7 +1080,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/09/01/%E5%BC%82%E5%B8%B8%E6%97%A5%E5%BF%97%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/11/22/View-%E7%9A%84%E4%BA%8B%E4%BB%B6%E4%BD%93%E7%B3%BB%EF%BC%88%E4%BA%94%EF%BC%89%EF%BC%9AView-%E7%9A%84%E6%BB%91%E5%8A%A8%E5%86%B2%E7%AA%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1086,7 +1094,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/09/01/%E5%BC%82%E5%B8%B8%E6%97%A5%E5%BF%97%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" class="post-title-link" itemprop="url">异常日志（二）：异常处理</a>
+            <a href="/2020/11/22/View-%E7%9A%84%E4%BA%8B%E4%BB%B6%E4%BD%93%E7%B3%BB%EF%BC%88%E4%BA%94%EF%BC%89%EF%BC%9AView-%E7%9A%84%E6%BB%91%E5%8A%A8%E5%86%B2%E7%AA%81/" class="post-title-link" itemprop="url">View 的事件体系（五）：View 的滑动冲突</a>
         </h1>
 
         <div class="post-meta">
@@ -1096,14 +1104,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-09-01 01:53:45" itemprop="dateCreated datePublished" datetime="2020-09-01T01:53:45+08:00">2020-09-01</time>
+              <time title="创建时间：2020-11-22 23:42:47" itemprop="dateCreated datePublished" datetime="2020-11-22T23:42:47+08:00">2020-11-22</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-02 16:09:36" itemprop="dateModified" datetime="2020-09-02T16:09:36+08:00">2020-09-02</time>
+                <time title="修改时间：2020-11-30 19:05:35" itemprop="dateModified" datetime="2020-11-30T19:05:35+08:00">2020-11-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1111,7 +1119,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E3%80%8A%E9%98%BF%E9%87%8C-Java-%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%EF%BC%88%E5%B5%A9%E5%B1%B1%E7%89%88%EF%BC%89%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《阿里 Java 开发手册（嵩山版）》</span></a>
+                  <a href="/categories/%E3%80%8AAndroid-%E5%BC%80%E5%8F%91%E8%89%BA%E6%9C%AF%E6%8E%A2%E7%B4%A2%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">《Android 开发艺术探索》</span></a>
                 </span>
             </span>
 
@@ -1121,14 +1129,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.2k</span>
+              <span>11k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>10 分钟</span>
             </span>
 
         </div>
@@ -1140,10 +1148,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h4 id="1-【强制】Java-类库中定义的可以通过预检查方式规避的-RumtimeException-异常不应该通过-catch-的方式来处理。比如：NullPointerException、IndexOutOfBoundsException-等等"><a href="#1-【强制】Java-类库中定义的可以通过预检查方式规避的-RumtimeException-异常不应该通过-catch-的方式来处理。比如：NullPointerException、IndexOutOfBoundsException-等等" class="headerlink" title="1. 【强制】Java 类库中定义的可以通过预检查方式规避的 RumtimeException 异常不应该通过 catch 的方式来处理。比如：NullPointerException、IndexOutOfBoundsException 等等"></a>1. 【强制】Java 类库中定义的可以通过预检查方式规避的 RumtimeException 异常不应该通过 catch 的方式来处理。比如：NullPointerException、IndexOutOfBoundsException 等等</h4>
+          <h4 id="1-滑动冲突的本质原因"><a href="#1-滑动冲突的本质原因" class="headerlink" title="1. 滑动冲突的本质原因"></a>1. 滑动冲突的本质原因</h4>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/09/01/%E5%BC%82%E5%B8%B8%E6%97%A5%E5%BF%97%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/#more" rel="contents">
+              <a class="btn" href="/2020/11/22/View-%E7%9A%84%E4%BA%8B%E4%BB%B6%E4%BD%93%E7%B3%BB%EF%BC%88%E4%BA%94%EF%BC%89%EF%BC%9AView-%E7%9A%84%E6%BB%91%E5%8A%A8%E5%86%B2%E7%AA%81/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1171,7 +1179,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/15/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span><a class="page-number" href="/page/17/">17</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/">30</a><a class="extend next" rel="next" href="/page/17/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/15/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span><a class="page-number" href="/page/17/">17</a><span class="space">&hellip;</span><a class="page-number" href="/page/33/">33</a><a class="extend next" rel="next" href="/page/17/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1239,7 +1247,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">293</span>
+          <span class="site-state-item-count">321</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
