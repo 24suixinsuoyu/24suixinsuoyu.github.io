@@ -22,18 +22,18 @@
     var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1. AAA">
+  <meta name="description" content="1. 简单工厂模式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="设计模式之构建型模式（一）：工厂模式">
 <meta property="og:url" content="http://24suixinsuoyu.com/2021/03/18/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E6%9E%84%E5%BB%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
-<meta property="og:description" content="1. AAA">
+<meta property="og:description" content="1. 简单工厂模式">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-03-18T15:41:06.000Z">
-<meta property="article:modified_time" content="2021-03-18T16:00:52.108Z">
+<meta property="article:modified_time" content="2021-03-19T11:34:17.197Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="设计模式之构建型模式">
-<meta property="article:tag" content="工程模式">
+<meta property="article:tag" content="工厂模式">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://24suixinsuoyu.com/2021/03/18/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E6%9E%84%E5%BB%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-19 00:00:52" itemprop="dateModified" datetime="2021-03-19T00:00:52+08:00">2021-03-19</time>
+                <time title="修改时间：2021-03-19 19:34:17" itemprop="dateModified" datetime="2021-03-19T19:34:17+08:00">2021-03-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,14 +233,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5</span>
+              <span>1.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -252,8 +252,71 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-AAA"><a href="#1-AAA" class="headerlink" title="1. AAA"></a>1. AAA</h4><a id="more"></a>
+        <h4 id="1-简单工厂模式"><a href="#1-简单工厂模式" class="headerlink" title="1. 简单工厂模式"></a>1. 简单工厂模式</h4><a id="more"></a>
 
+<ul>
+<li><p><strong>概念</strong></p>
+<ul>
+<li><strong>让一个工厂类承担构建所有对象的职责</strong></li>
+<li>构建对象最常用的方式是 <strong>new 一个对象，这是一种硬编码</strong>。每 new 一个对象，相当于调用者多知道了一个类，增加了类与类之间的联系，不利于程序的松耦合</li>
+</ul>
+</li>
+<li><p><strong>优点</strong></p>
+<ul>
+<li>封装构建过程，<strong>降低耦合</strong>，如果某个产品构造方法非常复杂，简单工厂模式还可以<strong>减少代码重复</strong></li>
+<li>在 GoF 所著的<strong>《设计模式》</strong>一书中，简单工厂模式被划分为工厂方法模式的一种特例</li>
+</ul>
+</li>
+<li><p><strong>缺点</strong></p>
+<ul>
+<li>如果需要生产的<strong>产品过多</strong>，简单工厂模式化会导致工厂类<strong>过于庞大</strong>，承担过多的职责，<strong>变成超级类</strong>。当多个产品的生产过程需要修改时，都需要修改这个工厂，即这个简单工厂类不止一个引起修改的原因，<strong>违背了单一职责原则</strong></li>
+<li>当要生产<strong>新的产品</strong>时，必须在工厂类中添加新的分支，而<strong>开闭原则是类应该对修改封闭</strong>。我们希望在添加新功能时，只需增加新的类，而不是修改既有的类，<strong>违背了开闭原则</strong></li>
+</ul>
+</li>
+<li><p><strong>Demo</strong></p>
+<ul>
+<li><p>水果工厂</p>
+  <figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FruitFactory</span> </span>&#123;</span><br><span class="line">	<span class="keyword">public</span> Fruit create(<span class="keyword">String</span> type) &#123;</span><br><span class="line">		<span class="keyword">switch</span> (type) &#123;</span><br><span class="line">			<span class="keyword">case</span> <span class="string">"苹果"</span>:<span class="type"></span></span><br><span class="line"><span class="type">				AppleSeed appleSeed </span>= <span class="keyword">new</span> <span class="type">AppleSeed</span>();</span><br><span class="line">				Sunlight sunlight = <span class="keyword">new</span> <span class="type">Sunlight</span>();</span><br><span class="line">				Water water = <span class="keyword">new</span> <span class="type">Water</span>();</span><br><span class="line">				<span class="keyword">return</span> <span class="keyword">new</span> <span class="type">Apple</span>(appleSeed, sunlight, water);</span><br><span class="line">			<span class="keyword">case</span> <span class="string">"梨子"</span>:<span class="type"></span></span><br><span class="line"><span class="type">				return new Pear</span>();</span><br><span class="line">			<span class="keyword">default</span>:<span class="type"></span></span><br><span class="line"><span class="type">				throw new IllegalArgumentException</span>(<span class="string">"暂时没有这种水果"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>调用者</p>
+  <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class<span class="built_in"> User </span>&#123;</span><br><span class="line">	private void eat() &#123;</span><br><span class="line">		FruitFactory fruitFactory = new FruitFactory();</span><br><span class="line">		Fruit apple = fruitFactory.create(<span class="string">"苹果"</span>);</span><br><span class="line">		Fruit pear = fruitFactory.create(<span class="string">"梨子"</span>);</span><br><span class="line">		apple.eat();</span><br><span class="line">		pear.eat();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-工厂方法模式"><a href="#2-工厂方法模式" class="headerlink" title="2. 工厂方法模式"></a>2. 工厂方法模式</h4><ul>
+<li><p><strong>概念</strong></p>
+<ul>
+<li>为了解决简单工厂模式的违背<strong>单一职责原则</strong>和违背<strong>开闭原则</strong>的缺点</li>
+<li>工厂方法模式规定<strong>每个产品都有一个专属工厂</strong></li>
+</ul>
+</li>
+<li><p><strong>优点</strong></p>
+<ul>
+<li>当生产的<strong>产品过多</strong>时，工厂类不会变成超级类。工厂类会越来越多，保持灵活，不会越来越大、变得臃肿。如果某个产品的生产过程需要修改时，只需修改对应的工厂类即可，<strong>符合单一职责原则</strong></li>
+<li>当需要生产<strong>新的产品</strong>时，无需更改既有的工厂，只需要添加新的工厂即可。保持了面向对象的可扩展性，<strong>符合开闭原则</strong></li>
+</ul>
+</li>
+<li><p><strong>缺点</strong></p>
+<ul>
+<li>有几个产品就需要几个工厂类，<strong>耦合度</strong>没有明显下降</li>
+</ul>
+</li>
+<li><p><strong>Demo</strong></p>
+<ul>
+<li><p>苹果工厂</p>
+  <figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AppleFactory</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> Fruit create()&#123;</span><br><span class="line">        AppleSeed appleSeed = <span class="keyword">new</span> <span class="type">AppleSeed</span>();</span><br><span class="line">        Sunlight sunlight = <span class="keyword">new</span> <span class="type">Sunlight</span>();</span><br><span class="line">        Water water = <span class="keyword">new</span> <span class="type">Water</span>();</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="type">Apple</span>(appleSeed, sunlight, water);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>梨子工厂</p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PearFactory</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Fruit <span class="title">create</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Pear();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>调用者</p>
+  <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public class<span class="built_in"> User </span>&#123;</span><br><span class="line">    private void eat()&#123;</span><br><span class="line">        AppleFactory appleFactory = new AppleFactory();</span><br><span class="line">        Fruit apple = appleFactory.create();</span><br><span class="line">        PearFactory pearFactory = new PearFactory();</span><br><span class="line">        Fruit pear = pearFactory.create();</span><br><span class="line">        apple.eat();</span><br><span class="line">        pear.eat();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
 
     </div>
 
@@ -292,7 +355,7 @@
           
           <div class="post-tags">
               <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E6%9E%84%E5%BB%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F/" rel="tag"><i class="fa fa-tag"></i> 设计模式之构建型模式</a>
-              <a href="/tags/%E5%B7%A5%E7%A8%8B%E6%A8%A1%E5%BC%8F/" rel="tag"><i class="fa fa-tag"></i> 工程模式</a>
+              <a href="/tags/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/" rel="tag"><i class="fa fa-tag"></i> 工厂模式</a>
           </div>
 
         
@@ -367,7 +430,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-AAA"><span class="nav-text">1. AAA</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-简单工厂模式"><span class="nav-text">1. 简单工厂模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-工厂方法模式"><span class="nav-text">2. 工厂方法模式</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -472,7 +535,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">17:16</span>
+    <span title="站点阅读时长">17:18</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
