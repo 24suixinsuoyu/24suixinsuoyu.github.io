@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. 享元模式概述">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-03-18T15:46:38.000Z">
-<meta property="article:modified_time" content="2021-03-21T03:14:11.647Z">
+<meta property="article:modified_time" content="2021-03-21T03:20:27.881Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="设计模式之结构型模式">
 <meta property="article:tag" content="享元模式">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-21 11:14:11" itemprop="dateModified" datetime="2021-03-21T11:14:11+08:00">2021-03-21</time>
+                <time title="修改时间：2021-03-21 11:20:27" itemprop="dateModified" datetime="2021-03-21T11:20:27+08:00">2021-03-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -269,8 +269,8 @@
 </li>
 <li><p><strong>应用</strong></p>
 <ul>
-<li>在 <strong>Java Integer</strong> 的实现中，-128 到 127 之间的整型对象会被事先创建好，缓存在 Integer 的内部类 <strong>IntegerCache</strong> 中。当使用<strong>自动装箱</strong>或者 <strong><code>valueOf()</code></strong> 方法创建这个数值区间的整型对象时，会复用 IntegerCache 类事先创建好的对象。这里的 IntegerCache 类就是享元工厂类，事先创建好的整型对象就是享元对象</li>
-<li>在 <strong>Java String</strong> 的实现中，JVM 开辟一块存储区专门存储字符串常量，这块存储区叫<strong>字符串常量池</strong>，类似于 Integer 中的 IntegerCache。不过，更 IntegerCache 不同的是，它并非事先创建需要共享的对象，而是在程序的运行期间，根据需要来创建和缓存字符串常量</li>
+<li>在 <strong>Java Integer</strong> 的实现中，<strong>-128 到 127</strong> 之间的整型对象会被事先创建好，缓存在 Integer 的内部类 <strong>IntegerCache</strong> 中。当使用<strong>自动装箱</strong>或者 <strong><code>valueOf()</code></strong> 方法创建这个数值区间的整型对象时，会复用 IntegerCache 类事先创建好的对象。这里的 IntegerCache 类就是享元工厂类，事先创建好的整型对象就是享元对象</li>
+<li>在 <strong>Java String</strong> 的实现中，JVM 开辟一块存储区专门存储字符串常量，这块存储区叫<strong>字符串常量池</strong>，类似于 Integer 中的 IntegerCache。不过，更 IntegerCache 不同的是，<strong>它并非事先创建需要共享的对象，而是在程序的运行期间，根据需要来创建和缓存字符串常量</strong></li>
 </ul>
 </li>
 <li><p><strong>缺点</strong></p>
