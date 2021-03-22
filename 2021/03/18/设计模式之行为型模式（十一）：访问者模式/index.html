@@ -22,19 +22,24 @@
     var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1. AAA">
+  <meta name="description" content="1. 访问者模式概述">
 <meta property="og:type" content="article">
 <meta property="og:title" content="设计模式之行为型模式（十一）：访问者模式">
 <meta property="og:url" content="http://24suixinsuoyu.com/2021/03/18/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A1%8C%E4%B8%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89%EF%BC%9A%E8%AE%BF%E9%97%AE%E8%80%85%E6%A8%A1%E5%BC%8F/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
-<meta property="og:description" content="1. AAA">
+<meta property="og:description" content="1. 访问者模式概述">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gosxm0caesj305k03omx3.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gosxmiuz5oj305w02w747.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gosxmtgr62j305w02wmx2.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gosxn2vsbmj305w02u3yc.jpg">
 <meta property="article:published_time" content="2021-03-18T15:53:04.000Z">
-<meta property="article:modified_time" content="2021-03-18T16:12:58.312Z">
+<meta property="article:modified_time" content="2021-03-22T12:32:34.364Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="设计模式之行为型模式">
 <meta property="article:tag" content="访问者模式">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gosxm0caesj305k03omx3.jpg">
 
 <link rel="canonical" href="http://24suixinsuoyu.com/2021/03/18/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A1%8C%E4%B8%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89%EF%BC%9A%E8%AE%BF%E9%97%AE%E8%80%85%E6%A8%A1%E5%BC%8F/">
 
@@ -215,7 +220,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-19 00:12:58" itemprop="dateModified" datetime="2021-03-19T00:12:58+08:00">2021-03-19</time>
+                <time title="修改时间：2021-03-22 20:32:34" itemprop="dateModified" datetime="2021-03-22T20:32:34+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,14 +238,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5</span>
+              <span>7.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>7 分钟</span>
             </span>
 
         </div>
@@ -252,9 +257,189 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-AAA"><a href="#1-AAA" class="headerlink" title="1. AAA"></a>1. AAA</h4><a id="more"></a>
+        <h4 id="1-访问者模式概述"><a href="#1-访问者模式概述" class="headerlink" title="1. 访问者模式概述"></a>1. 访问者模式概述</h4><a id="more"></a>
 
+<ul>
+<li><p><strong>概念</strong></p>
+<ul>
+<li>表示一个作用于某对象结构中的各元素的操作。它使得可以在不改变各元素的类的前提下定义作用于这些元素的新操作</li>
+</ul>
+</li>
+<li><p><strong>特点</strong></p>
+<ul>
+<li>访问者模式的核心思想：将<strong>数据的结构</strong>和<strong>对数据的操作</strong>分离</li>
+<li><strong>《设计模式》</strong>一书给访问者模式设计了一个<strong>“双重分派”</strong>的机制，而 <strong>包括 Java 在内的大多数语言只支持单分派</strong>，用单分派语言强行模拟出双重分派导致了访问者模式看起来比较复杂</li>
+<li><strong>模拟双重分派</strong>：用重写方法的动态分配特性将重载方法模拟成动态分派，即<strong>在重写方法中调用重载方法，使得重载方法使用起来也像是动态分配的一样</strong>。避免使用 <strong>instanceOf + 强制类型转换</strong>的较丑陋的方式</li>
+</ul>
+</li>
+<li><p><strong>Demo</strong>：自助餐程序 1.0</p>
+<ul>
+<li><p>餐厅：准备好各种食物，提供接收访问者的方法</p>
+  <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Restaurant</span> &#123;</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">String</span> lobster = <span class="string">"lobster"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">String</span> watermelon = <span class="string">"watermelon"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">String</span> steak = <span class="string">"steak"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">String</span> banana = <span class="string">"banana"</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">welcome</span><span class="params">(IVisitor visitor)</span> </span>&#123;</span><br><span class="line">        visitor.chooseLobster(lobster);</span><br><span class="line">        visitor.chooseWatermelon(watermelon);</span><br><span class="line">        visitor.chooseSteak(steak);</span><br><span class="line">        visitor.chooseBanana(banana);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>顾客接口</p>
+  <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> interface IVisitor &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">chooseLobster</span><span class="params">(<span class="keyword">String</span> lobster)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">chooseWatermelon</span><span class="params">(<span class="keyword">String</span> watermelon)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">chooseSteak</span><span class="params">(<span class="keyword">String</span> steak)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">chooseBanana</span><span class="params">(<span class="keyword">String</span> banana)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>顾客 Aurora</p>
+  <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Aurora</span> <span class="title">implements</span> <span class="title">IVisitor</span> &#123;</span></span><br><span class="line">    @Override</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">chooseLobster</span><span class="params">(<span class="keyword">String</span> lobster)</span> </span>&#123;</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"Aurora gets a "</span> + lobster);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">chooseWatermelon</span><span class="params">(<span class="keyword">String</span> watermelon)</span> </span>&#123;</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"Aurora gets a "</span> + watermelon);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">chooseSteak</span><span class="params">(<span class="keyword">String</span> steak)</span> </span>&#123;</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"Aurora doesn't like "</span> + steak);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">chooseBanana</span><span class="params">(<span class="keyword">String</span> banana)</span> </span>&#123;</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"Aurora doesn't like "</span> + banana);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>客户端测试</p>
+  <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public class<span class="built_in"> Client </span>&#123;</span><br><span class="line">    @Test</span><br><span class="line">    public void test() &#123;</span><br><span class="line">        Restaurant restaurant = new Restaurant();</span><br><span class="line">        IVisitor Aurora = new Aurora();</span><br><span class="line">        restaurant.welcome(Aurora);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行程序，输出如下</p>
+  <figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">Aurora</span> <span class="string">gets a lobster</span></span><br><span class="line"><span class="attr">Aurora</span> <span class="string">gets a watermelon</span></span><br><span class="line"><span class="attr">Aurora</span> <span class="string">doesn't like steak</span></span><br><span class="line"><span class="attr">Aurora</span> <span class="string">doesn't like banana</span></span><br></pre></td></tr></table></figure>
 
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-单分派与双重分派分析"><a href="#2-单分派与双重分派分析" class="headerlink" title="2. 单分派与双重分派分析"></a>2. 单分派与双重分派分析</h4><ul>
+<li><p><strong>Demo</strong></p>
+<ul>
+<li><p>Food 类</p>
+  <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Food</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">String</span> <span class="title">name</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"food"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Watermelon 类：继承 Food 类</p>
+  <figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">Watermelon</span> <span class="keyword">extends</span> <span class="title">Food</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    public <span class="type">String</span> name() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"watermelon"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>测试代码</p>
+  <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span> &#123;</span></span><br><span class="line">    @Test</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Food food = <span class="keyword">new</span> Watermelon();</span><br><span class="line">        eat(food);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">(Food food)</span> </span>&#123;</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"eat food: "</span> + food.name());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">(Watermelon watermelon)</span> </span>&#123;</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"eat watermelon"</span> + watermelon.name());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行 <code>test()</code> 函数，输出如下</p>
+  <figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eat <span class="string">food:</span> watermelon</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><strong>分析一</strong>：Java 对重写方法和重载方法的调用方式是不同的</p>
+<ul>
+<li><strong>调用重写方法</strong>：与<strong>对象的运行时类型</strong>有关</li>
+<li><strong>调用重载方法</strong>：只与<strong>方法签名中声明的参数类型</strong>有关，与对象运行时的具体类型无关</li>
+</ul>
+</li>
+<li><p><strong>分析二</strong>：在面向对象的编程语言中，我们将方法调用称之为<strong>分派</strong>。上面的 <strong>Java</strong> 测试代码运行时，经历了两次分派</p>
+<ul>
+<li><strong>调用重载方法</strong>：选择调用 <code>eat(Food food)</code> 还是 <code>eat(Watermelon watermelon)</code>。虽然这里传入的这个参数的实际类型是 <code>Watermelon</code>，但这里会调用 <code>eat(Food food)</code>，这是因为调用哪个重载方法是在<strong>编译期</strong>就确定了的，称之为<strong>静态分派</strong></li>
+<li><strong>调用重写方法</strong>：选择调用 <code>Food</code> 的 <code>name</code> 方法还是 <code>Watermelon</code> 的 <code>name</code> 方法。这里会根据参数<strong>运行时</strong>的实际类型，调用 <code>Watermelon</code> 的 <code>name</code> 方法，称之为<strong>动态分派</strong></li>
+</ul>
+</li>
+<li><p><strong>定义</strong>：方法的接收者和方法的参数统称为方法的<strong>宗量</strong>。根据分派基于多少个宗量，可以将分派分为单分派和多分派</p>
+<ul>
+<li><strong>单分派</strong>：根据一个宗量就可以知道应该调用哪个方法</li>
+<li><strong>多分派</strong>：需要根据多个宗量才能确定调用目标</li>
+</ul>
+</li>
+<li><p><strong>区别</strong></p>
+<ul>
+<li><strong>单分派</strong>：程序在选择重载方法和重写方法时，如果其中一种情况是动态分配、另一种情况是静态分派，则称之为单分派</li>
+<li><strong>多分派</strong>：程序在选择重载方法和重写方法时，如果两种情况都是动态分配的，则称之为双重分派</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-模拟双重分派的访问者模式-Demo"><a href="#3-模拟双重分派的访问者模式-Demo" class="headerlink" title="3. 模拟双重分派的访问者模式 Demo"></a>3. 模拟双重分派的访问者模式 Demo</h4><ul>
+<li><p><strong>Demo</strong>：自助餐程序 2.0</p>
+<ul>
+<li><p>父类 Food</p>
+  <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title">Food</span> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> String <span class="title">name</span>(<span class="params"></span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>龙虾 Lobster：继承 Food</p>
+  <figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">Lobster</span> <span class="keyword">extends</span> <span class="title">Food</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    public <span class="type">String</span> name() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"lobster"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gosxm0caesj305k03omx3.jpg" alt="Lobster"></p>
+</li>
+<li><p>西瓜 Watermelon：继承 Food</p>
+  <figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">Watermelon</span> <span class="keyword">extends</span> <span class="title">Food</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    public <span class="type">String</span> name() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"watermelon"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gosxmiuz5oj305w02w747.jpg" alt="Watermelon"></p>
+</li>
+<li><p>牛排 Steak：继承 Food</p>
+  <figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">Steak</span> <span class="keyword">extends</span> <span class="title">Food</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    public <span class="type">String</span> name() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"steak"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gosxmtgr62j305w02wmx2.jpg" alt="Steak"></p>
+</li>
+<li><p>香蕉 Banana：继承 Food</p>
+  <figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">Banana</span> <span class="keyword">extends</span> <span class="title">Food</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    public <span class="type">String</span> name() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"banana"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gosxn2vsbmj305w02u3yc.jpg" alt="Banana"></p>
+</li>
+<li><p>顾客接口 IVisitor</p>
+  <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IVisitor</span> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">chooseFood</span>(<span class="params">Lobster lobster</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">chooseFood</span>(<span class="params">Watermelon watermelon</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">chooseFood</span>(<span class="params">Steak steak</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">chooseFood</span>(<span class="params">Banana banana</span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>餐厅类 Restaurant</p>
+  <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Restaurant</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 准备当天的食物</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> List&lt;Food&gt; <span class="title">prepareFoods</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        List&lt;Food&gt; foods = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="comment">// 简单模拟，每种食物添加 10 份</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            foods.<span class="keyword">add</span>(<span class="keyword">new</span> Lobster());</span><br><span class="line">            foods.<span class="keyword">add</span>(<span class="keyword">new</span> Watermelon());</span><br><span class="line">            foods.<span class="keyword">add</span>(<span class="keyword">new</span> Steak());</span><br><span class="line">            foods.<span class="keyword">add</span>(<span class="keyword">new</span> Banana());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> foods;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 欢迎顾客来访</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">welcome</span>(<span class="params">IVisitor visitor</span>)</span> &#123;</span><br><span class="line">        <span class="comment">// 获取当天的食物</span></span><br><span class="line">        List&lt;Food&gt; foods = prepareFoods();</span><br><span class="line">        <span class="comment">// 将食物依次提供给顾客选择</span></span><br><span class="line">        <span class="keyword">for</span> (Food food : foods) &#123;</span><br><span class="line">            <span class="comment">// 由于单分派机制，此处无法编译通过</span></span><br><span class="line">            visitor.chooseFood(food);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><strong>分析</strong></p>
+<ul>
+<li>看起来很美好，实际上，<code>visitor.chooseFood(food);</code> 这一行是无法通过编译的，原因就是 <strong>Java 是单分派编程语言</strong></li>
+<li>虽然每种食物都继承自 Food 类，但由于接口中没有 <strong><code>chooseFood(Food food);</code></strong> 这个重载方法，所以这一行会报错：<strong><code>&quot;Cannot resolve method chooseFood&quot;</code></strong></li>
+</ul>
+</li>
+<li><p><strong>方案 1</strong>：采用 <strong>instanceOf + 强制类型转换</strong></p>
+<ul>
+<li><p>代码</p>
+  <figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 通过 instanceOf 判断具体子类型，再强制向下转型</span></span><br><span class="line"><span class="keyword">if</span> (food <span class="keyword">instanceof</span> Lobster) visitor.chooseFood((Lobster) food);</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (food <span class="keyword">instanceof</span> Watermelon) visitor.chooseFood((Watermelon) food);</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (food <span class="keyword">instanceof</span> Steak) visitor.chooseFood((Steak) food);</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (food <span class="keyword">instanceof</span> Banana) visitor.chooseFood((Banana) food);</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"Unsupported type of food."</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>分析：可行，在某些开源代码中就是这么做的，但<strong>强制类型转换的方法既冗长又不符合开闭原则</strong>，较丑陋</p>
+</li>
+</ul>
+</li>
+<li><p><strong>方案 2</strong>：<strong>《设计模式》</strong>中推荐的<strong>巧妙</strong>的做法：<strong>在重写方法中调用重载方法，即用重写包装重载，使重载具有动态分配的特性</strong></p>
+<ul>
+<li><p>父类 Food：添加 <code>accept(Visitor visitor)</code> 抽象方法</p>
+  <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title">Food</span> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> String <span class="title">name</span>(<span class="params"></span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Food 中添加 accept 方法，接收访问者</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">accept</span>(<span class="params">IVisitor visitor</span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>具体子类：重写实现抽象方法</p>
+  <figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">Lobster</span> <span class="keyword">extends</span> <span class="title">Food</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    public <span class="type">String</span> name() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"lobster"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    public void accept(<span class="type">IVisitor</span> visitor) &#123;</span><br><span class="line">        visitor.chooseFood(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改餐厅类 Restaurant：<strong>将就餐者的代码由重载方法 <code>visitor.chooseFood(food);</code> 改为了重写方法 <code>food.accept(visitor);</code></strong></p>
+  <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Restaurant</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 准备当天的食物</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> List&lt;Food&gt; <span class="title">prepareFoods</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        List&lt;Food&gt; foods = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="comment">// 简单模拟，每种食物添加 10 份</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            foods.<span class="keyword">add</span>(<span class="keyword">new</span> Lobster());</span><br><span class="line">            foods.<span class="keyword">add</span>(<span class="keyword">new</span> Watermelon());</span><br><span class="line">            foods.<span class="keyword">add</span>(<span class="keyword">new</span> Steak());</span><br><span class="line">            foods.<span class="keyword">add</span>(<span class="keyword">new</span> Banana());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> foods;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 欢迎顾客来访</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">welcome</span>(<span class="params">IVisitor visitor</span>)</span> &#123;</span><br><span class="line">        <span class="comment">// 获取当天的食物</span></span><br><span class="line">        List&lt;Food&gt; foods = prepareFoods();</span><br><span class="line">        <span class="comment">// 将食物依次提供给顾客选择</span></span><br><span class="line">        <span class="keyword">for</span> (Food food : foods) &#123;</span><br><span class="line">            <span class="comment">// 由于重写方法是动态分派的，所以这里会调用具体子类的 accept 方法，</span></span><br><span class="line">            food.accept(visitor);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>顾客 Aurora 类</p>
+  <figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">public</span> <span class="keyword">class</span> Aurora implements IVisitor &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    <span class="built_in">public</span> <span class="type">void</span> chooseFood(Lobster lobster) &#123;</span><br><span class="line">        <span class="keyword">System</span>.<span class="keyword">out</span>.println("Aurora gets a " + lobster.name());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    <span class="built_in">public</span> <span class="type">void</span> chooseFood(Watermelon watermelon) &#123;</span><br><span class="line">        <span class="keyword">System</span>.<span class="keyword">out</span>.println("Aurora gets a " + watermelon.name());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    <span class="built_in">public</span> <span class="type">void</span> chooseFood(Steak steak) &#123;</span><br><span class="line">        <span class="keyword">System</span>.<span class="keyword">out</span>.println("Aurora doesn't like " + steak.name());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    <span class="built_in">public</span> <span class="type">void</span> chooseFood(Banana banana) &#123;</span><br><span class="line">        <span class="keyword">System</span>.<span class="keyword">out</span>.println("Aurora doesn't like " + banana.name());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>顾客 Kevin 类</p>
+  <figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">public</span> <span class="keyword">class</span> Kevin implements IVisitor &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    <span class="built_in">public</span> <span class="type">void</span> chooseFood(Lobster lobster) &#123;</span><br><span class="line">        <span class="keyword">System</span>.<span class="keyword">out</span>.println("Kevin doesn't like " + lobster.name());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    <span class="built_in">public</span> <span class="type">void</span> chooseFood(Watermelon watermelon) &#123;</span><br><span class="line">        <span class="keyword">System</span>.<span class="keyword">out</span>.println("Kevin doesn't like " + watermelon.name());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    <span class="built_in">public</span> <span class="type">void</span> chooseFood(Steak steak) &#123;</span><br><span class="line">        <span class="keyword">System</span>.<span class="keyword">out</span>.println("Kevin gets a " + steak.name());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    <span class="built_in">public</span> <span class="type">void</span> chooseFood(Banana banana) &#123;</span><br><span class="line">        <span class="keyword">System</span>.<span class="keyword">out</span>.println("Kevin gets a " + banana.name());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>客户端测试</p>
+  <figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span> </span>&#123;</span><br><span class="line">    @Test</span><br><span class="line">    <span class="keyword">public</span> void test() &#123;</span><br><span class="line">        Restaurant restaurant = <span class="keyword">new</span> <span class="type">Restaurant</span>();</span><br><span class="line">        IVisitor Aurora = <span class="keyword">new</span> <span class="type">Aurora</span>();</span><br><span class="line">        IVisitor Kevin = <span class="keyword">new</span> <span class="type">Kevin</span>();</span><br><span class="line">        restaurant.welcome(Aurora);</span><br><span class="line">        restaurant.welcome(Kevin);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行程序，输出如下</p>
+  <figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">Aurora</span> <span class="string">gets a lobster</span></span><br><span class="line"><span class="attr">Aurora</span> <span class="string">gets a watermelon</span></span><br><span class="line"><span class="attr">Aurora</span> <span class="string">doesn't like steak</span></span><br><span class="line"><span class="attr">Aurora</span> <span class="string">doesn't like banana</span></span><br><span class="line"><span class="meta">...</span> <span class="string">输出 10 遍</span></span><br><span class="line"><span class="attr">Kevin</span> <span class="string">doesn't like lobster</span></span><br><span class="line"><span class="attr">Kevin</span> <span class="string">doesn't like watermelon</span></span><br><span class="line"><span class="attr">Kevin</span> <span class="string">gets a steak</span></span><br><span class="line"><span class="attr">Kevin</span> <span class="string">gets a banana</span></span><br><span class="line"><span class="meta">...</span> <span class="string">输出 10 遍</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-重载方法和重写方法的区别"><a href="#4-重载方法和重写方法的区别" class="headerlink" title="4. 重载方法和重写方法的区别"></a>4. 重载方法和重写方法的区别</h4><table>
+<thead>
+<tr>
+<th align="center">区别点</th>
+<th align="center">重载方法</th>
+<th align="center">重写方法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">参数列表</td>
+<td align="center">必须修改</td>
+<td align="center">不能修改</td>
+</tr>
+<tr>
+<td align="center">返回类型</td>
+<td align="center">可以修改</td>
+<td align="center">不能修改</td>
+</tr>
+<tr>
+<td align="center">异常类型</td>
+<td align="center">可以修改</td>
+<td align="center">可以减小或缩小范围，不能增加或扩大范围</td>
+</tr>
+<tr>
+<td align="center">访问限制</td>
+<td align="center">可以修改</td>
+<td align="center">可以减少限制，不能扩大限制</td>
+</tr>
+</tbody></table>
 
     </div>
 
@@ -368,7 +553,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-AAA"><span class="nav-text">1. AAA</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-访问者模式概述"><span class="nav-text">1. 访问者模式概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-单分派与双重分派分析"><span class="nav-text">2. 单分派与双重分派分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-模拟双重分派的访问者模式-Demo"><span class="nav-text">3. 模拟双重分派的访问者模式 Demo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-重载方法和重写方法的区别"><span class="nav-text">4. 重载方法和重写方法的区别</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -473,7 +658,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">18:16</span>
+    <span title="站点阅读时长">18:22</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
