@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1. AAA">
+  <meta name="description" content="1. 策略模式概述">
 <meta property="og:type" content="article">
 <meta property="og:title" content="设计模式之行为型模式（九）：策略模式">
 <meta property="og:url" content="http://24suixinsuoyu.com/2021/03/18/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A1%8C%E4%B8%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F%EF%BC%88%E4%B9%9D%EF%BC%89%EF%BC%9A%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
-<meta property="og:description" content="1. AAA">
+<meta property="og:description" content="1. 策略模式概述">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-03-18T15:52:26.000Z">
-<meta property="article:modified_time" content="2021-03-18T16:12:09.728Z">
+<meta property="article:modified_time" content="2021-03-22T03:44:52.155Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="设计模式之行为型模式">
 <meta property="article:tag" content="策略模式">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-19 00:12:09" itemprop="dateModified" datetime="2021-03-19T00:12:09+08:00">2021-03-19</time>
+                <time title="修改时间：2021-03-22 11:44:52" itemprop="dateModified" datetime="2021-03-22T11:44:52+08:00">2021-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,14 +233,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5</span>
+              <span>3.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -252,9 +252,81 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-AAA"><a href="#1-AAA" class="headerlink" title="1. AAA"></a>1. AAA</h4><a id="more"></a>
+        <h4 id="1-策略模式概述"><a href="#1-策略模式概述" class="headerlink" title="1. 策略模式概述"></a>1. 策略模式概述</h4><a id="more"></a>
 
+<ul>
+<li><p><strong>概念</strong></p>
+<ul>
+<li>定义了一系列算法，并将每一个<strong>算法封装</strong>起来，而且使它们还可以互相替换。策略模式让<strong>算法独立</strong>于使用它的客户而独立变化</li>
+</ul>
+</li>
+<li><p><strong>特点</strong></p>
+<ul>
+<li><strong>优点</strong>：策略模式<strong>扩展性</strong>和<strong>灵活性</strong>都相当不错。当有新的策略时，只需要增加一个策略类；要修改某个策略时，只需要更改具体的策略类，其他地方的代码都无需做任何调整</li>
+<li><strong>缺点</strong>：每 new 一个对象，相当于调用者多知道了一个类，增加了类与类之间的联系，<strong>不利于程序的松耦合</strong></li>
+</ul>
+</li>
+<li><p><strong>场景</strong></p>
+<ul>
+<li>使用策略模式<strong>更好的做法是与工厂模式结合</strong>，将不同的策略对象封装到工厂类中，用户只需要传递不同的策略类型，然后从工厂中拿到对应的策略对象即可</li>
+</ul>
+</li>
+<li><p><strong>应用</strong></p>
+<ul>
+<li>通过策略模式我们可以为同一个需求选择不同的算法，以应对不同的场景（是否要求稳定性等），比如不同<strong>排序算法</strong>的选择</li>
+<li>策略模式还可以应用在<strong>图片缓存</strong>中，当我们开发一个图片缓存框架时，可以通过提供不同的策略类，让用户根据需要选择<code>缓存解码后的图片</code>、<code>缓存未经解码的数据</code>或者<code>不缓存任何内容</code>。在一些开源图片加载框架中，就采用了这种设计模式</li>
+</ul>
+</li>
+<li><p><strong>Demo</strong></p>
+<ul>
+<li><p>定义排序算法接口</p>
+  <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="symbol">ISort</span> &#123;</span><br><span class="line">    <span class="built_in">void</span> sort(<span class="built_in">int</span>[] arr);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>冒泡排序</p>
+  <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="symbol">BubbleSort</span> <span class="symbol">implements</span> <span class="symbol">ISort</span>&#123;</span><br><span class="line">    @Override</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">void</span> sort(<span class="built_in">int</span>[] arr) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; arr.length - <span class="number">1</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="built_in">int</span> j = <span class="number">0</span>; j &lt; arr.length - <span class="number">1</span> - i; j++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (arr[j] &gt; arr[j + <span class="number">1</span>]) &#123;</span><br><span class="line">                    <span class="comment">// 如果左边的数大于右边的数，则交换，保证右边的数字最大</span></span><br><span class="line">                    arr[j + <span class="number">1</span>] = arr[j + <span class="number">1</span>] + arr[j];</span><br><span class="line">                    arr[j] = arr[j + <span class="number">1</span>] - arr[j];</span><br><span class="line">                    arr[j + <span class="number">1</span>] = arr[j + <span class="number">1</span>] - arr[j];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>选择排序</p>
+  <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="symbol">SelectionSort</span> <span class="symbol">implements</span> <span class="symbol">ISort</span> &#123;</span><br><span class="line">    @Override</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">void</span> sort(<span class="built_in">int</span>[] arr) &#123;</span><br><span class="line">        <span class="built_in">int</span> minIndex;</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; arr.length - <span class="number">1</span>; i++) &#123;</span><br><span class="line">            minIndex = i;</span><br><span class="line">            <span class="keyword">for</span> (<span class="built_in">int</span> j = i + <span class="number">1</span>; j &lt; arr.length; j++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (arr[minIndex] &gt; arr[j]) &#123;</span><br><span class="line">                    <span class="comment">// 记录最小值的下标</span></span><br><span class="line">                    minIndex = j;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 将最小元素交换至首位</span></span><br><span class="line">            <span class="built_in">int</span> temp = arr[i];</span><br><span class="line">            arr[i] = arr[minIndex];</span><br><span class="line">            arr[minIndex] = temp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>插入排序</p>
+  <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="symbol">InsertSort</span> <span class="symbol">implements</span> <span class="symbol">ISort</span> &#123;</span><br><span class="line">    @Override</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">void</span> sort(<span class="built_in">int</span>[] arr) &#123;</span><br><span class="line">        <span class="comment">// 从第二个数开始，往前插入数字</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">1</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">            <span class="built_in">int</span> currentNumber = arr[i];</span><br><span class="line">            <span class="built_in">int</span> j = i - <span class="number">1</span>;</span><br><span class="line">            <span class="comment">// 寻找插入位置的过程中，不断地将比 currentNumber 大的数字向后挪</span></span><br><span class="line">            <span class="keyword">while</span> (j &gt;= <span class="number">0</span> &amp;&amp; currentNumber &lt; arr[j]) &#123;</span><br><span class="line">                arr[j + <span class="number">1</span>] = arr[j];</span><br><span class="line">                j--;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 两种情况会跳出循环：1. 遇到一个小于或等于 currentNumber 的数字，跳出循环，currentNumber 就坐到它后面。</span></span><br><span class="line">            <span class="comment">// 2. 已经走到数列头部，仍然没有遇到小于或等于 currentNumber 的数字，也会跳出循环，此时 j 等于 -1，currentNumber 就坐到数列头部。</span></span><br><span class="line">            arr[j + <span class="number">1</span>] = currentNumber;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>环境类：<strong>将每种算法都作为一种策略封装起来</strong></p>
+  <figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="keyword">Sort</span> <span class="keyword">implements</span> ISort &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> ISort <span class="keyword">sort</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">Sort</span>(ISort <span class="keyword">sort</span>) &#123;</span><br><span class="line">        <span class="keyword">this</span>.<span class="keyword">sort</span> = <span class="keyword">sort</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="keyword">sort</span>(<span class="keyword">int</span>[] arr) &#123;</span><br><span class="line">        <span class="keyword">sort</span>.<span class="keyword">sort</span>(arr);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 客户端通过此方法设置不同的策略</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> setSort(ISort <span class="keyword">sort</span>) &#123;</span><br><span class="line">        <span class="keyword">this</span>.<span class="keyword">sort</span> = <span class="keyword">sort</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>客户端调用：<code>setSort()</code> 方法用来选择不同的排序策略</p>
+  <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">Client</span> &#123;</span><br><span class="line">    @Test</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">void</span> test() &#123;</span><br><span class="line">        <span class="built_in">int</span>[] arr = new <span class="built_in">int</span>[]&#123;<span class="number">6</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">4</span>&#125;;</span><br><span class="line">        Sort sort = new Sort(new BubbleSort());</span><br><span class="line">        <span class="comment">// 这里可以选择不同的策略完成排序</span></span><br><span class="line">        <span class="comment">// sort.setSort(new InsertSort());</span></span><br><span class="line">        <span class="comment">// sort.setSort(new SelectionSort());</span></span><br><span class="line">        sort.sort(arr);</span><br><span class="line">        <span class="comment">// 输出 [1, 2, 3, 4, 5, 6]</span></span><br><span class="line">        System.<span class="keyword">out</span>.println(Arrays.toString(arr));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-策略模式与工厂模式结合-Demo"><a href="#2-策略模式与工厂模式结合-Demo" class="headerlink" title="2. 策略模式与工厂模式结合 Demo"></a>2. 策略模式与工厂模式结合 Demo</h4><ul>
+<li><p>创建排序策略枚举类</p>
+  <figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">SortStrategy</span> &#123;</span></span><br><span class="line">    BUBBLE_SORT,</span><br><span class="line">    SELECTION_SORT,</span><br><span class="line">    INSERT_SORT</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在 Sort 类中使用<strong>简单工厂模式</strong>：将创建策略类的职责移到了 Sort 类中。客户端只需要和 Sort 类打交道，通过 SortStrategy 选择不同的排序策略即可</p>
+  <figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="keyword">Sort</span> <span class="keyword">implements</span> ISort &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> ISort <span class="keyword">sort</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">Sort</span>(SortStrategy strategy) &#123;</span><br><span class="line">        setStrategy(strategy);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="keyword">sort</span>(<span class="keyword">int</span>[] arr) &#123;</span><br><span class="line">        <span class="keyword">sort</span>.<span class="keyword">sort</span>(arr);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 客户端通过此方法设置不同的策略</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> setStrategy(SortStrategy strategy) &#123;</span><br><span class="line">        <span class="keyword">switch</span> (strategy) &#123;</span><br><span class="line">            <span class="keyword">case</span> BUBBLE_SORT:</span><br><span class="line">                <span class="keyword">sort</span> = <span class="keyword">new</span> BubbleSort();</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> SELECTION_SORT:</span><br><span class="line">                <span class="keyword">sort</span> = <span class="keyword">new</span> SelectionSort();</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> INSERT_SORT:</span><br><span class="line">                <span class="keyword">sort</span> = <span class="keyword">new</span> InsertSort();</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"There's no such strategy yet."</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>客户端</p>
+  <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="symbol">Client</span> &#123;</span><br><span class="line">    @Test</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">void</span> test() &#123;</span><br><span class="line">        <span class="built_in">int</span>[] arr = new <span class="built_in">int</span>[]&#123;<span class="number">6</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">4</span>&#125;;</span><br><span class="line">        Sort sort = new Sort(SortStrategy.BUBBLE_SORT);</span><br><span class="line">        <span class="comment">// 可以通过选择不同的策略完成排序</span></span><br><span class="line">        <span class="comment">// sort.setStrategy(SortStrategy.SELECTION_SORT);</span></span><br><span class="line">        <span class="comment">// sort.setStrategy(SortStrategy.INSERT_SORT);</span></span><br><span class="line">        sort.sort(arr);</span><br><span class="line">        <span class="comment">// 输出 [1, 2, 3, 4, 5, 6]</span></span><br><span class="line">        System.<span class="keyword">out</span>.println(Arrays.toString(arr));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="3-策略模式和状态模式的异同"><a href="#3-策略模式和状态模式的异同" class="headerlink" title="3. 策略模式和状态模式的异同"></a>3. 策略模式和状态模式的异同</h4><ul>
+<li><p><strong>相同点</strong></p>
+<ul>
+<li>策略模式与状态模式非常类似，甚至他们的 <strong>UML</strong> 类图都是一模一样的。两者都是采用一个变量来控制程序的行为</li>
+<li>策略模式通过不同的<strong>策略</strong>执行不同的行为，状态模式通过不同的<strong>状态</strong>执行不同的行为</li>
+</ul>
+</li>
+<li><p><strong>不同点</strong></p>
+<ul>
+<li>使用<strong>策略模式</strong>时，程序只需选择一种策略就可以完成某件事，每个<strong>策略类</strong>都是完整的，都能独立完成这件事，强调的是<strong>殊途同归</strong></li>
+<li>使用<strong>状态模式</strong>时，程序需要在不同的状态下不断切换才能完成某件事，每个<strong>状态类</strong>只能完成这件事的一部分，需要所有的状态类组合起来才能完整地完成这件事，强调的是<strong>随势而动</strong></li>
+</ul>
+</li>
+</ul>
 
     </div>
 
@@ -368,7 +440,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-AAA"><span class="nav-text">1. AAA</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-策略模式概述"><span class="nav-text">1. 策略模式概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-策略模式与工厂模式结合-Demo"><span class="nav-text">2. 策略模式与工厂模式结合 Demo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-策略模式和状态模式的异同"><span class="nav-text">3. 策略模式和状态模式的异同</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -473,7 +545,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">18:12</span>
+    <span title="站点阅读时长">18:15</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
