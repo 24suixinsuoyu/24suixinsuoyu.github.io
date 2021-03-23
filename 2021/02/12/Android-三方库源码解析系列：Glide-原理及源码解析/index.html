@@ -45,8 +45,11 @@
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gotzi25lkpj30mc10qta1.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gotzl3x499j319t0u0gnv.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou0d3gl6uj30oe1iqacn.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou2l7d6acj30cl0jot91.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou2m186n1j30hv10dq3v.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou2vaaktqj30fc0cxaam.jpg">
 <meta property="article:published_time" content="2021-02-12T01:45:07.000Z">
-<meta property="article:modified_time" content="2021-03-23T11:07:51.544Z">
+<meta property="article:modified_time" content="2021-03-23T12:11:41.614Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Android 三方库源码解析系列">
 <meta property="article:tag" content="Glide 原理及源码解析">
@@ -232,7 +235,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-23 19:07:51" itemprop="dateModified" datetime="2021-03-23T19:07:51+08:00">2021-03-23</time>
+                <time title="修改时间：2021-03-23 20:11:41" itemprop="dateModified" datetime="2021-03-23T20:11:41+08:00">2021-03-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -250,14 +253,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>20k</span>
+              <span>24k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>18 分钟</span>
+              <span>22 分钟</span>
             </span>
 
         </div>
@@ -1060,7 +1063,177 @@
 </ul>
 </li>
 </ul>
-<h3 id="四-Glide-初始化流程与配置"><a href="#四-Glide-初始化流程与配置" class="headerlink" title="四. Glide 初始化流程与配置"></a>四. Glide 初始化流程与配置</h3><h4 id="1-Glide-初始化流程"><a href="#1-Glide-初始化流程" class="headerlink" title="1. Glide 初始化流程"></a>1. Glide 初始化流程</h4><h4 id="2-Registry"><a href="#2-Registry" class="headerlink" title="2. Registry"></a>2. Registry</h4><h4 id="3-GlideBuilder"><a href="#3-GlideBuilder" class="headerlink" title="3. GlideBuilder"></a>3. GlideBuilder</h4><h4 id="4-初始化流程与配置相关问题"><a href="#4-初始化流程与配置相关问题" class="headerlink" title="4. 初始化流程与配置相关问题"></a>4. 初始化流程与配置相关问题</h4><h3 id="五-Glide-图片加载选项"><a href="#五-Glide-图片加载选项" class="headerlink" title="五. Glide 图片加载选项"></a>五. Glide 图片加载选项</h3><h4 id="1-placeholder-drawable"><a href="#1-placeholder-drawable" class="headerlink" title="1. placeholder(drawable)"></a>1. placeholder(drawable)</h4><h4 id="2-error-drawable"><a href="#2-error-drawable" class="headerlink" title="2. error(drawable)"></a>2. error(drawable)</h4><h4 id="3-fallback"><a href="#3-fallback" class="headerlink" title="3. fallback()"></a>3. fallback()</h4><h4 id="4-override-width-height"><a href="#4-override-width-height" class="headerlink" title="4. override(width, height)"></a>4. override(width, height)</h4><h4 id="5-fitCenter"><a href="#5-fitCenter" class="headerlink" title="5. fitCenter()"></a>5. fitCenter()</h4><h4 id="6-centerCrop"><a href="#6-centerCrop" class="headerlink" title="6. centerCrop()"></a>6. centerCrop()</h4><h4 id="7-centerInside"><a href="#7-centerInside" class="headerlink" title="7. centerInside()"></a>7. centerInside()</h4><h4 id="8-transform-Transformation"><a href="#8-transform-Transformation" class="headerlink" title="8. transform(Transformation)"></a>8. transform(Transformation)</h4><h4 id="9-dontTrannsform"><a href="#9-dontTrannsform" class="headerlink" title="9. dontTrannsform()"></a>9. dontTrannsform()</h4><h4 id="10-skipMemoryCache-boolean"><a href="#10-skipMemoryCache-boolean" class="headerlink" title="10. skipMemoryCache(boolean)"></a>10. skipMemoryCache(boolean)</h4><h4 id="11-diskCacheStrategy-strategy"><a href="#11-diskCacheStrategy-strategy" class="headerlink" title="11. diskCacheStrategy(strategy)"></a>11. diskCacheStrategy(strategy)</h4><h4 id="12-onlyRetrieveFromCache-boolean"><a href="#12-onlyRetrieveFromCache-boolean" class="headerlink" title="12. onlyRetrieveFromCache(boolean)"></a>12. onlyRetrieveFromCache(boolean)</h4><h4 id="13-priority"><a href="#13-priority" class="headerlink" title="13. priority"></a>13. priority</h4><h4 id="14-sizeMultiplier-float"><a href="#14-sizeMultiplier-float" class="headerlink" title="14. sizeMultiplier(float)"></a>14. sizeMultiplier(float)</h4><h4 id="15-encodeFormat-CompressFormat"><a href="#15-encodeFormat-CompressFormat" class="headerlink" title="15. encodeFormat(CompressFormat)"></a>15. encodeFormat(CompressFormat)</h4><h4 id="16-encodeQuality-int"><a href="#16-encodeQuality-int" class="headerlink" title="16. encodeQuality(int)"></a>16. encodeQuality(int)</h4><h4 id="17-frame-long"><a href="#17-frame-long" class="headerlink" title="17. frame(long)"></a>17. frame(long)</h4><h4 id="18-format-DecodeFormat"><a href="#18-format-DecodeFormat" class="headerlink" title="18. format(DecodeFormat)"></a>18. format(DecodeFormat)</h4><h4 id="19-timeout-milliseconds"><a href="#19-timeout-milliseconds" class="headerlink" title="19. timeout(milliseconds)"></a>19. timeout(milliseconds)</h4><h4 id="20-transition-options"><a href="#20-transition-options" class="headerlink" title="20. transition(options)"></a>20. transition(options)</h4><h4 id="21-dontAnimate"><a href="#21-dontAnimate" class="headerlink" title="21. dontAnimate()"></a>21. dontAnimate()</h4><h4 id="22-apply-options"><a href="#22-apply-options" class="headerlink" title="22. apply(options)"></a>22. apply(options)</h4><h4 id="23-listener-RequestListener"><a href="#23-listener-RequestListener" class="headerlink" title="23. listener(RequestListener)"></a>23. listener(RequestListener)</h4><h4 id="24-asBitmap"><a href="#24-asBitmap" class="headerlink" title="24. asBitmap()"></a>24. asBitmap()</h4><h4 id="25-asFile"><a href="#25-asFile" class="headerlink" title="25. asFile()"></a>25. asFile()</h4><h4 id="26-submit"><a href="#26-submit" class="headerlink" title="26. submit()"></a>26. submit()</h4><h4 id="27-downloadOnly"><a href="#27-downloadOnly" class="headerlink" title="27. downloadOnly()"></a>27. downloadOnly()</h4><h4 id="28-download"><a href="#28-download" class="headerlink" title="28. download()"></a>28. download()</h4><h4 id="29-preload-width-height"><a href="#29-preload-width-height" class="headerlink" title="29. preload(width, height)"></a>29. preload(width, height)</h4>
+<h3 id="四-Glide-初始化流程与配置"><a href="#四-Glide-初始化流程与配置" class="headerlink" title="四. Glide 初始化流程与配置"></a>四. Glide 初始化流程与配置</h3><h4 id="1-Glide-初始化流程"><a href="#1-Glide-初始化流程" class="headerlink" title="1. Glide 初始化流程"></a>1. Glide 初始化流程</h4><ul>
+<li><p><strong>with()</strong></p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou2l7d6acj30cl0jot91.jpg" alt="with()"></p>
+<ul>
+<li>当我们调用 <code>Glide.with()</code> 方法时，Glide 会先用 <code>getRetriever()</code> 方法获取请求管理器检索器，在这个方法中还会用 <code>get()</code> 方法获取 Glide 实例，获取不到的话就会初始化 Glide</li>
+</ul>
+</li>
+<li><p><strong>initializeGlide()</strong></p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou2m186n1j30hv10dq3v.jpg" alt="initializeGlide()"></p>
+<ul>
+<li><p>我们可以在 AndroidManifest 中声明 GlideModule，也可以用 @GlideModule 注解声明 GlideModule，走的都是上面这个流程</p>
+</li>
+<li><p><strong>应用选项</strong></p>
+<ul>
+<li>Glide 有一个 ApppModuleGenerator，它会把读取我们设定的 AppGlideModule 中的配置，然后生成一个 GeneratedAppGlideModuleImpl 配置。然后用反射读取这个配置，读取到配置后，就会应用我们在 <code>applyOptions()</code> 中给 GlideBuilder 设置的选项</li>
+<li>如果不用生成加反射的话读取配置的话，Glide 并不知道我们会把配置叫什么，放哪里</li>
+</ul>
+</li>
+<li><p><strong>创建实例</strong>：应用选项后，就会创建一个 Glide 实例</p>
+</li>
+<li><p><strong>注册组件</strong>：创建完实例后，就会把实例的 registry 传到 <code>registerComponents()</code> 中，也就是我们修改编解码逻辑的地方</p>
+</li>
+<li><p><strong>注册回调</strong>：Glide 实现了 ComponentCallback 用于监听内存状态，这里的注册回调就是调用 ApplicationContext 的 <code>registerComponentCallbacks()</code> 方法</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-Registry"><a href="#2-Registry" class="headerlink" title="2. Registry"></a>2. Registry</h4><ul>
+<li><p>Glide 有一个登记处 Registry ，它包含了下面这些 Registry</p>
+<ul>
+<li>数据加载器登记处 ModelLoaderRegistry</li>
+<li>编码器登记处 EncoderRegistry</li>
+<li>资源解码器登记处 ResourceDecoderRegistry</li>
+<li>资源编码器登记处 ResourceEncoderRegistry</li>
+<li>数据重绕器登记处 DataRewinderRegistry</li>
+<li>转码器登记处 DataRewinderRegistry</li>
+<li>图片头部信息解析器登记处 ImageHeaderRegistry</li>
+</ul>
+</li>
+<li><p>在 Glide 的构造方法中，会把所有的编码、解码和数据加载等逻辑通过 Registry 的 <code>append()</code> 方法登记到 Registry 中，我们可以在 AppGlideModule 的 <code>registerComponents()</code> 方法中获取到 registry 实例，通过这个实例就可以替换掉对应的实现</p>
+</li>
+<li><p><strong>registerComponents()</strong></p>
+<ul>
+<li><p>比如获取网络图片默认用的是 HttpUrlFetcher ，HttpUrlFetcher 是用的 HttpURLConnection 来获取图片数据的，我们可以在 <code>registerComponents()</code> 方法中，把 HttpUrlFetcher 替换为 OkHttp</p>
+  <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GlideModule</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GlideConfig</span> : <span class="type">AppGlideModule</span></span>() &#123;</span><br><span class="line">	<span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">registerComponents</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">		context: <span class="type">Context</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">		glide: <span class="type">Glide</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">		registry: <span class="type">Registry</span></span></span></span><br><span class="line"><span class="function"><span class="params">	)</span></span></span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 替换网络图片加载逻辑</span></span><br><span class="line">	registry.replace(</span><br><span class="line">		GlideUrl::<span class="class"><span class="keyword">class</span>.<span class="title">java</span>,<span class="type"></span></span></span><br><span class="line">		InputStream::<span class="class"><span class="keyword">class</span>.<span class="title">java</span>,<span class="type"></span></span></span><br><span class="line">		OkHttpUrlLoader.Factory(getOkHttpClient())</span><br><span class="line">	)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><strong>Entry</strong></p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou2vaaktqj30fc0cxaam.jpg" alt="Entry"></p>
+<ul>
+<li>之所以要用 Class 来替换 ModelLoader ，是因为 ModelLoaderRegistry 的 <code>append()</code> 方法会用来源类型（Model）、原始数据类型（Data）和 ModelLoaderFactory 来创建不同类型的 Entry ，这些 Entry 会保存在 MultiModelLoaderFactory 工厂中</li>
+<li>当 DataFetcherGenerator 通过 ModelLoader 获取数据时，则会通过 model 的 Class 信息来获取 ModelLoader，除了 ModelLoaderRegistry，其他的 Registry 中也有 Entry</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-GlideBuilder"><a href="#3-GlideBuilder" class="headerlink" title="3. GlideBuilder"></a>3. GlideBuilder</h4><ul>
+<li><p>GlideBuilder 就是 Glide 的构建器，它包含了下面这些数据</p>
+<ul>
+<li><p>线程池</p>
+<ul>
+<li>图片来源线程池 sourceExecutor</li>
+<li>磁盘缓存线程池 diskCacheExecutor</li>
+<li>动画线程池 animationExecutor</li>
+</ul>
+</li>
+<li><p>内存大小计算器 memorySizeCalculator</p>
+</li>
+<li><p>网络状态监听器工厂 connectivityMonitorFactory</p>
+</li>
+<li><p>请求选项工厂 defaultRequestOptionsFactory</p>
+</li>
+<li><p>请求管理器工厂 requestManagerFactory</p>
+</li>
+<li><p>请求监听器列表 defaultRequestListeners</p>
+</li>
+<li><p>位图池 bitmapPool</p>
+</li>
+<li><p>数组池 arrayPool</p>
+</li>
+<li><p>内存缓存 MemoryCache</p>
+</li>
+<li><p>磁盘缓存工厂 diskCacheFactory</p>
+</li>
+<li><p>引擎 Engine</p>
+</li>
+</ul>
+</li>
+<li><p>上面这些字段大多数都是可以在 AppGlideModule 的 <code>applyOptions()</code> 方法中，调用 GlideBuilder 的 <code>setXXX()</code> 方法来替换实现的，下面我们主要看下 Glide 线程池和内存大小计算器</p>
+</li>
+<li><p><strong>Glide 线程池</strong>：Glide 中有下面 4 种线程池（不包括自定义线程池），<strong>GlideExecutor 是 Glide 的线程池实现</strong></p>
+<ul>
+<li><p><strong>SourceExecutor</strong>：对图片来源解码的任务的线程池，线程数为最多为 4 ，最小为设备的 CPU 核数</p>
+</li>
+<li><p><strong>unlimitedSourceExecutor</strong>：如果我们在加载图片时调用了 <code>useUnlimitedSourceGeneratorsPool()</code> 选项，那 Glide 就会用这个无线程数限制的线程池来获取图片</p>
+</li>
+<li><p><strong>DiskCacheExecutor</strong>：对磁盘缓存数据解码的任务的线程池，线程数为 1</p>
+</li>
+<li><p><strong>AnimationExecutor</strong>：这也是用来从图片来源获取数据的线程池，而不是用来播放 GIF 动画的线程池，当我们加载图片时调用了 <code>useAnimationPool(true)</code> ，那在获取图片数据时 EngineJob 就会把 DecodeJob 放到 AnimationExecutor 中。如果设备 CPU 核数大于等于 4 ，那 AnimationPool 线程数就是 2 ，否则就是 1</p>
+</li>
+<li><p><strong>自定义线程池</strong>：Glide 对于线程池只允许用 GlideBuilder 中的 Builder 来设置参数，GlideExecutor.Builder 支持下面几个参数</p>
+<ul>
+<li><p><code>setThreadTimeoutMillis()</code>：设置线程存活时间</p>
+</li>
+<li><p><code>setThreadCount()</code>：设置线程数</p>
+</li>
+<li><p><code>setUncaughtThrowableStrategy()</code>：设置异常处理策略，有三种可以选，也可以自己自定义，默认为 LOG。三种分别为：IGNORE 忽略异常，LOG 打印异常日志，THROW 抛出异常</p>
+</li>
+<li><p><code>setName()</code>：设置线程名字</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@GlideModule</span><br><span class="line"><span class="keyword">class</span> GlideConfig : <span class="constructor">AppGlideModule()</span> &#123;</span><br><span class="line">	override <span class="keyword">fun</span> apply<span class="constructor">Options(<span class="params">context</span>: Context, <span class="params">builder</span>: GlideBuilder)</span> &#123;</span><br><span class="line">		<span class="keyword">val</span> executor = <span class="module-access"><span class="module"><span class="identifier">GlideExecutor</span>.</span></span><span class="keyword">new</span><span class="constructor">DiskCacheBuilder()</span></span><br><span class="line">			.set<span class="constructor">ThreadCount(8)</span></span><br><span class="line">			.set<span class="constructor">Name(<span class="string">"diskCache"</span>)</span></span><br><span class="line">			.build<span class="literal">()</span></span><br><span class="line">		builder.set<span class="constructor">DiskCacheExecutor(<span class="params">executor</span>)</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>内存大小计算器</strong></p>
+<ul>
+<li><p>MemorySizeCalculator 负责计算 BitmapPool 、ArrayPool 和 MemoryCache 的大小</p>
+</li>
+<li><p><strong>BitmapPool 大小</strong>：BitmapPool 大小为一屏可容纳的最高图片质量的大小，比如 1080 * 1920 * 4 ≈ 7.9M</p>
+</li>
+<li><p><strong>ArrayPool 大小</strong>：默认为 4M，如果系统版本低于 19 则为 2M</p>
+</li>
+<li><p><strong>内存缓存大小</strong>：内存缓存大小为两屏可容纳的最高图片质量的大小，比如 1080 * 1920 * 2 * 4 ≈ 15.8M</p>
+</li>
+<li><p><strong>maxSizeMultiplier</strong></p>
+<ul>
+<li>MemorySizeCalculator 在计算 BitmapPool 和 MemoryCache 大小时，会通过 <code>getMaxSize()</code> 方法，用 ActivityManager 获取 memoryClasss，然后用 memoryClass 的值乘以 maxSizeMultiplier，maxSizeMultiplier 默认为 0.4</li>
+<li>memoryClass 就是获取应用可用内存大小，比如我的 VIVO 手机给应用分配的可用内存为 256M，以我的手机为例，256 * 0.4 = 102.4 ，也就是默认情况下， BitmapPool 、ArrayPool 和 MemoryCache 的大小最多不会超过 102.4M</li>
+<li>当 BitmapPool 、ArrayPool 和 MemoryCache 的大小加起来大于最大值时，会按这个最大值重新计算 BitmapPool 和 MemoryCache 的大小</li>
+</ul>
+</li>
+<li><p><strong>自定义内存大小计算方式</strong>：和 GlideExecutor 一样，MemorySizeCalculator 也有一个 Builder，支持下面这些参数的设置</p>
+<ul>
+<li><code>setMemoryCacheSizeScreens(screens)</code>：设置内存缓存大小为几屏的大小</li>
+<li><code>setBitmapPoolScreens(screens)</code>：设置 BitmapPool 大小为几屏的大小</li>
+<li><code>setArrayPoolSize(sizeBytes)</code>：设置 ArrayPool 大小</li>
+<li><code>setMaxSizeMultiplier()</code>：设置最大值乘数大小</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-初始化流程与配置相关问题"><a href="#4-初始化流程与配置相关问题" class="headerlink" title="4. 初始化流程与配置相关问题"></a>4. 初始化流程与配置相关问题</h4><ul>
+<li><p><strong>什么是 Registry ？</strong></p>
+<ul>
+<li>Glide 有一个登记处 Registry，在 Glide 的构造方法中，会把所有的编码、解码和数据加载等逻辑通过 Registry 的 <code>append()</code> 方法登记到 Registry 中，我们可以在 AppGlideModule 的 <code>registerComponents()</code> 方法中获取到 registry 实例，通过这个实例就可以替换掉对应的实现</li>
+</ul>
+</li>
+<li><p><strong>在哪里可以替换 Glide 的数据加载逻辑？</strong></p>
+<ul>
+<li>GlideBuilder 就是 Glide 的构建器，包含了很多字段。这些字段大多数都是可以在 AppGlideModule 的 <code>applyOptions()</code> 方法中，调用 GlideBuilder 的 <code>setXXX()</code> 方法来替换实现的</li>
+</ul>
+</li>
+<li><p><strong>在哪里可以修改 Glide 的内存使用计算方式？</strong></p>
+<ul>
+<li>和 GlideExecutor 一样，MemorySizeCalculator 也有一个 Builder，支持 4 个参数的设置</li>
+</ul>
+</li>
+<li><p><strong>Glide 有几种线程池？</strong></p>
+<ul>
+<li>4 种，分别是：SourceExecutor，unlimitedSourceExecutor，DiskCacheExecutor，AnimationExecutor</li>
+</ul>
+</li>
+<li><p><strong>BitmapPool 和 MemoryCache 的大小是怎么计算的？</strong></p>
+<ul>
+<li>MemorySizeCalculator 负责计算 BitmapPool 、ArrayPool 和 MemoryCache 的大小</li>
+</ul>
+</li>
+</ul>
+<h3 id="五-Glide-图片加载选项"><a href="#五-Glide-图片加载选项" class="headerlink" title="五. Glide 图片加载选项"></a>五. Glide 图片加载选项</h3><h4 id="1-placeholder-drawable"><a href="#1-placeholder-drawable" class="headerlink" title="1. placeholder(drawable)"></a>1. placeholder(drawable)</h4><h4 id="2-error-drawable"><a href="#2-error-drawable" class="headerlink" title="2. error(drawable)"></a>2. error(drawable)</h4><h4 id="3-fallback"><a href="#3-fallback" class="headerlink" title="3. fallback()"></a>3. fallback()</h4><h4 id="4-override-width-height"><a href="#4-override-width-height" class="headerlink" title="4. override(width, height)"></a>4. override(width, height)</h4><h4 id="5-fitCenter"><a href="#5-fitCenter" class="headerlink" title="5. fitCenter()"></a>5. fitCenter()</h4><h4 id="6-centerCrop"><a href="#6-centerCrop" class="headerlink" title="6. centerCrop()"></a>6. centerCrop()</h4><h4 id="7-centerInside"><a href="#7-centerInside" class="headerlink" title="7. centerInside()"></a>7. centerInside()</h4><h4 id="8-transform-Transformation"><a href="#8-transform-Transformation" class="headerlink" title="8. transform(Transformation)"></a>8. transform(Transformation)</h4><h4 id="9-dontTrannsform"><a href="#9-dontTrannsform" class="headerlink" title="9. dontTrannsform()"></a>9. dontTrannsform()</h4><h4 id="10-skipMemoryCache-boolean"><a href="#10-skipMemoryCache-boolean" class="headerlink" title="10. skipMemoryCache(boolean)"></a>10. skipMemoryCache(boolean)</h4><h4 id="11-diskCacheStrategy-strategy"><a href="#11-diskCacheStrategy-strategy" class="headerlink" title="11. diskCacheStrategy(strategy)"></a>11. diskCacheStrategy(strategy)</h4><h4 id="12-onlyRetrieveFromCache-boolean"><a href="#12-onlyRetrieveFromCache-boolean" class="headerlink" title="12. onlyRetrieveFromCache(boolean)"></a>12. onlyRetrieveFromCache(boolean)</h4><h4 id="13-priority"><a href="#13-priority" class="headerlink" title="13. priority"></a>13. priority</h4><h4 id="14-sizeMultiplier-float"><a href="#14-sizeMultiplier-float" class="headerlink" title="14. sizeMultiplier(float)"></a>14. sizeMultiplier(float)</h4><h4 id="15-encodeFormat-CompressFormat"><a href="#15-encodeFormat-CompressFormat" class="headerlink" title="15. encodeFormat(CompressFormat)"></a>15. encodeFormat(CompressFormat)</h4><h4 id="16-encodeQuality-int"><a href="#16-encodeQuality-int" class="headerlink" title="16. encodeQuality(int)"></a>16. encodeQuality(int)</h4><h4 id="17-frame-long"><a href="#17-frame-long" class="headerlink" title="17. frame(long)"></a>17. frame(long)</h4><h4 id="18-format-DecodeFormat"><a href="#18-format-DecodeFormat" class="headerlink" title="18. format(DecodeFormat)"></a>18. format(DecodeFormat)</h4><h4 id="19-timeout-milliseconds"><a href="#19-timeout-milliseconds" class="headerlink" title="19. timeout(milliseconds)"></a>19. timeout(milliseconds)</h4><h4 id="20-transition-options"><a href="#20-transition-options" class="headerlink" title="20. transition(options)"></a>20. transition(options)</h4><h4 id="21-dontAnimate"><a href="#21-dontAnimate" class="headerlink" title="21. dontAnimate()"></a>21. dontAnimate()</h4><h4 id="22-apply-options"><a href="#22-apply-options" class="headerlink" title="22. apply(options)"></a>22. apply(options)</h4><h4 id="23-listener-RequestListener"><a href="#23-listener-RequestListener" class="headerlink" title="23. listener(RequestListener)"></a>23. listener(RequestListener)</h4><h4 id="24-asBitmap"><a href="#24-asBitmap" class="headerlink" title="24. asBitmap()"></a>24. asBitmap()</h4><h4 id="25-asFile"><a href="#25-asFile" class="headerlink" title="25. asFile()"></a>25. asFile()</h4><h4 id="26-submit"><a href="#26-submit" class="headerlink" title="26. submit()"></a>26. submit()</h4><h4 id="27-downloadOnly"><a href="#27-downloadOnly" class="headerlink" title="27. downloadOnly()"></a>27. downloadOnly()</h4><h4 id="28-download"><a href="#28-download" class="headerlink" title="28. download()"></a>28. download()</h4><h4 id="29-preload-width-height"><a href="#29-preload-width-height" class="headerlink" title="29. preload(width, height)"></a>29. preload(width, height)</h4>
     </div>
 
     
@@ -1278,7 +1451,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">18:40</span>
+    <span title="站点阅读时长">18:44</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
