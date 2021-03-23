@@ -1103,7 +1103,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-23 16:56:42" itemprop="dateModified" datetime="2021-03-23T16:56:42+08:00">2021-03-23</time>
+                <time title="修改时间：2021-03-23 17:01:34" itemprop="dateModified" datetime="2021-03-23T17:01:34+08:00">2021-03-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1286,10 +1286,22 @@
 </li>
 <li><p><strong>Request 相关问题</strong></p>
 <ul>
-<li>Glide 加载图片调用的 <code>into()</code> 方法是哪个类的方法（RequestManager）</li>
-<li>当设备的网络状态发生变化，哪个类负责重启图片加载请求（RequestManager）</li>
-<li>Request 有哪几种状态，这些状态是如何流转的（PENDING、CLEARED、WAITING_FOR_SIZE、RUNNING、COMPLETE、FAILED）</li>
-<li>Glide 有几种占位图，显示时机是什么时候（placeholder、error、fallback）</li>
+<li>Glide 加载图片调用的 <code>into()</code> 方法是哪个类的方法？<ul>
+<li>RequestManager</li>
+</ul>
+</li>
+<li>当设备的网络状态发生变化，哪个类负责重启图片加载请求？<ul>
+<li>RequestManager</li>
+</ul>
+</li>
+<li>Request 有哪几种状态，这些状态是如何流转的？<ul>
+<li>PENDING、CLEARED、WAITING_FOR_SIZE、RUNNING、COMPLETE、FAILED</li>
+</ul>
+</li>
+<li>Glide 有几种占位图，显示时机是什么时候？<ul>
+<li>placeholder、error、fallback</li>
+</ul>
+</li>
 </ul>
 </li>
 </ol>
@@ -1366,9 +1378,18 @@
 </li>
 <li><p><strong>Target 相关问题</strong></p>
 <ul>
-<li>ImageViewTarget 是用什么来获取请求宽高的（ImageViewTarget 继承了 ViewTarget，在 ViewTarget 中有一个用来获取尺寸的 SizeDeterminer）</li>
-<li>为什么在用 <code>submit()</code> 获取图片时，要放在子线程中执行（当用 <code>submit()</code> 获取 Glide 加载好的图片资源时，就是创建了一个 RequestFutureTarget，RequestFutureTarget 是用 wait/notify 的方式来实现等待和通知的）</li>
-<li>使用 <code>preload()</code> 预加载图片时，用的是哪个 Target，该 Target 获取到资源后会做什么（PreloadTarget，当 PreloadTarget 接收到图片资源后，就会让 RequestManager 把该请求的资源释放掉）</li>
+<li>ImageViewTarget 是用什么来获取请求宽高的？<ul>
+<li>ImageViewTarget 继承了 ViewTarget，在 ViewTarget 中有一个用来获取尺寸的 SizeDeterminer</li>
+</ul>
+</li>
+<li>为什么在用 <code>submit()</code> 获取图片时，要放在子线程中执行？<ul>
+<li>当用 <code>submit()</code> 获取 Glide 加载好的图片资源时，就是创建了一个 RequestFutureTarget，RequestFutureTarget 是用 wait/notify 的方式来实现等待和通知的</li>
+</ul>
+</li>
+<li>使用 <code>preload()</code> 预加载图片时，用的是哪个 Target？该 Target 获取到资源后会做什么？<ul>
+<li>PreloadTarget，当 PreloadTarget 接收到图片资源后，就会让 RequestManager 把该请求的资源释放掉</li>
+</ul>
+</li>
 </ul>
 </li>
 </ol>
@@ -1589,10 +1610,22 @@
 </li>
 <li><p><strong>DecodeJob 相关问题</strong></p>
 <ul>
-<li>DecodeJob 会根据哪些理由来执行任务（3 个理由，分别是：INITAILIZE，SWITCH_TO_SOURCE_SERVICE，DECODE_DATA）</li>
-<li>DecodeJob 提取数据的过程分为哪几个阶段（6 个阶段，分别是：INITIALIZE，RESOURCE_CACHE，DATA_CACHE，SOURCE，ENCODE，FINISH）</li>
-<li>DataFetcherGenerator 有哪些实现类（3 个实现类，分别是：SourceGenerator，DataCacheGenerator，ResourceCacheGenerator）</li>
-<li>Glide 有几种编码策略（2 种编码策略，分别是：SOURCE，TRANSFORMED）</li>
+<li>DecodeJob 会根据哪些理由来执行任务？<ul>
+<li>3 个理由，分别是：INITAILIZE，SWITCH_TO_SOURCE_SERVICE，DECODE_DATA</li>
+</ul>
+</li>
+<li>DecodeJob 提取数据的过程分为哪几个阶段？<ul>
+<li>6 个阶段，分别是：INITIALIZE，RESOURCE_CACHE，DATA_CACHE，SOURCE，ENCODE，FINISH</li>
+</ul>
+</li>
+<li>DataFetcherGenerator 有哪些实现类？<ul>
+<li>3 个实现类，分别是：SourceGenerator，DataCacheGenerator，ResourceCacheGenerator</li>
+</ul>
+</li>
+<li>Glide 有几种编码策略？<ul>
+<li>2 种编码策略，分别是：SOURCE，TRANSFORMED</li>
+</ul>
+</li>
 </ul>
 </li>
 </ol>
