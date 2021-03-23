@@ -1103,7 +1103,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-23 18:09:49" itemprop="dateModified" datetime="2021-03-23T18:09:49+08:00">2021-03-23</time>
+                <time title="修改时间：2021-03-23 19:07:51" itemprop="dateModified" datetime="2021-03-23T19:07:51+08:00">2021-03-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1121,14 +1121,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>15k</span>
+              <span>20k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>14 分钟</span>
+              <span>18 分钟</span>
             </span>
 
         </div>
@@ -1755,7 +1755,183 @@
 </ul>
 </li>
 </ul>
-<h3 id="三-Glide-缓存原理"><a href="#三-Glide-缓存原理" class="headerlink" title="三. Glide 缓存原理"></a>三. Glide 缓存原理</h3><h4 id="1-Glide-内存缓存原理"><a href="#1-Glide-内存缓存原理" class="headerlink" title="1. Glide 内存缓存原理"></a>1. Glide 内存缓存原理</h4><h4 id="2-Glide-磁盘缓存原理"><a href="#2-Glide-磁盘缓存原理" class="headerlink" title="2. Glide 磁盘缓存原理"></a>2. Glide 磁盘缓存原理</h4><h4 id="3-Glide-磁盘缓存策略"><a href="#3-Glide-磁盘缓存策略" class="headerlink" title="3. Glide 磁盘缓存策略"></a>3. Glide 磁盘缓存策略</h4><h4 id="4-BitmapPool"><a href="#4-BitmapPool" class="headerlink" title="4. BitmapPool"></a>4. BitmapPool</h4><h4 id="5-ArrayPool"><a href="#5-ArrayPool" class="headerlink" title="5. ArrayPool"></a>5. ArrayPool</h4><h4 id="6-Glide-缓存相关问题"><a href="#6-Glide-缓存相关问题" class="headerlink" title="6. Glide 缓存相关问题"></a>6. Glide 缓存相关问题</h4><h3 id="四-Glide-初始化流程与配置"><a href="#四-Glide-初始化流程与配置" class="headerlink" title="四. Glide 初始化流程与配置"></a>四. Glide 初始化流程与配置</h3><h4 id="1-Glide-初始化流程"><a href="#1-Glide-初始化流程" class="headerlink" title="1. Glide 初始化流程"></a>1. Glide 初始化流程</h4><h4 id="2-Registry"><a href="#2-Registry" class="headerlink" title="2. Registry"></a>2. Registry</h4><h4 id="3-GlideBuilder"><a href="#3-GlideBuilder" class="headerlink" title="3. GlideBuilder"></a>3. GlideBuilder</h4><h4 id="4-初始化流程与配置相关问题"><a href="#4-初始化流程与配置相关问题" class="headerlink" title="4. 初始化流程与配置相关问题"></a>4. 初始化流程与配置相关问题</h4><h3 id="五-Glide-图片加载选项"><a href="#五-Glide-图片加载选项" class="headerlink" title="五. Glide 图片加载选项"></a>五. Glide 图片加载选项</h3><h4 id="1-placeholder-drawable"><a href="#1-placeholder-drawable" class="headerlink" title="1. placeholder(drawable)"></a>1. placeholder(drawable)</h4><h4 id="2-error-drawable"><a href="#2-error-drawable" class="headerlink" title="2. error(drawable)"></a>2. error(drawable)</h4><h4 id="3-fallback"><a href="#3-fallback" class="headerlink" title="3. fallback()"></a>3. fallback()</h4><h4 id="4-override-width-height"><a href="#4-override-width-height" class="headerlink" title="4. override(width, height)"></a>4. override(width, height)</h4><h4 id="5-fitCenter"><a href="#5-fitCenter" class="headerlink" title="5. fitCenter()"></a>5. fitCenter()</h4><h4 id="6-centerCrop"><a href="#6-centerCrop" class="headerlink" title="6. centerCrop()"></a>6. centerCrop()</h4><h4 id="7-centerInside"><a href="#7-centerInside" class="headerlink" title="7. centerInside()"></a>7. centerInside()</h4><h4 id="8-transform-Transformation"><a href="#8-transform-Transformation" class="headerlink" title="8. transform(Transformation)"></a>8. transform(Transformation)</h4><h4 id="9-dontTrannsform"><a href="#9-dontTrannsform" class="headerlink" title="9. dontTrannsform()"></a>9. dontTrannsform()</h4><h4 id="10-skipMemoryCache-boolean"><a href="#10-skipMemoryCache-boolean" class="headerlink" title="10. skipMemoryCache(boolean)"></a>10. skipMemoryCache(boolean)</h4><h4 id="11-diskCacheStrategy-strategy"><a href="#11-diskCacheStrategy-strategy" class="headerlink" title="11. diskCacheStrategy(strategy)"></a>11. diskCacheStrategy(strategy)</h4><h4 id="12-onlyRetrieveFromCache-boolean"><a href="#12-onlyRetrieveFromCache-boolean" class="headerlink" title="12. onlyRetrieveFromCache(boolean)"></a>12. onlyRetrieveFromCache(boolean)</h4><h4 id="13-priority"><a href="#13-priority" class="headerlink" title="13. priority"></a>13. priority</h4><h4 id="14-sizeMultiplier-float"><a href="#14-sizeMultiplier-float" class="headerlink" title="14. sizeMultiplier(float)"></a>14. sizeMultiplier(float)</h4><h4 id="15-encodeFormat-CompressFormat"><a href="#15-encodeFormat-CompressFormat" class="headerlink" title="15. encodeFormat(CompressFormat)"></a>15. encodeFormat(CompressFormat)</h4><h4 id="16-encodeQuality-int"><a href="#16-encodeQuality-int" class="headerlink" title="16. encodeQuality(int)"></a>16. encodeQuality(int)</h4><h4 id="17-frame-long"><a href="#17-frame-long" class="headerlink" title="17. frame(long)"></a>17. frame(long)</h4><h4 id="18-format-DecodeFormat"><a href="#18-format-DecodeFormat" class="headerlink" title="18. format(DecodeFormat)"></a>18. format(DecodeFormat)</h4><h4 id="19-timeout-milliseconds"><a href="#19-timeout-milliseconds" class="headerlink" title="19. timeout(milliseconds)"></a>19. timeout(milliseconds)</h4><h4 id="20-transition-options"><a href="#20-transition-options" class="headerlink" title="20. transition(options)"></a>20. transition(options)</h4><h4 id="21-dontAnimate"><a href="#21-dontAnimate" class="headerlink" title="21. dontAnimate()"></a>21. dontAnimate()</h4><h4 id="22-apply-options"><a href="#22-apply-options" class="headerlink" title="22. apply(options)"></a>22. apply(options)</h4><h4 id="23-listener-RequestListener"><a href="#23-listener-RequestListener" class="headerlink" title="23. listener(RequestListener)"></a>23. listener(RequestListener)</h4><h4 id="24-asBitmap"><a href="#24-asBitmap" class="headerlink" title="24. asBitmap()"></a>24. asBitmap()</h4><h4 id="25-asFile"><a href="#25-asFile" class="headerlink" title="25. asFile()"></a>25. asFile()</h4><h4 id="26-submit"><a href="#26-submit" class="headerlink" title="26. submit()"></a>26. submit()</h4><h4 id="27-downloadOnly"><a href="#27-downloadOnly" class="headerlink" title="27. downloadOnly()"></a>27. downloadOnly()</h4><h4 id="28-download"><a href="#28-download" class="headerlink" title="28. download()"></a>28. download()</h4><h4 id="29-preload-width-height"><a href="#29-preload-width-height" class="headerlink" title="29. preload(width, height)"></a>29. preload(width, height)</h4>
+<h3 id="三-Glide-缓存原理"><a href="#三-Glide-缓存原理" class="headerlink" title="三. Glide 缓存原理"></a>三. Glide 缓存原理</h3><ul>
+<li><strong>Glide 使用了三级缓存机制</strong>，图片的缓存分为<strong>内存</strong>、<strong>磁盘</strong>和<strong>来源</strong>。也就是从内存获取不到图片时，再去磁盘获取图片，从磁盘获取不到图片时，再从图片来源获取图片</li>
+<li><strong>三级缓存的优势在于节省流量和内存</strong>，如果不用三级缓存，每次都从服务端获取图片的话，图片消耗的流量就会非常多；如果把所有图片都放在内存的话，那就有可能发生 OOM</li>
+</ul>
+<h4 id="1-Glide-内存缓存原理"><a href="#1-Glide-内存缓存原理" class="headerlink" title="1. Glide 内存缓存原理"></a>1. Glide 内存缓存原理</h4><ul>
+<li><p>前面提到 <strong>Engine 的 <code>load()</code> 方法</strong>会先在内存缓存中查找 <strong>Key</strong> 对应的资源，没有的话再启动新的解码任务</p>
+</li>
+<li><p>实际上，<strong>内存缓存就是 MemoryCache，MemoryCache 是一个接口，它的实现类是 LruResourceCache</strong></p>
+</li>
+<li><p><strong>LruResourceCache 不仅实现了 MemoryCache 接口，而且还是 LruCache 的子类，具体的内存缓存实现是在 LruCache 中</strong></p>
+</li>
+<li><p><strong>LruCache</strong> 的 <code>put()</code> 方法流程图</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou0d3gl6uj30oe1iqacn.jpg" alt="LruCache.put() 方法流程图"></p>
+<ul>
+<li>在 LruCache 的 <strong><code>put()</code></strong> 方法中，首先会判断要保存的元素大小是否大于缓存最大值。如果是的话，则不进行保存；如果不是的话，则把当前容量加上元素的大小，并把该元素放入缓存</li>
+</ul>
+</li>
+<li><p>LruCache 比较特别的就是它的 <strong><code>trimToSize()</code></strong> 方法和 LinkedHashMap 的 <strong>accessOrder</strong> 属性</p>
+<ul>
+<li><strong>trimToSize()</strong>：LruCache 在用 <code>put()</code> 方法保存新的元素时，它会通过 <code>trimToSize()</code> 方法<strong>移除最近最少使用</strong>的元素</li>
+<li><strong>accessOrder</strong>：LruCache 中是用 <strong>LinkedHashMap</strong> 保存数据的，并且这个 LinkedHashMap 的 accessOrder 的值为 <strong>true</strong>，也就是每一次获取 LinkedHashMap 中的元素时，这个元素都会被移到链表的尾端</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-Glide-磁盘缓存原理"><a href="#2-Glide-磁盘缓存原理" class="headerlink" title="2. Glide 磁盘缓存原理"></a>2. Glide 磁盘缓存原理</h4><ul>
+<li><p><strong>Glide 是用 DiskCache 保存图片文件的，DiskCache 是一个接口</strong>，这个接口中还定义了 <strong>Factory</strong> 和 <strong>Writer</strong> 两个接口，Writer 只是对 ResourceEncoder 的封装</p>
+</li>
+<li><p><strong>DiskLruCache</strong></p>
+<ul>
+<li><p>DiskCache 有两个实现类， <strong>DiskCacheAdapter</strong> 和 <strong>DiskLruCacheWrapper</strong>，DiskCacheAdapter 只是一个空实现</p>
+</li>
+<li><p>DiskLruCacheWrapper 是对 DiskLruCache 的封装，具体的实现是在 <strong>DiskLruCache</strong> 中，DataCacheGenerator 和 ResourceCacheGenerator 都是用的 DiskLruCache 来获取磁盘缓存数据的</p>
+</li>
+<li><p><strong>Entry</strong></p>
+<ul>
+<li>和 LruCache 一样，<strong>DiskLruCache 中也有一个 LinkedHashMap</strong>，这个 HashMap 的 Key 的类型为 String，Value 的类型为 Entry，从缓存中获取到的图片文件会放在 Entry的 cleanFiles 字段中</li>
+</ul>
+</li>
+<li><p><strong>Editor</strong></p>
+<ul>
+<li>当图片加载进入编码阶段时，<strong>DecodeJob</strong> 会通过编码管理器调用 DiskLruCacheWrapper 的 <code>put()</code> 方法保存图片文件</li>
+<li>在 DiskLruCacheWrapper 的 <code>put()</code> 方法中，会通过 <strong>DiskCache 的缓存编辑器 Editor</strong> 获取图片文件，获取到图片文件后，就会用 Writer 把文件写入本地，写完后再调用 Editor 的 <strong><code>commit()</code></strong> 方法，把清理缓存的回调提交到清理线程池中</li>
+</ul>
+</li>
+<li><p><strong>清理资源</strong></p>
+<ul>
+<li>实际上，<strong>DiskLruCache 中有一个执行清理资源任务的线程池，线程池的线程数最多为 1</strong></li>
+<li><strong>这个线程池要执行的任务为 cleanupCallback 回调，这个回调会执行 <code>trimToSize()</code> 方法</strong>，为的就是把最近最少使用的文件清除掉</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>DiskCacahe.Factory</strong></p>
+<ul>
+<li><p>在 DiskCache 中有一个 <strong>Factory</strong> 工厂接口，这个接口用在了 Engine 的 LazyDiskCacheProvider 中</p>
+</li>
+<li><p>在 Factory 接口中，<strong>定义了默认的磁盘缓存大小为 250M</strong>，默认的缓存目录名称为 “image_manager_disk_cache”</p>
+</li>
+<li><p>Factory 主要有下面 2 个<strong>实现类</strong></p>
+<ul>
+<li><strong>ExternalPreferredCacheDiskCacheFactory</strong>：用的是 <code>getExternalCacheDir()</code>，对应的目录是 <code>/data/user/0/包名/cache/image_manager_disk_cache</code></li>
+<li><strong>InternalCacheDiskCacheFactory</strong>：用的是 <code>context.getCacheDir()</code>，对应的目录是 <code>/data/user/0/包名/cache</code></li>
+</ul>
+</li>
+<li><p><strong>默认情况下 Glide 用的是 InternalCacheDiskCacheFactory</strong> ，如果想把图片放在外部缓存目录的话，可以在自定义的 <strong>GlideModule</strong> 设置 DiskCache</p>
+  <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GlideModule</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GlideConfig</span> : <span class="type">AppGlideModule</span></span>() &#123;</span><br><span class="line">	<span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">applyOptions</span><span class="params">(context: <span class="type">Context</span>, builder: <span class="type">GlideBuilder</span>)</span></span> &#123;</span><br><span class="line">		<span class="keyword">super</span>.applyOptions(context, builder);</span><br><span class="line">		builder.setDiskCache(ExternalPreferredCacheDiskCacheFactory(context));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-Glide-磁盘缓存策略"><a href="#3-Glide-磁盘缓存策略" class="headerlink" title="3. Glide 磁盘缓存策略"></a>3. Glide 磁盘缓存策略</h4><ul>
+<li><p>在加载图片时，我们可以用 <strong><code>diskCacheStratgy()</code></strong> 方法设置图片在磁盘的缓存策略，这个选项传入的参数类型为抽象类 <strong>DiskCacheStrategy</strong></p>
+</li>
+<li><p>磁盘缓存策略涉及到 Glide 的数据源类型 <strong>DataSource</strong> 和编码策略 <strong>EncodeStratefy</strong>。编码策略前面讲过了，下面我们先来看看数据源 DataSource</p>
+</li>
+<li><p><strong>五种数据源</strong></p>
+<ul>
+<li><strong>LOCAL</strong>：设备上有的数据，比如 App 内置的 Drawable 也属于 LOCAL</li>
+<li><strong>REMOTE</strong>：从服务端拿到的数据</li>
+<li><strong>DATA_DISK_CACHE</strong>：从缓存中取出来的原始数据</li>
+<li><strong>RESOURCE_DISK_CACHE</strong>：从缓存中取出来的图片资源</li>
+<li><strong>MEMORY_CACHE</strong>：从内存缓存中取出来的数据</li>
+</ul>
+</li>
+<li><p><strong>四个抽象方法</strong>：DiskCacheStrategy 有下面 4 个抽象方法，这个 4 个方法的返回值都是布尔值</p>
+<ul>
+<li><strong>isDataCacheable()</strong>：是否保存图片的原始数据。DecodeJob 中用到的 SourceGenerator 在从图片来源获取到数据后，会根据这个方法判断是否保存图片的原始数据</li>
+<li><strong>isResourceCacheable()</strong>：是否保存解码后的图片数据。当资源解码器对图片数据进行解码后，DecodeJob 就会根据这个方法的返回值决定是否保存该 Resource</li>
+<li><strong>decodeCachedResource()</strong>：是否对缓存的解码后的图片数据进行解码。在 DecodeJob 的 <code>getNextStage()</code> 中，会根据这个方法的返回值判断，如果返回值为 false，意味着跳过 RESOURCE_CACHE 步骤，也就是不对缓存中处理过的图片资源进行处理</li>
+<li><strong>decodeCachedData()</strong>：是否对缓存的原始数据进行解码。在 DecodeJob 的 <code>getNextStage()</code> 方法中，会根据这个方法的返回值判断，如果该值为 false，意味着跳过 DATA_CACHE 步骤，也就是不对缓存中的原始图片数据进行处理</li>
+</ul>
+</li>
+<li><p><strong>五种缓存策略</strong>：Glide 定义好的磁盘缓存策略有下面 5 种，<strong>默认为 AUTOMATIC</strong></p>
+<ul>
+<li><p><strong>AUTOMATIC</strong></p>
+<ul>
+<li><code>isDataCacheable()</code>：只保存网络图片的原始数据</li>
+<li><code>isResourceCacheable()</code>：只保存数据源为 DATA_DISK_CACHE 或 LOCAL ，并且编码策略为 TRANSFORMED 的图片资源</li>
+<li><code>decodeCachedResource()</code>：true</li>
+<li><code>decodeCachedData()</code>：true</li>
+</ul>
+</li>
+<li><p><strong>ALL</strong></p>
+<ul>
+<li><code>isDataCacheable()</code>：只保存网络图片的原始数据</li>
+<li><code>isResourceCacheable()</code>：不保存数据源为 RESOURCE_DISK_CACHE 和 MEMORY_CACHE 的图片资源</li>
+<li><code>decodeCachedResource()</code>：true</li>
+<li><code>decodeCachedData()</code>：true</li>
+</ul>
+</li>
+<li><p><strong>DATA</strong></p>
+<ul>
+<li><code>isDataCacheable()</code>：不保存数据源为 DATA_DISK_CACHE 或 MEMORY_CACHE 的图片资源</li>
+<li><code>isResourceCacheable()</code>：fales</li>
+<li><code>decodeCachedResource()</code>：false</li>
+<li><code>decodeCachedData()</code>：false</li>
+</ul>
+</li>
+<li><p><strong>RESOURCE</strong></p>
+<ul>
+<li><code>isDataCacheable()</code>：false</li>
+<li><code>isResourceCacheable()</code>：不保存数据源为 RESOURCE_DISK_CACHE 和 MEMORY_CACHE 的图片资源</li>
+<li><code>decodeCachedResource()</code>：true</li>
+<li><code>decodeCachedData()</code>：false</li>
+</ul>
+</li>
+<li><p><strong>NONE</strong></p>
+<ul>
+<li>所有方法的返回值都为 false</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-BitmapPool"><a href="#4-BitmapPool" class="headerlink" title="4. BitmapPool"></a>4. BitmapPool</h4><ul>
+<li><p><strong>减少 Bitmap 占用的内存</strong></p>
+</li>
+<li><p>BitmapResource 的 BitmapPool 用的就是 GlideBuilder 中的 BitmapPool，Downsampler 在解码后，会把图片放入 BitmapPool 中，当 BitmapResource 被回收时，也会把 Bitmap 放到 BitmapPool 中</p>
+</li>
+<li><p>具体需要用到 BitmapPool 中的 Bitmap 的地方在 TransformationUtils 中，TransformationUtils 在进行变换前会从 BitmapPool 中获取之前保存的 Bitmap</p>
+</li>
+<li><p>之所以要这么做，是因为每一次变换都需要创建一个 Bitmap ，BitmapPool 就是为了复用这个 Bitmap 占用的内存，这样下次要做变换操作时，可以用同一个 Bitmap 就进行复用，以减少内存使用</p>
+</li>
+<li><p>比如对于 RecyclerView 中的图片，它们的大小是一样的，没必要在变换时为每张图片都创建一个新的 Bitmap</p>
+</li>
+<li><p><strong>LruPoolStrategy</strong></p>
+</li>
+<li><p>BitmapPool 是一个接口，实现类为 LruBitmapPool ，具体的逻辑在 LruPoolStrategy 中</p>
+</li>
+<li><p>LruPoolStrategy 也是一个接口，它的实现类为 SizeConfigStrategy，从 LruPoolStrategy 的名字可以看得出来，BitmapPool 用的是 LruCache 来保存 Bitmap 的</p>
+</li>
+<li><p>在 LruPoolStrategy 中，会根据 Bitmap 的大小和编码选项，把 Bitmap 放到 GroupedLinkedHamp 中</p>
+</li>
+</ul>
+<h4 id="5-ArrayPool"><a href="#5-ArrayPool" class="headerlink" title="5. ArrayPool"></a>5. ArrayPool</h4><ul>
+<li>和 BitmapPool 一样，ArrayPool 用的也是 LruCache，也是为了减少不必要的内存浪费</li>
+<li>比如在输入流编码器 StreamEncoder 中，当把输入流转化为文件时，需要创建一个新的字节数组，如果不用 ArrayPool，而图片是在列表中加载的，那就会创建很多不必要的的字节数组</li>
+</ul>
+<h4 id="6-Glide-缓存相关问题"><a href="#6-Glide-缓存相关问题" class="headerlink" title="6. Glide 缓存相关问题"></a>6. Glide 缓存相关问题</h4><ul>
+<li><p><strong>LruCache 的缓存实现比较特别的是哪两点？</strong></p>
+<ul>
+<li>LruCache 比较特别的就是它的 <code>trimToSize()</code> 方法和 LinkedHashMap 的 accessOrder 属性</li>
+</ul>
+</li>
+<li><p><strong>DiskLruCache 有哪 3 个特点？</strong></p>
+<ul>
+<li>Entry，Editor，清理资源</li>
+</ul>
+</li>
+<li><p><strong>DiskCacheStrategy 定义了几种磁盘缓存策略？</strong></p>
+<ul>
+<li>5 种，分别是：AUTOMATIC，ALL，DATA，RESOURCE，NONE</li>
+</ul>
+</li>
+</ul>
+<h3 id="四-Glide-初始化流程与配置"><a href="#四-Glide-初始化流程与配置" class="headerlink" title="四. Glide 初始化流程与配置"></a>四. Glide 初始化流程与配置</h3><h4 id="1-Glide-初始化流程"><a href="#1-Glide-初始化流程" class="headerlink" title="1. Glide 初始化流程"></a>1. Glide 初始化流程</h4><h4 id="2-Registry"><a href="#2-Registry" class="headerlink" title="2. Registry"></a>2. Registry</h4><h4 id="3-GlideBuilder"><a href="#3-GlideBuilder" class="headerlink" title="3. GlideBuilder"></a>3. GlideBuilder</h4><h4 id="4-初始化流程与配置相关问题"><a href="#4-初始化流程与配置相关问题" class="headerlink" title="4. 初始化流程与配置相关问题"></a>4. 初始化流程与配置相关问题</h4><h3 id="五-Glide-图片加载选项"><a href="#五-Glide-图片加载选项" class="headerlink" title="五. Glide 图片加载选项"></a>五. Glide 图片加载选项</h3><h4 id="1-placeholder-drawable"><a href="#1-placeholder-drawable" class="headerlink" title="1. placeholder(drawable)"></a>1. placeholder(drawable)</h4><h4 id="2-error-drawable"><a href="#2-error-drawable" class="headerlink" title="2. error(drawable)"></a>2. error(drawable)</h4><h4 id="3-fallback"><a href="#3-fallback" class="headerlink" title="3. fallback()"></a>3. fallback()</h4><h4 id="4-override-width-height"><a href="#4-override-width-height" class="headerlink" title="4. override(width, height)"></a>4. override(width, height)</h4><h4 id="5-fitCenter"><a href="#5-fitCenter" class="headerlink" title="5. fitCenter()"></a>5. fitCenter()</h4><h4 id="6-centerCrop"><a href="#6-centerCrop" class="headerlink" title="6. centerCrop()"></a>6. centerCrop()</h4><h4 id="7-centerInside"><a href="#7-centerInside" class="headerlink" title="7. centerInside()"></a>7. centerInside()</h4><h4 id="8-transform-Transformation"><a href="#8-transform-Transformation" class="headerlink" title="8. transform(Transformation)"></a>8. transform(Transformation)</h4><h4 id="9-dontTrannsform"><a href="#9-dontTrannsform" class="headerlink" title="9. dontTrannsform()"></a>9. dontTrannsform()</h4><h4 id="10-skipMemoryCache-boolean"><a href="#10-skipMemoryCache-boolean" class="headerlink" title="10. skipMemoryCache(boolean)"></a>10. skipMemoryCache(boolean)</h4><h4 id="11-diskCacheStrategy-strategy"><a href="#11-diskCacheStrategy-strategy" class="headerlink" title="11. diskCacheStrategy(strategy)"></a>11. diskCacheStrategy(strategy)</h4><h4 id="12-onlyRetrieveFromCache-boolean"><a href="#12-onlyRetrieveFromCache-boolean" class="headerlink" title="12. onlyRetrieveFromCache(boolean)"></a>12. onlyRetrieveFromCache(boolean)</h4><h4 id="13-priority"><a href="#13-priority" class="headerlink" title="13. priority"></a>13. priority</h4><h4 id="14-sizeMultiplier-float"><a href="#14-sizeMultiplier-float" class="headerlink" title="14. sizeMultiplier(float)"></a>14. sizeMultiplier(float)</h4><h4 id="15-encodeFormat-CompressFormat"><a href="#15-encodeFormat-CompressFormat" class="headerlink" title="15. encodeFormat(CompressFormat)"></a>15. encodeFormat(CompressFormat)</h4><h4 id="16-encodeQuality-int"><a href="#16-encodeQuality-int" class="headerlink" title="16. encodeQuality(int)"></a>16. encodeQuality(int)</h4><h4 id="17-frame-long"><a href="#17-frame-long" class="headerlink" title="17. frame(long)"></a>17. frame(long)</h4><h4 id="18-format-DecodeFormat"><a href="#18-format-DecodeFormat" class="headerlink" title="18. format(DecodeFormat)"></a>18. format(DecodeFormat)</h4><h4 id="19-timeout-milliseconds"><a href="#19-timeout-milliseconds" class="headerlink" title="19. timeout(milliseconds)"></a>19. timeout(milliseconds)</h4><h4 id="20-transition-options"><a href="#20-transition-options" class="headerlink" title="20. transition(options)"></a>20. transition(options)</h4><h4 id="21-dontAnimate"><a href="#21-dontAnimate" class="headerlink" title="21. dontAnimate()"></a>21. dontAnimate()</h4><h4 id="22-apply-options"><a href="#22-apply-options" class="headerlink" title="22. apply(options)"></a>22. apply(options)</h4><h4 id="23-listener-RequestListener"><a href="#23-listener-RequestListener" class="headerlink" title="23. listener(RequestListener)"></a>23. listener(RequestListener)</h4><h4 id="24-asBitmap"><a href="#24-asBitmap" class="headerlink" title="24. asBitmap()"></a>24. asBitmap()</h4><h4 id="25-asFile"><a href="#25-asFile" class="headerlink" title="25. asFile()"></a>25. asFile()</h4><h4 id="26-submit"><a href="#26-submit" class="headerlink" title="26. submit()"></a>26. submit()</h4><h4 id="27-downloadOnly"><a href="#27-downloadOnly" class="headerlink" title="27. downloadOnly()"></a>27. downloadOnly()</h4><h4 id="28-download"><a href="#28-download" class="headerlink" title="28. download()"></a>28. download()</h4><h4 id="29-preload-width-height"><a href="#29-preload-width-height" class="headerlink" title="29. preload(width, height)"></a>29. preload(width, height)</h4>
       
     </div>
 
@@ -1935,7 +2111,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">18:36</span>
+    <span title="站点阅读时长">18:40</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
