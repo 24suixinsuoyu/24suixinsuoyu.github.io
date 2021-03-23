@@ -1103,7 +1103,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-23 12:31:46" itemprop="dateModified" datetime="2021-03-23T12:31:46+08:00">2021-03-23</time>
+                <time title="修改时间：2021-03-23 12:35:20" itemprop="dateModified" datetime="2021-03-23T12:35:20+08:00">2021-03-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1181,7 +1181,7 @@
 </ul>
 <h4 id="1-1-Request"><a href="#1-1-Request" class="headerlink" title="1.1 Request"></a>1.1 Request</h4><ol>
 <li><p><strong>请求构建器 RequestBuilder</strong></p>
-<ol>
+<ul>
 <li><strong>into()</strong><ul>
 <li>对于发起的图片加载请求，<strong>Glide 会把这个请求封装为 Request，而 RequestBuilder 就是 Request 的构建器</strong></li>
 <li>当调用 <code>into()</code> 方法加载图片时，<strong>调用的其实是 RequestBuilder 的 <code>into()</code> 方法</strong>，这个方法会创建一个 Request，并把 Request 传给请求管理器</li>
@@ -1195,10 +1195,10 @@
 <li>RequestBuilder 继承了 <strong>BaseRequestOptions 抽象类</strong>，平时用的 <code>centerCrop()</code> 等方法大部分都是 BaseRequestOptions 的方法</li>
 </ul>
 </li>
-</ol>
+</ul>
 </li>
 <li><p><strong>请求管理器 RequestManager</strong></p>
-<ol>
+<ul>
 <li><p><strong>绑定生命周期</strong></p>
 <ul>
 <li>在 Glide 中，<strong>一个 Context 对应一个 RequestManager</strong>，当调用 <code>with()</code> 方法时，RequestManager 会用对应的 Context 创建一个 RequestManagerFragment</li>
@@ -1231,15 +1231,13 @@
 </li>
 </ul>
 </li>
-</ol>
+</ul>
 </li>
 <li><p><strong>Request 的 6 种状态</strong></p>
 <ul>
 <li><p>SingleRequest 的 6 种状态示意图</p>
 <p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gotoirwe0rj30or17sabx.jpg" alt="SingleRequest 的 6 种状态"></p>
 </li>
-</ul>
-<ol>
 <li><p><strong>待运行 PENDING</strong></p>
 <ul>
 <li>当使用 <code>into()</code> 方法创建了一个 SingleRequest 后，该 Request 进入 <strong>SingleRequest 中枚举类 Status</strong> 的<strong>待运行</strong>状态</li>
@@ -1270,7 +1268,7 @@
 <li>当解码任务 <strong>DecodeJob</strong> 在处理图片的过程中遇到<strong>异常</strong>时，就会调用 <strong>EngineJob 的 <code>onLoadFailed()</code> 方法</strong>，然后 EngineJob 会调用 <strong>SingleRequest 的 <code>onLoadFailed()</code> 方法</strong>，此时 SingleRequest 进入<strong>失败</strong>状态</li>
 </ul>
 </li>
-</ol>
+</ul>
 </li>
 <li><p><strong>三种占位图</strong></p>
 <ul>
@@ -1293,12 +1291,12 @@
 </ul>
 </li>
 <li><p><strong>Request 相关问题</strong></p>
-<ol>
+<ul>
 <li>Glide 加载图片调用的 <code>into()</code> 方法是哪个类的方法（RequestManager）</li>
 <li>当设备的网络状态发生变化，哪个类负责重启图片加载请求（RequestManager）</li>
 <li>Request 有哪几种状态，这些状态是如何流转的（PENDING、CLEARED、WAITING_FOR_SIZE、RUNNING、COMPLETE、FAILED）</li>
 <li>Glide 有几种占位图，显示时机是什么时候（placeholder、error、fallback）</li>
-</ol>
+</ul>
 </li>
 </ol>
 <h4 id="1-2-Target"><a href="#1-2-Target" class="headerlink" title="1.2 Target"></a>1.2 Target</h4><ul>
