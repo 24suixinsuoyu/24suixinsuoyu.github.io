@@ -22,19 +22,61 @@
     var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="前言1. ARouter 简介2. ARouter 架构概览3. ARouter 基本用法一. 明信片 Postcard1. RouteMate 路线类型 路线原始类型 终点 路径和路线组 优先级 标志 参数类型  2. Postcard uri tag mBundle flags timeout provider greenChannel serializationService  二. ARo">
+  <meta name="description" content="前言1. ARouter 简介 ARouter 是阿里开源的一款帮助 Android App 进行组件化改造的路由框架，是 Android 平台中对页面、服务提供路由功能的中间件，可以实现在不同模块的 Activity 之间跳转 ARouter 的特点是灵活性强以及帮助项目解耦   灵活性强 在一些复杂的业务场景下，很多功能都是运营人员动态配置的 比如电商系统需要下发一个活动页面，App 事先不知">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android 三方库源码解析系列：ARouter 原理及源码解析">
 <meta property="og:url" content="http://24suixinsuoyu.com/2021/02/12/Android-%E4%B8%89%E6%96%B9%E5%BA%93%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E7%B3%BB%E5%88%97%EF%BC%9AARouter-%E5%8E%9F%E7%90%86%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
-<meta property="og:description" content="前言1. ARouter 简介2. ARouter 架构概览3. ARouter 基本用法一. 明信片 Postcard1. RouteMate 路线类型 路线原始类型 终点 路径和路线组 优先级 标志 参数类型  2. Postcard uri tag mBundle flags timeout provider greenChannel serializationService  二. ARo">
+<meta property="og:description" content="前言1. ARouter 简介 ARouter 是阿里开源的一款帮助 Android App 进行组件化改造的路由框架，是 Android 平台中对页面、服务提供路由功能的中间件，可以实现在不同模块的 Activity 之间跳转 ARouter 的特点是灵活性强以及帮助项目解耦   灵活性强 在一些复杂的业务场景下，很多功能都是运营人员动态配置的 比如电商系统需要下发一个活动页面，App 事先不知">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou6tok3y3j30yg0rgabp.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou6v20opxj30u00xx0ue.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou6x32w4gj30or0dhwew.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou6xymyrij30h60dxaad.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou6yg034uj30il0fijrs.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou7iiqk2dj30qz0tp0ts.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou7poicl8j30so1asafg.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou7qscup5j30i611stb2.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou83gv8e7j30u01d00uj.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou84bnq7jj30jg0s9gmm.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou8674oytj30v10u0adh.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou87t957tj30ke0zugmt.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou89gwxn4j30rw0qs0w3.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou8d9z1s9j30p40zbjsy.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou8eldqrdj30ti0hs0vh.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou8fcdwetj30rd0si0tw.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou8gmt7kzj30p211yac0.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou8hx40bcj30mk0r6q6e.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou8milwlsj30yg0q3q4y.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou8nbkb9gj30tg0cswgf.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou8q8qtr3j30iw0exjxi.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou8s4d7ntj30yg0k6tam.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou8th6qrmj30u00yx78c.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou8wee5axj30tj1bbgno.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou8ynxf7sj30iw0id43o.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou8zq4lpnj30iw0cvq7c.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gou91fv8gnj30kb0wj405.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou9466x4wj30pw0fsmyg.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou94t87ewj30kb0wjjsp.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEly1gou983v606j30ri0gswio.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou99dyqc5j30ow0es41b.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou99q83rbj30qq16sgr8.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou9d2n4amj30rk0ksdj4.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou9diznxvj30ju09sq3n.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou9ec6qi3j30oc0hsabq.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou9ekv2w6j30qo0psn0j.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou9eweo6ej30qo0ts42x.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou9huw6whj30vk0gs0v8.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou9i4q11gj30qa0bsjss.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou9iel7vlj30t40lsjuz.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou9iysvtaj30i807sdgi.jpg">
 <meta property="article:published_time" content="2021-02-12T02:33:36.000Z">
-<meta property="article:modified_time" content="2021-03-23T13:55:21.801Z">
+<meta property="article:modified_time" content="2021-03-23T15:39:53.777Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Android 三方库源码解析系列">
 <meta property="article:tag" content="ARouter 原理及源码解析">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gou6tok3y3j30yg0rgabp.jpg">
 
 <link rel="canonical" href="http://24suixinsuoyu.com/2021/02/12/Android-%E4%B8%89%E6%96%B9%E5%BA%93%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E7%B3%BB%E5%88%97%EF%BC%9AARouter-%E5%8E%9F%E7%90%86%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">
 
@@ -215,7 +257,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-23 21:55:21" itemprop="dateModified" datetime="2021-03-23T21:55:21+08:00">2021-03-23</time>
+                <time title="修改时间：2021-03-23 23:39:53" itemprop="dateModified" datetime="2021-03-23T23:39:53+08:00">2021-03-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,14 +275,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>665</span>
+              <span>13k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>11 分钟</span>
             </span>
 
         </div>
@@ -252,59 +294,529 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><h4 id="1-ARouter-简介"><a href="#1-ARouter-简介" class="headerlink" title="1. ARouter 简介"></a>1. ARouter 简介</h4><h4 id="2-ARouter-架构概览"><a href="#2-ARouter-架构概览" class="headerlink" title="2. ARouter 架构概览"></a>2. ARouter 架构概览</h4><h4 id="3-ARouter-基本用法"><a href="#3-ARouter-基本用法" class="headerlink" title="3. ARouter 基本用法"></a>3. ARouter 基本用法</h4><h3 id="一-明信片-Postcard"><a href="#一-明信片-Postcard" class="headerlink" title="一. 明信片 Postcard"></a>一. 明信片 Postcard</h3><h4 id="1-RouteMate"><a href="#1-RouteMate" class="headerlink" title="1. RouteMate"></a>1. RouteMate</h4><ul>
-<li>路线类型</li>
-<li>路线原始类型</li>
-<li>终点</li>
-<li>路径和路线组</li>
-<li>优先级</li>
-<li>标志</li>
-<li>参数类型</li>
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><h4 id="1-ARouter-简介"><a href="#1-ARouter-简介" class="headerlink" title="1. ARouter 简介"></a>1. ARouter 简介</h4><ul>
+<li>ARouter 是阿里开源的一款帮助 Android App 进行组件化改造的路由框架，是 Android 平台中对页面、服务提供路由功能的中间件，可以实现在不同模块的 Activity 之间跳转</li>
+<li>ARouter 的特点是灵活性强以及帮助项目解耦</li>
+</ul>
+<ol>
+<li><strong>灵活性强</strong><ul>
+<li>在一些复杂的业务场景下，很多功能都是运营人员动态配置的</li>
+<li>比如电商系统需要下发一个活动页面，App 事先不知道该活动具体的目标页面，但如果提前做好了页面映射，就可以自由配置了</li>
+</ul>
+</li>
+<li><strong>项目解耦</strong><ul>
+<li>随着业务量增长，App 项目代码会越来越多，开发人员之间的协作也会变得越来越复杂，而解决这个问题的方案一般就是插件化和组件化</li>
+<li>插件化和组件化的前提是解耦，解耦后还要保持页面之间的依赖关系，这时就需要一套路由机制了</li>
+</ul>
+</li>
+</ol>
+<h4 id="2-ARouter-架构概览"><a href="#2-ARouter-架构概览" class="headerlink" title="2. ARouter 架构概览"></a>2. ARouter 架构概览</h4><p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou6tok3y3j30yg0rgabp.jpg" alt="ARouter 架构概览"></p>
+<ul>
+<li><p><strong>API</strong>：API 模块由下面几个子模块组成</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou6v20opxj30u00xx0ue.jpg" alt="API"></p>
+<ul>
+<li>launcher：包含了启动器 ARouter </li>
+<li>core：包含物流中心 LogsticsCenter 和仓库 Warehouse 等类</li>
+<li>exception：异常</li>
+<li>thread：拦截器链是放在子线程中执行的，用到了这个模块的 CancellableCountDownLatch</li>
+<li>facede：这个模块包含了 NavigationCallback 和 IInterceptor 等接口</li>
+<li>utils：包含了 ARouter 自定义的日志打印器等工具类</li>
+<li>base：只有一个用于保存拦截器的 UnitqueKeyTreeMap</li>
+</ul>
+</li>
+<li><p><strong>Compiler</strong></p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou6x32w4gj30or0dhwew.jpg" alt="Compiler"></p>
+<ul>
+<li>ARouter 的 Compiler 模块是用于生成路由表的，@Autowired、@Interceptor 和 @Route 注解对应的注解处理器分别是是 AutowiredProcessor、InterceptorProcessor 以及 RouteProcessor</li>
+</ul>
+</li>
+<li><p><strong>Plugin</strong></p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou6xymyrij30h60dxaad.jpg" alt="Plugin"></p>
+<ul>
+<li>如果我们使用了 ARouter 的路由表加载插件，那这个路由表就会由 ARouter Register 插件加载</li>
+</ul>
+</li>
+<li><p><strong>Annotation</strong></p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou6yg034uj30il0fijrs.jpg" alt="Annotation"></p>
+<ul>
+<li>这个模块比较简单，只包含了一些注解和枚举类</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-ARouter-基本用法"><a href="#3-ARouter-基本用法" class="headerlink" title="3. ARouter 基本用法"></a>3. ARouter 基本用法</h4><ol>
+<li><p><strong>添加依赖与配置</strong></p>
+ <figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Kotlin 注解处理插件</span></span><br><span class="line">apply plugin: <span class="string">'kotlin-kapt'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Kotlin 注解处理选项</span></span><br><span class="line">kapt &#123;</span><br><span class="line">	<span class="comment">// 参数：模块名</span></span><br><span class="line">	arguments &#123;</span><br><span class="line">		arg(<span class="string">"AROUTER_MODULE_NAME"</span>, <span class="keyword">project</span>.getName())</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 依赖</span></span><br><span class="line"><span class="keyword">dependencies</span> &#123;</span><br><span class="line">	<span class="comment">// 替换成最新版本，需要注意的是 api 要与 compiler 匹配使用</span></span><br><span class="line">	<span class="comment">// 均使用最新版本可以保证兼容</span></span><br><span class="line">	<span class="keyword">compile</span> <span class="string">'com.alibaba:arouter-api:1.5.0'</span></span><br><span class="line">	kapt <span class="string">'com.alibaba:arouter-compiler:1.2.2'</span></span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 如果要在 Activity 之间传递序列化对象，就要使用 Json 解析</span></span><br><span class="line">	implementation <span class="string">'com.alibaba:fastjson:1.2.48'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>声明路径</strong></p>
+ <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Route(path = <span class="meta-string">"/goods/details"</span>, group = <span class="meta-string">"taobao"</span>)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GoodsDetailsActivity</span> : <span class="type">AppCompatActivity</span></span>() &#123;</span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用 ARouter 要用 @Route 注解声明跳转目标的路径，在这里要注意，最前面的斜杠是不能少的，而且路径至少有量级</li>
+<li>group 是可选的，ARouter 内部会对 path 进行分组，以上面这段代码为例，如果不传 group 的话，那 ARouter 会把 goods 作为该路径的 group ，否则 taobao 就是该路径所属的 group</li>
+</ul>
+</li>
+<li><p><strong>初始化 ARouter</strong></p>
+ <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">fun</span> init<span class="constructor">ARouter()</span> &#123;</span><br><span class="line">	<span class="keyword">if</span>(BuildConfig.DEBUG) &#123;</span><br><span class="line">		<span class="comment">// 打印日志</span></span><br><span class="line">		<span class="module-access"><span class="module"><span class="identifier">ARouter</span>.</span></span><span class="keyword">open</span><span class="constructor">Log()</span></span><br><span class="line">		</span><br><span class="line">		<span class="comment">// 开启调试模式（如果在 InstantRun 模式下运行</span></span><br><span class="line">		<span class="comment">// 线上版本需要关闭，否则有安全风险）</span></span><br><span class="line">		<span class="module-access"><span class="module"><span class="identifier">ARouter</span>.</span></span><span class="keyword">open</span><span class="constructor">Debug()</span></span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 尽可能早初始化，推荐在 Application 中初始化</span></span><br><span class="line">	<span class="module-access"><span class="module"><span class="identifier">ARouter</span>.</span></span>init(application)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>打印日志和开启调试模式必须写 在 <code>init()</code> 之前，否则这些配置在初始化过程中将无效</li>
+</ul>
+</li>
+<li><p><strong>跳转</strong></p>
+ <figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 应用内简单的跳转</span></span><br><span class="line"><span class="selector-tag">ARouter</span><span class="selector-class">.getInstance</span>()</span><br><span class="line">	<span class="comment">// 构建明信片，设定 path 与 group</span></span><br><span class="line">	<span class="selector-class">.build</span>(<span class="string">"/goods/details"</span>, <span class="string">"taobao"</span>)</span><br><span class="line">	<span class="selector-class">.navigation</span>()</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在跳转时，我们也可以传 group，比如这个例子中传了 taobao，那就会跳转到 taobao 分组下的商品详情页，不传的话，就会跳到 goods 分组下的详情页</li>
+</ul>
+</li>
+</ol>
+<h3 id="一-明信片-Postcard"><a href="#一-明信片-Postcard" class="headerlink" title="一. 明信片 Postcard"></a>一. 明信片 Postcard</h3><ul>
+<li>当我们调用 <code>ARouter.getinstance().build()</code> 时，其实是在创建一个明信片 Postcard 对象，<code>withXXX()</code> 和 <code>navigation()</code> 方法就是它的方法，Postcard 的 <code>navigation()</code> 方法最终调用的是 ARouter 的 <code>navigation()</code> 方法</li>
+<li>按 Postcard 的注释来说，它是路线图的容器，我们可以把它看做是一张包含了收件人信息以及特定内容的明信片</li>
+<li>Postcard 继承了 RouteMeta，RouteMeta 是路由表的内容，而 Postcard 则包含了在跳转时的传参和动画等信息</li>
+</ul>
+<h4 id="1-RouteMate"><a href="#1-RouteMate" class="headerlink" title="1. RouteMate"></a>1. RouteMate</h4><ul>
+<li><p>RouteMate 示意图</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou7iiqk2dj30qz0tp0ts.jpg" alt="RouteMate 示意图"></p>
+</li>
+<li><p>RouteMeta 包含了以下字段</p>
+<ul>
+<li><p><strong>路线类型</strong>：路线类型 RouteType 是一个枚举类，有下面几种类型（其中 Service、Broadcast 和 Method 是未实现的）</p>
+<ul>
+<li>Activity</li>
+<li>Service</li>
+<li>Provider：也就是自定义服务 IProvider</li>
+<li>ContentProvider</li>
+<li>Fragment</li>
+<li>Broadcast</li>
+<li>Method</li>
+<li>Unknown：未知路线</li>
+</ul>
+</li>
+<li><p><strong>路线原始类型</strong></p>
+<ul>
+<li>路由原始类型 rawType 的类型为 Element，关于 Element ，在后面会进一步讲解，这里只需要知道 Element 中包含了跳转目标的 Class 信息，是由路由处理器 RouteProcessor 设定的</li>
+</ul>
+</li>
+<li><p><strong>终点</strong></p>
+<ul>
+<li>终点 destination 就是声明了 @Route 的跳转目标的 Class ，比如目标 Activity 和 Fragment 的 Class，这个信息也是由 RouteProcessor 设定的</li>
+</ul>
+</li>
+<li><p><strong>路径和路线组</strong></p>
+<ul>
+<li>如果我们在 @Route 中只设定了路径，比如 path = /goods/details ，那么 goods 就是 group ，details 就是路径 path</li>
+<li>如果我们设置了 @Route 的 group 的值，比如 group = taobao ，那么 path 的 group 就是 taobao</li>
+</ul>
+</li>
+<li><p><strong>优先级</strong></p>
+<ul>
+<li>优先级在 @Route 中无法设定，是给拦截器用的，priority 的值越小，拦截器的优先级就越高</li>
+<li>拦截器链的实现类为 InterceptorServiceImpl，它在调用拦截器的 onInteceptor() 方法时，就是按照 priority 的顺序来获取拦截器，然后逐个调用的</li>
+</ul>
+</li>
+<li><p><strong>标志</strong>：这个 extra 是路由文档 RouteDoc 的标志，文档中包含了路由和服务相关的信息 ，默认不会生成对应的文件，如果想生成的话，可以在注解处理参数中设置生成文档</p>
+<ul>
+<li><p>添加参数：如果我们想查看路由文档，可以 AROUTER_MODULE_NAME 后面添加 <code>AROUTER_GENERATE_DOC: &quot;enable&quot;</code></p>
+</li>
+<li><p>文档路径：<code>build/generated/source/apt/(debug or release)/com/alibaba/android/arouter/docs/arouter-map-of-${moduleName}.json</code>，路由文档的大致内容如下</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou7poicl8j30so1asafg.jpg" alt="路由文档的大致内容"></p>
+</li>
+</ul>
+</li>
+<li><p><strong>参数类型</strong></p>
+<ul>
+<li>paramsType 也就是参数类型，对于我们跳转时设定的参数，ARouter 会根据不同的类型给它们一个枚举值，然后取值时，再根据不同的类型调用 Intent 的 getXXXExtra() 等方法</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <h4 id="2-Postcard"><a href="#2-Postcard" class="headerlink" title="2. Postcard"></a>2. Postcard</h4><ul>
-<li>uri</li>
-<li>tag</li>
-<li>mBundle</li>
-<li>flags</li>
-<li>timeout</li>
-<li>provider</li>
-<li>greenChannel</li>
-<li>serializationService</li>
+<li><p>Postcard 示意图</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou7qscup5j30i611stb2.jpg" alt="Postcard 示意图"></p>
+</li>
+<li><p>Postcard 中包含如下字段</p>
+<ul>
+<li><p><strong>uri</strong></p>
+  <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> uri = <span class="module-access"><span class="module"><span class="identifier">Uri</span>.</span></span>parse(<span class="string">"demo://www.xxx.com/moduleA/second?name=老王"</span>)</span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">ARouter</span>.</span></span>get<span class="constructor">Instance()</span></span><br><span class="line">	.build(uri)</span><br><span class="line">	.navigation<span class="literal">()</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在 ARouter 中，我们可以用 URI 作为路径跳转，ARouter 会用路径替换服务 PathReplaceService 替换路径，这个服务没有默认实现，如果我们需要为不同的协议和主机替换不同的路径时，就要自己实现这个服务</li>
+<li>如果我们没有实现这个服务，那 scheme 和 主机地址等信息是没有意义的，ARouter 默认情况下只会对路径和参数进行解析，在上面的例子中，路径就是 <code>moduleA/second</code> ，参数为 <code>name=老王</code></li>
 </ul>
-<h3 id="二-ARouter-路由表生成原理"><a href="#二-ARouter-路由表生成原理" class="headerlink" title="二. ARouter 路由表生成原理"></a>二. ARouter 路由表生成原理</h3><h4 id="1-注解处理流程"><a href="#1-注解处理流程" class="headerlink" title="1. 注解处理流程"></a>1. 注解处理流程</h4><h4 id="2-路由解析流程"><a href="#2-路由解析流程" class="headerlink" title="2. 路由解析流程"></a>2. 路由解析流程</h4><ol>
-<li>获取路由元素</li>
-<li>创建路由元信息</li>
-<li>把路由元信息进行分组</li>
-<li>生成路由表</li>
+</li>
+<li><p><strong>tag</strong></p>
+  <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Interceptor(priority = 8, name = <span class="meta-string">"测试用拦截器"</span>)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestInterceptor</span> : <span class="type">IInterceptor &#123;</span></span></span><br><span class="line">	<span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">init</span><span class="params">(context: <span class="type">Context</span>?)</span></span> &#123;</span><br><span class="line">		<span class="comment">// 拦截器的初始化，会在 sdk 初始化的时候调用该方法，仅会调用一次</span></span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">process</span><span class="params">(postcard: <span class="type">Postcard</span>?, callback: <span class="type">InterceptorCallback</span>)</span></span> &#123;</span><br><span class="line">		callback.onInterrupt(RuntimeException(<span class="string">"有内鬼，停止交易"</span>));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ARouter.getInstance()</span><br><span class="line">	.build(path)</span><br><span class="line">	navigation(<span class="keyword">this</span>, <span class="keyword">object</span> : NavigationCallback) &#123;</span><br><span class="line">		<span class="comment">// 跳转中断</span></span><br><span class="line">		<span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onInterrupt</span><span class="params">(postcard: <span class="type">Postcard</span>?)</span></span> &#123;</span><br><span class="line">			<span class="comment">// 有内鬼，停止交易</span></span><br><span class="line">			<span class="keyword">val</span> errorMsg = postcard?.tag</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>tag 用于在 NavigationCallback 的 <code>interrupt()</code> 方法中获取异常信息</li>
+<li>在拦截器链 InterceptorServiceImpl 中，当我们在自定义的拦截器中调用 <code>onInterrupt()</code> 方法时，InterceptorServiceImpl 会创建一个 HandlerException ，并把它作为 Postcard 的 tag ，然后监听跳转结果的地方，就能在 <code>onInterrupt()</code> 方法中通过获取 Postcard 的 tag 信息来获取异常信息</li>
+<li>我们在拦截器中传入的 exception 为空的话，那么 <code>HandlerException()</code> 的 message 默认为 “No Message.”</li>
+</ul>
+</li>
+<li><p><strong>mBundle</strong></p>
+<ul>
+<li>我们调用 <code>withString()</code> 等方法设置要传递给跳转目标的数据时，这个数据就是放在 mBundle 中的</li>
+</ul>
+</li>
+<li><p><strong>flags</strong></p>
+<ul>
+<li>我们调用 <code>withFlag()</code> 设定 Activity 的启动标志时，这个标志就会赋值给 flags 字段</li>
+</ul>
+</li>
+<li><p><strong>timeout</strong></p>
+<ul>
+<li>拦截器链处理跳转事件是放在 CountDownLatch 中执行的，超时时间默认为 300 秒，也就是 5 分钟，所以我们在拦截器中不要进行时间太长的耗时操作</li>
+</ul>
+</li>
+<li><p><strong>provider</strong></p>
+<ul>
+<li>当我们实现了自定义服务时，参数注解处理器 AutowiredProcessor 会为各个路径创建一个实现注射器 ISyringe 接口的类，在这个类的 <code>inject()</code> 方法中，调用了 <code>ARouter.getInstance().navigation(XXXService.class)</code>，当 LogisticsCenter 发现这是一个 Provider 时，就会通过反射创建一个 Provider 实例，然后设置给 Postcard ，再进行跳转</li>
+</ul>
+</li>
+<li><p><strong>greenChannel</strong></p>
+<ul>
+<li>所谓绿色通道，就是不会被拦截器链处理的通道，自定义服务 IProvider 和 Fragment 就是走的绿色通道</li>
+<li>如果我们想让某个跳转操作跳过拦截器，可以在 <code>navigation()</code> 前调用 <code>greenChannel()</code> 方法</li>
+</ul>
+</li>
+<li><p><strong>serializationService</strong></p>
+<ul>
+<li>当我们调用 <code>withObject()</code> 方法时，ARouter 就会获取我们自己自定义的序列化服务 SerializationService，然后调用该服务的 <code>object2Json()</code> 方法，再把数据转化为 String 放入 bundle 中</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="二-ARouter-路由表生成原理"><a href="#二-ARouter-路由表生成原理" class="headerlink" title="二. ARouter 路由表生成原理"></a>二. ARouter 路由表生成原理</h3><h4 id="1-注解处理流程"><a href="#1-注解处理流程" class="headerlink" title="1. 注解处理流程"></a>1. 注解处理流程</h4><p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou83gv8e7j30u01d00uj.jpg" alt="注解处理流程"></p>
+<ul>
+<li>关于 Android Gradle 的 和 Javac 这里不会展开讲，在这里我们只需要理解在对 @Route 等注解处理前，是由 Android Gradle 的 AndroidJavaCompiler 来发起编译操作，然后让 Javac 去调用 RouteProcessor 等注解处理器对注解进行处理的</li>
+</ul>
+<h4 id="2-路由解析流程"><a href="#2-路由解析流程" class="headerlink" title="2. 路由解析流程"></a>2. 路由解析流程</h4><p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou84bnq7jj30jg0s9gmm.jpg" alt="路由解析流程"></p>
+<ol>
+<li><p><strong>获取路由元素</strong></p>
+<ul>
+<li>这里的元素指的是 javax 包中的 Element ，Element 表示 Java 语言元素，比如字段、包、方法、类以及接口</li>
+<li><code>process()</code>方法会接收到 annotations 和 roundEnv 两个参数，annotations 就是当前处理器要处理的注解，roundEnv 就是运行环境 JavacRoundEnvironment</li>
+<li>JavacRoundEnvironment 有一个 <code>getElementsAnnotatedWith()</code> 方法，RouteProcessor 在处理注解时首先会用这个方法获取元素</li>
+</ul>
+</li>
+<li><p><strong>创建路由元信息</strong></p>
+<p> <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou8674oytj30v10u0adh.jpg" alt="创建路由元信息"></p>
+<ul>
+<li>这里说的路由元信息指的是 RouteMeta，RouteProcessor 会把声明了 @Route 注解的的 Activity、Provider、Service 或 Fragment 和一个 RouteMeta 关联起来</li>
+<li>当元素类型为 Activity 时，RouteProcessor 会遍历获取 Activity 的子元素，也就是 Activity 的成员变量，把它们放入注入配置 RouteMeta 的 injectConfig 中，当我们配置了要生成路由文档时，RouteProcessor 就会把 injectConfig 写入到文档中，然后就对元信息进行分组</li>
+</ul>
+</li>
+<li><p><strong>把路由元信息进行分组</strong></p>
+<ul>
+<li>在 RouteProcessor 中有一个 groupMap，在 RouteMeta 创建好后，RouteProcessor 会把不同的 RouteMeta 进行分组，放入到 groupMap 中</li>
+<li>拿路径 <code>/goods/details</code> 来说，如果我们在 @Route 中没有设置 group 的值，那么 RouteProcessor 就会把 goods 作为 RouteMeta 的 group</li>
+</ul>
+</li>
+<li><p><strong>生成路由表</strong></p>
+<p> <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou87t957tj30ke0zugmt.jpg" alt="生成路由表"></p>
+<ul>
+<li><p>当 RouteProcessor 把 RouteMeta 分组好后，就会用 JavaPoet 生成 Group、Provider 和 Root 路由文件，路由表就是由这些文件组成的，JavaPoet 是 Square 开源的代码生成框架</p>
+</li>
+<li><p>生成路由文件后，物流中心 LogisticsCenter 需要用这些文件来填充仓库 Warehouse 中的 routes 和 providerIndex 等索引，然后在跳转时根据 routes 和索引来跳转</p>
+</li>
+<li><p>关于 LogisticsCenter 和 Warehouse 在后面会讲，下面我们来看下路由文件的内容</p>
+</li>
+<li><p>RouteProcessor 生成的路由文件位于 <code>build/generated/source/kapt/(debug/release)/com/alibaba/android/arouter/routes</code></p>
+</li>
+<li><p>以 ARouter 示例项目中的一个路由文件为例，RouteProcessor 创建的 RouteMeta 会转化为下面这样的文件</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou89gwxn4j30rw0qs0w3.jpg" alt="路由文件"></p>
+<ul>
+<li>其他的路由文件也是大同小异的，所有内容都是由 RouteProcessor 填充的</li>
+</ul>
+</li>
+</ul>
+</li>
 </ol>
-<h3 id="三-ARouter-跳转原理"><a href="#三-ARouter-跳转原理" class="headerlink" title="三. ARouter 跳转原理"></a>三. ARouter 跳转原理</h3><h4 id="1-预处理服务"><a href="#1-预处理服务" class="headerlink" title="1. 预处理服务"></a>1. 预处理服务</h4><ul>
-<li>实现预处理服务</li>
-<li>预处理服务处理流程</li>
+<h3 id="三-ARouter-跳转原理"><a href="#三-ARouter-跳转原理" class="headerlink" title="三. ARouter 跳转原理"></a>三. ARouter 跳转原理</h3><ul>
+<li><p>当我们调用 Postcard 的 <code>navigation()</code> 方法时，Postcard 会调用 ARouter 的 <code>navigation()</code> 方法，然后 ARouter 才会去加载路由表，所以我们来看下 <code>navigation()</code> 的处理流程</p>
+</li>
+<li><p>ARouter 的 <code>navigation()</code> 方法有下面两种重载</p>
+<ul>
+<li><code>navigation(final Context context, final Postcard postcard, final int requestCode, final NavigationCallback callback)</code></li>
+<li><code>navigation(Class&lt;? extends T&gt; service)</code></li>
 </ul>
-<h4 id="2-完善明信片"><a href="#2-完善明信片" class="headerlink" title="2. 完善明信片"></a>2. 完善明信片</h4><h4 id="3-降级策略"><a href="#3-降级策略" class="headerlink" title="3. 降级策略"></a>3. 降级策略</h4><h4 id="4-拦截器"><a href="#4-拦截器" class="headerlink" title="4. 拦截器"></a>4. 拦截器</h4><h4 id="5-按类型跳转"><a href="#5-按类型跳转" class="headerlink" title="5. 按类型跳转"></a>5. 按类型跳转</h4><h4 id="6-跳转回调"><a href="#6-跳转回调" class="headerlink" title="6. 跳转回调"></a>6. 跳转回调</h4><h3 id="四-ARouter-路由表加载原理"><a href="#四-ARouter-路由表加载原理" class="headerlink" title="四. ARouter 路由表加载原理"></a>四. ARouter 路由表加载原理</h3><h4 id="1-从-Dex-中加载路由表"><a href="#1-从-Dex-中加载路由表" class="headerlink" title="1. 从 Dex 中加载路由表"></a>1. 从 Dex 中加载路由表</h4><ul>
-<li>读取 Dex 文件</li>
-<li>从 Dex 文件中读取路由表</li>
-<li>把路由表保存大本地</li>
-<li>把路由信息保存到索引中</li>
+</li>
+<li><p>第一种重载是进行跳转的，第二种重载是用来创建服务的，下面我们来看第一种重载的实现</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou8d9z1s9j30p40zbjsy.jpg" alt="ARouter.navigation()"></p>
+</li>
+</ul>
+<h4 id="1-预处理服务"><a href="#1-预处理服务" class="headerlink" title="1. 预处理服务"></a>1. 预处理服务</h4><ul>
+<li><p><strong>实现预处理服务</strong></p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou8eldqrdj30ti0hs0vh.jpg" alt="实现预处理服务"></p>
+<ul>
+<li>预处理服务可以让我们在 ARouter 进行跳转前，根据 PostCard 的内容判断是否要独立地对这次跳转进行处理，是的话则在 <code>onPretreatment()</code> 中返回 false 即可</li>
+</ul>
+</li>
+<li><p><strong>预处理服务处理流程</strong></p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou8fcdwetj30rd0si0tw.jpg" alt="预处理服务处理流程"></p>
+<ul>
+<li>在 <code>navigation()</code> 中，首先会调用预处理服务的 <code>onPretreamtn()</code> 方法，判断是否要继续往下处理，如果返回结果为 false ，则不再往下处理，也就是不会进行跳转等操作</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-完善明信片"><a href="#2-完善明信片" class="headerlink" title="2. 完善明信片"></a>2. 完善明信片</h4><p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou8gmt7kzj30p211yac0.jpg" alt="完善明信片"></p>
+<ul>
+<li><p><strong>获取路由元信息</strong></p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou8hx40bcj30mk0r6q6e.jpg" alt="获取路由元信息"></p>
+<ul>
+<li>在 ARouter 初始化时，会把 LogisticsCenter 也进行初始化，而 LogisticsCenter 的初始化方法中，会读取 RouteProcessor 创建好的路由表，然后放到对应的索引 index 中</li>
+<li>有了索引，当 ARouter 调用 LogisticsCenter 的 <code>completion()</code> 方法时，就可以用索引从 Warehouse 的 routes 中获取路由元信息</li>
+<li>如果 LogisticsCenter 根据索引查找不到对应的 RouteMeta，那就说明 routes 还没有被填充，这时 LogisticsCenter 就会获取 group 的 RouteMeta，然后把 group 下的路径填充到 routes 中，然后再调用一次 <code>completion()</code> ，这时就可以取填充明信片的信息了</li>
+<li>索引是在 LogsticsCenter 初始化的时候加载的，后面在路由表加载原理的时候会讲到</li>
+</ul>
+</li>
+<li><p><strong>填充明信片信息</strong></p>
+<ul>
+<li>我们在调用 <code>ARouter.getInstance().build()</code> 方法时，就是创建了一张 Postcard，但是这张 Postcard 的信息是不完整的</li>
+<li>比如 Postcard 中有一个 destination 字段，destination 表示跳转目标的 Class 信息，跳转 Activity 要用 Intent，destination 就是 Intent 的构造函数的第二个参数</li>
+<li>而 LogisticsCenter 就要负责把从路由表获取到的 destination 信息填充到这张明信片中，有了一张信息完整的明信片，才能进行后续的跳转操作</li>
+</ul>
+</li>
+<li><p><strong>初始化 Provider</strong></p>
+<ul>
+<li>填充完了 Postcard 的信息后，LogisticsCenter 会根据 Postcard 的类型来做不同的操作，如果是 Provider 的话，就会调用 Provider 的初始化方法，并且把 Postcard 设为绿色通道</li>
+<li>如果是 Fragment 的话，那就只把 Postcard 设为绿色通道，如果是其他类型，则不设为绿色通道，这里说的绿色通道，其实就是说 Provider 和 Fragment 是跳过拦截器链的</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-降级策略"><a href="#3-降级策略" class="headerlink" title="3. 降级策略"></a>3. 降级策略</h4><ul>
+<li>所谓的降级策略，其实就是跳转失败时，我们能够跳转到别的页面，比如一个跳转失败提示页</li>
+<li>假如 ARouter 在完善明信片信息的过程中遇到了异常</li>
+</ul>
+<ol>
+<li><p><strong>降级策略处理流程</strong></p>
+<p> <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou8milwlsj30yg0q3q4y.jpg" alt="降级策略处理流程"></p>
+<ul>
+<li>调用完预处理服务后，<code>navigation()</code> 就会通过物流中心 LogisticsCenter 来填充 PostCard 内容，如果在填充过程中遇到了异常，就会调用降级服务</li>
+</ul>
+</li>
+<li><p><strong>自定义降级策略</strong></p>
+<p> <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou8nbkb9gj30tg0cswgf.jpg" alt="自定义降级策略"></p>
+<ul>
+<li>在自定义降级策略时，要注意 context 可能会空，要使用 Context? </li>
+</ul>
+</li>
+</ol>
+<h4 id="4-拦截器"><a href="#4-拦截器" class="headerlink" title="4. 拦截器"></a>4. 拦截器</h4><ul>
+<li>拦截器可以用来在跳转过程中处理事件，比如做登陆检查，拦截器会在跳转之间执行，多个拦截器会按优先级顺序依次执行</li>
+</ul>
+<ol>
+<li><p><strong>实现拦截器</strong></p>
+<p> <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou8q8qtr3j30iw0exjxi.jpg" alt="实现拦截器"></p>
+<ul>
+<li>实现拦截器时，我们要调用 <code>onContinue()</code> 或 <code>onInterrupt()</code> 方法，至少需要调用其中一种方法，否则不会继续路由</li>
+<li><code>onContinue()</code>：这个方法表示处理完成，交换控制权给 ARouter</li>
+<li><code>onInterrupt()</code>：当我们觉得有问题时，可以用 <code>onInterrupt()</code> 方法，传一个异常，以中断路由流程</li>
+</ul>
+</li>
+<li><p><strong>拦截器处理流程</strong></p>
+<p> <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou8s4d7ntj30yg0k6tam.jpg" alt="拦截器处理流程"></p>
+<ul>
+<li><code>navigation()</code> 在完善 Postcard 信息后，就会判断该 Postcard 是否通过绿色通道来处理，绿色通道就是不经过拦截器链的通道</li>
+<li>在 LogisticsCenter 的 <code>completion()</code> 中，中会把路由类型为 Provider 和 Fragment 的路线设为绿色通道，如果我们想让目标页面跳过拦截器链，就可以在 <code>navigation()</code> 方法前调用 <code>greenChannel()</code> 方法</li>
+</ul>
+</li>
+</ol>
+<h4 id="5-按类型跳转"><a href="#5-按类型跳转" class="headerlink" title="5. 按类型跳转"></a>5. 按类型跳转</h4><p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou8th6qrmj30u00yx78c.jpg" alt="按类型跳转"></p>
+<ul>
+<li>当处理完拦截器后，<code>navigation()</code> 中就会调用 <code>navigation()</code> 方法，这也是具体进行跳转的方法。</li>
+<li>在这个方法中，会根据 Postcard 的路由类型 RouteType 来判断怎么跳转</li>
+</ul>
+<ol>
+<li><p><strong>Activity</strong></p>
+<ul>
+<li>当 RouteType 为 Activity 时，启动 Activity 的流程和我们平时启动 Activity 的流程是一样的，创建 Intent、传入 destination、设置 fragment 和重写动画等，最终调用 <code>startActivity()</code> 启动目标页面</li>
+</ul>
+</li>
+<li><p><strong>Fragment/Broadcast/ContentProvider</strong></p>
+<ul>
+<li>当跳转目标为 Fragment、Broadcast 或 ContentProvider 时，会通过 destination 用反射创建实例，如果是 Framgent ARouter 还会为它设置要传递给目标 Fragment 的参数，然后返回实例</li>
+</ul>
+</li>
+<li><p><strong>Provider</strong></p>
+<ul>
+<li>如果跳转目标为 Provider，也就是自定义服务的话，就对应了后面讲 ARouter 自定义服务时讲的“通过依赖查找发现服务”</li>
+</ul>
+</li>
+</ol>
+<h4 id="6-跳转回调"><a href="#6-跳转回调" class="headerlink" title="6. 跳转回调"></a>6. 跳转回调</h4><p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou8wee5axj30tj1bbgno.jpg" alt="跳转回调"></p>
+<ul>
+<li><p>在调用 <code>navigation()</code> 跳转时，我们可以在 <code>navigation()</code> 中传入 NavigationCallback 监听跳转过程中发生的事件</p>
+<ul>
+<li><p><code>onLost()</code>：无法查找到跳转目标</p>
+</li>
+<li><p><code>onFound()</code>：找到了跳转目标</p>
+</li>
+<li><p><code>onInterrupt()</code>：拦截器中断了跳转</p>
+</li>
+<li><p><code>onArrival()</code>：已打开跳转目标</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou8ynxf7sj30iw0id43o.jpg" alt="跳转"></p>
+</li>
+<li><p>除了 NavigationCallback ，我们也可以用 NavCallback 监听跳转中发生的事件，NavCallback 是 ARouter 中实现了 NavigationCallback 的一个抽象类，使用 NavCallback 不会强制要求我们重写所有方法，只要求重写 <code>onArrival()</code> 方法</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou8zq4lpnj30iw0cvq7c.jpg" alt="onArrival()"></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="四-ARouter-路由表加载原理"><a href="#四-ARouter-路由表加载原理" class="headerlink" title="四. ARouter 路由表加载原理"></a>四. ARouter 路由表加载原理</h3><ul>
+<li>所谓的加载路由表，其实就是加载 RouteProcessor 生成的类文件。</li>
+<li>在我们调用 ARouter 的 <code>init()</code> 方法时，ARouter 会调用 LogisticsCenter 的 <code>init()</code> 方法，在 LogisticsCenter 的 <code>init()</code> 方法中，会判断当前路由表加载方式是否为插件，不是的话则从 Dex 中加载路由表，是的话则由插件从 Jar 中加载路由表</li>
+</ul>
+<h4 id="1-从-Dex-中加载路由表"><a href="#1-从-Dex-中加载路由表" class="headerlink" title="1. 从 Dex 中加载路由表"></a>1. 从 Dex 中加载路由表</h4><p><img src="https://tva1.sinaimg.cn/large/008eGmZEly1gou91fv8gnj30kb0wj405.jpg" alt="从 Dex 中加载路由表"></p>
+<ul>
+<li><p><strong>读取 Dex 文件</strong></p>
+<ul>
+<li>LogisticsCenter 发现没有用插件加载路由表时，就会用 ClassUtils 读取路由表。</li>
+<li>这里说的路由表，其实就是 RouteProcessor 生成好的类文件类名，而读取 Dex 文件的方式，就是从源码目录（applicationInfo.sourceDir) 中读取 base apk 的路径，然后用这个路径构建一个 DexFile(path) </li>
+</ul>
+</li>
+<li><p><strong>从 Dex 文件中读取路由表</strong></p>
+<ul>
+<li>ClassUtils 用 DexFile 读取 apk 中的类信息，然后判断类的包名是否为 “com.alibaba.android.arouter.routes” ，是的话说明这是 ARouter 的注解处理器生成的路由文件，把匹配上的类加入列表中，然后把列表返回给 LogisticsCenter</li>
+</ul>
+</li>
+<li><p><strong>把路由表保存到本地</strong></p>
+<ul>
+<li>当 LogisticsCenter 从 ClassUtils 中获取到注解处理器生成的类名时，就会把这些类名保存 SharedPreferences 中，下次就根据 App 版本判断，如果不是新版本，就从本地中加载类名，否则就用 ClassUtils 读取类名</li>
+</ul>
+</li>
+<li><p><strong>把路由信息保存到索引中</strong></p>
+<ul>
+<li>当 LogisticsCenter 把路由表保存到 SharedPreferences 后，就会根据类名的后缀判断类是 IRouteRoot 、IInterceptorGroup 还是 IProviderGroup ，然后根据不同的类把类文件的内容加载到索引中</li>
+</ul>
+</li>
 </ul>
 <h4 id="2-从-Jar-中加载路由表"><a href="#2-从-Jar-中加载路由表" class="headerlink" title="2. 从 Jar 中加载路由表"></a>2. 从 Jar 中加载路由表</h4><ul>
-<li><code>PluginLaunch.apply()</code></li>
-<li><code>BaseExtention.registerTransform()</code></li>
-<li><code>RegisterTransform.transform()</code></li>
-<li><code>ScanClassVisitor.visit()</code></li>
-<li><code>RegisterCodeGenerator.insertInitCodeIntoJarFile()</code></li>
+<li><p>如果我们想缩短 ARouter 的初始化时间，可以用 ARouter 的 Gradle 插件，这个插件能自动加载路由表，这样 ARouter 初始化的时候就不需要读取类的信息，从而缩短初始化时间</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou9466x4wj30pw0fsmyg.jpg" alt="插件"></p>
+</li>
+<li><p>Register 插件从 Jar 文件加载路由表的流程如下</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou94t87ewj30kb0wjjsp.jpg" alt="Jar"></p>
+<ul>
+<li><p><strong>PluginLaunch.apply()</strong></p>
+<ul>
+<li>当我们运行 App 时，Gradle 就会调用我们依赖的 ARouter Register 插件，这个插件的执行的起点就在 PluginLaunch.apply() 中，PluginLaunch 判断了只有在运行的项目为 Applicaiton 时，才会加载路由表信息</li>
 </ul>
-<h3 id="五-ARouter-进阶用法与注意事项"><a href="#五-ARouter-进阶用法与注意事项" class="headerlink" title="五. ARouter 进阶用法与注意事项"></a>五. ARouter 进阶用法与注意事项</h3><h4 id="1-传参"><a href="#1-传参" class="headerlink" title="1. 传参"></a>1. 传参</h4><h4 id="2-解析参数"><a href="#2-解析参数" class="headerlink" title="2. 解析参数"></a>2. 解析参数</h4><h4 id="3-实现序列化服务"><a href="#3-实现序列化服务" class="headerlink" title="3. 实现序列化服务"></a>3. 实现序列化服务</h4><h4 id="4-自定义服务"><a href="#4-自定义服务" class="headerlink" title="4. 自定义服务"></a>4. 自定义服务</h4><ul>
-<li>声明接口</li>
-<li>实现接口</li>
-<li>通过依赖注入发现服务（推荐）</li>
-<li>通过依赖查找发现服务</li>
+</li>
+<li><p><strong>BaseExtention.registerTransform()</strong></p>
+<ul>
+<li>Android Gradle 插件包含了一个 Transform API，这个 API 允许第三方插件在编译后的类文件转换为 dex 文件前做处理操作，而 ARouter 的 Register 插件就实现了一个 RegisterTransform</li>
+</ul>
+</li>
+<li><p><strong>RegisterTransform.transform()</strong></p>
+<ul>
+<li>当 Gradle 的任务管理器 TaskManager 执行 TransformTask 时，就会执行 RegisterTransform 的 <code>transform()</code> 方法</li>
+<li>在 transform() 方法中，会接收到一个 TaskManager 传过来的 TransformInput 集合，通过 TransformInput 可以获取到 Gradle 为我们项目生成的 Jar 和 Class 文件，包括 RouteProcessor 生成的文件</li>
+</ul>
+</li>
+<li><p><strong>ScanClassVisitor.visit()</strong></p>
+<ul>
+<li>当 RegisterTransform 获取到了 Class 文件后，就会用 ScanUtils 中的 ScanClassVisitor 访问 Class 中的字节码数据，包括 Class 的包名和类名</li>
+<li>ScanClassVisitor 是 ClassVisitor 的子类，ClassVisitor 可以改变修改字节码，当 ScanClassVisitor 发现当前 Class 实现了 IRouteRoot、IIntercetorGroup 或 IProviderGroup 接口时，这三个接口都是就会把当前 Class 的类名添加到 ScanSetting 的 classList 中</li>
+</ul>
+</li>
+<li><p><strong>RegisterCodeGenerator.insertInitCodeIntoJarFile()</strong></p>
+<ul>
+<li><p>当 RegisterTransform 把 ScanSetting 中的 classList 初始化完后，就会用代码生成器 RegisterCodeGenerator 插入代码到 Jar 文件中</p>
+</li>
+<li><p>在 RegisterCodeGenerator 的 <code>insertInitCodeIntoJarFile()</code> 方法中，会把 Jar 文件转化为 JarFile 对象，然后获取到 JarFile 中的 JarEntry ，找到 LogisticsCenter，然后把路由表插入到 LogisticsCenter 的 <code>loadRouteMap()</code> 方法中，比如下面这样</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEly1gou983v606j30ri0gswio.jpg" alt="LogisticsCenter"></p>
+</li>
+<li><p>Jar 文件路径：<code>build/intermediates/transforms/com.alibaba.arouter/debug/41.jar</code></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="五-ARouter-进阶用法与注意事项"><a href="#五-ARouter-进阶用法与注意事项" class="headerlink" title="五. ARouter 进阶用法与注意事项"></a>五. ARouter 进阶用法与注意事项</h3><h4 id="1-传参"><a href="#1-传参" class="headerlink" title="1. 传参"></a>1. 传参</h4><p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou99dyqc5j30ow0es41b.jpg" alt="传参"></p>
+<h4 id="2-解析参数"><a href="#2-解析参数" class="headerlink" title="2. 解析参数"></a>2. 解析参数</h4><p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou99q83rbj30qq16sgr8.jpg" alt="解析参数"></p>
+<ul>
+<li><p><strong>@JvmField</strong></p>
+<ul>
+<li>这里需要注意的是，如果 Activity 或 Fragment 是用 Kotlin 写的，那字段就要加上 @JvmField ，以提供 <code>getter()</code> 和 <code>setter()</code> 给 ARouter 使用</li>
+</ul>
+</li>
+<li><p><strong>默认值不能为空</strong></p>
+<ul>
+<li>这里的 key 的值会被取做默认值，不能为空，否则会出现空指针异常</li>
+<li>因为 ARouter 在用 Intent 的 <code>getLongExtra()</code> 等方法获取参数时，这些方法默认值不是包装类型，如 Long ，而是基本类型，如 long </li>
+</ul>
+</li>
+<li><p><strong>withObject()</strong></p>
+<ul>
+<li>使用 <code>withObject()</code> 传递 List 和 Map 时，接收该对象的地方不能标注具体的实现类类型，应仅标注为 List 或 Map，否则会影响序列化中类型的判断, 其他类似情况需要同样处理</li>
+</ul>
+</li>
+<li><p><strong>查看异常</strong></p>
+<ul>
+<li>如果你发现接收不到你想要的参数时，可以在 AutowiredServiceImpl 的 <code>autowired()</code> 方法中打个断点看下遇到了什么异常</li>
+</ul>
+</li>
+<li><p><strong>查看编译日志</strong></p>
+<ul>
+<li>如果在使用 ARouter 的过程中，出现了编译失败但是不知道原因时，可以用命令查看详细的编译日志 <code>gradle aseembleDebug --stacktrace</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="3-实现序列化服务"><a href="#3-实现序列化服务" class="headerlink" title="3. 实现序列化服务"></a>3. 实现序列化服务</h4><ul>
+<li>ARouter 允许我们设置序列化服务，如果需要传递自定义对象，那只需要新建一个实现 SerializationService 的类，并加上 @Route注解 </li>
+<li>这里的 yourservicegroupname ，指的是我们可以给服务设定不同的分组</li>
+</ul>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou9d2n4amj30rk0ksdj4.jpg" alt="实现序列化服务"></p>
+<h4 id="4-自定义服务"><a href="#4-自定义服务" class="headerlink" title="4. 自定义服务"></a>4. 自定义服务</h4><ul>
+<li><p><strong>声明接口</strong></p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou9diznxvj30ju09sq3n.jpg" alt="声明接口"></p>
+</li>
+<li><p><strong>实现接口</strong></p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou9ec6qi3j30oc0hsabq.jpg" alt="实现接口"></p>
+</li>
+<li><p><strong>通过依赖注入发现服务（推荐）</strong></p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou9ekv2w6j30qo0psn0j.jpg" alt="通过依赖注入发现服务"></p>
+<ul>
+<li>helloService 和 helloService2 就是通过依赖注入的方式发现服务的，也就通过注解标注字段即可使用，无需主动获取。<ul>
+<li><strong>byType</strong>：不设置 name 属性的话，会默认使用 byType 的方式发现服务，helloService 就是 byType。</li>
+<li><strong>byName</strong>：Autowired 注解中标注 name 之后，将会使用 byName 的方式注入对应的字段。当同一接口有多个实现的时候，必须使用byName的方式发现服务，helloService2 就是 byName</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>通过依赖查找发现服务</strong></p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou9eweo6ej30qo0ts42x.jpg" alt="通过依赖查找发现服务"></p>
+<ul>
+<li>主动发现服务并使用，helloService3 是 byName ，helloService4 是 byType</li>
+</ul>
+</li>
 </ul>
 <h4 id="5-通过-URL-跳转"><a href="#5-通过-URL-跳转" class="headerlink" title="5. 通过 URL 跳转"></a>5. 通过 URL 跳转</h4><ul>
-<li>设定 host</li>
-<li>监听 Scheme</li>
+<li><p>如果我们想让应用直接处理外部 URI，只要在清单文件中进行配置，再把 url 传递给 ARouter 即可</p>
+</li>
+<li><p><strong>设定 host</strong>：首先在 Manifest 中声明 Activity 的 action 和 category ，并且在 data 标签中添加主机和协议</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou9huw6whj30vk0gs0v8.jpg" alt="设定 host"></p>
+</li>
+<li><p><strong>监听 Scheme</strong>：然后新建一个Activity用于监听Scheme事件，直接把 url 传递给 ARouter 即可</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou9i4q11gj30qa0bsjss.jpg" alt="监听 Scheme"></p>
+</li>
 </ul>
-<h4 id="6-设置转场动画"><a href="#6-设置转场动画" class="headerlink" title="6. 设置转场动画"></a>6. 设置转场动画</h4><h4 id="7-获取-Fragment"><a href="#7-获取-Fragment" class="headerlink" title="7. 获取 Fragment"></a>7. 获取 Fragment</h4><h3 id="六-其他"><a href="#六-其他" class="headerlink" title="六. 其他"></a>六. 其他</h3><h4 id="1-ARouter-参数生成与加载"><a href="#1-ARouter-参数生成与加载" class="headerlink" title="1. ARouter 参数生成与加载"></a>1. ARouter 参数生成与加载</h4>
+<h4 id="6-设置转场动画"><a href="#6-设置转场动画" class="headerlink" title="6. 设置转场动画"></a>6. 设置转场动画</h4><p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou9iel7vlj30t40lsjuz.jpg" alt="设置转场动画"></p>
+<h4 id="7-获取-Fragment"><a href="#7-获取-Fragment" class="headerlink" title="7. 获取 Fragment"></a>7. 获取 Fragment</h4><p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gou9iysvtaj30i807sdgi.jpg" alt="获取 Fragment"></p>
+<ul>
+<li>获取 Fragment 时要注意，当找不到对应路径的 Fragment 时，会返回 null，所以这里用空安全的 as? </li>
+</ul>
+<h3 id="六-其他"><a href="#六-其他" class="headerlink" title="六. 其他"></a>六. 其他</h3><h4 id="1-ARouter-参数生成与加载"><a href="#1-ARouter-参数生成与加载" class="headerlink" title="1. ARouter 参数生成与加载"></a>1. ARouter 参数生成与加载</h4><ul>
+<li>没有讲参数的生成与加载流程，这个流程和 RouteProcessor 生成路由表的原理类似</li>
+<li>对于参数，ARouter 会用 AutowiredProcessor 来生成参数表，这个表的类实现了注射器 ISyringe 接口</li>
+<li>而我们调用的 <code>ARouter.inject()</code> 方法，就是在加载参数表的内容</li>
+</ul>
+
     </div>
 
     
@@ -517,12 +1029,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">1.2m</span>
+    <span title="站点总字数">1.3m</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">18:47</span>
+    <span title="站点阅读时长">18:57</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
