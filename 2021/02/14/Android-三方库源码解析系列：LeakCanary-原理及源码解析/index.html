@@ -25,18 +25,18 @@
   <meta name="description" content="1. AAA">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android 三方库源码解析系列（六）：LeakCanary 原理及源码解析">
-<meta property="og:url" content="http://24suixinsuoyu.com/2021/02/13/Android-%E4%B8%89%E6%96%B9%E5%BA%93%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E7%B3%BB%E5%88%97%EF%BC%9ALeakCanary-%E5%8E%9F%E7%90%86%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/index.html">
+<meta property="og:url" content="http://24suixinsuoyu.com/2021/02/14/Android-%E4%B8%89%E6%96%B9%E5%BA%93%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E7%B3%BB%E5%88%97%EF%BC%9ALeakCanary-%E5%8E%9F%E7%90%86%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
 <meta property="og:description" content="1. AAA">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-02-13T05:48:03.000Z">
-<meta property="article:modified_time" content="2021-03-24T03:57:12.966Z">
+<meta property="article:published_time" content="2021-02-14T05:48:03.000Z">
+<meta property="article:modified_time" content="2021-03-24T04:01:12.449Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Android 三方库源码解析系列">
 <meta property="article:tag" content="LeakCanary 原理及源码解析">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://24suixinsuoyu.com/2021/02/13/Android-%E4%B8%89%E6%96%B9%E5%BA%93%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E7%B3%BB%E5%88%97%EF%BC%9ALeakCanary-%E5%8E%9F%E7%90%86%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">
+<link rel="canonical" href="http://24suixinsuoyu.com/2021/02/14/Android-%E4%B8%89%E6%96%B9%E5%BA%93%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E7%B3%BB%E5%88%97%EF%BC%9ALeakCanary-%E5%8E%9F%E7%90%86%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">
 
 
 <script id="page-configurations">
@@ -185,7 +185,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2021/02/13/Android-%E4%B8%89%E6%96%B9%E5%BA%93%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E7%B3%BB%E5%88%97%EF%BC%9ALeakCanary-%E5%8E%9F%E7%90%86%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2021/02/14/Android-%E4%B8%89%E6%96%B9%E5%BA%93%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E7%B3%BB%E5%88%97%EF%BC%9ALeakCanary-%E5%8E%9F%E7%90%86%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -208,14 +208,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-02-13 13:48:03" itemprop="dateCreated datePublished" datetime="2021-02-13T13:48:03+08:00">2021-02-13</time>
+              <time title="创建时间：2021-02-14 13:48:03" itemprop="dateCreated datePublished" datetime="2021-02-14T13:48:03+08:00">2021-02-14</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-24 11:57:12" itemprop="dateModified" datetime="2021-03-24T11:57:12+08:00">2021-03-24</time>
+                <time title="修改时间：2021-03-24 12:01:12" itemprop="dateModified" datetime="2021-03-24T12:01:12+08:00">2021-03-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -279,7 +279,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://24suixinsuoyu.com/2021/02/13/Android-%E4%B8%89%E6%96%B9%E5%BA%93%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E7%B3%BB%E5%88%97%EF%BC%9ALeakCanary-%E5%8E%9F%E7%90%86%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" title="Android 三方库源码解析系列（六）：LeakCanary 原理及源码解析">http://24suixinsuoyu.com/2021/02/13/Android-三方库源码解析系列：LeakCanary-原理及源码解析/</a>
+    <a href="http://24suixinsuoyu.com/2021/02/14/Android-%E4%B8%89%E6%96%B9%E5%BA%93%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E7%B3%BB%E5%88%97%EF%BC%9ALeakCanary-%E5%8E%9F%E7%90%86%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" title="Android 三方库源码解析系列（六）：LeakCanary 原理及源码解析">http://24suixinsuoyu.com/2021/02/14/Android-三方库源码解析系列：LeakCanary-原理及源码解析/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -301,7 +301,7 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/02/13/Android-%E4%B8%89%E6%96%B9%E5%BA%93%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E7%B3%BB%E5%88%97%EF%BC%88%E4%BA%94%EF%BC%89%EF%BC%9ARxJava-%E5%8E%9F%E7%90%86%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="prev" title="Android 三方库源码解析系列（五）：RxJava 原理及源码解析">
+    <a href="/2021/02/14/Android-%E4%B8%89%E6%96%B9%E5%BA%93%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E7%B3%BB%E5%88%97%EF%BC%88%E4%BA%94%EF%BC%89%EF%BC%9ARxJava-%E5%8E%9F%E7%90%86%E5%8F%8A%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="prev" title="Android 三方库源码解析系列（五）：RxJava 原理及源码解析">
       <i class="fa fa-chevron-left"></i> Android 三方库源码解析系列（五）：RxJava 原理及源码解析
     </a></div>
       <div class="post-nav-item">
