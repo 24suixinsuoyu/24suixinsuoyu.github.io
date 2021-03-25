@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1. Java 支持可变长度参数，可变长度参数的语法及格式是">
+  <meta name="description" content="1. Java 支持可变长度参数，可变长度参数的语法及格式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java 编程基础（六）：方法及方法调用">
 <meta property="og:url" content="http://24suixinsuoyu.com/2020/04/10/Java-%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9A%E6%96%B9%E6%B3%95%E5%8F%8A%E6%96%B9%E6%B3%95%E8%B0%83%E7%94%A8/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
-<meta property="og:description" content="1. Java 支持可变长度参数，可变长度参数的语法及格式是">
+<meta property="og:description" content="1. Java 支持可变长度参数，可变长度参数的语法及格式">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-04-09T20:06:18.000Z">
-<meta property="article:modified_time" content="2020-04-13T07:07:46.000Z">
+<meta property="article:modified_time" content="2021-03-25T11:24:01.149Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="编程基础">
 <meta property="article:tag" content="方法及方法调用">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-13 15:07:46" itemprop="dateModified" datetime="2020-04-13T15:07:46+08:00">2020-04-13</time>
+                <time title="修改时间：2021-03-25 19:24:01" itemprop="dateModified" datetime="2021-03-25T19:24:01+08:00">2021-03-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,7 +233,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>872</span>
+              <span>827</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -252,35 +252,41 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-Java-支持可变长度参数，可变长度参数的语法及格式是"><a href="#1-Java-支持可变长度参数，可变长度参数的语法及格式是" class="headerlink" title="1. Java 支持可变长度参数，可变长度参数的语法及格式是"></a>1. Java 支持可变长度参数，可变长度参数的语法及格式是</h4><a id="more"></a>
+        <h4 id="1-Java-支持可变长度参数，可变长度参数的语法及格式"><a href="#1-Java-支持可变长度参数，可变长度参数的语法及格式" class="headerlink" title="1. Java 支持可变长度参数，可变长度参数的语法及格式"></a>1. Java 支持可变长度参数，可变长度参数的语法及格式</h4><a id="more"></a>
 
 <ul>
-<li>语法：在数据类型后面加三个点即：<code>…</code>。</li>
-<li>格式：可变长度参数必须是参数列表中的<strong>最后一</strong>个；一个方法也<strong>只能有一个</strong>可变长度参数。</li>
+<li>语法：在数据类型后面加三个点即：<strong><code>…</code></strong></li>
+<li>格式：可变长度参数必须是参数列表中的<strong>最后一</strong>个；一个方法也<strong>只能有一个</strong>可变长度参数</li>
 </ul>
-<h4 id="2-可变参数的作用是"><a href="#2-可变参数的作用是" class="headerlink" title="2. 可变参数的作用是"></a>2. 可变参数的作用是</h4><p> 　简化代码书写，因为可变长度参数实际上会转换为<strong>数组参数</strong>。</p>
-<h4 id="3-“return-可以用于方法内的任意地方”，对吗"><a href="#3-“return-可以用于方法内的任意地方”，对吗" class="headerlink" title="3. “return 可以用于方法内的任意地方”，对吗"></a>3. “return 可以用于方法内的任意地方”，对吗</h4><p>　对。</p>
-<h4 id="4-方法返回值类型为-void-也可以使用-return-吗"><a href="#4-方法返回值类型为-void-也可以使用-return-吗" class="headerlink" title="4. 方法返回值类型为 void 也可以使用 return 吗"></a>4. 方法返回值类型为 void 也可以使用 return 吗</h4><p>　可以，<code>return;</code>。</p>
-<h4 id="5-请写出下面程序结果并分析"><a href="#5-请写出下面程序结果并分析" class="headerlink" title="5. 请写出下面程序结果并分析"></a>5. 请写出下面程序结果并分析</h4><pre><code>char a = &apos;a&apos;;
-char b = &apos;b&apos;;
-System.out.println(Math.max(a, b));</code></pre><ul>
-<li>结果是数字 98。</li>
-<li>参数是字符类型的，但 <code>Math</code> 并没有定义针对字符类型的 <code>max()</code> 方法，这是因为 <code>char</code> 其实就是一个整数，Java 会自动将 <code>char</code> 转换为 <code>int</code>，然后调用 <code>Math.max(int a, int b)</code>。</li>
-<li>如果 <code>Math</code> 中没有定义针对 <code>int</code> 类型的 <code>max()</code> 方法，调用也会成功，会调用 <code>long</code> 类型的 <code>max()</code> 方法。</li>
-<li>如果 <code>long</code> 类型也没有会调用 <code>float</code> 类型的 <code>max()</code> 方法。如果 <code>float</code> 类型也没有，会调用 <code>double</code> 类型的。<strong>Java 编译器会自动进行类型转换，并寻找最匹配的方法</strong>。</li>
-<li>在只有一个方法的情况下，即没有重载，只要可以进行类型转换，就会调用该方法。<strong>在有方法重载的情况下，会调用最匹配的方法</strong>。</li>
+<h4 id="2-可变参数的作用"><a href="#2-可变参数的作用" class="headerlink" title="2. 可变参数的作用"></a>2. 可变参数的作用</h4><ul>
+<li>简化代码书写，因为可变长度参数实际上会转换为<strong>数组参数</strong></li>
+</ul>
+<h4 id="3-“return-可以用于方法内的任意地方”，对吗"><a href="#3-“return-可以用于方法内的任意地方”，对吗" class="headerlink" title="3. “return 可以用于方法内的任意地方”，对吗"></a>3. “<code>return</code> 可以用于方法内的任意地方”，对吗</h4><ul>
+<li>对</li>
+</ul>
+<h4 id="4-“方法返回值类型为-void-也可以使用-return”，对吗"><a href="#4-“方法返回值类型为-void-也可以使用-return”，对吗" class="headerlink" title="4. “方法返回值类型为 void 也可以使用 return”，对吗"></a>4. “方法返回值类型为 <code>void</code> 也可以使用 <code>return</code>”，对吗</h4><ul>
+<li>对，<code>return;</code></li>
+</ul>
+<h4 id="5-请写出下面程序结果并分析"><a href="#5-请写出下面程序结果并分析" class="headerlink" title="5. 请写出下面程序结果并分析"></a>5. 请写出下面程序结果并分析</h4><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> a = <span class="string">'a'</span>;</span><br><span class="line"><span class="type">char</span> b = <span class="string">'b'</span>;</span><br><span class="line"><span class="keyword">System</span>.<span class="keyword">out</span>.println(Math.max(a, b));</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>结果是数字 98。参数是字符类型的，但 <code>Math</code> 并没有定义针对字符类型的 <code>max()</code> 方法，这是因为 <strong><code>char</code> 本质上就是一个整数</strong>，Java 会自动将 <code>char</code> 转换为 <code>int</code>，然后调用 <code>Math.max(int a, int b)</code></li>
+<li>如果 <code>Math</code> 中没有定义针对 <code>int</code> 类型的 <code>max()</code> 方法，会调用 <code>long</code> 类型的 <code>max()</code> 方法；如果 <code>long</code> 类型也没有会调用 <code>float</code> 类型的 <code>max()</code> 方法；如果 <code>float</code> 类型也没有，会调用 <code>double</code> 类型的。<strong>Java 编译器会自动进行类型转换，并寻找最匹配的方法</strong></li>
+<li>在只有一个方法的情况下（即没有重载），只要可以进行类型转换，就会调用该方法；<strong>在有方法重载的情况下，会调用最匹配的方法</strong></li>
 </ul>
 <h4 id="6-简单介绍一下栈的概念"><a href="#6-简单介绍一下栈的概念" class="headerlink" title="6. 简单介绍一下栈的概念"></a>6. 简单介绍一下栈的概念</h4><ul>
-<li><strong>栈是一块内存，特点是先进后出。栈一般是从高位地址向地位地址扩展</strong>。</li>
-<li>栈用来存放方法调用过程中需要的数据，包括<strong>参数（基本类型）</strong>、<strong>返回地址</strong>以及<strong>方法内部定义的局部变量</strong>。</li>
-<li>方法中的基本数据类型的参数和方法内定义的基本数据类型的变量，都分配在栈中，<strong>这些变量只有在方法被调用的时候才分配，而且在方法调用结束后就被释放了</strong>。</li>
+<li><strong>数据结构中的栈</strong>，特点是先进后出；<strong>内存中的栈</strong>，一般是从高位地址向地位地址扩展</li>
+<li>栈用来存放方法调用过程中需要的数据，包括：<strong>参数（基本数据类型）</strong>、<strong>返回地址</strong>、<strong>局部变量（方法内部定义）</strong></li>
+<li>这些栈内存变量的生命周期是：<strong>只有在方法被调用的时候才分配，而且在方法调用结束后就被释放了</strong></li>
 </ul>
 <h4 id="7-对象类型的内存分配是怎样的"><a href="#7-对象类型的内存分配是怎样的" class="headerlink" title="7. 对象类型的内存分配是怎样的"></a>7. 对象类型的内存分配是怎样的</h4><ul>
-<li>数组和对象类型，都有<strong>两块内存</strong>，一块存放<strong>实际的内容</strong>，一块存放<strong>实际内容的地址</strong>。</li>
-<li>实际的内容空间分配在堆上，但存放地址的空间是分配在栈上。即：<strong>栈地址，堆内容</strong>。</li>
+<li>数组和对象类型，都有<strong>两块内存</strong>：一块存放<strong>实际的内容</strong>，一块存放<strong>实际内容的地址</strong></li>
+<li>实际的内容空间分配在堆内存上，但存放地址的空间是分配在栈内存上。即：<strong>栈地址，堆内容</strong></li>
 </ul>
-<h4 id="8-什么是值传递引用传递，Java-是值传递还是引用传递"><a href="#8-什么是值传递引用传递，Java-是值传递还是引用传递" class="headerlink" title="8. 什么是值传递引用传递，Java 是值传递还是引用传递"></a>8. 什么是值传递引用传递，Java 是值传递还是引用传递</h4><p>　参考知乎：<a href="https://www.zhihu.com/question/31203609/answer/576030121?from=timeline&isappinstalled=0&utm_medium=social&utm_source=wechat_session" target="_blank" rel="noopener">Java 到底是值传递还是引用传递?</a></p>
-
+<h4 id="8-什么是值传递引用传递，Java-方法调用是值传递还是引用传递"><a href="#8-什么是值传递引用传递，Java-方法调用是值传递还是引用传递" class="headerlink" title="8. 什么是值传递引用传递，Java 方法调用是值传递还是引用传递"></a>8. 什么是值传递引用传递，Java 方法调用是值传递还是引用传递</h4><ul>
+<li>参考：<a href="https://www.zhihu.com/question/31203609/answer/576030121?from=timeline&isappinstalled=0&utm_medium=social&utm_source=wechat_session" target="_blank" rel="noopener">Java 到底是值传递还是引用传递</a></li>
+</ul>
+<h4 id="9"><a href="#9" class="headerlink" title="9."></a>9.</h4>
     </div>
 
     
@@ -393,7 +399,7 @@ System.out.println(Math.max(a, b));</code></pre><ul>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Java-支持可变长度参数，可变长度参数的语法及格式是"><span class="nav-text">1. Java 支持可变长度参数，可变长度参数的语法及格式是</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-可变参数的作用是"><span class="nav-text">2. 可变参数的作用是</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-“return-可以用于方法内的任意地方”，对吗"><span class="nav-text">3. “return 可以用于方法内的任意地方”，对吗</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-方法返回值类型为-void-也可以使用-return-吗"><span class="nav-text">4. 方法返回值类型为 void 也可以使用 return 吗</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-请写出下面程序结果并分析"><span class="nav-text">5. 请写出下面程序结果并分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-简单介绍一下栈的概念"><span class="nav-text">6. 简单介绍一下栈的概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-对象类型的内存分配是怎样的"><span class="nav-text">7. 对象类型的内存分配是怎样的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-什么是值传递引用传递，Java-是值传递还是引用传递"><span class="nav-text">8. 什么是值传递引用传递，Java 是值传递还是引用传递</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Java-支持可变长度参数，可变长度参数的语法及格式"><span class="nav-text">1. Java 支持可变长度参数，可变长度参数的语法及格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-可变参数的作用"><span class="nav-text">2. 可变参数的作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-“return-可以用于方法内的任意地方”，对吗"><span class="nav-text">3. “return 可以用于方法内的任意地方”，对吗</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-“方法返回值类型为-void-也可以使用-return”，对吗"><span class="nav-text">4. “方法返回值类型为 void 也可以使用 return”，对吗</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-请写出下面程序结果并分析"><span class="nav-text">5. 请写出下面程序结果并分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-简单介绍一下栈的概念"><span class="nav-text">6. 简单介绍一下栈的概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-对象类型的内存分配是怎样的"><span class="nav-text">7. 对象类型的内存分配是怎样的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-什么是值传递引用传递，Java-方法调用是值传递还是引用传递"><span class="nav-text">8. 什么是值传递引用传递，Java 方法调用是值传递还是引用传递</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9"><span class="nav-text">9.</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
