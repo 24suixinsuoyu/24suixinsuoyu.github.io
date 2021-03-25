@@ -30,10 +30,12 @@
 <meta property="og:description" content="1. Java 支持可变长度参数，可变长度参数的语法及格式">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-04-09T20:06:18.000Z">
-<meta property="article:modified_time" content="2021-03-25T11:24:44.645Z">
+<meta property="article:modified_time" content="2021-03-25T13:23:21.069Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="编程基础">
 <meta property="article:tag" content="方法及方法调用">
+<meta property="article:tag" content="递归">
+<meta property="article:tag" content="JVM 虚拟机">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://24suixinsuoyu.com/2020/04/10/Java-%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9A%E6%96%B9%E6%B3%95%E5%8F%8A%E6%96%B9%E6%B3%95%E8%B0%83%E7%94%A8/">
@@ -215,7 +217,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-25 19:24:44" itemprop="dateModified" datetime="2021-03-25T19:24:44+08:00">2021-03-25</time>
+                <time title="修改时间：2021-03-25 21:23:21" itemprop="dateModified" datetime="2021-03-25T21:23:21+08:00">2021-03-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,7 +235,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>831</span>
+              <span>1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -283,10 +285,25 @@
 <li>数组和对象类型，都有<strong>两块内存</strong>：一块存放<strong>实际的内容</strong>，一块存放<strong>实际内容的地址</strong></li>
 <li>实际的内容空间分配在堆内存上，但存放地址的空间是分配在栈内存上。即：<strong>栈地址，堆内容</strong></li>
 </ul>
-<h4 id="8-什么是值传递引用传递，Java-方法调用是值传递还是引用传递"><a href="#8-什么是值传递引用传递，Java-方法调用是值传递还是引用传递" class="headerlink" title="8. 什么是值传递引用传递，Java 方法调用是值传递还是引用传递"></a>8. 什么是值传递引用传递，Java 方法调用是值传递还是引用传递</h4><ul>
-<li>值传递。参考：<a href="https://www.zhihu.com/question/31203609/answer/576030121?from=timeline&isappinstalled=0&utm_medium=social&utm_source=wechat_session" target="_blank" rel="noopener">Java 到底是值传递还是引用传递</a></li>
+<h4 id="8-方法签名的概念"><a href="#8-方法签名的概念" class="headerlink" title="8. 方法签名的概念"></a>8. 方法签名的概念</h4><ul>
+<li><strong>方法签名</strong> = 方法名 + 参数列表（参数类型、参数顺序、参数数量）</li>
 </ul>
-<h4 id="9"><a href="#9" class="headerlink" title="9."></a>9.</h4>
+<h4 id="9-什么是值传递、引用传递，Java-是值传递还是引用传递"><a href="#9-什么是值传递、引用传递，Java-是值传递还是引用传递" class="headerlink" title="9. 什么是值传递、引用传递，Java 是值传递还是引用传递"></a>9. 什么是值传递、引用传递，Java 是值传递还是引用传递</h4><ul>
+<li><p>结论</p>
+<ul>
+<li><strong>Java 中只有值传递</strong>。只不过对于对象参数，值的内容是对象的引用</li>
+</ul>
+</li>
+<li><p>概念</p>
+<ul>
+<li><strong>值传递（pass by value）</strong>：是指在调用函数时将实际参数<strong>复制一份</strong>传递到函数中，这样在函数中如果对参数进行修改，将不会影响到实际参数</li>
+<li><strong>引用传递（pass by reference）</strong>：是指在调用函数时将实际参数的<strong>地址传递</strong>到函数中，那么在函数中对参数所进行的修改，将影响到实际参数</li>
+</ul>
+</li>
+<li><p>参考：<a href="https://www.zhihu.com/question/31203609/answer/576030121?from=timeline&isappinstalled=0&utm_medium=social&utm_source=wechat_session" target="_blank" rel="noopener">Java 到底是值传递还是引用传递</a></p>
+</li>
+</ul>
+<h4 id="10"><a href="#10" class="headerlink" title="10."></a>10.</h4>
     </div>
 
     
@@ -325,6 +342,8 @@
           <div class="post-tags">
               <a href="/tags/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/" rel="tag"><i class="fa fa-tag"></i> 编程基础</a>
               <a href="/tags/%E6%96%B9%E6%B3%95%E5%8F%8A%E6%96%B9%E6%B3%95%E8%B0%83%E7%94%A8/" rel="tag"><i class="fa fa-tag"></i> 方法及方法调用</a>
+              <a href="/tags/%E9%80%92%E5%BD%92/" rel="tag"><i class="fa fa-tag"></i> 递归</a>
+              <a href="/tags/JVM-%E8%99%9A%E6%8B%9F%E6%9C%BA/" rel="tag"><i class="fa fa-tag"></i> JVM 虚拟机</a>
           </div>
 
         
@@ -399,7 +418,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Java-支持可变长度参数，可变长度参数的语法及格式"><span class="nav-text">1. Java 支持可变长度参数，可变长度参数的语法及格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-可变参数的作用"><span class="nav-text">2. 可变参数的作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-“return-可以用于方法内的任意地方”，对吗"><span class="nav-text">3. “return 可以用于方法内的任意地方”，对吗</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-“方法返回值类型为-void-也可以使用-return”，对吗"><span class="nav-text">4. “方法返回值类型为 void 也可以使用 return”，对吗</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-请写出下面程序结果并分析"><span class="nav-text">5. 请写出下面程序结果并分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-简单介绍一下栈的概念"><span class="nav-text">6. 简单介绍一下栈的概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-对象类型的内存分配是怎样的"><span class="nav-text">7. 对象类型的内存分配是怎样的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-什么是值传递引用传递，Java-方法调用是值传递还是引用传递"><span class="nav-text">8. 什么是值传递引用传递，Java 方法调用是值传递还是引用传递</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9"><span class="nav-text">9.</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Java-支持可变长度参数，可变长度参数的语法及格式"><span class="nav-text">1. Java 支持可变长度参数，可变长度参数的语法及格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-可变参数的作用"><span class="nav-text">2. 可变参数的作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-“return-可以用于方法内的任意地方”，对吗"><span class="nav-text">3. “return 可以用于方法内的任意地方”，对吗</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-“方法返回值类型为-void-也可以使用-return”，对吗"><span class="nav-text">4. “方法返回值类型为 void 也可以使用 return”，对吗</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-请写出下面程序结果并分析"><span class="nav-text">5. 请写出下面程序结果并分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-简单介绍一下栈的概念"><span class="nav-text">6. 简单介绍一下栈的概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-对象类型的内存分配是怎样的"><span class="nav-text">7. 对象类型的内存分配是怎样的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-方法签名的概念"><span class="nav-text">8. 方法签名的概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-什么是值传递、引用传递，Java-是值传递还是引用传递"><span class="nav-text">9. 什么是值传递、引用传递，Java 是值传递还是引用传递</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10"><span class="nav-text">10.</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -428,7 +447,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">453</span>
+        <span class="site-state-item-count">454</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
