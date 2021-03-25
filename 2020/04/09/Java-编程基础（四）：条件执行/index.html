@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. switch 语法中表达式值的数据类型可以有哪些">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-04-08T17:36:01.000Z">
-<meta property="article:modified_time" content="2020-04-08T17:53:54.000Z">
+<meta property="article:modified_time" content="2021-03-25T08:56:01.418Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="编程基础">
 <meta property="article:tag" content="条件执行">
@@ -207,10 +207,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-04-09 01:36:01 / 修改时间：01:53:54" itemprop="dateCreated datePublished" datetime="2020-04-09T01:36:01+08:00">2020-04-09</time>
+              <time title="创建时间：2020-04-09 01:36:01" itemprop="dateCreated datePublished" datetime="2020-04-09T01:36:01+08:00">2020-04-09</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-25 16:56:01" itemprop="dateModified" datetime="2021-03-25T16:56:01+08:00">2021-03-25</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -227,7 +233,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.1k</span>
+              <span>1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -246,36 +252,35 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-switch-语法中表达式值的数据类型可以有哪些"><a href="#1-switch-语法中表达式值的数据类型可以有哪些" class="headerlink" title="1. switch 语法中表达式值的数据类型可以有哪些"></a>1. switch 语法中表达式值的数据类型可以有哪些</h4><a id="more"></a>
+        <h4 id="1-switch-语法中表达式值的数据类型可以有哪些"><a href="#1-switch-语法中表达式值的数据类型可以有哪些" class="headerlink" title="1. switch 语法中表达式值的数据类型可以有哪些"></a>1. <code>switch</code> 语法中表达式值的数据类型可以有哪些</h4><a id="more"></a>
 
-<p>　只能是 <code>byte</code>、<code>short</code>、<code>int</code>、<code>char</code>、<code>enum</code>、<strong><code>String</code>（Java 7 以后）</strong>。</p>
-<h4 id="2-条件执行具体是怎么实现的"><a href="#2-条件执行具体是怎么实现的" class="headerlink" title="2. 条件执行具体是怎么实现的"></a>2. 条件执行具体是怎么实现的</h4><ul>
-<li>程序最终都是一条条的指令，<code>CPU</code> 有一个<strong>指令指示器</strong>，指向下一条要执行的指令，<code>CPU</code> 根据指示器的指示加载指令并执行。</li>
-<li>指令大部分是具体的操作和运算，在执行这些操作时，执行完一个操作后，指令指示器会自动指向挨着的下一条指令。</li>
-<li>有一些特殊指令，称为<strong>跳转指令</strong>，这些指令会修改指令指示器的值，让 <code>CPU</code> 跳到一个指定的地方执行。跳转有两种：一种是条件跳转；一种是无条件跳转。</li>
-<li><strong>条件跳转</strong>检查某个条件，满足则进行跳转；<strong>无条件跳转</strong>则是直接进行跳转。</li>
-<li>在单一 <code>if</code> 的情况下可能不用无条件跳转指令，但稍微复杂一些的情况都需要。<code>if</code>、<code>if/else</code>、<code>if/else if/else</code>、<code>()?():()</code>都会转换为条件跳转和无条件跳转，但 <code>switch</code> 不太一样。</li>
+<ul>
+<li>只能是 <code>byte</code>、<code>short</code>、<code>int</code>、<strong><code>char</code></strong>、<strong><code>enum</code></strong>、<strong><code>String</code>（Java 7 以后）</strong></li>
 </ul>
-<h4 id="3-switch-实现原理是怎样的"><a href="#3-switch-实现原理是怎样的" class="headerlink" title="3. switch 实现原理是怎样的"></a>3. switch 实现原理是怎样的</h4><ul>
-<li><strong><code>switch</code> 的转换和具体系统实现有关</strong>。如果分支比较少，可能会转换为跳转指令。如果分支比较多，使用跳转会进行很多次的比较运算，效率比较低。</li>
-<li>可能会使用一种更为高效的方式，叫<strong>跳转表</strong>。跳转表是一个映射表，存储了可能的值以及要跳转到的地址。</li>
+<h4 id="2-条件执行具体是怎么实现的"><a href="#2-条件执行具体是怎么实现的" class="headerlink" title="2. 条件执行具体是怎么实现的"></a>2. 条件执行具体是怎么实现的</h4><ul>
+<li>程序最终都是一条条的指令，CPU 有一个<strong>指令指示器</strong>，指向下一条要执行的指令，CPU 根据指示器的指示加载指令并执行。指令大部分是具体的操作和运算，在执行这些操作时，执行完一个操作后，指令指示器会<strong>自动指向</strong>挨着的下一条指令</li>
+<li>有一些特殊指令，称为<strong>跳转指令</strong>，这些指令会修改指令指示器的值，让 CPU 跳到一个指定的地方执行。跳转有两种：一种是条件跳转；一种是无条件跳转。<strong>条件跳转</strong>检查某个条件，满足则进行跳转；<strong>无条件跳转</strong>则是直接进行跳转</li>
+<li>在单一 <code>if</code> 的情况下可能不用无条件跳转指令，但稍微复杂一些的情况都需要。<code>if</code>、<code>if/else</code>、<code>if/else if/else</code>、<strong><code>()?():()</code></strong>都会转换为条件跳转和无条件跳转，但 <strong><code>switch</code></strong> 不太一样</li>
+</ul>
+<h4 id="3-switch-实现原理是怎样的"><a href="#3-switch-实现原理是怎样的" class="headerlink" title="3. switch 实现原理是怎样的"></a>3. <code>switch</code> 实现原理是怎样的</h4><ul>
+<li><strong><code>switch</code> 的转换和具体系统实现有关</strong>。如果分支比较少，可能会转换为跳转指令。<strong>如果分支比较多，使用跳转会进行很多次的比较运算，效率比较低</strong></li>
+<li>可能会使用一种更为高效的方式，叫<strong>跳转表</strong>。跳转表是一个映射表，存储了可能的值以及要跳转到的地址</li>
 </ul>
 <h4 id="4-跳转表结构为什么会更为高效呢"><a href="#4-跳转表结构为什么会更为高效呢" class="headerlink" title="4. 跳转表结构为什么会更为高效呢"></a>4. 跳转表结构为什么会更为高效呢</h4><ul>
-<li>因为其中的值必须为整数，且按大小排序。按大小排序的整数可以使用高效的<strong>二分查找</strong>。</li>
-<li>如果值是连续的，则跳转表还会进行<strong>特殊优化</strong>，优化为一个数组，连找都不用找了，值就是数组的下标索引，直接根据值就可以找到跳转的地址。</li>
-<li>即使值不是连续的，但数字比较密集，差的不多，编译器也可能会优化为一个<strong>数组型的跳转表</strong>，没有的值指向 <code>default</code> 分支。</li>
-<li><strong>程序源代码中的 <code>case</code> 值排列不要求是排序的，编译器会自动排序</strong>。</li>
-<li>之前说 <code>switch</code> 值的类型可以是 <code>byte</code>、<code>short</code>、<code>int</code>、<code>char</code>、<code>enum</code> 和 <code>String</code>。其中 <code>byte</code>、<code>short</code>、<code>int</code> 本来就是整数，<code>char</code> 本质上也是整数，而枚举类型也有对应的整数，<strong><code>String</code> 用于 <code>switch</code> 时也会转换为整数</strong>。</li>
+<li>因为其中的值必须为整数，且按大小排序。按大小排序的整数可以使用高效的<strong>二分查找</strong></li>
+<li>如果值是连续的，则跳转表还会进行<strong>特殊优化</strong>，优化为一个数组，连找都不用找了，值就是数组的下标索引，直接根据值就可以找到跳转的地址。即使值不是连续的，但数字比较密集、差的不多，编译器也可能会优化为一个<strong>数组型的跳转表</strong>，没有的值指向 <code>default</code> 分支</li>
+<li><strong>程序源代码中的 <code>case</code> 值排列不要求是排序的，编译器会自动排序</strong>。之前说 <code>switch</code> 值的类型可以是 <code>byte</code>、<code>short</code>、<code>int</code>、<strong><code>char</code></strong>、<strong><code>enum</code></strong> 和 <strong><code>String</code></strong>。其中 <code>byte</code>、<code>short</code>、<code>int</code> 本来就是整数，<strong><code>char</code> 本质上也是整数；而 <code>enum</code> 也有对应的整数；<code>String</code> 用于 <code>switch</code> 时也会转换为整数</strong></li>
 </ul>
-<h4 id="5-switch-值类型为什么不能是-long-类型"><a href="#5-switch-值类型为什么不能是-long-类型" class="headerlink" title="5. switch 值类型为什么不能是 long 类型"></a>5. switch 值类型为什么不能是 long 类型</h4><ul>
-<li>因为 <strong><code>switch</code> 使用的跳转表值的存储空间一般为 32 位</strong>。</li>
-<li>也就是 4 个字节，容纳不下 <code>long</code> 类型的值。</li>
+<h4 id="5-switch-值类型为什么不能是-long-类型"><a href="#5-switch-值类型为什么不能是-long-类型" class="headerlink" title="5. switch 值类型为什么不能是 long 类型"></a>5. <code>switch</code> 值类型为什么不能是 <code>long</code> 类型</h4><ul>
+<li>因为 <strong><code>switch</code> 使用的跳转表值的存储空间一般为 32 位</strong>，也就是 4 个字节，容纳不下 <code>long</code> 类型的值</li>
 </ul>
-<h4 id="6-switch-的值类型为什么可以是-String"><a href="#6-switch-的值类型为什么可以是-String" class="headerlink" title="6. switch 的值类型为什么可以是 String"></a>6. switch 的值类型为什么可以是 String</h4><ul>
-<li><strong><code>String</code> 是通过 <code>hashCode()</code> 方法转换为整数的</strong>。</li>
-<li>但不同 <code>String</code> 的 <code>hashCode</code> 可能相同，跳转后会再次根据 <code>String</code> 的内容进行比较判断。</li>
+<h4 id="6-switch-的值类型为什么可以是-String"><a href="#6-switch-的值类型为什么可以是-String" class="headerlink" title="6. switch 的值类型为什么可以是 String"></a>6. <code>switch</code> 的值类型为什么可以是 <code>String</code></h4><ul>
+<li><code>String</code> 是通过 <strong><code>hashCode()</code></strong> 方法转换为整数的</li>
+<li>但不同 <code>String</code> 的 <code>hashCode</code> 可能相同，跳转后会再次根据 <code>String</code> 的<strong>内容</strong>进行比较判断</li>
 </ul>
-<h4 id="7-一句话总结条件执行的实现原理"><a href="#7-一句话总结条件执行的实现原理" class="headerlink" title="7. 一句话总结条件执行的实现原理"></a>7. 一句话总结条件执行的实现原理</h4><p>　条件执行的本质依赖于<strong>条件跳转</strong>、<strong>无条件跳转</strong>和<strong>跳转表</strong>。</p>
+<h4 id="7-一句话总结条件执行的实现原理"><a href="#7-一句话总结条件执行的实现原理" class="headerlink" title="7. 一句话总结条件执行的实现原理"></a>7. 一句话总结条件执行的实现原理</h4><ul>
+<li>条件执行的本质依赖于<strong>条件跳转</strong>、<strong>无条件跳转</strong>、<strong>跳转表</strong></li>
+</ul>
 
     </div>
 
