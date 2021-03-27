@@ -31,8 +31,11 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1goxbdwj50qj30s608o0tw.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1goxnz5s7uzj30jx09lq36.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1goyjmnbs41j30ju0cfglx.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1goyk7jy2d6j30hx0e1q3j.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1goylo84tw5j30k70e33z1.jpg">
 <meta property="article:published_time" content="2020-04-10T02:17:30.000Z">
-<meta property="article:modified_time" content="2021-03-27T04:48:12.990Z">
+<meta property="article:modified_time" content="2021-03-27T10:40:50.937Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="编程基础">
 <meta property="article:tag" content="深入理解 Java 虚拟机">
@@ -218,7 +221,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-27 12:48:12" itemprop="dateModified" datetime="2021-03-27T12:48:12+08:00">2021-03-27</time>
+                <time title="修改时间：2021-03-27 18:40:50" itemprop="dateModified" datetime="2021-03-27T18:40:50+08:00">2021-03-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -236,14 +239,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5.8k</span>
+              <span>8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
+              <span>7 分钟</span>
             </span>
 
         </div>
@@ -360,7 +363,7 @@
 <li><p>本机直接内存的分配不会受到 Java 堆大小的限制，但是会受到本机<strong>总内存</strong>（包括物理内存、SWAP 分区或者分页文件）大小以及<strong>处理器寻址空间</strong>的限制。比如说，服务器管理员根据实际内存去配置 -<code>Xmx</code> 等虚拟机参数时，如果忽略了直接内存使得各个内存区域总和大于物理内存限制（包括物理的和操作系统级的限制），此时就会导致动态扩展时抛出 <strong><code>OutOfMemoryError</code></strong> 异常</p>
 </li>
 </ul>
-<h2 id="二-对象回收判定算法及四种引用概述"><a href="#二-对象回收判定算法及四种引用概述" class="headerlink" title="二. 对象回收判定算法及四种引用概述"></a>二. 对象回收判定算法及四种引用概述</h2><h3 id="1-概述-1"><a href="#1-概述-1" class="headerlink" title="1. 概述"></a>1. 概述</h3><ul>
+<h2 id="二-垃圾回收判定算法及四种引用概述"><a href="#二-垃圾回收判定算法及四种引用概述" class="headerlink" title="二. 垃圾回收判定算法及四种引用概述"></a>二. 垃圾回收判定算法及四种引用概述</h2><h3 id="1-概述-1"><a href="#1-概述-1" class="headerlink" title="1. 概述"></a>1. 概述</h3><ul>
 <li><strong>线程私有</strong>的内存区域（程序计数器、虚拟机栈、本地方法栈）：它们的生命周期和<strong>当前线程</strong>保持一致。当<strong>方法结束</strong>（栈帧出栈）或者线程结束时，内存自然被回收</li>
 <li><strong>线程共享</strong>的内存区域（Java 堆、方法区）：由<strong>垃圾回收器</strong>负责管理回收</li>
 <li>从<strong>如何判定对象消亡</strong>的角度出发，垃圾回收算法可以分为两大类<ul>
@@ -420,21 +423,21 @@
 <li>JDK 1.2 提供了实现类 <strong><code>PhantomReference</code></strong></li>
 </ul>
 <h3 id="5-两次标记过程与-finalize-方法概述"><a href="#5-两次标记过程与-finalize-方法概述" class="headerlink" title="5. 两次标记过程与 finalize() 方法概述"></a>5. 两次标记过程与 <code>finalize()</code> 方法概述</h3><h4 id="5-1-两次标记过程"><a href="#5-1-两次标记过程" class="headerlink" title="5.1 两次标记过程"></a>5.1 两次标记过程</h4><ul>
-<li><strong>可达性分析算法</strong>中即使判定为不可达对象，也并不代表一个对象真正死亡，只是会被第一次标记</li>
-<li><strong>一个对象真正死亡，至少要经历两次标记过程</strong><ol>
+<li><p><strong>可达性分析算法</strong>中即使判定为不可达对象，也并不代表一个对象真正死亡，只是会被第一次标记</p>
+</li>
+<li><p><strong>一个对象真正死亡，至少要经历两次标记过程</strong></p>
+<ol>
 <li>如果对象在进行可达性分析后发现<strong>没有与 GC Roots 相连接的引用链</strong>，此时会被<strong>第一次标记</strong></li>
 <li>随后进行一次筛选，如果判断<strong>有必要执行 <code>finalize()</code> 方法</strong>（已覆盖 <code>finalize()</code> 方法或 <code>finalize()</code> 方法还没有被虚拟机调用过）则在 <code>finalize()</code> 方法执行过程中进行<strong>第二次标记</strong></li>
 </ol>
 </li>
-<li>在 <strong><code>finalize()</code></strong> 方法执行过程中，对象可以通过重新与引用链上的任何一个对象建立关联即可<strong>“拯救”</strong>自己，然后在<strong>第二次标记</strong>时会被移除“即将回收”的集合。否则该对象会被真正回收</li>
+<li><p>在 <strong><code>finalize()</code></strong> 方法执行过程中，对象可以通过重新与引用链上的任何一个对象建立关联即可<strong>“拯救”</strong>自己，然后在<strong>第二次标记</strong>时会被移除“即将回收”的集合。否则该对象会被真正回收</p>
+</li>
 </ul>
 <h4 id="5-2-finalize-方法概述"><a href="#5-2-finalize-方法概述" class="headerlink" title="5.2 finalize() 方法概述"></a>5.2 <code>finalize()</code> 方法概述</h4><ul>
-<li><p>如果一个对象被判定为有必要执行 <code>finalize()</code> 方法，那么该对象首先会被放置在一个名为 <strong>F-Queue</strong> 的队列之中。稍后由一条由虚拟机自动建立的、低调度优先级的 <strong>Finalizer</strong> 线程去执行对象的 <code>finalize()</code> 方法</p>
-</li>
-<li><p><code>finalize()</code> 方法的<strong>“执行”</strong>是指虚拟机会触发这个方法开始运行，但并不承诺一定会等待它运行结束，因为 <strong><code>finalize()</code> 方法有可能运行失败</strong>（执行缓慢、甚至死循环导致回收系统崩溃）。 <strong>任何一个对象的 <code>finalize()</code> 方法都只会被系统自动调用一次</strong>，如果对象面临下一次回收，那么它的 <code>finalize()</code> 方法不会被再次执行</p>
-</li>
-<li><p><code>finalize()</code> 方法是 Java 刚诞生时为了使传统 C、C++程序员更容易接受 Java 所做出的一项妥协。该方法<strong>运行代价高</strong>、<strong>不确定性大</strong>，无法保证各个对象的调用顺序，已<strong>被官方明确声明不推荐使用</strong>的语法。<code>finalize()</code> 方法能做的工作，使用 <strong><code>try-finally</code></strong> 或者其他方式可以做得更好更及时</p>
-</li>
+<li>如果一个对象被判定为有必要执行 <code>finalize()</code> 方法，那么该对象首先会被放置在一个名为 <strong>F-Queue</strong> 的队列之中。稍后由一条由虚拟机自动建立的、低调度优先级的 <strong>Finalizer</strong> 线程去执行对象的 <code>finalize()</code> 方法</li>
+<li><code>finalize()</code> 方法的<strong>“执行”</strong>是指虚拟机会触发这个方法开始运行，但并不承诺一定会等待它运行结束，因为 <strong><code>finalize()</code> 方法有可能运行失败</strong>（执行缓慢、甚至死循环导致回收系统崩溃）。 <strong>任何一个对象的 <code>finalize()</code> 方法都只会被系统自动调用一次</strong>，如果对象面临下一次回收，那么它的 <code>finalize()</code> 方法不会被再次执行</li>
+<li><code>finalize()</code> 是在 <strong><code>Object</code></strong> 类中定义的，默认实现为空。该方法是 Java 刚诞生时为了使传统 C、C++程序员更容易接受 Java 所做出的一项妥协。该方法<strong>运行代价高</strong>、<strong>不确定性大</strong>，无法保证各个对象的调用顺序，已<strong>被官方明确声明不推荐使用</strong>的语法。<code>finalize()</code> 方法能做的工作，使用 <strong><code>try-finally</code></strong> 或者其他方式可以做得更好更及时</li>
 </ul>
 <h3 id="6-方法区内存回收概述"><a href="#6-方法区内存回收概述" class="headerlink" title="6. 方法区内存回收概述"></a>6. 方法区内存回收概述</h3><h4 id="6-1-常量回收"><a href="#6-1-常量回收" class="headerlink" title="6.1 常量回收"></a>6.1 常量回收</h4><ul>
 <li>废弃常量的回收（包括常量池中其他类、接口、方法、字段的符号引用）与 Java 堆对象的回收非常类似，也是<strong>类似二次标记</strong>的回收过程</li>
@@ -452,7 +455,130 @@
 <li><p>在大量使用反射、动态代理、CGLib 等<strong>字节码框架</strong>、动态生成 JSP 以及 OSGi 这类<strong>频繁自定义类加载器</strong>的场景中，通常都需要 Java 虚拟机具备<strong>类型卸载</strong>的能力，以保证不会对<strong>方法区</strong>造成过大的内存压力</p>
 </li>
 </ul>
-<h2 id="三-垃圾回收算法概述"><a href="#三-垃圾回收算法概述" class="headerlink" title="三. 垃圾回收算法概述"></a>三. 垃圾回收算法概述</h2><h3 id="1-分代回收理论概述"><a href="#1-分代回收理论概述" class="headerlink" title="1. 分代回收理论概述"></a>1. 分代回收理论概述</h3><h3 id="2-标记-清除算法"><a href="#2-标记-清除算法" class="headerlink" title="2. 标记-清除算法"></a>2. 标记-清除算法</h3><h3 id="3-标记-复制算法"><a href="#3-标记-复制算法" class="headerlink" title="3. 标记-复制算法"></a>3. 标记-复制算法</h3><h3 id="4-标记-整理算法"><a href="#4-标记-整理算法" class="headerlink" title="4. 标记-整理算法"></a>4. 标记-整理算法</h3><h2 id="四-Class-类文件结构概述"><a href="#四-Class-类文件结构概述" class="headerlink" title="四. Class 类文件结构概述"></a>四. Class 类文件结构概述</h2><h2 id="五-JVM-类加载机制"><a href="#五-JVM-类加载机制" class="headerlink" title="五. JVM 类加载机制"></a>五. JVM 类加载机制</h2><h2 id="六-Java-内存模型概述"><a href="#六-Java-内存模型概述" class="headerlink" title="六. Java 内存模型概述"></a>六. Java 内存模型概述</h2>
+<h2 id="三-垃圾回收算法概述"><a href="#三-垃圾回收算法概述" class="headerlink" title="三. 垃圾回收算法概述"></a>三. 垃圾回收算法概述</h2><h3 id="1-分代回收理论概述"><a href="#1-分代回收理论概述" class="headerlink" title="1. 分代回收理论概述"></a>1. 分代回收理论概述</h3><ul>
+<li><p>当前商业虚拟机的垃圾回收器，大多数都遵循了<strong>“分代回收”（Generational Collection）</strong>的理论进行设计</p>
+<ul>
+<li>分代回收名为理论，实质是一套符合大多数程序运行实际情况的<strong>经验法则</strong></li>
+<li>需要注意的是，<strong>分代回收理论也有其缺陷</strong>，最新出现（或在实验室中）的几款垃圾回收器都展现出了<strong>面向全区域回收</strong>设计的思想（或者可以支持<strong>全区域不分代回收</strong>的工作模式）</li>
+<li>HotSpot 虚拟机把 <strong>Java 堆</strong>划分为<strong>新生代（Young）</strong>和<strong>老年代（Old）</strong>两个区域，这也是现在<strong>业界主流</strong>的命名方式</li>
+</ul>
+</li>
+<li><p>分代回收理论建立在<strong>三个假说</strong>之上</p>
+<ul>
+<li><strong>弱分代假说（Weak Generational Hypothesis）</strong>：绝大多数对象都是朝生夕灭的，新生代中的对象有 98%熬不过第一轮回收</li>
+<li><strong>强分代假说（Strong Generational Hypothesis）</strong>：熬过越多次垃圾回收过程的对象就越难以消亡（越容易从新生代晋升到老年代）</li>
+<li><strong>跨代引用假说（Intergenerational Reference Hypothesis）</strong>：跨代引用相对于同代引用来说仅占极少数</li>
+</ul>
+</li>
+<li><p>针对不同分代的<strong>回收类型</strong>划分</p>
+<ul>
+<li><p><strong>部分回收（Partial GC）</strong>：只是部分回收 Java 堆的垃圾回收方式</p>
+<ul>
+<li><p><strong>新生代回收（Minor GC/Young GC）</strong>：只是新生代的垃圾回收方式</p>
+</li>
+<li><p><strong>老年代回收（Major GC/Old GC）</strong>：只是老年代的垃圾回收方式</p>
+<blockquote>
+<p>目前只有 CMS 垃圾回收器有单独回收老年代的行为</p>
+<p>需要注意的是，”Major GC” 这个说法现在有点混淆，需要按上下文区分到底是指老年代回收还是整堆回收</p>
+</blockquote>
+</li>
+<li><p><strong>混合回收（Mixed GC）</strong>：回收整个新生代以及部分老年代的垃圾回收方式</p>
+</li>
+</ul>
+</li>
+<li><p><strong>整堆回收（Full GC）</strong>：回收整个 Java 堆和方法区的垃圾回收方式</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-标记-清除（Mark-Sweep）算法"><a href="#2-标记-清除（Mark-Sweep）算法" class="headerlink" title="2. 标记-清除（Mark-Sweep）算法"></a>2. 标记-清除（Mark-Sweep）算法</h3><ul>
+<li><p><strong>示意图</strong></p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1goyjmnbs41j30ju0cfglx.jpg" alt="标记-清除"></p>
+</li>
+<li><p><strong>思路</strong></p>
+<ul>
+<li><strong>标记并回收</strong>：首先<strong>标记所有</strong>需要回收的对象，然后<strong>统一回收</strong>所有被标记的对象（也可以反过来，标记存活的对象、统一回收未被标记的对象）</li>
+<li><strong>标记的过程</strong>：就是判定对象是否属于垃圾的<strong>两次标记过程</strong></li>
+</ul>
+</li>
+<li><p><strong>缺点</strong></p>
+<ul>
+<li><strong>执行效率低</strong>：面对大量可回收对象时，必须进行大量的标记和清除动作</li>
+<li><strong>内存碎片化</strong>：标记清除之后会产生大量不连续的内存碎片，会影响内存的分配和回收</li>
+</ul>
+</li>
+<li><p><strong>应用</strong></p>
+<ul>
+<li><strong>CMS 垃圾回收器</strong>：HotSpot 虚拟机里<strong>关注延迟</strong>的 CMS 垃圾回收器是基于<strong>标记-清除算法</strong>的（也会使用<strong>标记-整理算法</strong>）</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-标记-复制（Mark-Semispace-Copying）算法"><a href="#3-标记-复制（Mark-Semispace-Copying）算法" class="headerlink" title="3. 标记-复制（Mark-Semispace Copying）算法"></a>3. 标记-复制（Mark-Semispace Copying）算法</h3><ul>
+<li><p><strong>示意图</strong></p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1goyk7jy2d6j30hx0e1q3j.jpg" alt="标记-复制"></p>
+</li>
+<li><p><strong>思路</strong></p>
+<ul>
+<li><strong>划分及使用</strong>：将可用内存按容量<strong>划分为大小相等的两块</strong>，每次<strong>只使用</strong>其中的一块</li>
+<li><strong>复制并清理</strong>：当这一块的内存用完了，就将还存活着的<strong>对象复制</strong>到另外一块上面，然后再把已使用过的内存空间<strong>统一清理</strong></li>
+</ul>
+</li>
+<li><p><strong>优点</strong></p>
+<ul>
+<li>避免了标记-清除算法的<strong>执行效率低</strong>的问题：内存回收时，每次只针对整个半区进行内存回收操作</li>
+<li>避免了标记-清除算法的<strong>内存碎片化</strong>的问题：内存分配时，只需要移动堆顶指针，按顺序分配即可</li>
+</ul>
+</li>
+<li><p><strong>缺点</strong></p>
+<ul>
+<li><strong>空间浪费</strong>：可用内存缩小为原来的一半</li>
+<li><strong>复制开销</strong>：如果内存中多数对象都是存活的，会产生大量的内存复制开销</li>
+</ul>
+</li>
+<li><p><strong>应用</strong></p>
+<ul>
+<li><strong>回收新生代</strong>：现在的商用 Java 虚拟机大多都采用标记-复制算法（及优化算法）回收新生代</li>
+</ul>
+</li>
+<li><p><strong>优化：Appel 式回收策略</strong></p>
+<ul>
+<li><strong>原因</strong>：新生代中 <strong>98%</strong> 的对象都是朝生夕灭的，因此<strong>不需要按照 1:1 的比例划分</strong>新生代的内存空间</li>
+<li><strong>思路</strong>：把新生代分为一块较大的 <strong>Eden 空间</strong>和两块较小的 <strong>Survivor 空间</strong>，每次内存分配<strong>只使用</strong> Eden 和其中一块 Survivor。发生垃圾回收时，将 Eden 和 Survivor 中仍然存活的对象一次性<strong>复制</strong>到另外一块 Survivor 空间上，然后直接<strong>清理</strong> Eden 和已用过的那块 Survivor 空间</li>
+<li><strong>应用</strong>：HotSpot 虚拟机默认 Eden 和 Survivor 的大小比例是 <strong>8:1</strong>，即只有一个 10% 的 Survivor 新生代内存空间会被浪费。HotSpot 虚拟机的 Serial、ParNew 等新生代垃圾回收器都采用 <strong>Appel 式回收策略</strong>设计新生代的内存布局</li>
+<li><strong>安全</strong>：“逃生门”安全设计，即当 Survivor 空间不足以容纳一次 Minor GC 之后存活的对象时，就需要依赖其他内存区域（大多是老年代）进行<strong>分配担保（Handle Promotion）</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="4-标记-整理（Mark-Compact）算法"><a href="#4-标记-整理（Mark-Compact）算法" class="headerlink" title="4. 标记-整理（Mark-Compact）算法"></a>4. 标记-整理（Mark-Compact）算法</h3><ul>
+<li><p><strong>示意图</strong></p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008eGmZEgy1goylo84tw5j30k70e33z1.jpg" alt="标记-整理"></p>
+</li>
+<li><p><strong>思路</strong></p>
+<ul>
+<li><strong>标记过程</strong>：仍是判定对象是否属于垃圾的<strong>两次标记过程</strong></li>
+<li><strong>整理过程</strong>：不是直接对可回收对象进行清理，而是<strong>让所有存活的对象都向内存空间一端移动</strong>，然后直接<strong>清理边界以外</strong>的内存</li>
+</ul>
+</li>
+<li><p><strong>优点</strong></p>
+<ul>
+<li>避免了标记-复制算法的<strong>空间浪费</strong>问题：标记-整理是对象<strong>移动式</strong>的算法，不需要额外的空间进行分配担保</li>
+<li>避免了标记-复制算法的<strong>复制开销</strong>问题：不需要复制操作，对象存活率较高时，没有复制开销、效率比较高</li>
+</ul>
+</li>
+<li><p><strong>缺点</strong></p>
+<ul>
+<li><strong>操作复杂</strong>：移动存活对象并<strong>更新所有引用</strong>是一种<strong>极为负重</strong>的操作（但从整个程序的<strong>吞吐量</strong>的角度，移动对象会更划算）</li>
+<li><strong>“Stop The World”</strong>：移动对象操作必须<strong>全程暂停</strong>应用程序（最新的 ZGC 和 Shenandoah 垃圾回收器使用 <strong>Read Barrier 读屏障</strong>技术实现了整理过程与用户线程的并发执行）</li>
+</ul>
+</li>
+<li><p><strong>应用</strong></p>
+<ul>
+<li><strong>Parallel Scavenge 垃圾回收器</strong>：HotSpot 虚拟机里<strong>关注吞吐量</strong>的 Parallel Scavenge 垃圾回收器是基于<strong>标记-整理算法</strong>的</li>
+<li><strong>CMS 垃圾回收器</strong>：虚拟机平时多数时间采用<strong>标记-清除算法</strong>，暂时容忍内存碎片的存在。直到内存空间的碎片化程度已经大到影响对象内存分配时，再采用<strong>标记-整理算法</strong>回收一次，以获得规整的内存空间</li>
+</ul>
+</li>
+</ul>
+<h2 id="四-Class-类文件结构概述"><a href="#四-Class-类文件结构概述" class="headerlink" title="四. Class 类文件结构概述"></a>四. Class 类文件结构概述</h2><h2 id="五-JVM-类加载机制"><a href="#五-JVM-类加载机制" class="headerlink" title="五. JVM 类加载机制"></a>五. JVM 类加载机制</h2><h2 id="六-Java-内存模型概述"><a href="#六-Java-内存模型概述" class="headerlink" title="六. Java 内存模型概述"></a>六. Java 内存模型概述</h2>
     </div>
 
     
@@ -565,7 +691,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-JVM-运行时数据区域概述"><span class="nav-text">一. JVM 运行时数据区域概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-概述"><span class="nav-text">1. 概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-示意图"><span class="nav-text">2. 示意图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-线程私有内存"><span class="nav-text">3. 线程私有内存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-程序计数器（Program-Counter-Register）"><span class="nav-text">3.1 程序计数器（Program Counter Register）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-Java-虚拟机栈（JVM-Stack）"><span class="nav-text">3.2 Java 虚拟机栈（JVM Stack）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-本地方法栈（Native-Method-Stack）"><span class="nav-text">3.3 本地方法栈（Native Method Stack）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-线程共享内存"><span class="nav-text">4. 线程共享内存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-堆（Heap）"><span class="nav-text">4.1 堆（Heap）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-方法区（Method-Area）"><span class="nav-text">4.2 方法区（Method Area）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-运行时常量池（Runtime-Constant-Pool）"><span class="nav-text">4.3 运行时常量池（Runtime Constant Pool）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-直接内存（Direct-Memory）"><span class="nav-text">5. 直接内存（Direct Memory）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-对象回收判定算法及四种引用概述"><span class="nav-text">二. 对象回收判定算法及四种引用概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-概述-1"><span class="nav-text">1. 概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-引用计数（Reference-Counting）算法"><span class="nav-text">2. 引用计数（Reference Counting）算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-思路"><span class="nav-text">2.1 思路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-优点"><span class="nav-text">2.2 优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-缺点"><span class="nav-text">2.3 缺点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-应用"><span class="nav-text">2.4 应用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-可达性分析（Reachability-Analysis）算法"><span class="nav-text">3. 可达性分析（Reachability Analysis）算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-示意图"><span class="nav-text">3.1 示意图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-思路"><span class="nav-text">3.2 思路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-应用"><span class="nav-text">3.3 应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-GC-Roots-对象"><span class="nav-text">3.4 GC Roots 对象</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-四种引用类型概述"><span class="nav-text">4. 四种引用类型概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-强引用（Strong-Reference）"><span class="nav-text">4.1 强引用（Strong Reference）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-软引用（Soft-Reference）"><span class="nav-text">4.2 软引用（Soft Reference）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-弱引用（Weak-Reference）"><span class="nav-text">4.3 弱引用（Weak Reference）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-虚引用（Phantom-Reference）"><span class="nav-text">4.4 虚引用（Phantom Reference）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-两次标记过程与-finalize-方法概述"><span class="nav-text">5. 两次标记过程与 finalize() 方法概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1-两次标记过程"><span class="nav-text">5.1 两次标记过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2-finalize-方法概述"><span class="nav-text">5.2 finalize() 方法概述</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-方法区内存回收概述"><span class="nav-text">6. 方法区内存回收概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#6-1-常量回收"><span class="nav-text">6.1 常量回收</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-类型卸载"><span class="nav-text">6.2 类型卸载</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-垃圾回收算法概述"><span class="nav-text">三. 垃圾回收算法概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-分代回收理论概述"><span class="nav-text">1. 分代回收理论概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-标记-清除算法"><span class="nav-text">2. 标记-清除算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-标记-复制算法"><span class="nav-text">3. 标记-复制算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-标记-整理算法"><span class="nav-text">4. 标记-整理算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四-Class-类文件结构概述"><span class="nav-text">四. Class 类文件结构概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五-JVM-类加载机制"><span class="nav-text">五. JVM 类加载机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六-Java-内存模型概述"><span class="nav-text">六. Java 内存模型概述</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-JVM-运行时数据区域概述"><span class="nav-text">一. JVM 运行时数据区域概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-概述"><span class="nav-text">1. 概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-示意图"><span class="nav-text">2. 示意图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-线程私有内存"><span class="nav-text">3. 线程私有内存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-程序计数器（Program-Counter-Register）"><span class="nav-text">3.1 程序计数器（Program Counter Register）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-Java-虚拟机栈（JVM-Stack）"><span class="nav-text">3.2 Java 虚拟机栈（JVM Stack）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-本地方法栈（Native-Method-Stack）"><span class="nav-text">3.3 本地方法栈（Native Method Stack）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-线程共享内存"><span class="nav-text">4. 线程共享内存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-堆（Heap）"><span class="nav-text">4.1 堆（Heap）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-方法区（Method-Area）"><span class="nav-text">4.2 方法区（Method Area）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-运行时常量池（Runtime-Constant-Pool）"><span class="nav-text">4.3 运行时常量池（Runtime Constant Pool）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-直接内存（Direct-Memory）"><span class="nav-text">5. 直接内存（Direct Memory）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-垃圾回收判定算法及四种引用概述"><span class="nav-text">二. 垃圾回收判定算法及四种引用概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-概述-1"><span class="nav-text">1. 概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-引用计数（Reference-Counting）算法"><span class="nav-text">2. 引用计数（Reference Counting）算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-思路"><span class="nav-text">2.1 思路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-优点"><span class="nav-text">2.2 优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-缺点"><span class="nav-text">2.3 缺点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-应用"><span class="nav-text">2.4 应用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-可达性分析（Reachability-Analysis）算法"><span class="nav-text">3. 可达性分析（Reachability Analysis）算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-示意图"><span class="nav-text">3.1 示意图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-思路"><span class="nav-text">3.2 思路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-应用"><span class="nav-text">3.3 应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-GC-Roots-对象"><span class="nav-text">3.4 GC Roots 对象</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-四种引用类型概述"><span class="nav-text">4. 四种引用类型概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-强引用（Strong-Reference）"><span class="nav-text">4.1 强引用（Strong Reference）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-软引用（Soft-Reference）"><span class="nav-text">4.2 软引用（Soft Reference）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-弱引用（Weak-Reference）"><span class="nav-text">4.3 弱引用（Weak Reference）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-虚引用（Phantom-Reference）"><span class="nav-text">4.4 虚引用（Phantom Reference）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-两次标记过程与-finalize-方法概述"><span class="nav-text">5. 两次标记过程与 finalize() 方法概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1-两次标记过程"><span class="nav-text">5.1 两次标记过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2-finalize-方法概述"><span class="nav-text">5.2 finalize() 方法概述</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-方法区内存回收概述"><span class="nav-text">6. 方法区内存回收概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#6-1-常量回收"><span class="nav-text">6.1 常量回收</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-类型卸载"><span class="nav-text">6.2 类型卸载</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-垃圾回收算法概述"><span class="nav-text">三. 垃圾回收算法概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-分代回收理论概述"><span class="nav-text">1. 分代回收理论概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-标记-清除（Mark-Sweep）算法"><span class="nav-text">2. 标记-清除（Mark-Sweep）算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-标记-复制（Mark-Semispace-Copying）算法"><span class="nav-text">3. 标记-复制（Mark-Semispace Copying）算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-标记-整理（Mark-Compact）算法"><span class="nav-text">4. 标记-整理（Mark-Compact）算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四-Class-类文件结构概述"><span class="nav-text">四. Class 类文件结构概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五-JVM-类加载机制"><span class="nav-text">五. JVM 类加载机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六-Java-内存模型概述"><span class="nav-text">六. Java 内存模型概述</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -670,7 +796,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">21:14</span>
+    <span title="站点阅读时长">21:16</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
