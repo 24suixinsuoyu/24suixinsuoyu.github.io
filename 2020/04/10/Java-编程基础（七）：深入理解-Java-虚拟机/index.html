@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1goyk7jy2d6j30hx0e1q3j.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1goylo84tw5j30k70e33z1.jpg">
 <meta property="article:published_time" content="2020-04-10T02:17:30.000Z">
-<meta property="article:modified_time" content="2021-03-27T15:06:04.803Z">
+<meta property="article:modified_time" content="2021-03-28T01:15:25.621Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="编程基础">
 <meta property="article:tag" content="深入理解 Java 虚拟机">
@@ -221,7 +221,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-27 23:06:04" itemprop="dateModified" datetime="2021-03-27T23:06:04+08:00">2021-03-27</time>
+                <time title="修改时间：2021-03-28 09:15:25" itemprop="dateModified" datetime="2021-03-28T09:15:25+08:00">2021-03-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -239,14 +239,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>9.1k</span>
+              <span>12k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>8 分钟</span>
+              <span>11 分钟</span>
             </span>
 
         </div>
@@ -620,7 +620,295 @@
 </ul>
 </li>
 </ul>
-<h2 id="四-Class-类文件结构概述"><a href="#四-Class-类文件结构概述" class="headerlink" title="四. Class 类文件结构概述"></a>四. Class 类文件结构概述</h2><h3 id="1-Class-文件概述"><a href="#1-Class-文件概述" class="headerlink" title="1. Class 文件概述"></a>1. Class 文件概述</h3><h3 id="2-魔数与-Class-文件的版本"><a href="#2-魔数与-Class-文件的版本" class="headerlink" title="2. 魔数与 Class 文件的版本"></a>2. 魔数与 Class 文件的版本</h3><h3 id="3-常量池"><a href="#3-常量池" class="headerlink" title="3. 常量池"></a>3. 常量池</h3><h3 id="4-访问标志"><a href="#4-访问标志" class="headerlink" title="4. 访问标志"></a>4. 访问标志</h3><h3 id="5-类索引、父类索引与接口索引集合"><a href="#5-类索引、父类索引与接口索引集合" class="headerlink" title="5. 类索引、父类索引与接口索引集合"></a>5. 类索引、父类索引与接口索引集合</h3><h3 id="6-字段表集合"><a href="#6-字段表集合" class="headerlink" title="6. 字段表集合"></a>6. 字段表集合</h3><h3 id="7-方法表集合"><a href="#7-方法表集合" class="headerlink" title="7. 方法表集合"></a>7. 方法表集合</h3><h3 id="8-属性表集合"><a href="#8-属性表集合" class="headerlink" title="8. 属性表集合"></a>8. 属性表集合</h3><h2 id="五-JVM-类加载机制"><a href="#五-JVM-类加载机制" class="headerlink" title="五. JVM 类加载机制"></a>五. JVM 类加载机制</h2><h2 id="六-Java-内存模型概述"><a href="#六-Java-内存模型概述" class="headerlink" title="六. Java 内存模型概述"></a>六. Java 内存模型概述</h2>
+<h2 id="四-Class-类文件结构概述"><a href="#四-Class-类文件结构概述" class="headerlink" title="四. Class 类文件结构概述"></a>四. Class 类文件结构概述</h2><h3 id="1-Class-文件概述"><a href="#1-Class-文件概述" class="headerlink" title="1. Class 文件概述"></a>1. Class 文件概述</h3><ul>
+<li><p><strong>Class 文件</strong></p>
+<ul>
+<li>是一组以 8 个字节为基础单位的<strong>二进制流</strong>，各个数据项目严格按照顺序紧凑排列在文件之中，<strong>中间没有添加任何分隔符</strong></li>
+<li>这使得整个 Class 文件中存储的内容几乎全部是程序运行的<strong>必要数据</strong>，没有空隙存在</li>
+</ul>
+</li>
+<li><p><strong>Class 文件格式</strong>：采用一种类似于 C 语言结构体的伪结构来存储数据，这种伪结构中只有两种数据类型：“无符号数”和“表”</p>
+<ul>
+<li><strong>无符号数</strong>：属于基本的数据类型，以 u1、u2、u4、u8 来分别代表 1 个字节、2 个字节、4 个字节和 8 个字节的无符号数。无符号数可以用来描述数字、索引引用、数量值或者按照 UTF-8 编码构成字符串值</li>
+<li><strong>表</strong>：是由多个无符号数或者其他表作为数据项构成的复合数据类型，为了便于区分，所有的表的命名都习惯性地以 “info” 结尾。表用于描述有层次关系的复合结构的数据，整个 Class 文件本质上也可以视作一张表</li>
+</ul>
+</li>
+<li><p><strong>Class 文件格式数据项</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">类型</th>
+<th align="center">名称</th>
+<th align="center">数量</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">u4</td>
+<td align="center">magic</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">u2</td>
+<td align="center">minor_version</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">u2</td>
+<td align="center">major_version</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">u2</td>
+<td align="center">constant_pool_count</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">cp_info</td>
+<td align="center">constant_pool</td>
+<td align="center">constant_pool_count-1</td>
+</tr>
+<tr>
+<td align="center">u2</td>
+<td align="center">access_flags</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">u2</td>
+<td align="center">this_class</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">u2</td>
+<td align="center">super_class</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">u2</td>
+<td align="center">interfaces_count</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">u2</td>
+<td align="center">interfaces</td>
+<td align="center">interfaces_count</td>
+</tr>
+<tr>
+<td align="center">u2</td>
+<td align="center">fields_count</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">field_info</td>
+<td align="center">fields</td>
+<td align="center">fields_count</td>
+</tr>
+<tr>
+<td align="center">u2</td>
+<td align="center">methods_count</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">method_info</td>
+<td align="center">methods</td>
+<td align="center">methods_count</td>
+</tr>
+<tr>
+<td align="center">u2</td>
+<td align="center">attributes_count</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">attribute_info</td>
+<td align="center">attributes</td>
+<td align="center">attributes_count</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h3 id="2-魔数与-Class-文件的版本"><a href="#2-魔数与-Class-文件的版本" class="headerlink" title="2. 魔数与 Class 文件的版本"></a>2. 魔数与 Class 文件的版本</h3><ul>
+<li><strong>魔数（Magic Number）</strong><ul>
+<li>每个 Class 文件的前 4 个字节，它的唯一作用是<strong>确定这个文件是否为一个能被虚拟机接受的 Class 文件</strong>，起到一个<strong>身份标识</strong>的作用</li>
+<li>Java 虚拟机中 Class 文件的魔数取名为 <strong>0xCAFEBABE</strong></li>
+</ul>
+</li>
+<li><strong>Class 文件的版本</strong>：魔数后面的 4 个字节存储的是 Class 文件的版本号<ul>
+<li>第 5 和第 6 个字节是<strong>次版本号（Minor Version）</strong>，第 7 和第 8 个字节是<strong>主版本号（Major Version）</strong></li>
+<li>Java 的版本号是从 <strong>45</strong> 开始的，JDK 1.1 之后的每个 JDK 大版本发布主版本号向上加 1（JDK 1.0 ~ JDK 1.1 使用了 45.0 ~ 45.3 的版本号）</li>
+<li>高版本的 JDK <strong>只能向下兼容</strong>以前版本的 Class 文件，但不能运行以后版本的 Class 文件。《Java 虚拟机规范》在 Class 文件校验部分明确要求及时文件格式并未发生任何变化，虚拟机也必须拒绝执行超过其版本号的 Class 文件</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-常量池"><a href="#3-常量池" class="headerlink" title="3. 常量池"></a>3. 常量池</h3><ul>
+<li><p><strong>常量池</strong></p>
+<ul>
+<li>主、此版本号之后的是常量池入口，可以比喻为 Class 文件里的<strong>资源仓库</strong></li>
+<li>常量池是 Class 文件结构中与其他项目<strong>关联最多</strong>的数据，通常也是占用 Class 文件<strong>空间最大</strong>的数据项目之一。另外，它还是在 Class 文件中第一个出现的<strong>表类型数据项目</strong></li>
+</ul>
+</li>
+<li><p><strong>常量池的内容</strong></p>
+<ul>
+<li><strong>字面量（Literal）</strong>：比较接近 Java 语言层面的常量概念，如文本字符串、被声明为 <code>final</code> 的常量值等</li>
+<li><strong>符号引用（Symbolic Reference）</strong>：属于编译原理方面的概念，主要包括下面几类常量<ul>
+<li>被模块导出或者开放的包（Package）</li>
+<li>类和接口的全限定名（Fully Qualified Name）</li>
+<li>字段的名称和描述符（Descriptor）</li>
+<li>方法的名称和描述符</li>
+<li>方法句柄和方法类型（Method Handle、Method Type、Invoke Dynamic）</li>
+<li>动态调用点和动态常量（Dynamically-Computed Call Site、Dynamically-Computed Constant）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>常量池的项目类型</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">类型</th>
+<th align="center">标志</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">CONSTANT_Utf8_info</td>
+<td align="center">1</td>
+<td align="center">UTF-8 编码的字符串</td>
+</tr>
+<tr>
+<td align="center">CONSTANT_Integer_info</td>
+<td align="center">3</td>
+<td align="center">整型字面量</td>
+</tr>
+<tr>
+<td align="center">CONSTANT_Float_info</td>
+<td align="center">4</td>
+<td align="center">浮点型字面量</td>
+</tr>
+<tr>
+<td align="center">CONSTANT_Long_info</td>
+<td align="center">5</td>
+<td align="center">长整型字面量</td>
+</tr>
+<tr>
+<td align="center">CONSTANT_Double_info</td>
+<td align="center">6</td>
+<td align="center">双精度浮点型字面量</td>
+</tr>
+<tr>
+<td align="center">CONSTANT_Class_info</td>
+<td align="center">7</td>
+<td align="center">类或接口的符号引用</td>
+</tr>
+<tr>
+<td align="center">CONSTANT_String_info</td>
+<td align="center">8</td>
+<td align="center">字符串类型字面量</td>
+</tr>
+<tr>
+<td align="center">CONSTANT_Fieldref_info</td>
+<td align="center">9</td>
+<td align="center">字段的符号引用</td>
+</tr>
+<tr>
+<td align="center">CONSTANT_Methodref_info</td>
+<td align="center">10</td>
+<td align="center">类中方法的符号引用</td>
+</tr>
+<tr>
+<td align="center">CONSTANT_InterfaceMethodref_info</td>
+<td align="center">11</td>
+<td align="center">接口中方法的符号引用</td>
+</tr>
+<tr>
+<td align="center">CONSTANT_NameAndType_info</td>
+<td align="center">12</td>
+<td align="center">字段或方法的部分符号引用</td>
+</tr>
+<tr>
+<td align="center">CONSTANT_MethodHandle_info</td>
+<td align="center">15</td>
+<td align="center">表示方法句柄</td>
+</tr>
+<tr>
+<td align="center">CONSTANT_MethodType_info</td>
+<td align="center">16</td>
+<td align="center">表示方法类型</td>
+</tr>
+<tr>
+<td align="center">CONSTANT_Dynamic_info</td>
+<td align="center">17</td>
+<td align="center">表示一个动态计算常量</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h3 id="4-访问标志"><a href="#4-访问标志" class="headerlink" title="4. 访问标志"></a>4. 访问标志</h3><ul>
+<li><p><strong>访问标志（access_flags）</strong></p>
+<ul>
+<li>用于识别一些类或者接口层次的<strong>访问信息</strong></li>
+<li>包括：这个 <code>Class</code> 是类还是接口；是否定义为 <code>public</code> 类型；是否定义为 <code>abstract</code> 类型；<strong>如果是类的话，是否被声明为 <code>final</code> 等</strong></li>
+</ul>
+</li>
+<li><p><strong>访问标志位及含义</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">标志名称</th>
+<th align="center">标志值</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">ACC_PUBLIC</td>
+<td align="center">0x0001</td>
+<td align="center">是否为 public 类型</td>
+</tr>
+<tr>
+<td align="center">ACC_FINAL</td>
+<td align="center">0x0010</td>
+<td align="center"><strong>是否被声明为 final，只有类可设置</strong></td>
+</tr>
+<tr>
+<td align="center">ACC_SUPER</td>
+<td align="center">0x0020</td>
+<td align="center">是否允许使用 invokespecial 字节码指令的新语义，invokespecial 指令的语义在 JDK 1.0.2 发生过改变，为了区分这条指令使用哪种语义，JDK 1.0.2 之后编译出来的类的这个标志都必须为真</td>
+</tr>
+<tr>
+<td align="center">ACC_INTERFACE</td>
+<td align="center">0x0200</td>
+<td align="center">标识这是一个接口</td>
+</tr>
+<tr>
+<td align="center">ACC_ABSTRACT</td>
+<td align="center">0x0400</td>
+<td align="center">是否为 abstract 类型，对于接口或者抽象类来说，此标志为真，其他类型值为假</td>
+</tr>
+<tr>
+<td align="center">ACC_SYNTHETIC</td>
+<td align="center">0x1000</td>
+<td align="center">标识这个类并非由用户代码产生</td>
+</tr>
+<tr>
+<td align="center">ACC_ANNOTATION</td>
+<td align="center">0x2000</td>
+<td align="center">标识这是一个注解</td>
+</tr>
+<tr>
+<td align="center">ACC_ENUM</td>
+<td align="center">0x4000</td>
+<td align="center">标识这是一个枚举</td>
+</tr>
+<tr>
+<td align="center">ACC_MODULE</td>
+<td align="center">0x8000</td>
+<td align="center">标识这是一个模块</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h3 id="5-类索引、父类索引与接口索引集合"><a href="#5-类索引、父类索引与接口索引集合" class="headerlink" title="5. 类索引、父类索引与接口索引集合"></a>5. 类索引、父类索引与接口索引集合</h3><ul>
+<li><h3 id="6-字段表集合"><a href="#6-字段表集合" class="headerlink" title="6. 字段表集合"></a>6. 字段表集合</h3></li>
+</ul>
+<h3 id="7-方法表集合"><a href="#7-方法表集合" class="headerlink" title="7. 方法表集合"></a>7. 方法表集合</h3><h3 id="8-属性表集合"><a href="#8-属性表集合" class="headerlink" title="8. 属性表集合"></a>8. 属性表集合</h3><h2 id="五-JVM-类加载机制"><a href="#五-JVM-类加载机制" class="headerlink" title="五. JVM 类加载机制"></a>五. JVM 类加载机制</h2><h2 id="六-Java-内存模型概述"><a href="#六-Java-内存模型概述" class="headerlink" title="六. Java 内存模型概述"></a>六. Java 内存模型概述</h2>
     </div>
 
     
@@ -838,7 +1126,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">21:18</span>
+    <span title="站点阅读时长">21:20</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
