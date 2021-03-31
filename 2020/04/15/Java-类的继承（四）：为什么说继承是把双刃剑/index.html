@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. 继承的强大表现在哪">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-04-15T11:49:06.000Z">
-<meta property="article:modified_time" content="2020-04-15T12:20:52.000Z">
+<meta property="article:modified_time" content="2021-03-31T20:38:22.885Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="类的继承">
 <meta property="article:tag" content="为什么说继承是把双刃剑">
@@ -207,10 +207,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-04-15 19:49:06 / 修改时间：20:20:52" itemprop="dateCreated datePublished" datetime="2020-04-15T19:49:06+08:00">2020-04-15</time>
+              <time title="创建时间：2020-04-15 19:49:06" itemprop="dateCreated datePublished" datetime="2020-04-15T19:49:06+08:00">2020-04-15</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-04-01 04:38:22" itemprop="dateModified" datetime="2021-04-01T04:38:22+08:00">2021-04-01</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -249,72 +255,72 @@
         <h4 id="1-继承的强大表现在哪"><a href="#1-继承的强大表现在哪" class="headerlink" title="1. 继承的强大表现在哪"></a>1. 继承的强大表现在哪</h4><a id="more"></a>
 
 <ul>
-<li>继承<strong>广泛应用</strong>于各种 Java API、框架和类库之中。</li>
-<li>一方面它们内部大量使用继承，另一方面它们设计了良好的<strong>框架结构</strong>，提供了大量基类和基础公共代码。</li>
-<li>使用者可以使用继承，重写适当方法<strong>进行定制</strong>，就可以简单方便地实现强大的功能。</li>
+<li>继承<strong>广泛应用</strong>于各种 Java API、框架和类库之中</li>
+<li>一方面它们内部大量使用继承，另一方面它们设计了良好的<strong>框架结构</strong>，提供了大量基类和基础公共代码</li>
+<li>使用者可以使用继承，重写适当方法<strong>进行定制</strong>，就可以简单方便地实现强大的功能</li>
 </ul>
 <h4 id="2-继承为什么会有破坏力（相对而言）"><a href="#2-继承为什么会有破坏力（相对而言）" class="headerlink" title="2. 继承为什么会有破坏力（相对而言）"></a>2. 继承为什么会有破坏力（相对而言）</h4><ul>
-<li>继承可能破坏封装。</li>
-<li><strong>封装可以说是程序设计的第一原则</strong>。</li>
-<li>继承可能没有反映出 is-a 的关系。</li>
+<li>继承可能破坏封装</li>
+<li><strong>封装可以说是程序设计的第一原则</strong></li>
+<li>继承可能没有反映出 is-a 的关系</li>
 </ul>
 <h4 id="3-怎样理解封装"><a href="#3-怎样理解封装" class="headerlink" title="3. 怎样理解封装"></a>3. 怎样理解封装</h4><ul>
-<li><strong>封装就是隐藏实现细节，提供简化接口</strong>。</li>
-<li>使用者只需要关注怎么用而不需要关注内部是怎么实现的。实现细节可以随时修改，而不影响使用者。方法是封装，类也是封装。<strong>通过封装，才能在更高的层次上考虑和解决问题</strong>。</li>
-<li>可以说，<strong>封装是程序设计的第一原则</strong>，没有封装，代码之间会到处存在着实现细节的依赖，则构建和维护复杂的程序是难以想象的，可阅读性和可维护性就会变得很差。</li>
+<li><strong>封装就是隐藏实现细节，提供简化接口</strong></li>
+<li>使用者只需要关注怎么用而不需要关注内部是怎么实现的。实现细节可以随时修改，而不影响使用者。方法是封装，类也是封装。<strong>通过封装，才能在更高的层次上考虑和解决问题</strong></li>
+<li>可以说，<strong>封装是程序设计的第一原则</strong>，没有封装，代码之间会到处存在着实现细节的依赖，则构建和维护复杂的程序是难以想象的，可阅读性和可维护性就会变得很差</li>
 </ul>
 <h4 id="4-怎样理解继承可能破坏封装"><a href="#4-怎样理解继承可能破坏封装" class="headerlink" title="4. 怎样理解继承可能破坏封装"></a>4. 怎样理解继承可能破坏封装</h4><ul>
-<li>因为<strong>子类和父类之间可能存在着实现细节的依赖</strong>。子类在继承父类的时候，往往不得不关注父类的实现细节，而父类在修改其内部实现的时候，如果不考虑子类，也往往会影响到子类。如果子类不知道父类方法的实现细节，它就不能正确地进行扩展。</li>
-<li><strong>子类和父类之间是细节依赖</strong>，子类扩展父类，但仅仅知道父类能做什么还是不够的，还需要知道父类是怎么做的，而父类的实现细节也不能随便修改，否则可能影响子类。</li>
-<li>更具体地说，<strong>子类需要知道父类的可重写方法之间的依赖关系</strong>，而且这个依赖关系，父类不能随意改变。但即使这个依赖关系不变，封装还是可能因为细节修改而被破坏。</li>
-<li><strong>父类不能随意增加公开方法</strong>，因为给父类增加就是给所有子类增加，而子类可能必须要重写该方法才能确保方法的正确性。</li>
-<li><strong>总结</strong>：<strong>对于子类而言</strong>，通过继承实现是没有安全保障的，因为父类修改内部实现细节，它的功能就可能会被破坏；<strong>对于父类而言</strong>，让子类继承和重写方法，就可能丧失随意修改内部实现的自由。</li>
+<li>因为<strong>子类和父类之间可能存在着实现细节的依赖</strong>。子类在继承父类的时候，往往不得不关注父类的实现细节，而父类在修改其内部实现的时候，如果不考虑子类，也往往会影响到子类。如果子类不知道父类方法的实现细节，它就不能正确地进行扩展</li>
+<li><strong>子类和父类之间是细节依赖</strong>，子类扩展父类，但仅仅知道父类能做什么还是不够的，还需要知道父类是怎么做的，而父类的实现细节也不能随便修改，否则可能影响子类</li>
+<li>更具体地说，<strong>子类需要知道父类的可重写方法之间的依赖关系</strong>，而且这个依赖关系，父类不能随意改变。但即使这个依赖关系不变，封装还是可能因为细节修改而被破坏</li>
+<li><strong>父类不能随意增加公开方法</strong>，因为给父类增加就是给所有子类增加，而子类可能必须要重写该方法才能确保方法的正确性</li>
+<li><strong>总结</strong>：<strong>对于子类而言</strong>，通过继承实现是没有安全保障的，因为父类修改内部实现细节，它的功能就可能会被破坏；<strong>对于父类而言</strong>，让子类继承和重写方法，就可能丧失随意修改内部实现的自由</li>
 </ul>
-<h4 id="5-为什么说继承可能没有反映is-a-关系"><a href="#5-为什么说继承可能没有反映is-a-关系" class="headerlink" title="5. 为什么说继承可能没有反映is-a 关系"></a>5. 为什么说继承可能没有反映is-a 关系</h4><ul>
-<li><strong>继承关系是被设计用来反映 is-a 关系的</strong>，子类是父类的一种，子类对象也属于父类，父类的属性和行为也适用于子类。</li>
-<li>但现实中，<strong>设计完全符合 is-a 关系的继承关系是困难的</strong>。在 is-a 关系中，重写方法时，子类不应该改变父类预期的行为，但是这是没有办法约束的。</li>
-<li><strong>继承是应该被当做 is-a 关系使用的，但是，Java 并没有办法约束</strong>。父类有的属性和行为，子类并不一定都适用，子类还可以重写方法，实现与父类预期完全不一样的行为。</li>
-<li>对于<strong>通过父类引用操作子类对象（多态）</strong>的程序而言，它是把对象当作父类对象来看待的，期望对象符合父类中声明的属性和行为。如果不符合，则有可能会造成混乱，代码可维护性变差。</li>
+<h4 id="5-为什么说继承可能没有反映-is-a-关系"><a href="#5-为什么说继承可能没有反映-is-a-关系" class="headerlink" title="5. 为什么说继承可能没有反映 is-a 关系"></a>5. 为什么说继承可能没有反映 is-a 关系</h4><ul>
+<li><strong>继承关系是被设计用来反映 is-a 关系的</strong>，子类是父类的一种，子类对象也属于父类，父类的属性和行为也适用于子类</li>
+<li>但现实中，<strong>设计完全符合 is-a 关系的继承关系是困难的</strong>。在 is-a 关系中，重写方法时，子类不应该改变父类预期的行为，但是这是没有办法约束的</li>
+<li><strong>继承是应该被当做 is-a 关系使用的，但是，Java 并没有办法约束</strong>。父类有的属性和行为，子类并不一定都适用，子类还可以重写方法，实现与父类预期完全不一样的行为</li>
+<li>对于<strong>通过父类引用操作子类对象（多态）</strong>的程序而言，它是把对象当作父类对象来看待的，期望对象符合父类中声明的属性和行为。如果不符合，则有可能会造成混乱，代码可维护性变差</li>
 </ul>
 <h4 id="6-继承既强大又有破坏性，那怎么办"><a href="#6-继承既强大又有破坏性，那怎么办" class="headerlink" title="6. 继承既强大又有破坏性，那怎么办"></a>6. 继承既强大又有破坏性，那怎么办</h4><ul>
-<li><strong>避免使用</strong>继承。</li>
-<li><strong>正确使用</strong>继承。</li>
+<li><strong>避免使用</strong>继承</li>
+<li><strong>正确使用</strong>继承</li>
 </ul>
 <h4 id="7-怎样避免使用继承"><a href="#7-怎样避免使用继承" class="headerlink" title="7. 怎样避免使用继承"></a>7. 怎样避免使用继承</h4><ul>
-<li>使用 <strong><code>final</code></strong> 关键字。</li>
-<li>优先使用<strong>组合</strong>而非继承。</li>
-<li>使用<strong>接口</strong>。</li>
+<li>使用 <strong><code>final</code></strong> 关键字</li>
+<li>优先使用<strong>组合</strong>而非继承</li>
+<li>使用<strong>接口</strong></li>
 </ul>
-<h4 id="8-final-关键字对于继承关系的影响"><a href="#8-final-关键字对于继承关系的影响" class="headerlink" title="8. final 关键字对于继承关系的影响"></a>8. final 关键字对于继承关系的影响</h4><ul>
-<li><strong><code>final</code> 方法不能被重写，<code>final</code> 类不能被继承，<code>final</code> 变量（常量）不能被重新赋值</strong>。</li>
-<li>给方法加 <code>final</code> 修饰符，父类就保留了随意修改这个方法内部实现的自由，使用这个方法的程序也可以确保其行为是符合父类声明的。</li>
-<li>给类加 <code>final</code> 修饰符，父类就保留了随意修改这个类实现的自由，使用者也可以放心地使用它，而不用担心一个父类引用的变量，实际指向的却是一个完全不符合预期行为的子类对象。</li>
+<h4 id="8-final-关键字对于继承关系的影响"><a href="#8-final-关键字对于继承关系的影响" class="headerlink" title="8. final 关键字对于继承关系的影响"></a>8. <code>final</code> 关键字对于继承关系的影响</h4><ul>
+<li><strong><code>final</code> 方法不能被重写，<code>final</code> 类不能被继承，<code>final</code> 变量（常量）不能被重新赋值</strong></li>
+<li>给方法加 <code>final</code> 修饰符，父类就保留了随意修改这个方法内部实现的自由，使用这个方法的程序也可以确保其行为是符合父类声明的</li>
+<li>给类加 <code>final</code> 修饰符，父类就保留了随意修改这个类实现的自由，使用者也可以放心地使用它，而不用担心一个父类引用的变量，实际指向的却是一个完全不符合预期行为的子类对象</li>
 </ul>
 <h4 id="9-使用组合而非继承的优劣是"><a href="#9-使用组合而非继承的优劣是" class="headerlink" title="9. 使用组合而非继承的优劣是"></a>9. 使用组合而非继承的优劣是</h4><ul>
-<li>使用组合可以抵挡父类变化对子类的影响，从而保护子类，<strong>应该优先使用组合</strong>。</li>
-<li><strong>组合的问题是，子类对象不能被当作基类对象来统一处理了，解决方法是使用接口</strong>。</li>
+<li>使用组合可以抵挡父类变化对子类的影响，从而保护子类，<strong>应该优先使用组合</strong></li>
+<li><strong>组合的问题是，子类对象不能被当作基类对象来统一处理了，解决方法是使用接口</strong></li>
 </ul>
 <h4 id="10-怎样正确使用继承呢"><a href="#10-怎样正确使用继承呢" class="headerlink" title="10. 怎样正确使用继承呢"></a>10. 怎样正确使用继承呢</h4><ul>
-<li><p><strong>基类是别人写的，我们写子类</strong>。基类主要是 Java API、其他框架或类库中的类，在这种情况下，我们主要通过扩展基类实现自定义行为，这种情况下需要注意的是：</p>
+<li><p><strong>基类是别人写的，我们写子类</strong>。基类主要是 Java API、其他框架或类库中的类，在这种情况下，我们主要通过扩展基类实现自定义行为，这种情况下需要注意的是</p>
 <ul>
-<li>重写方法不要改变预期的行为。</li>
-<li>阅读文档说明，理解可重写方法的实现机制，尤其是方法之间的依赖关系。</li>
-<li>在基类修改的情况下，阅读其修改说明，相应修改子类。</li>
+<li>重写方法不要改变预期的行为</li>
+<li>阅读文档说明，理解可重写方法的实现机制，尤其是方法之间的依赖关系</li>
+<li>在基类修改的情况下，阅读其修改说明，相应修改子类</li>
 </ul>
 </li>
-<li><p><strong>我们写基类，别人写子类</strong>。我们写基类给别人用，在这种情况下，需要注意的是：</p>
+<li><p><strong>我们写基类，别人写子类</strong>。我们写基类给别人用，在这种情况下，需要注意的是</p>
 <ul>
-<li>使用继承反映真正的 is-a 关系，只将真正公共的部分放到基类。</li>
-<li>对不希望被重写的公开方法添加 final 修饰符。</li>
-<li>写文档，说明可重写方法的实现机制，为子类提供指导，告诉子类应该如何重写。</li>
-<li>在基类修改可能影响子类时，写修改说明。</li>
+<li>使用继承反映真正的 is-a 关系，只将真正公共的部分放到基类</li>
+<li>对不希望被重写的公开方法添加 <code>final</code> 修饰符</li>
+<li>写文档，说明可重写方法的实现机制，为子类提供指导，告诉子类应该如何重写</li>
+<li>在基类修改可能影响子类时，写修改说明</li>
 </ul>
 </li>
-<li><p><strong>基类、子类都是我们写的</strong>。我们既写基类也写子类：</p>
+<li><p><strong>基类、子类都是我们写的</strong>。我们既写基类也写子类</p>
 <ul>
-<li>关于基类，注意事项和第 2种场景类似。</li>
-<li>关于子类，注意事项和第 1 种场景类似。</li>
-<li>不过程序都由我们控制，要求可以适当放松一些。</li>
+<li>关于基类，注意事项和第 2 种场景类似</li>
+<li>关于子类，注意事项和第 1 种场景类似</li>
+<li>不过程序都由我们控制，要求可以适当放松一些</li>
 </ul>
 </li>
 </ul>
@@ -431,7 +437,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-继承的强大表现在哪"><span class="nav-text">1. 继承的强大表现在哪</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-继承为什么会有破坏力（相对而言）"><span class="nav-text">2. 继承为什么会有破坏力（相对而言）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-怎样理解封装"><span class="nav-text">3. 怎样理解封装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-怎样理解继承可能破坏封装"><span class="nav-text">4. 怎样理解继承可能破坏封装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-为什么说继承可能没有反映is-a-关系"><span class="nav-text">5. 为什么说继承可能没有反映is-a 关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-继承既强大又有破坏性，那怎么办"><span class="nav-text">6. 继承既强大又有破坏性，那怎么办</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-怎样避免使用继承"><span class="nav-text">7. 怎样避免使用继承</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-final-关键字对于继承关系的影响"><span class="nav-text">8. final 关键字对于继承关系的影响</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-使用组合而非继承的优劣是"><span class="nav-text">9. 使用组合而非继承的优劣是</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-怎样正确使用继承呢"><span class="nav-text">10. 怎样正确使用继承呢</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-继承的强大表现在哪"><span class="nav-text">1. 继承的强大表现在哪</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-继承为什么会有破坏力（相对而言）"><span class="nav-text">2. 继承为什么会有破坏力（相对而言）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-怎样理解封装"><span class="nav-text">3. 怎样理解封装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-怎样理解继承可能破坏封装"><span class="nav-text">4. 怎样理解继承可能破坏封装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-为什么说继承可能没有反映-is-a-关系"><span class="nav-text">5. 为什么说继承可能没有反映 is-a 关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-继承既强大又有破坏性，那怎么办"><span class="nav-text">6. 继承既强大又有破坏性，那怎么办</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-怎样避免使用继承"><span class="nav-text">7. 怎样避免使用继承</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-final-关键字对于继承关系的影响"><span class="nav-text">8. final 关键字对于继承关系的影响</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-使用组合而非继承的优劣是"><span class="nav-text">9. 使用组合而非继承的优劣是</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-怎样正确使用继承呢"><span class="nav-text">10. 怎样正确使用继承呢</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
