@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. 怎样理解时区">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-04-17T13:24:51.000Z">
-<meta property="article:modified_time" content="2020-04-21T09:51:38.000Z">
+<meta property="article:modified_time" content="2021-03-31T22:26:09.068Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="常用基础类">
 <meta property="article:tag" content="剖析日期和时间">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-21 17:51:38" itemprop="dateModified" datetime="2020-04-21T17:51:38+08:00">2020-04-21</time>
+                <time title="修改时间：2021-04-01 06:26:09" itemprop="dateModified" datetime="2021-04-01T06:26:09+08:00">2021-04-01</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -255,87 +255,90 @@
         <h4 id="1-怎样理解时区"><a href="#1-怎样理解时区" class="headerlink" title="1. 怎样理解时区"></a>1. 怎样理解时区</h4><a id="more"></a>
 
 <ul>
-<li><strong>全球一共有 24 个时区，英国格林尼治是 0 时区，北京是东八区</strong>。</li>
-<li>0 时区的时间也称为 GMT + 0 时间，<strong>GMT 是格林尼治标准时间</strong>。</li>
-<li><strong>北京时间就是 GMT + 8:00</strong>。</li>
+<li><strong>全球一共有 24 个时区，英国格林尼治是 0 时区，北京是东八区</strong></li>
+<li>0 时区的时间也称为 GMT + 0 时间，<strong>GMT 是格林尼治标准时间</strong></li>
+<li><strong>北京时间就是 GMT + 8:00</strong></li>
 </ul>
 <h4 id="2-怎样理解时刻和纪元时"><a href="#2-怎样理解时刻和纪元时" class="headerlink" title="2. 怎样理解时刻和纪元时"></a>2. 怎样理解时刻和纪元时</h4><ul>
-<li>所有<strong>计算机系统内部都用一个整数表示时刻</strong>，这个整数是距离 <strong>格林尼治标准时间：1970 年 1 月 1 日 0 时 0 分 0 秒</strong> 的毫秒数。之所以用这个时间，更多的是<strong>历史原因</strong>。</li>
-<li>格林尼治标准时间 1970 年 1 月 1 日 0 时 0 分 0 秒也被称为 <strong>Epoch Time（纪元时）</strong>。</li>
-<li>对于 1970 年以前的时间，使用<strong>负数</strong>表示。</li>
+<li>所有<strong>计算机系统内部都用一个整数表示时刻</strong>，这个整数是距离 <strong>格林尼治标准时间：1970 年 1 月 1 日 0 时 0 分 0 秒</strong> 的毫秒数。之所以用这个时间，更多的是<strong>历史原因</strong></li>
+<li>格林尼治标准时间 1970 年 1 月 1 日 0 时 0 分 0 秒也被称为 <strong>Epoch Time（纪元时）</strong></li>
+<li>对于 1970 年以前的时间，使用<strong>负数</strong>表示</li>
 </ul>
 <h4 id="3-怎样理解年历"><a href="#3-怎样理解年历" class="headerlink" title="3. 怎样理解年历"></a>3. 怎样理解年历</h4><ul>
-<li>中国有<strong>公历</strong>和<strong>农历</strong>之分。公历和农历都是年历，不同的年历，一年有多少月，每月有多少天，甚至一天有多少小时，这些可能都是不一样的。<ul>
-<li><strong>公历有闰年</strong>，闰年 2 月是 29 天，而其他年份则是 28 天；其他月份，有的是 30 天，有的是 31 天。</li>
-<li><strong>农历有闰月</strong>，比如闰 7 月，一年就会有两个 7 月，一共 13 个月。</li>
+<li>中国有<strong>公历</strong>和<strong>农历</strong>之分。公历和农历都是年历，不同的年历，一年有多少月，每月有多少天，甚至一天有多少小时，这些可能都是不一样的<ul>
+<li><strong>公历有闰年</strong>，闰年 2 月是 29 天，而其他年份则是 28 天；其他月份，有的是 30 天，有的是 31 天</li>
+<li><strong>农历有闰月</strong>，比如闰 7 月，一年就会有两个 7 月，一共 13 个月</li>
 </ul>
 </li>
-<li>Java API 的设计思想是<strong>支持国际化</strong>的，支持多种年历，<strong>但没有直接支持中国的农历</strong>。</li>
-<li><strong>时刻是一个绝对时间</strong>，对时刻的<strong>解读则是相对的</strong>，与年历和时区相关。</li>
+<li>Java API 的设计思想是<strong>支持国际化</strong>的，支持多种年历，<strong>但没有直接支持中国的农历</strong></li>
+<li><strong>时刻是一个绝对时间</strong>，对时刻的<strong>解读则是相对的</strong>，与年历和时区相关</li>
 </ul>
 <h4 id="4-Java-API-中关于日期和时间的主要的类有哪些"><a href="#4-Java-API-中关于日期和时间的主要的类有哪些" class="headerlink" title="4. Java API 中关于日期和时间的主要的类有哪些"></a>4. Java API 中关于日期和时间的主要的类有哪些</h4><ul>
-<li>日期和时间是一个比较复杂的概念，Java 8 之前的设计有一些不足。</li>
-<li>业界有一个广泛使用的第三方类库 Joda-Time，Java 8 受 Joda-Time 影响，重新设计了日期和时间 API，新增了一个包 <code>java.time</code>。</li>
-<li>虽然 Java 8 之前的 API 有一些不足，但依然是被大量使用的。关于 Java 8 的 API，它使用了 Lambda 表达式。</li>
-<li>主要的类：<ul>
-<li><code>Date</code>: 表示<strong>时刻</strong>，即<strong>绝对时间</strong>，与年月日无关。</li>
-<li><code>Calendar</code>: 表示<strong>年历</strong>，是一个<strong>抽象类</strong>，其中表示公历的子类是 <code>GregorianCalendar</code>。</li>
-<li><code>DateFormat</code>: 表示<strong>格式化</strong>，作用是将日期和时间与字符串进行互相转换，也是一个<strong>抽象类</strong>，其中最常用的子类是 <strong><code>SimpleDateFormat</code></strong>。</li>
-<li><code>TimeZone</code>: 表示<strong>时区</strong>，也是一个<strong>抽象类</strong>。</li>
-<li><code>Locale</code>: 表示<strong>国家（或地区）和语言</strong>。</li>
+<li>日期和时间是一个比较复杂的概念，Java 8 之前的设计有一些不足</li>
+<li>业界有一个广泛使用的第三方类库 Joda-Time，Java 8 受 Joda-Time 影响，重新设计了日期和时间 API，新增了一个包 <code>java.time</code></li>
+<li>虽然 Java 8 之前的 API 有一些不足，但依然是被大量使用的。关于 Java 8 的 API，它使用了 Lambda 表达式</li>
+<li>主要的类<ul>
+<li><code>Date</code>: 表示<strong>时刻</strong>，即<strong>绝对时间</strong>，与年月日无关</li>
+<li><code>Calendar</code>: 表示<strong>年历</strong>，是一个<strong>抽象类</strong>，其中表示公历的子类是 <code>GregorianCalendar</code></li>
+<li><code>DateFormat</code>: 表示<strong>格式化</strong>，作用是将日期和时间与字符串进行互相转换，也是一个<strong>抽象类</strong>，其中最常用的子类是 <strong><code>SimpleDateFormat</code></strong></li>
+<li><code>TimeZone</code>: 表示<strong>时区</strong>，也是一个<strong>抽象类</strong></li>
+<li><code>Locale</code>: 表示<strong>国家（或地区）和语言</strong></li>
 </ul>
 </li>
 </ul>
-<h4 id="5-怎样理解-Date"><a href="#5-怎样理解-Date" class="headerlink" title="5. 怎样理解 Date"></a>5. 怎样理解 Date</h4><ul>
-<li><strong><code>System.currentTimeMillis()</code></strong> 返回当前时刻距离纪元时的毫秒数。</li>
-<li><strong><code>Date</code></strong> 中的大部分方法都已经<strong>过时</strong>了。</li>
+<h4 id="5-怎样理解-Date"><a href="#5-怎样理解-Date" class="headerlink" title="5. 怎样理解 Date"></a>5. 怎样理解 <code>Date</code></h4><ul>
+<li><strong><code>System.currentTimeMillis()</code></strong> 返回当前时刻距离纪元时的毫秒数</li>
+<li><strong><code>Date</code></strong> 中的大部分方法都已经<strong>过时</strong>了</li>
 </ul>
 <h4 id="6-怎样获取当前的默认时区"><a href="#6-怎样获取当前的默认时区" class="headerlink" title="6. 怎样获取当前的默认时区"></a>6. 怎样获取当前的默认时区</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">TimeZone tz = <span class="module-access"><span class="module"><span class="identifier">TimeZone</span>.</span></span>get<span class="constructor">Default()</span>;</span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(tz.get<span class="constructor">ID()</span>);</span><br></pre></td></tr></table></figure>
 
 <h4 id="7-怎样获取任意给定时区的实例"><a href="#7-怎样获取任意给定时区的实例" class="headerlink" title="7. 怎样获取任意给定时区的实例"></a>7. 怎样获取任意给定时区的实例</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">TimeZone tz = <span class="module-access"><span class="module"><span class="identifier">TimeZone</span>.</span></span>get<span class="constructor">TimeZone(<span class="string">"US/Eastern"</span>)</span>;  <span class="comment">//获取美国东部时区</span></span><br><span class="line">TimeZone tz = <span class="module-access"><span class="module"><span class="identifier">TimeZone</span>.</span></span>get<span class="constructor">TimeZone(<span class="string">"GMT+08:00"</span>)</span>; <span class="comment">//获取 GMT 形式的北京时区</span></span><br></pre></td></tr></table></figure>
 
-<h4 id="8-怎样理解-Locale"><a href="#8-怎样理解-Locale" class="headerlink" title="8. 怎样理解 Locale"></a>8. 怎样理解 Locale</h4><ul>
-<li><code>Locale</code> 主要有<strong>国家</strong>（或地区）和<strong>语言</strong>两个参数，每个参数都有一个代码。</li>
-<li><code>CN</code>: 中国内地，<code>TW</code>: 中国台湾地区，<code>US</code>: 美国；</li>
-<li><code>zh</code>: 中文语言，<code>en</code>: 英文语言。</li>
+<h4 id="8-怎样理解-Locale"><a href="#8-怎样理解-Locale" class="headerlink" title="8. 怎样理解 Locale"></a>8. 怎样理解 <code>Locale</code></h4><ul>
+<li><code>Locale</code> 主要有<strong>国家</strong>（或地区）和<strong>语言</strong>两个参数，每个参数都有一个代码</li>
+<li><code>CN</code>: 中国内地，<code>TW</code>: 中国台湾地区，<code>US</code>: 美国</li>
+<li><code>zh</code>: 中文语言，<code>en</code>: 英文语言</li>
 </ul>
 <h4 id="9-怎样获取计算机默认语言"><a href="#9-怎样获取计算机默认语言" class="headerlink" title="9. 怎样获取计算机默认语言"></a>9. 怎样获取计算机默认语言</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Locale locale = <span class="module-access"><span class="module"><span class="identifier">Locale</span>.</span></span>get<span class="constructor">Default()</span>;</span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(locale.<span class="keyword">to</span><span class="constructor">String()</span>);</span><br></pre></td></tr></table></figure>
 
-<h4 id="10-怎样理解-Calendar"><a href="#10-怎样理解-Calendar" class="headerlink" title="10. 怎样理解 Calendar"></a>10. 怎样理解 Calendar</h4><ul>
-<li><code>getInstance()</code> 方法会根据 <code>TimeZone</code> 和 <code>Locale</code> 创建对应的 <code>Calendar</code> 子类对象。在中文系统中，子类一般是表示公历的 <code>GregorianCalendar</code>。</li>
-<li>这种<strong>隐藏对象创建细节</strong>的方式，是计算机程序中一种常见的设计模式，叫<strong>工厂方法设计模式</strong>。</li>
-<li><strong><code>Calendar</code> 做了一项非常繁琐的工作</strong>，根据 <code>TimeZone</code> 和 <code>Locale</code>，在绝对时间毫秒数和日历字段之间自动进行转换，且对不同日历字段的修改进行自动同步更新。</li>
+<h4 id="10-怎样理解-Calendar"><a href="#10-怎样理解-Calendar" class="headerlink" title="10. 怎样理解 Calendar"></a>10. 怎样理解 <code>Calendar</code></h4><ul>
+<li><code>getInstance()</code> 方法会根据 <code>TimeZone</code> 和 <code>Locale</code> 创建对应的 <code>Calendar</code> 子类对象。在中文系统中，子类一般是表示公历的 <code>GregorianCalendar</code></li>
+<li>这种<strong>隐藏对象创建细节</strong>的方式，是计算机程序中一种常见的设计模式，叫<strong>工厂方法设计模式</strong></li>
+<li><strong><code>Calendar</code> 做了一项非常繁琐的工作</strong>，根据 <code>TimeZone</code> 和 <code>Locale</code>，在绝对时间毫秒数和日历字段之间自动进行转换，且对不同日历字段的修改进行自动同步更新</li>
 </ul>
-<h4 id="11-怎样理解-SimpleDateFormat"><a href="#11-怎样理解-SimpleDateFormat" class="headerlink" title="11. 怎样理解 SimpleDateFormat"></a>11. 怎样理解 SimpleDateFormat</h4><ul>
-<li><p><code>SimpleDateFormat</code> 是 <code>DateFormat</code> 的子类。相比 <code>DateFormat</code> 它的一个主要不同是，它可以<strong>接受一个自定义的模式（pattern）作为参数</strong>，这个模式规定了 <code>Date</code> 的字符串形式。</p>
+<h4 id="11-怎样理解-SimpleDateFormat"><a href="#11-怎样理解-SimpleDateFormat" class="headerlink" title="11. 怎样理解 SimpleDateFormat"></a>11. 怎样理解 <code>SimpleDateFormat</code></h4><ul>
+<li><p><code>SimpleDateFormat</code> 是 <code>DateFormat</code> 的子类。相比 <code>DateFormat</code> 它的一个主要不同是，它可以<strong>接受一个自定义的模式（pattern）作为参数</strong>，这个模式规定了 <code>Date</code> 的字符串形式</p>
 </li>
-<li><p><code>Demo</code>：</p>
+<li><p>Demo：</p>
   <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Calendar calendar = Calendar.getInstance();</span><br><span class="line">calendar.<span class="keyword">set</span>(<span class="number">2016</span>, <span class="number">08</span>, <span class="number">15</span>, <span class="number">14</span>, <span class="number">15</span>, <span class="number">20</span>); <span class="comment">//2016-08-15 14:15:20</span></span><br><span class="line">SimpleDateFormat sdf = new SimpleDateFormat(<span class="string">"yyyy年MM月dd日 E HH时mm分ss秒"</span>); </span><br><span class="line"><span class="comment">//E 表示星期几；HH 表示 24 小时制的小时数，用两位数表示；hh 表示 12 小时制的小时数；a 表示是上午还是下午；SSS 表示三位的毫秒数</span></span><br><span class="line">System.<span class="keyword">out</span>.println(sdf.format(calendar.getTime());</span><br><span class="line"></span><br><span class="line">输出：</span><br><span class="line"><span class="number">2016</span>年<span class="number">08</span>月<span class="number">15</span>日，星期一，<span class="number">14</span>时<span class="number">15</span>分<span class="number">20</span>秒</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
 <h4 id="12-怎样理解-Java-8-之前的日期与时间相关-API-的局限性"><a href="#12-怎样理解-Java-8-之前的日期与时间相关-API-的局限性" class="headerlink" title="12. 怎样理解 Java 8 之前的日期与时间相关 API 的局限性"></a>12. 怎样理解 Java 8 之前的日期与时间相关 API 的局限性</h4><ul>
-<li><strong><code>Date</code> 中的过时方法</strong>。<ul>
-<li><code>Date</code> 中的方法参数与常识不符合，过时方法标记容易被忽略，产生误用。</li>
-<li>比如，<code>Date</code> 构造方法中的 <code>year</code> 表示的是与 1900 年的差，<code>month</code> 是从 0 开始的。</li>
+<li><p><strong><code>Date</code> 中的过时方法</strong></p>
+<ul>
+<li><code>Date</code> 中的方法参数与常识不符合，过时方法标记容易被忽略，产生误用</li>
+<li>比如，<code>Date</code> 构造方法中的 <code>year</code> 表示的是与 1900 年的差，<code>month</code> 是从 0 开始的</li>
 </ul>
 </li>
-<li><strong><code>Calendar</code> 操作比较繁琐</strong>。<ul>
-<li>一方面，一些简单的操作都需要多次方法调用，很臃肿.</li>
-<li>另一方面，<code>Calendar</code> 难以进行比较复杂的日期操作，比如，计算两个日期之间有多少个月；根据生日计算年龄；计算下个月的第一个周一等。</li>
+<li><p><strong><code>Calendar</code> 操作比较繁琐</strong></p>
+<ul>
+<li>一方面，一些简单的操作都需要多次方法调用，很臃肿</li>
+<li>另一方面，<code>Calendar</code> 难以进行比较复杂的日期操作，比如，计算两个日期之间有多少个月；根据生日计算年龄；计算下个月的第一个周一等</li>
 </ul>
 </li>
-<li><strong><code>DateFormat</code> 的线程安全性</strong>。<ul>
-<li><strong><code>DateFormat/SimpleDateFormat</code> 是线程不安全的</strong>，即多个线程同时使用一个 <code>DateFormat</code> 实例的时候会有问题.</li>
-<li>因为 <code>DateFormat</code> 内部使用了一个 <code>Calendar</code> 实例对象，多线程同时调用的时候，这个 <code>Calendar</code> 实例的状态可能就会紊乱。</li>
+<li><p><strong><code>DateFormat</code> 的线程安全性</strong></p>
+<ul>
+<li><strong><code>DateFormat/SimpleDateFormat</code> 是线程不安全的</strong>，即多个线程同时使用一个 <code>DateFormat</code> 实例的时候会有问题</li>
+<li>因为 <code>DateFormat</code> 内部使用了一个 <code>Calendar</code> 实例对象，多线程同时调用的时候，这个 <code>Calendar</code> 实例的状态可能就会紊乱</li>
 </ul>
 </li>
 </ul>
-<h4 id="13-怎样解决-DateFormat-SimpleDateFormat-的线程安全问题"><a href="#13-怎样解决-DateFormat-SimpleDateFormat-的线程安全问题" class="headerlink" title="13. 怎样解决 DateFormat/SimpleDateFormat 的线程安全问题"></a>13. 怎样解决 DateFormat/SimpleDateFormat 的线程安全问题</h4><ul>
-<li>每次使用 <code>DateFormat/SimpleDateFormat</code> 都<strong>新建一个对象</strong>。</li>
-<li>使用<strong>线程同步</strong>。</li>
-<li>使用 <strong><code>ThreadLocal</code></strong>。</li>
-<li>使用 Joda-Time 或 <strong>Java 8 的 API</strong>，它们是线程安全的。</li>
+<h4 id="13-怎样解决-DateFormat、SimpleDateFormat-的线程安全问题"><a href="#13-怎样解决-DateFormat、SimpleDateFormat-的线程安全问题" class="headerlink" title="13. 怎样解决 DateFormat、SimpleDateFormat 的线程安全问题"></a>13. 怎样解决 <code>DateFormat</code>、<code>SimpleDateFormat</code> 的线程安全问题</h4><ul>
+<li>每次使用 <code>DateFormat/SimpleDateFormat</code> 都<strong>新建一个对象</strong></li>
+<li>使用<strong>线程同步</strong></li>
+<li>使用 <strong><code>ThreadLocal</code></strong></li>
+<li>使用 Joda-Time 或 <strong>Java 8 的 API</strong>，它们是线程安全的</li>
 </ul>
 
     </div>
@@ -450,7 +453,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-怎样理解时区"><span class="nav-text">1. 怎样理解时区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-怎样理解时刻和纪元时"><span class="nav-text">2. 怎样理解时刻和纪元时</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-怎样理解年历"><span class="nav-text">3. 怎样理解年历</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-Java-API-中关于日期和时间的主要的类有哪些"><span class="nav-text">4. Java API 中关于日期和时间的主要的类有哪些</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-怎样理解-Date"><span class="nav-text">5. 怎样理解 Date</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-怎样获取当前的默认时区"><span class="nav-text">6. 怎样获取当前的默认时区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-怎样获取任意给定时区的实例"><span class="nav-text">7. 怎样获取任意给定时区的实例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-怎样理解-Locale"><span class="nav-text">8. 怎样理解 Locale</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-怎样获取计算机默认语言"><span class="nav-text">9. 怎样获取计算机默认语言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-怎样理解-Calendar"><span class="nav-text">10. 怎样理解 Calendar</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-怎样理解-SimpleDateFormat"><span class="nav-text">11. 怎样理解 SimpleDateFormat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-怎样理解-Java-8-之前的日期与时间相关-API-的局限性"><span class="nav-text">12. 怎样理解 Java 8 之前的日期与时间相关 API 的局限性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-怎样解决-DateFormat-SimpleDateFormat-的线程安全问题"><span class="nav-text">13. 怎样解决 DateFormat&#x2F;SimpleDateFormat 的线程安全问题</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-怎样理解时区"><span class="nav-text">1. 怎样理解时区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-怎样理解时刻和纪元时"><span class="nav-text">2. 怎样理解时刻和纪元时</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-怎样理解年历"><span class="nav-text">3. 怎样理解年历</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-Java-API-中关于日期和时间的主要的类有哪些"><span class="nav-text">4. Java API 中关于日期和时间的主要的类有哪些</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-怎样理解-Date"><span class="nav-text">5. 怎样理解 Date</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-怎样获取当前的默认时区"><span class="nav-text">6. 怎样获取当前的默认时区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-怎样获取任意给定时区的实例"><span class="nav-text">7. 怎样获取任意给定时区的实例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-怎样理解-Locale"><span class="nav-text">8. 怎样理解 Locale</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-怎样获取计算机默认语言"><span class="nav-text">9. 怎样获取计算机默认语言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-怎样理解-Calendar"><span class="nav-text">10. 怎样理解 Calendar</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-怎样理解-SimpleDateFormat"><span class="nav-text">11. 怎样理解 SimpleDateFormat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-怎样理解-Java-8-之前的日期与时间相关-API-的局限性"><span class="nav-text">12. 怎样理解 Java 8 之前的日期与时间相关 API 的局限性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-怎样解决-DateFormat、SimpleDateFormat-的线程安全问题"><span class="nav-text">13. 怎样解决 DateFormat、SimpleDateFormat 的线程安全问题</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
