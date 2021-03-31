@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. 怎样理解泛型的局限性">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-04-21T10:49:32.000Z">
-<meta property="article:modified_time" content="2020-04-23T08:59:42.000Z">
+<meta property="article:modified_time" content="2021-03-31T22:46:27.175Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="泛型">
 <meta property="article:tag" content="细节和局限性">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-23 16:59:42" itemprop="dateModified" datetime="2020-04-23T16:59:42+08:00">2020-04-23</time>
+                <time title="修改时间：2021-04-01 06:46:27" itemprop="dateModified" datetime="2021-04-01T06:46:27+08:00">2021-04-01</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -255,43 +255,43 @@
         <h4 id="1-怎样理解泛型的局限性"><a href="#1-怎样理解泛型的局限性" class="headerlink" title="1. 怎样理解泛型的局限性"></a>1. 怎样理解泛型的局限性</h4><a id="more"></a>
 
 <ul>
-<li>泛型的<strong>局限性</strong>主要与 Java 的<strong>实现机制</strong>有关。</li>
-<li>Java 中泛型是通过<strong>类型擦除</strong>来实现的，类型参数在编译时会被替换为 <strong><code>Object</code></strong> 或<strong>限定的上界</strong>。</li>
-<li><strong>运行时 Java 虚拟机不知道泛型这回事</strong>，这就带来了很多局限性。</li>
+<li>泛型的<strong>局限性</strong>主要与 Java 的<strong>实现机制</strong>有关</li>
+<li>Java 中泛型是通过<strong>类型擦除</strong>来实现的，类型参数在编译时会被替换为 <strong><code>Object</code></strong> 或<strong>限定的上界</strong></li>
+<li><strong>运行时 Java 虚拟机不知道泛型这回事</strong>，这就带来了很多局限性</li>
 </ul>
 <h4 id="2-下面写法是否合法，为什么，解决方法是"><a href="#2-下面写法是否合法，为什么，解决方法是" class="headerlink" title="2. 下面写法是否合法，为什么，解决方法是"></a>2. 下面写法是否合法，为什么，解决方法是</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Pair&lt;<span class="built_in">int</span>&gt; minmax = new Pair&lt;<span class="built_in">int</span>&gt; (<span class="number">1</span>, <span class="number">100</span>);</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>结论：不合法。</li>
-<li>原因：类型参数在编译时会被替换为 <code>Object</code>，所以 <strong>Java 泛型中不能使用基本数据类型</strong>。</li>
-<li>解决方法：<strong>使用基本数据类型对应的包装类</strong>。</li>
+<li>结论：不合法</li>
+<li>原因：类型参数在编译时会被替换为 <code>Object</code>，所以 <strong>Java 泛型中不能使用基本数据类型</strong></li>
+<li>解决方法：<strong>使用基本数据类型对应的包装类</strong></li>
 </ul>
 <h4 id="3-下面写法是否合法，为什么"><a href="#3-下面写法是否合法，为什么" class="headerlink" title="3. 下面写法是否合法，为什么"></a>3. 下面写法是否合法，为什么</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Pair&lt;Integer&gt;<span class="class">.<span class="keyword">class</span>;</span></span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>结论：不合法。</li>
-<li>原因：这个<strong>泛型对象（反射）只有一份，与泛型无关</strong>。</li>
+<li>结论：不合法</li>
+<li>原因：这个<strong>泛型对象（反射）只有一份，与泛型无关</strong></li>
 </ul>
 <h4 id="4-下面代码的输出是什么，为什么"><a href="#4-下面代码的输出是什么，为什么" class="headerlink" title="4. 下面代码的输出是什么，为什么"></a>4. 下面代码的输出是什么，为什么</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Pair&lt;Integer&gt; p1 = <span class="keyword">new</span> Pair&lt;Integer&gt; (<span class="number">1</span>, <span class="number">100</span>);</span><br><span class="line">Pair&lt;String&gt; p2 = <span class="keyword">new</span> Pair&lt;String&gt; (<span class="string">"hello"</span>, <span class="string">"world"</span>);</span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="module-access"><span class="module"><span class="identifier">Pair</span>.</span></span><span class="keyword">class</span><span class="operator"> == </span>p1.get<span class="constructor">Class()</span>); <span class="comment">//true</span></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="module-access"><span class="module"><span class="identifier">Pair</span>.</span></span><span class="keyword">class</span><span class="operator"> == </span>p2.get<span class="constructor">Class()</span>); <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>结果：都是 <code>true</code>。</li>
-<li>原因：<strong>一个泛型对象的 <code>getClass()</code> 方法的返回值与原始类型对象是相同的</strong>。</li>
+<li>结果：都是 <code>true</code></li>
+<li>原因：<strong>一个泛型对象的 <code>getClass()</code> 方法的返回值与原始类型对象是相同的</strong></li>
 </ul>
 <h4 id="5-下面代码是否合法，为什么"><a href="#5-下面代码是否合法，为什么" class="headerlink" title="5. 下面代码是否合法，为什么"></a>5. 下面代码是否合法，为什么</h4><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 代码1</span></span><br><span class="line"><span class="function"><span class="title">if</span><span class="params">(p1 instanceof Pair&lt;Integer&gt;)</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 代码2</span></span><br><span class="line"><span class="function"><span class="title">if</span><span class="params">(p1 instanceof Pair&lt;?&gt;)</span></span></span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>结果：代码 1 不合法；代码 2 合法。</li>
-<li>原因：<code>instanceof</code> 关键字后面是接口或类名，<strong><code>instanceof</code> 是运行时判断，也与泛型无关，但支持通配符</strong>。</li>
+<li>结果：代码 1 不合法；代码 2 合法</li>
+<li>原因：<code>instanceof</code> 关键字后面是接口或类名，<strong><code>instanceof</code> 是运行时判断，也与泛型无关，但支持通配符</strong></li>
 </ul>
 <h4 id="6-下面代码是否合法，为什么，解决方法是"><a href="#6-下面代码是否合法，为什么，解决方法是" class="headerlink" title="6. 下面代码是否合法，为什么，解决方法是"></a>6. 下面代码是否合法，为什么，解决方法是</h4><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Child</span> <span class="keyword">extends</span> <span class="title">Base</span> <span class="title">Implements</span> <span class="title">Comparable&lt;Child&gt;</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 主体代码</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li><p>结论：Java 编译报错。</p>
+<li><p>结论：Java 编译报错</p>
 </li>
-<li><p><code>Comparable</code> 接口不能被实现两次，且两次<strong>实现的类型参数</strong>还不同，一次是 <code>Comparable&lt;Base&gt;</code>，一次是 <code>Comparable&lt;Child&gt;</code>。因为<strong>类型擦除后，实际上只能有一个</strong>。</p>
+<li><p><code>Comparable</code> 接口不能被实现两次，且两次<strong>实现的类型参数</strong>还不同，一次是 <code>Comparable&lt;Base&gt;</code>，一次是 <code>Comparable&lt;Child&gt;</code>。因为<strong>类型擦除后，实际上只能有一个</strong></p>
 </li>
-<li><p>解决方法：只能重写 <code>Base</code> 类的实现。</p>
+<li><p>解决方法：只能重写 <code>Base</code> 类的实现</p>
   <figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Child</span> <span class="keyword">extends</span> <span class="title">Base</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    public int compareTo(<span class="type">Base</span> o) &#123;</span><br><span class="line">        <span class="keyword">if</span>(!(o instanceof <span class="type">Child</span>)) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="type">IllegalArgumentException</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">Child</span> c = (<span class="type">Child</span>) o;</span><br><span class="line">        <span class="comment">// 比较代码</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//其他代码</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 </li>
@@ -299,23 +299,23 @@
 <h4 id="7-下面定义重载方法是否正确，为什么"><a href="#7-下面定义重载方法是否正确，为什么" class="headerlink" title="7. 下面定义重载方法是否正确，为什么"></a>7. 下面定义重载方法是否正确，为什么</h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">(DynamicArray&lt;Integer&gt; intArr)</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">(DynamicArray&lt;<span class="keyword">String</span>&gt; strArr)</span></span></span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>结论：错误。</li>
-<li>原因：<strong>重载方法后，因为类型擦除，它们的声明是一样的</strong>。</li>
+<li>结论：错误</li>
+<li>原因：<strong>重载方法后，因为类型擦除，它们的声明是一样的</strong></li>
 </ul>
 <h4 id="8-下面代码是否合法，为什么"><a href="#8-下面代码是否合法，为什么" class="headerlink" title="8. 下面代码是否合法，为什么"></a>8. 下面代码是否合法，为什么</h4><figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//<span class="built_in">T</span> 是类型参数</span><br><span class="line"><span class="built_in">T</span> elm = new <span class="built_in">T</span>();</span><br><span class="line"><span class="built_in">T</span>[] arr = new <span class="built_in">T</span>[<span class="number">10</span>];</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>结论：非法。</li>
-<li>原因：因为如果允许，那么用户会以为创建的就是对应类型的对象，但由于<strong>类型擦除</strong>，Java 只能创建 <code>Object</code> 类型的对象。<ul>
-<li>Java 运行时根本不知道 <code>T</code> 是什么，也就无法创建 <code>T</code> 类型的对象。容易引起误解，所以 Java 干脆禁止这么做。</li>
-<li>即：<strong>Java 不支持通过类型参数创建对象</strong>。</li>
+<li>结论：非法</li>
+<li>原因：因为如果允许，那么用户会以为创建的就是对应类型的对象，但由于<strong>类型擦除</strong>，Java 只能创建 <code>Object</code> 类型的对象<ul>
+<li>Java 运行时根本不知道 <code>T</code> 是什么，也就无法创建 <code>T</code> 类型的对象。容易引起误解，所以 Java 干脆禁止这么做</li>
+<li>即：<strong>Java 不支持通过类型参数创建对象</strong></li>
 </ul>
 </li>
 </ul>
 <h4 id="9-接上题，如果确实希望根据类型创建对象呢，举个栗子"><a href="#9-接上题，如果确实希望根据类型创建对象呢，举个栗子" class="headerlink" title="9. 接上题，如果确实希望根据类型创建对象呢，举个栗子"></a>9. 接上题，如果确实希望根据类型创建对象呢，举个栗子</h4><ul>
-<li><p>需要设计 API 接受类型对象，即 <code>Class</code> 对象，并使用 <code>Java</code> 中的<strong>反射机制</strong>。</p>
+<li><p>需要设计 API 接受类型对象，即 <code>Class</code> 对象，并使用 <code>Java</code> 中的<strong>反射机制</strong></p>
 </li>
-<li><p>如果类型有<strong>默认构造方法</strong>，可以调用 <code>Class</code> 的 <strong><code>newInstance()</code></strong> 方法构建对象。</p>
+<li><p>如果类型有<strong>默认构造方法</strong>，可以调用 <code>Class</code> 的 <strong><code>newInstance()</code></strong> 方法构建对象</p>
   <figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">public</span> static &lt;T&gt; T <span class="keyword">create</span>(<span class="keyword">Class</span>&lt;T&gt; <span class="keyword">type</span>) &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">type</span>.newInstance();</span><br><span class="line">    &#125; catch (<span class="keyword">Exception</span> e) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">Date</span> <span class="type">date</span> = <span class="keyword">create</span>(<span class="type">Date</span>.<span class="keyword">class</span>);</span><br><span class="line">StringBuilder sb = <span class="keyword">create</span>(StringBuilder.<span class="keyword">class</span>);</span><br></pre></td></tr></table></figure>
 
 </li>
@@ -323,61 +323,61 @@
 <h4 id="10-下面代码是否合法，为什么"><a href="#10-下面代码是否合法，为什么" class="headerlink" title="10. 下面代码是否合法，为什么"></a>10. 下面代码是否合法，为什么</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> T instance;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">static</span> T <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">//创建实例</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>结论：非法。</li>
-<li>原因：如果合法，那么对于每种实例化类型，都需要有一个对应的静态变量和方法。但由于<strong>类型擦除</strong>，<code>Singleton</code> 类型只有一份，静态变量和方法都是类型的属性，且与类型参数无关。所以，<strong>对于泛型类声明的类型参数，可以在实例变量和方法中使用，但在静态变量和静态方法中是不能使用的</strong>。</li>
-<li>注意：<strong>对于静态方法，它可以是泛型的，可以声明自己的类型参数，这个参数与泛型类的类型参数是没有关系的</strong>。</li>
+<li>结论：非法</li>
+<li>原因：如果合法，那么对于每种实例化类型，都需要有一个对应的静态变量和方法。但由于<strong>类型擦除</strong>，<code>Singleton</code> 类型只有一份，静态变量和方法都是类型的属性，且与类型参数无关。所以，<strong>对于泛型类声明的类型参数，可以在实例变量和方法中使用，但在静态变量和静态方法中是不能使用的</strong></li>
+<li>注意：<strong>对于静态方法，它可以是泛型的，可以声明自己的类型参数，这个参数与泛型类的类型参数是没有关系的</strong></li>
 </ul>
 <h4 id="11-Java-泛型支持多个上界吗，举个栗子"><a href="#11-Java-泛型支持多个上界吗，举个栗子" class="headerlink" title="11. Java 泛型支持多个上界吗，举个栗子"></a>11. Java 泛型支持多个上界吗，举个栗子</h4><ul>
-<li><strong>支持，多个上界之间以 <code>&amp;</code> 分隔</strong>。</li>
-<li><code>Demo</code>：<code>T extends Base &amp; Comparable &amp; Serializable;</code><br><code>Base</code> 为<strong>上界类</strong>，<code>Comparable</code> 和 <code>Serializable</code> 为<strong>上界接口</strong>。</li>
-<li><strong>如果有上界类，类应该放在第一个，类型擦除时，会用第一个上界替换</strong>。</li>
+<li><strong>支持，多个上界之间以 <code>&amp;</code> 分隔</strong></li>
+<li><code>Demo</code>：<code>T extends Base &amp; Comparable &amp; Serializable;</code><br><code>Base</code> 为<strong>上界类</strong>，<code>Comparable</code> 和 <code>Serializable</code> 为<strong>上界接口</strong></li>
+<li><strong>如果有上界类，类应该放在第一个，类型擦除时，会用第一个上界替换</strong></li>
 </ul>
 <h4 id="12-下面代码是否合法，为什么"><a href="#12-下面代码是否合法，为什么" class="headerlink" title="12. 下面代码是否合法，为什么"></a>12. 下面代码是否合法，为什么</h4><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Pair&lt;<span class="keyword">Object</span>, <span class="type">Integer</span>&gt; [] <span class="keyword">options</span> = <span class="built_in">new</span> Pair&lt;<span class="keyword">Object</span>, <span class="type">Integer</span>&gt; [] &#123;</span><br><span class="line">    <span class="built_in">new</span> Pair("1 元", <span class="number">7</span>), <span class="built_in">new</span> Pair("2 元", <span class="number">2</span>), <span class="built_in">new</span> Pair("10 元", <span class="number">1</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>结论：Java 编译报错。</li>
-<li>原因：<strong>Java 不支持创建泛型数组</strong>。</li>
+<li>结论：Java 编译报错</li>
+<li>原因：<strong>Java 不支持创建泛型数组</strong></li>
 </ul>
 <h4 id="13-下面代码是否合法，为什么"><a href="#13-下面代码是否合法，为什么" class="headerlink" title="13. 下面代码是否合法，为什么"></a>13. 下面代码是否合法，为什么</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Integer[] <span class="built_in">int</span>s = new Integer[<span class="number">10</span>];</span><br><span class="line">Number[] numbers = <span class="built_in">int</span>s;</span><br><span class="line">Object[] objs = <span class="built_in">int</span>s;</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>结论：合法。</li>
-<li>原因：<strong>数组是 Java 直接支持的概念，它知道数组元素的实际类型</strong>，知道 <code>Object</code> 和 <code>Number</code> 都是 <code>Integer</code> 的父类型，所以后面两种赋值都<strong>是允许的</strong>。</li>
+<li>结论：合法</li>
+<li>原因：<strong>数组是 Java 直接支持的概念，它知道数组元素的实际类型</strong>，知道 <code>Object</code> 和 <code>Number</code> 都是 <code>Integer</code> 的父类型，所以后面两种赋值都<strong>是允许的</strong></li>
 </ul>
 <h4 id="14-下面代码是否正确，为什么"><a href="#14-下面代码是否正确，为什么" class="headerlink" title="14. 下面代码是否正确，为什么"></a>14. 下面代码是否正确，为什么</h4><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Integer</span>[] ints = <span class="built_in">new</span> <span class="type">Integer</span>[<span class="number">10</span>];</span><br><span class="line"><span class="keyword">Object</span>[] objs = ints;</span><br><span class="line">objs[<span class="number">0</span>] = "hello";</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>结论：<strong>编译没有问题，运行时抛出 <code>ArrayStoreException</code> 异常</strong>。</li>
-<li>原因：因为 Java 知道实际的类型是 <code>Integer</code>，所以写入 <code>String</code> 时会抛出异常。</li>
+<li>结论：<strong>编译没有问题，运行时抛出 <code>ArrayStoreException</code> 异常</strong></li>
+<li>原因：因为 Java 知道实际的类型是 <code>Integer</code>，所以写入 <code>String</code> 时会抛出异常</li>
 </ul>
 <h4 id="15-Java-为什么不支持创建泛型数组"><a href="#15-Java-为什么不支持创建泛型数组" class="headerlink" title="15. Java 为什么不支持创建泛型数组"></a>15. Java 为什么不支持创建泛型数组</h4><ul>
-<li>因为如果 Java 支持创建泛型数组，那么<strong>可能会出现类型不匹配的数组赋值的错误操作</strong>，<strong>它既不会引起编译错误，也不会立即触发运行异常</strong>，却相当于埋下一颗定时炸弹💣，不定什么时候爆发。</li>
-<li>为避免这种情况，<strong>Java 干脆就禁止创建泛型数组</strong>。</li>
+<li>因为如果 Java 支持创建泛型数组，那么<strong>可能会出现类型不匹配的数组赋值的错误操作</strong>，<strong>它既不会引起编译错误，也不会立即触发运行异常</strong>，却相当于埋下一颗定时炸弹💣，不定什么时候爆发</li>
+<li>为避免这种情况，<strong>Java 干脆就禁止创建泛型数组</strong></li>
 </ul>
 <h4 id="16-现实中需要能够存放泛型对象的容器，怎么办"><a href="#16-现实中需要能够存放泛型对象的容器，怎么办" class="headerlink" title="16. 现实中需要能够存放泛型对象的容器，怎么办"></a>16. 现实中需要能够存放泛型对象的容器，怎么办</h4><ul>
-<li><p><strong>使用原始数组</strong>。比如：</p>
+<li><p><strong>使用原始数组</strong>。比如</p>
   <figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Pair[] options = <span class="keyword">new</span> <span class="type">Pair</span>[] &#123;</span><br><span class="line">    <span class="keyword">new</span> <span class="type">Pair</span>&lt;<span class="keyword">String</span>, Integer&gt; (<span class="string">"1 元"</span>, <span class="number">7</span>), <span class="keyword">new</span> <span class="type">Pair</span>&lt;<span class="keyword">String</span>, Integer&gt; (<span class="string">"2 元"</span>, <span class="number">2</span>), <span class="keyword">new</span> <span class="type">Pair</span>&lt;<span class="keyword">String</span>, Integer&gt; (<span class="string">"10 元"</span>, <span class="number">1</span>)</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p><strong>更好的选择是，使用泛型容器</strong>。比如：</p>
+<li><p><strong>更好的选择是，使用泛型容器</strong>。比如</p>
   <figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">DynamicArray&lt;<span class="built_in">Pair</span>&lt;<span class="built_in">String</span>, <span class="built_in">Integer</span>&gt;&gt; options = <span class="literal">new</span> DynamicArray&lt;&gt; ();</span><br><span class="line">options.add(<span class="literal">new</span> <span class="built_in">Pair</span>&lt;<span class="built_in">String</span>, <span class="built_in">Integer</span>&gt; (<span class="string">"1 元"</span>, <span class="number">7</span>));</span><br><span class="line">options.add(<span class="literal">new</span> <span class="built_in">Pair</span>&lt;<span class="built_in">String</span>, <span class="built_in">Integer</span>&gt; (<span class="string">"2 元"</span>, <span class="number">2</span>));</span><br><span class="line">options.add(<span class="literal">new</span> <span class="built_in">Pair</span>&lt;<span class="built_in">String</span>, <span class="built_in">Integer</span>&gt; (<span class="string">"10 元"</span>, <span class="number">1</span>));</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
-<h4 id="17-有时，我们希望转换泛型容器为一个数组。比如，对于-DynamicArray，我们可能希望它有这么一个方法：public-E-toArray-，而希望可以如下这么用。即，先使用动态容器收集一些数据，然后转换为一个固定数组，对于这个常见的合理的需求，该怎样实现这个-toArray-方法"><a href="#17-有时，我们希望转换泛型容器为一个数组。比如，对于-DynamicArray，我们可能希望它有这么一个方法：public-E-toArray-，而希望可以如下这么用。即，先使用动态容器收集一些数据，然后转换为一个固定数组，对于这个常见的合理的需求，该怎样实现这个-toArray-方法" class="headerlink" title="17. 有时，我们希望转换泛型容器为一个数组。比如，对于 DynamicArray，我们可能希望它有这么一个方法：public E[] toArray()，而希望可以如下这么用。即，先使用动态容器收集一些数据，然后转换为一个固定数组，对于这个常见的合理的需求，该怎样实现这个 toArray() 方法"></a>17. 有时，我们希望转换泛型容器为一个数组。比如，对于 DynamicArray，我们可能希望它有这么一个方法：public E[] toArray()，而希望可以如下这么用。即，先使用动态容器收集一些数据，然后转换为一个固定数组，对于这个常见的合理的需求，该怎样实现这个 toArray() 方法</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">DynamicArray&lt;Integer&gt; <span class="built_in">int</span>s = new DynamicArray&lt;Integer&gt; ();</span><br><span class="line"><span class="built_in">int</span>s.add(<span class="number">100</span>);</span><br><span class="line"><span class="built_in">int</span>s.add(<span class="number">34</span>);</span><br><span class="line">Integer[] arr = <span class="built_in">int</span>s.toArray();</span><br></pre></td></tr></table></figure>
+<h4 id="17-有时，我们希望转换泛型容器为一个数组。比如，对于-DynamicArray，我们可能希望它有这么一个方法：public-E-toArray-，而希望可以如下这么用。即，先使用动态容器收集一些数据，然后转换为一个固定数组，对于这个常见的合理的需求，该怎样实现这个-toArray-方法"><a href="#17-有时，我们希望转换泛型容器为一个数组。比如，对于-DynamicArray，我们可能希望它有这么一个方法：public-E-toArray-，而希望可以如下这么用。即，先使用动态容器收集一些数据，然后转换为一个固定数组，对于这个常见的合理的需求，该怎样实现这个-toArray-方法" class="headerlink" title="17. 有时，我们希望转换泛型容器为一个数组。比如，对于 DynamicArray，我们可能希望它有这么一个方法：public E[] toArray()，而希望可以如下这么用。即，先使用动态容器收集一些数据，然后转换为一个固定数组，对于这个常见的合理的需求，该怎样实现这个 toArray() 方法"></a>17. 有时，我们希望转换泛型容器为一个数组。比如，对于 <code>DynamicArray</code>，我们可能希望它有这么一个方法：<code>public E[] toArray()</code>，而希望可以如下这么用。即，先使用动态容器收集一些数据，然后转换为一个固定数组，对于这个常见的合理的需求，该怎样实现这个 <code>toArray()</code> 方法</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">DynamicArray&lt;Integer&gt; <span class="built_in">int</span>s = new DynamicArray&lt;Integer&gt; ();</span><br><span class="line"><span class="built_in">int</span>s.add(<span class="number">100</span>);</span><br><span class="line"><span class="built_in">int</span>s.add(<span class="number">34</span>);</span><br><span class="line">Integer[] arr = <span class="built_in">int</span>s.toArray();</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li><p>可以利用 Java 中的<strong>运行时类型信息和反射机制</strong>。</p>
+<li><p>可以利用 Java 中的<strong>运行时类型信息和反射机制</strong></p>
 </li>
-<li><p>Java 必须在运行时知道要转换成的数组类型，类型可以作为参数传递给 toArray() 方法，比如：</p>
+<li><p>Java 必须在运行时知道要转换成的数组类型，类型可以作为参数传递给 toArray() 方法，比如</p>
   <figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">public</span> E[] toArray(<span class="keyword">Class</span>&lt;E&gt; <span class="keyword">type</span>) &#123;</span><br><span class="line">    <span class="keyword">Object</span> copy = <span class="keyword">Array</span>.newInstance(<span class="keyword">type</span>, size);</span><br><span class="line">    <span class="keyword">System</span>.arraycopy(elemendData, <span class="number">0</span>, <span class="keyword">copy</span>, size);</span><br><span class="line">    <span class="keyword">return</span> (E[]) <span class="keyword">copy</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">Integer</span>[] arr = ints.toArray(<span class="type">Integer</span>.<span class="keyword">class</span>);</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
 <h4 id="18-泛型和数组的关系"><a href="#18-泛型和数组的关系" class="headerlink" title="18. 泛型和数组的关系"></a>18. 泛型和数组的关系</h4><ul>
-<li>一般并不需要特别记忆，根据提示进行正确处理即可：<ul>
-<li><strong>Java 不支持创建泛型数组</strong>。</li>
-<li>如果要存放泛型对象，可以使用原始类型的数组，或者使用泛型容器。</li>
-<li>泛型容器内部使用 <code>Object</code> 数组，如果要转换泛型容器为对应类型的数组，需要使用反射。</li>
+<li>一般并不需要特别记忆，根据提示进行正确处理即可<ul>
+<li><strong>Java 不支持创建泛型数组</strong></li>
+<li>如果要存放泛型对象，可以使用原始类型的数组，或者使用泛型容器</li>
+<li>泛型容器内部使用 <code>Object</code> 数组，如果要转换泛型容器为对应类型的数组，需要使用反射</li>
 </ul>
 </li>
 </ul>
