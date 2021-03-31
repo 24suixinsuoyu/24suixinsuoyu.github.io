@@ -36,7 +36,7 @@
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1goylo84tw5j30k70e33z1.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gp1xror1qsj30r80bnjs5.jpg">
 <meta property="article:published_time" content="2020-04-10T02:17:30.000Z">
-<meta property="article:modified_time" content="2021-03-30T19:05:52.196Z">
+<meta property="article:modified_time" content="2021-03-31T06:54:15.789Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="编程基础">
 <meta property="article:tag" content="深入理解 Java 虚拟机">
@@ -222,7 +222,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-31 03:05:52" itemprop="dateModified" datetime="2021-03-31T03:05:52+08:00">2021-03-31</time>
+                <time title="修改时间：2021-03-31 14:54:15" itemprop="dateModified" datetime="2021-03-31T14:54:15+08:00">2021-03-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -240,14 +240,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>19k</span>
+              <span>21k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>17 分钟</span>
+              <span>19 分钟</span>
             </span>
 
         </div>
@@ -1289,7 +1289,9 @@
 <li>接口与类真正有所区别的是前面讲述的<strong>六种“有且仅有”场景中的第三种</strong>：当一个类在初始化时，要求其父类全部都已经初始化过了，但是<strong>一个接口在初始化时，并不要求其父接口全部都完成初始化，只有在真正使用到父接口的时候（如引用接口中定义的常量）才会初始化</strong>    </li>
 </ul>
 <h3 id="类加载过程"><a href="#类加载过程" class="headerlink" title="类加载过程"></a>类加载过程</h3><h4 id="1-加载"><a href="#1-加载" class="headerlink" title="1. 加载"></a>1. 加载</h4><ul>
-<li><p><strong>“加载”（Loading）</strong>阶段是整个“类加载（Class Loading）”过程中的一个阶段。在加载阶段，Java 虚拟机需要完成以下三件事情</p>
+<li><p><strong>概述</strong></p>
+<ul>
+<li><p><strong>“加载”（Loading）</strong>阶段是整个<strong>“类加载（Class Loading）”</strong>过程中的一个阶段。在加载阶段，Java 虚拟机需要完成以下三件事情</p>
 <ul>
 <li>通过一个类的<strong>全限定名</strong>来获取定义此类的<strong>二进制字节流</strong></li>
 <li>将这个字节流所代表的<strong>静态存储结构</strong>转化为<strong>方法区的运行时数据结构</strong></li>
@@ -1306,31 +1308,121 @@
 <li><strong>从加密文件中获取</strong>，这是典型的防 Class 文件被反编译的保护措施，通过加载时解密 Class 文件来保障程序运行逻辑不被窥探</li>
 </ul>
 </li>
-<li><p>数组类的情况有所不同，<strong>数组类本身不通过类加载器创建，它是由 Java 虚拟机直接在内存中动态构造出来的</strong>。但数组类与类加载器仍然有很密切的关系，<strong>因为数组类的元素类型（Element Type，指的是数组去掉所有维度的类型）最终还是要靠类加载器来完成加载</strong>。一个数组类（简称 C）创建过程遵循以下规则</p>
+</ul>
+</li>
+<li><p><strong>数组加载</strong></p>
 <ul>
+<li>数组类的情况有所不同，<strong>数组类本身不通过类加载器创建，它是由 Java 虚拟机直接在内存中动态构造出来的</strong></li>
+<li>但数组类与类加载器仍然有很密切的关系，<strong>因为数组类的元素类型（Element Type，指的是数组去掉所有维度的类型）最终还是要靠类加载器来完成加载</strong>。一个数组类（简称 C）创建过程遵循以下规则<ul>
 <li>如果数组的组件类型（<strong>Component Type</strong>，指的是数组去掉一个维度的类型，<del>注意和前面的元素类型区分开来</del>）是<strong>引用类型</strong>，那就<strong>递归加载</strong>这个组件类型，数组 C 将被标识在加载该组件类型的类加载器的类名称空间上</li>
 <li>如果数组的组件类型<strong>不是引用类型</strong>（例如 <code>int[]</code> 数组的组件类型为 <code>int</code>），Java 虚拟机将会把数组 C 标记为与引导类加载器关联</li>
 <li>数组类的可访问性与它的组件类型的可访问性一致，如果组件类型不是引用类型，它的数组类的可访问性将默认为 <strong><code>public</code></strong>，可被所有的类和接口访问到</li>
 </ul>
 </li>
 </ul>
+</li>
+</ul>
 <h4 id="2-验证"><a href="#2-验证" class="headerlink" title="2. 验证"></a>2. 验证</h4><ul>
+<li><p><strong>概述</strong></p>
+<ul>
 <li><strong>目标</strong>：确保 Class 文件的字节流中包含的信息符合《Java 虚拟机规范》的全部<strong>约束要求</strong>，保证这些信息被当作代码运行后<strong>不会危害</strong>虚拟机自身的安全</li>
 <li><strong>理由</strong>：Class 文件不一定只能由 Java 源码编译而来，Java 虚拟机如果不检查输入的字节流，对其完全信任的话，很可能会因为载入了有错误或有恶意企图的字节码流而导致真个系统受攻击甚至崩溃，所以验证字节码是 <strong>Java 虚拟机保护自身</strong>的一项必要措施。从代码量和耗费的执行性能的角度，验证阶段的工作量在虚拟机的类加载过程中占了相当大的比重</li>
+<li><strong>设置</strong>：相关验证步骤均可以通过相关虚拟机参数进行设置</li>
 </ul>
-<ol>
-<li>文件格式验证</li>
-</ol>
-<ol start="2">
-<li>元数据验证</li>
-</ol>
-<ol start="3">
-<li>字节码验证</li>
-</ol>
-<ol start="4">
-<li>符号引用验证</li>
-</ol>
-<h4 id="3-准备"><a href="#3-准备" class="headerlink" title="3. 准备"></a>3. 准备</h4><h4 id="4-解析"><a href="#4-解析" class="headerlink" title="4. 解析"></a>4. 解析</h4><h4 id="5-初始化"><a href="#5-初始化" class="headerlink" title="5. 初始化"></a>5. 初始化</h4><h3 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h3><h3 id="Java-模块化系统"><a href="#Java-模块化系统" class="headerlink" title="Java 模块化系统"></a>Java 模块化系统</h3><h2 id="六-Java-内存模型概述"><a href="#六-Java-内存模型概述" class="headerlink" title="六. Java 内存模型概述"></a>六. Java 内存模型概述</h2>
+</li>
+<li><p><strong>文件格式验证：验证字节流是否符合 Class 文件格式规范</strong></p>
+<ul>
+<li>是否以<strong>魔数</strong> <code>0xCAFEBABE</code> 开头</li>
+<li><strong>主、次版本号</strong>是否在当前 Java 虚拟机接受范围之内</li>
+<li>常量池的<strong>常量</strong>中是否有不被支持的常量类型（检查常量 tag 标志）</li>
+<li>指向常量的各种<strong>索引值</strong>中是否有指向不存在的常量或不符合类型的常量</li>
+<li><code>CONSTANT_Utf8_info</code> 型的常量中是否有不符合 <strong>UTF-8</strong> 编码的数据</li>
+<li>Class 文件中各个部分及文件本身是否有被删除的或附加的<strong>其他信息</strong></li>
+</ul>
+</li>
+<li><p><strong>元数据验证：对字节码描述的信息进行语义分析和语义校验</strong></p>
+<ul>
+<li>这个类是否有<strong>父类</strong>（除了 <code>java.lang.Object</code> 之外，所有的类都应当有父类）</li>
+<li>这个类的父类是否<strong>继承</strong>了不允许被继承的类（被 <code>final</code> 修饰的类）</li>
+<li>如果这个类不是<strong>抽象类</strong>，是否实现了其父类或接口中要求实现的所有方法</li>
+<li>类中的<strong>字段</strong>、方法是否与父类产生矛盾（例如覆盖了父类的 <code>final</code> 字段，或者出现不符合规则的方法重载，例如方法参数都一致，但返回值类型却不同等）</li>
+</ul>
+</li>
+<li><p><strong>字节码验证：整个验证过程中最复杂的一个阶段</strong></p>
+<ul>
+<li><p><strong>目标</strong>：通过<strong>数据流分析</strong>和<strong>控制流分析</strong>，确定程序语义是合法的、符合逻辑的</p>
+</li>
+<li><p><strong>作用</strong>：对类的<strong>方法体（Class 文件中的 <code>Code</code> 属性）</strong>进行校验分析，保证被校验类的方法在运行时不会做出危害虚拟机安全的行为</p>
+<ul>
+<li>保证任意时刻<strong>操作数栈</strong>的数据类型与指令代码序列都能配合工作（例如不会出现类似于“在操作数栈放置了一个 <code>int</code> 类型的数据，使用时却按 <code>long</code> 类型类载入本地变量表中”这样的情况）</li>
+<li>保证任何<strong>跳转指令</strong>都不会跳转到方法体以外的字节码指令上</li>
+<li>保证方法体中的<strong>类型转换</strong>总是有效的（例如可以把一个子类对象赋值给父类数据类型，这是安全的，但是把父类对象赋值给子类数据类型、甚至把对象赋值给与它毫无继承关系、完全不相干的一个数据类型，则是危险和不合法的）</li>
+</ul>
+</li>
+<li><p><strong>停机问题（Halting Problem）</strong>：这是<strong>离散数学</strong>中的一个概念，即不能通过程序准确检查出程序是否能在有限时间之内结束运行</p>
+<ul>
+<li>字节码验证阶段进行了再大量再严密的检查，也依然不能保证程序绝对没有问题</li>
+<li>通过程序去校验程序逻辑是无法做到绝对准确的，不可能用程序来准确判定一段程序是否存在 Bug（<del>程序员甩锅的理论依据，go home</del>）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>符号引用验证：对类自身以外（常量池中的各种符号引用）的各类信息进行匹配性校验，即该类是否缺少或者被禁止访问它依赖的某些外部类、方法、字段等资源</strong></p>
+<ul>
+<li>符号引用中通过字符串描述的<strong>全限定名</strong>是否能找到对应的类</li>
+<li>在指定类中是否存在符合方法的<strong>字段描述</strong>及简单名称所描述的方法和字段</li>
+<li>符号引用中的类、字段、方法的<strong>可访问性</strong>（<code>private</code>、<code>protected</code>、<code>public</code>、<code>&lt;package&gt;</code>）是否可被当前类访问</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-准备"><a href="#3-准备" class="headerlink" title="3. 准备"></a>3. 准备</h4><ul>
+<li><p><strong>概念</strong></p>
+<ul>
+<li><strong>为静态变量分配内存并设置初始值（不包括 <code>final</code> 修饰的情况）</strong></li>
+</ul>
+</li>
+<li><p><strong>存储区域</strong></p>
+<ul>
+<li>为静态变量分配内存是在<strong>方法区</strong>上进行，但方法区本身是一个<strong>逻辑上</strong>的区域</li>
+<li><strong>在 JDK 7 及之前</strong>，HotSpot 虚拟机使用永久代来实现方法区，是符合这种逻辑概念的</li>
+<li><strong>在 JDK 8 及之后</strong>，静态变量会随着 Class 对象一起存放在 Java 堆中</li>
+</ul>
+</li>
+<li><p><strong>操作对象</strong></p>
+<ul>
+<li>准备阶段进行内存分配<strong>仅针对静态变量</strong>，<strong>不包括实例变量</strong></li>
+<li>实例变量将会在对象实例化时随着对象一起分配在 <strong>Java 堆</strong>中</li>
+</ul>
+</li>
+<li><p><strong>特殊情况</strong></p>
+<ul>
+<li>如果静态变量被 <strong><code>final</code></strong> 修饰，那么编译时 Javac 将会为该变量生成 <code>ConstantValue</code> 属性</li>
+<li>在准备阶段虚拟机根据 <strong><code>ConstantValue</code></strong> 的设置将变量初始化赋值为设置的值</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-解析"><a href="#4-解析" class="headerlink" title="4. 解析"></a>4. 解析</h4><ul>
+<li><p><strong>概念</strong></p>
+<ul>
+<li><p>Java 虚拟机将常量池内的<strong>符号引用</strong>替换为<strong>直接引用</strong></p>
+</li>
+<li><p><strong>符号引用（Symbolic References）</strong></p>
+<ul>
+<li>符号引用以一组符号来描述所引用的目标，符号可以是任何形式的字面量，只要使用时能无歧义地定位到目标即可</li>
+<li>符号引用与虚拟机实现的内存布局无关，引用的目标并不一定是已经加载到虚拟机内存当中的内容</li>
+</ul>
+</li>
+<li><p><strong>直接引用（Direct References）</strong></p>
+<ul>
+<li>直接引用是可以直接指向目标的指针、相对偏移量或者是一个能间接定位到目标的句柄</li>
+<li>直接引用是和虚拟机实现的内存布局直接相关的，同一个符号引用在不同虚拟机实例上翻译出来的直接引用一般不会相同</li>
+<li>如果有了直接引用，那引用的目标必定已经在虚拟机的内存中存在</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="5-初始化"><a href="#5-初始化" class="headerlink" title="5. 初始化"></a>5. 初始化</h4><h3 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h3><h3 id="Java-模块化系统"><a href="#Java-模块化系统" class="headerlink" title="Java 模块化系统"></a>Java 模块化系统</h3><h2 id="六-Java-内存模型概述"><a href="#六-Java-内存模型概述" class="headerlink" title="六. Java 内存模型概述"></a>六. Java 内存模型概述</h2>
     </div>
 
     
@@ -1548,7 +1640,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">21:26</span>
+    <span title="站点阅读时长">21:28</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
