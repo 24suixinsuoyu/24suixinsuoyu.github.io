@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. final 关键字的作用">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-04-13T07:52:57.000Z">
-<meta property="article:modified_time" content="2020-04-13T08:28:34.000Z">
+<meta property="article:modified_time" content="2021-03-31T20:09:51.557Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="类的基础">
 <meta property="article:tag" content="类的基本概念">
@@ -207,10 +207,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-04-13 15:52:57 / 修改时间：16:28:34" itemprop="dateCreated datePublished" datetime="2020-04-13T15:52:57+08:00">2020-04-13</time>
+              <time title="创建时间：2020-04-13 15:52:57" itemprop="dateCreated datePublished" datetime="2020-04-13T15:52:57+08:00">2020-04-13</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-04-01 04:09:51" itemprop="dateModified" datetime="2021-04-01T04:09:51+08:00">2021-04-01</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -227,7 +233,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.2k</span>
+              <span>1.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -246,56 +252,56 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-final-关键字的作用"><a href="#1-final-关键字的作用" class="headerlink" title="1. final 关键字的作用"></a>1. final 关键字的作用</h4><a id="more"></a>
+        <h4 id="1-final-关键字的作用"><a href="#1-final-关键字的作用" class="headerlink" title="1. final 关键字的作用"></a>1. <code>final</code> 关键字的作用</h4><a id="more"></a>
 
 <ul>
-<li><code>final</code> 在修饰变量（<strong>静态变量</strong>、<strong>实例变量</strong>）的时候表示常量，即只能被赋值一次、变量在赋值后就不能再修改了，使用 <code>final</code> 可以避免误操作。</li>
-<li><code>final</code> 还可以修饰<strong>实例方法</strong>和<strong>局部变量</strong>。</li>
+<li><code>final</code> 在修饰变量（<strong>静态变量</strong>、<strong>实例变量</strong>）的时候表示常量，即只能被赋值一次、变量在赋值后就不能再修改了，使用 <code>final</code> 可以避免误操作</li>
+<li><code>final</code> 还可以修饰<strong>实例方法</strong>和<strong>局部变量</strong></li>
+<li><a href="http://24suixinsuoyu.com/2020/04/10/Java-%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80%EF%BC%88%E4%B8%83%EF%BC%89%EF%BC%9A%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3-Java-%E8%99%9A%E6%8B%9F%E6%9C%BA/">Java 内存模型中保证可见性（Visibility）</a></li>
 </ul>
 <h4 id="2-实例方法直接访问实例变量，实现原理是"><a href="#2-实例方法直接访问实例变量，实现原理是" class="headerlink" title="2. 实例方法直接访问实例变量，实现原理是"></a>2. 实例方法直接访问实例变量，实现原理是</h4><ul>
-<li>在实例方法中，有一个<strong>隐含的参数</strong>，这个参数就是当前操作的实例自己 <strong><code>this</code></strong>。</li>
-<li>直接操作实例变量，实际也需要通过参数进行。</li>
+<li>在实例方法中，有一个<strong>隐含的参数</strong>，这个参数就是当前操作的实例自己 <strong><code>this</code></strong></li>
+<li>直接操作实例变量，实际也需要通过参数进行</li>
 </ul>
 <h4 id="3-实例方法和类方法（静态方法）的区别"><a href="#3-实例方法和类方法（静态方法）的区别" class="headerlink" title="3. 实例方法和类方法（静态方法）的区别"></a>3. 实例方法和类方法（静态方法）的区别</h4><ul>
-<li>静态方法只能访问静态变量，不能访问实例变量，可以调用其他的静态方法，不能调用实例方法。</li>
-<li>实例方法既能访问实例变量，也能访问静态变量，既可以调用实例方法，也可以调用静态方法。</li>
-<li>可以简单理解为：<strong>静态是实例的子集</strong>。</li>
+<li>静态方法只能访问静态变量，不能访问实例变量，可以调用其他的静态方法，不能调用实例方法</li>
+<li>实例方法既能访问实例变量，也能访问静态变量，既可以调用实例方法，也可以调用静态方法</li>
 </ul>
-<h4 id="4-实际开发中，我们经常把实例变量定义为-private-的原因是"><a href="#4-实际开发中，我们经常把实例变量定义为-private-的原因是" class="headerlink" title="4. 实际开发中，我们经常把实例变量定义为 private 的原因是"></a>4. 实际开发中，我们经常把实例变量定义为 private 的原因是</h4><ul>
-<li>这是<strong>为了减少误操作</strong>，直接访问变量没有办法进行参数检查和控制。</li>
-<li>而<strong>通过方法修改</strong>，可以在方法中进行检查。</li>
+<h4 id="4-实际开发中，我们经常把实例变量定义为-private-的原因是"><a href="#4-实际开发中，我们经常把实例变量定义为-private-的原因是" class="headerlink" title="4. 实际开发中，我们经常把实例变量定义为 private 的原因是"></a>4. 实际开发中，我们经常把实例变量定义为 <code>private</code> 的原因是</h4><ul>
+<li>这是<strong>为了减少误操作</strong>，直接访问变量没有办法进行参数检查和控制</li>
+<li>而<strong>通过方法修改</strong>，可以在方法中进行检查</li>
 </ul>
 <h4 id="5-静态初始化代码块的执行时机是"><a href="#5-静态初始化代码块的执行时机是" class="headerlink" title="5. 静态初始化代码块的执行时机是"></a>5. 静态初始化代码块的执行时机是</h4><ul>
-<li>静态初始化代码块在<strong>类加载</strong>的时候执行，<strong>在任何对象创建之前执行，且只执行一次</strong>。</li>
-<li><strong>基静态、子静态 -&gt; 基实例代码块、基构造 -&gt; 子实例代码块、子构造</strong>。</li>
+<li>静态初始化代码块在<strong>类加载</strong>的时候执行，<strong>在任何对象创建之前执行，且只执行一次</strong></li>
+<li>结论：<strong>基静态、子静态 -&gt; 基实例代码块、基构造 -&gt; 子实例代码块、子构造</strong></li>
 </ul>
 <h4 id="6-构造方法的特点"><a href="#6-构造方法的特点" class="headerlink" title="6. 构造方法的特点"></a>6. 构造方法的特点</h4><ul>
-<li><strong>名称</strong>是固定的，与类名相同。</li>
-<li>没有<strong>返回值</strong>，也不能有返回值。构造方法隐含的返回值就是实例本身。</li>
-<li>通过构造方法，可以更为简洁地对实例变量进行<strong>赋值</strong>。</li>
-<li>调用构造方法是 new 过程的一部分，实例方法通过对象调用，<strong>构造方法通过 new 调用</strong>。</li>
+<li><strong>名称</strong>是固定的，与类名相同</li>
+<li>没有<strong>返回值</strong>，也不能有返回值。构造方法隐含的返回值就是实例本身</li>
+<li>通过构造方法，可以更为简洁地对实例变量进行<strong>赋值</strong></li>
+<li>调用构造方法是 new 过程的一部分，实例方法通过对象调用，<strong>构造方法通过 new 调用</strong></li>
 </ul>
-<h4 id="7-this-关键字的作用"><a href="#7-this-关键字的作用" class="headerlink" title="7. this 关键字的作用"></a>7. this 关键字的作用</h4><ul>
-<li>表示<strong>当前实例</strong>。</li>
-<li>用于<strong>在构造方法中调用其他构造方法（必须放在第一行）</strong>。</li>
+<h4 id="7-this-关键字的作用"><a href="#7-this-关键字的作用" class="headerlink" title="7. this 关键字的作用"></a>7. <code>this</code> 关键字的作用</h4><ul>
+<li>表示<strong>当前实例</strong></li>
+<li>用于<strong>在构造方法中调用其他构造方法（必须放在第一行）</strong></li>
 </ul>
-<h4 id="8-this-用于调用构造方法时为什么必须放在第一行"><a href="#8-this-用于调用构造方法时为什么必须放在第一行" class="headerlink" title="8. this 用于调用构造方法时为什么必须放在第一行"></a>8. this 用于调用构造方法时为什么必须放在第一行</h4><ul>
-<li><strong>为了避免误操作，防止后续修改被覆盖</strong>。</li>
-<li>构造方法是用于初始化对象的，<strong>如果要调用别的构造方法，先调用别的，然后根据情况自己再做调整</strong>。</li>
-<li>而如果反过来自己先初始化了一部分，再调用别的，自己的修改可能就被覆盖了。</li>
+<h4 id="8-this-用于调用构造方法时为什么必须放在第一行"><a href="#8-this-用于调用构造方法时为什么必须放在第一行" class="headerlink" title="8. this 用于调用构造方法时为什么必须放在第一行"></a>8. <code>this</code> 用于调用构造方法时为什么必须放在第一行</h4><ul>
+<li><strong>为了避免误操作，防止后续修改被覆盖</strong></li>
+<li>构造方法是用于初始化对象的，<strong>如果要调用别的构造方法，先调用别的，然后根据情况自己再做调整</strong></li>
+<li>而如果反过来自己先初始化了一部分，再调用别的，自己的修改可能就被覆盖了</li>
 </ul>
 <h4 id="9-默认构造方法的特点"><a href="#9-默认构造方法的特点" class="headerlink" title="9. 默认构造方法的特点"></a>9. 默认构造方法的特点</h4><ul>
-<li><strong>每个类都至少要有一个构造方法</strong>，在通过 <code>new</code> 创建对象的过程中会被调用。</li>
-<li>但如果构造方法没什么操作要做，就可以省略。<strong>Java 编译器</strong>会自动生成一个默认的构造方法，也没有具体操作。但一旦定义了构造方法，Java 就不会再自动生成默认的。</li>
+<li><strong>每个类都至少要有一个构造方法</strong>，在通过 <code>new</code> 创建对象的过程中会被调用</li>
+<li>但如果构造方法没什么操作要做，就可以省略。<strong>Java 编译器</strong>会自动生成一个默认的构造方法，也没有具体操作。但一旦定义了构造方法，Java 就不会再自动生成默认的</li>
 </ul>
 <h4 id="10-为什么-Java-有时候自动生成构造方法，有时候不生成呢"><a href="#10-为什么-Java-有时候自动生成构造方法，有时候不生成呢" class="headerlink" title="10. 为什么 Java 有时候自动生成构造方法，有时候不生成呢"></a>10. 为什么 Java 有时候自动生成构造方法，有时候不生成呢</h4><ul>
-<li>在没有定义任何构造方法的时候，<strong>Java 认为用户不需要</strong>，所以就生成一个空的以被 <code>new</code> 过程调用。</li>
-<li>定义了构造方法的时候，<strong>Java 认为用户知道自己在干什么</strong>，认为用户是有意不想要不带参数的构造方法，所以不会自动生成。</li>
+<li>在没有定义任何构造方法的时候，<strong>Java 认为用户不需要</strong>，所以就生成一个空的以被 <code>new</code> 过程调用</li>
+<li>定义了构造方法的时候，<strong>Java 认为用户知道自己在干什么</strong>，认为用户是有意不想要不带参数的构造方法，所以不会自动生成</li>
 </ul>
 <h4 id="11-私有构造方法的使用场景可能有哪些"><a href="#11-私有构造方法的使用场景可能有哪些" class="headerlink" title="11. 私有构造方法的使用场景可能有哪些"></a>11. 私有构造方法的使用场景可能有哪些</h4><ul>
-<li><strong>不能创建类的实例，类只能被静态访问</strong>。如 <code>Math</code> 和 <code>Array</code> 类，它们的构造方法就是私有的。</li>
-<li>能创建类的实例，但只能被类的静态方法调用。常见的使用场景是<strong>单例模式</strong>：类的对象有且只能有一个（在单例的场景中，对象是通过静态方法获取的，而静态方法调用私有构造方法创建一个对象，如果对象已经创建过了，就重用这个对象，这也是单例模式的初衷）。</li>
-<li>只是用来<strong>被其他多个构造方法调用</strong>，用于减少重复代码。</li>
+<li><strong>不能创建类的实例，类只能被静态访问</strong>。如 <code>Math</code> 和 <code>Array</code> 类，它们的构造方法就是私有的</li>
+<li>能创建类的实例，但只能被类的静态方法调用。常见的使用场景是<strong>单例模式</strong>：类的对象有且只能有一个</li>
+<li>只是用来<strong>被其他多个构造方法调用</strong>，用于减少重复代码</li>
 </ul>
 
     </div>
