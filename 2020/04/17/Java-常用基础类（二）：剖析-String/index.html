@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. 创建 String 有哪几种方式">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-04-17T13:22:39.000Z">
-<meta property="article:modified_time" content="2020-04-21T02:58:56.000Z">
+<meta property="article:modified_time" content="2021-03-31T22:06:33.217Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="常用基础类">
 <meta property="article:tag" content="剖析 String">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-21 10:58:56" itemprop="dateModified" datetime="2020-04-21T10:58:56+08:00">2020-04-21</time>
+                <time title="修改时间：2021-04-01 06:06:33" itemprop="dateModified" datetime="2021-04-01T06:06:33+08:00">2021-04-01</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,7 +233,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.9k</span>
+              <span>1.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -252,72 +252,71 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-创建-String-有哪几种方式"><a href="#1-创建-String-有哪几种方式" class="headerlink" title="1. 创建 String 有哪几种方式"></a>1. 创建 String 有哪几种方式</h4><a id="more"></a>
+        <h4 id="1-创建-String-有哪几种方式"><a href="#1-创建-String-有哪几种方式" class="headerlink" title="1. 创建 String 有哪几种方式"></a>1. 创建 <code>String</code> 有哪几种方式</h4><a id="more"></a>
 
 <ul>
 <li><strong>常量定义</strong>：<code>String name = &quot;你真棒&quot;;</code></li>
 <li><strong><code>new</code> 创建</strong>：<code>String name = new String(&quot;你真棒&quot;);</code></li>
 <li><strong><code>+/+=</code> 运算符</strong>：<code>String name = &quot;你&quot;; name += &quot;真棒&quot;;</code></li>
 </ul>
-<h4 id="2-怎样理解-String"><a href="#2-怎样理解-String" class="headerlink" title="2. 怎样理解 String"></a>2. 怎样理解 String</h4><ul>
+<h4 id="2-怎样理解-String"><a href="#2-怎样理解-String" class="headerlink" title="2. 怎样理解 String"></a>2. 怎样理解 <code>String</code></h4><ul>
 <li><strong>在 Java 9 之前，<code>String</code> 类内部用一个字符数组表示字符串</strong>：<code>private final char value[];</code></li>
-<li>使用 <code>String</code> 构造方法时，<code>String</code> 会根据参数新创建一个数组，并复制内容，而不会直接用参数中的字符数组。</li>
+<li>使用 <code>String</code> 构造方法时，<code>String</code> 会根据参数新创建一个数组，并复制内容，而不会直接用参数中的字符数组</li>
 </ul>
-<h4 id="3-怎样理解-Java-中-String-的编码转换"><a href="#3-怎样理解-Java-中-String-的编码转换" class="headerlink" title="3. 怎样理解 Java 中 String 的编码转换"></a>3. 怎样理解 Java 中 String 的编码转换</h4><ul>
-<li><strong>在 Java 9 之前，<code>String</code> 内部是按 UTF-16BE 处理字符的。对 BMP 字符，使用一个 <code>char</code>，两个字节；对于增补字符，使用两个 <code>char</code>，四个字节</strong>。</li>
-<li>不同编码可能用于不同的字符集、使用不同的字节数目、以及不同的二进制表示。</li>
+<h4 id="3-怎样理解-Java-中-String-的编码转换"><a href="#3-怎样理解-Java-中-String-的编码转换" class="headerlink" title="3. 怎样理解 Java 中 String 的编码转换"></a>3. 怎样理解 Java 中 <code>String</code> 的编码转换</h4><ul>
+<li><strong>在 Java 9 之前，<code>String</code> 内部是按 UTF-16BE 处理字符的。对 BMP 字符，使用一个 <code>char</code>，两个字节；对于增补字符，使用两个 <code>char</code>，四个字节</strong></li>
+<li>不同编码可能用于不同的字符集、使用不同的字节数目、以及不同的二进制表示</li>
 </ul>
 <h4 id="4-如何处理这些不同的编码，这些编码与-Java-内部表示之间如何相互转换呢"><a href="#4-如何处理这些不同的编码，这些编码与-Java-内部表示之间如何相互转换呢" class="headerlink" title="4. 如何处理这些不同的编码，这些编码与 Java 内部表示之间如何相互转换呢"></a>4. 如何处理这些不同的编码，这些编码与 Java 内部表示之间如何相互转换呢</h4><ul>
-<li>Java 使用 <strong><code>Charset</code></strong> 类表示各种编码。</li>
-<li>除了通过 String 中的方法进行编码转换，<code>Charset</code> 类中也有一些方法进行编码/解码。重要的是，<strong>Java 的内部表示与各种编码是不同的，但可以相互转换</strong>。</li>
+<li>Java 使用 <strong><code>Charset</code></strong> 类表示各种编码</li>
+<li>除了通过 String 中的方法进行编码转换，<code>Charset</code> 类中也有一些方法进行编码/解码。重要的是，<strong>Java 的内部表示与各种编码是不同的，但可以相互转换</strong></li>
 </ul>
-<h4 id="5-怎样理解-String-的不可变性"><a href="#5-怎样理解-String-的不可变性" class="headerlink" title="5. 怎样理解 String 的不可变性"></a>5. 怎样理解 String 的不可变性</h4><ul>
-<li>与包装类类似，<strong><code>String</code> 类也是不可变的</strong>，即：<strong>对象一旦创建，就没有办法修改了</strong>。<ul>
-<li><code>String</code> 类也声明为了 <strong><code>final</code></strong>，不能被继承。内部字符数组 <code>value</code> 也是 <strong><code>final</code></strong> 的，初始化后就不能再变了。</li>
-<li><code>String</code> 类中提供了很多<strong>看似修改</strong>的方法，其实方法内部都是通过<strong>创建新的</strong> <code>String</code> 对象来实现的，原来的 <code>String</code> 对象不会被修改。</li>
+<h4 id="5-怎样理解-String-的不可变性"><a href="#5-怎样理解-String-的不可变性" class="headerlink" title="5. 怎样理解 String 的不可变性"></a>5. 怎样理解 <code>String</code> 的不可变性</h4><ul>
+<li>与包装类类似，<strong><code>String</code> 类也是不可变的</strong>，即：<strong>对象一旦创建，就没有办法修改了</strong><ul>
+<li><code>String</code> 类也声明为了 <strong><code>final</code></strong>，不能被继承。内部字符数组 <code>value</code> 也是 <strong><code>final</code></strong> 的，初始化后就不能再变了</li>
+<li><code>String</code> 类中提供了很多<strong>看似修改</strong>的方法，其实方法内部都是通过<strong>创建新的</strong> <code>String</code> 对象来实现的，原来的 <code>String</code> 对象不会被修改</li>
 </ul>
 </li>
-<li>与包装类类似，定义为不可变类，程序可以更为<strong>简单</strong>、<strong>安全</strong>、<strong>容易理解</strong>。</li>
-<li>如果<strong>频繁修改</strong>字符串，而每次修改都新建一个字符串，那么<strong>性能太低</strong>。这时，应该考虑 Java 中的 <strong><code>StringBuilder</code></strong> 和 <strong><code>StringBuffer</code></strong> 这两个类。</li>
+<li>与包装类类似，定义为不可变类，程序可以更为<strong>简单</strong>、<strong>安全</strong>、<strong>容易理解</strong></li>
+<li>如果<strong>频繁修改</strong>字符串，而每次修改都新建一个字符串，那么<strong>性能太低</strong>。这时，应该考虑 Java 中的 <strong><code>StringBuilder</code></strong> 和 <strong><code>StringBuffer</code></strong> 这两个类</li>
 </ul>
 <h4 id="6-怎样理解字符串常量"><a href="#6-怎样理解字符串常量" class="headerlink" title="6. 怎样理解字符串常量"></a>6. 怎样理解字符串常量</h4><ul>
-<li>Java 中的字符串常量是非常特殊的，除了可以直接赋值给 <code>String</code> 变量外，它自己就像一个 <code>String</code> 类型的对象，可以直接调用 <code>String</code> 的各种方法。<ul>
-<li>实际上，<strong>字符串常量就是 <code>String</code> 类型的对象</strong>。在内存中，它们被放在一个共享的地方，这个地方称为<strong>字符串常量池</strong>。</li>
-<li><strong>字符串常量池保存所有的常量字符串，每个常量只会保存一份，被所有使用者共享</strong>。</li>
+<li>Java 中的字符串常量是非常特殊的，除了可以直接赋值给 <code>String</code> 变量外，它自己就像一个 <code>String</code> 类型的对象，可以直接调用 <code>String</code> 的各种方法<ul>
+<li>实际上，<strong>字符串常量就是 <code>String</code> 类型的对象</strong>。在内存中，它们被放在一个共享的地方，这个地方称为<strong>字符串常量池</strong></li>
+<li><strong>字符串常量池保存所有的常量字符串，每个常量只会保存一份，被所有使用者共享</strong></li>
 </ul>
 </li>
-<li>当通过常量的形式使用一个字符串的时候，使用的就是常量池中的那个对应的 <code>String</code> 类型的对象。</li>
-<li>如果不是通过常量直接赋值，而是通过 <code>new</code> 创建，则就是两个对象了。</li>
+<li>当通过常量的形式使用一个字符串的时候，使用的就是常量池中的那个对应的 <code>String</code> 类型的对象</li>
+<li>如果不是通过常量直接赋值，而是通过 <code>new</code> 创建，则就是两个对象了</li>
 </ul>
-<h4 id="7-String-类中-hashCode-方法怎样计算-hash-值"><a href="#7-String-类中-hashCode-方法怎样计算-hash-值" class="headerlink" title="7. String 类中 hashCode() 方法怎样计算 hash 值"></a>7. String 类中 hashCode() 方法怎样计算 hash 值</h4><ul>
-<li>看 <code>hashCode()</code> 方法源码可知，<code>hash</code> 是一个私有的整型变量。<strong><code>hash</code> 变量缓存了 <code>hashCode()</code> 方法的值</strong>，第一次调用 <code>hashCode()</code> 方法的时候会把结果保存在 <code>hash</code> 这个变量中，以后再调用就直接返回保存的值。</li>
-<li>如果缓存的 <code>hash</code> 值不为 0，就直接返回了，否则根据字符数组中的内容计算 <code>hash</code>。</li>
-<li><strong>计算 <code>hash</code> 的算法是</strong>：<strong><code>s[0] * 31^ (n-1) + s[1] * 31^ (n-2) + …… + s[n-1]</code></strong>。<ul>
-<li>分析：<code>s</code> 表示字符串，<code>s[0]</code> 表示第一个字符，<code>n</code> 表示字符串长度，<code>s[0] * 31^ (n-1)</code> 表示第一个字符的值乘以 31 的 (n-1) 次方。</li>
-</ul>
-</li>
-</ul>
-<h4 id="8-计算-String-类的-hash，为什么要用上面的那个公式"><a href="#8-计算-String-类的-hash，为什么要用上面的那个公式" class="headerlink" title="8. 计算 String 类的 hash，为什么要用上面的那个公式"></a>8. 计算 String 类的 hash，为什么要用上面的那个公式</h4><ul>
-<li>使用这个公式，从<strong>数学的角度</strong>显而易见。</li>
-<li><strong>可以让 <code>hash</code> 值与每个字符的值有关，也与每个字符的位置有关</strong>。</li>
-</ul>
-<h4 id="9-计算-String-类的-hash-的公式为什么用数字-31"><a href="#9-计算-String-类的-hash-的公式为什么用数字-31" class="headerlink" title="9. 计算 String 类的 hash 的公式为什么用数字 31"></a>9. 计算 String 类的 hash 的公式为什么用数字 31</h4><ul>
-<li>使用 31 大致有两个原因：<ul>
-<li>一方面可以<strong>产生更分散的散列</strong>，即不同字符串 <code>hash</code> 值也一般不同。</li>
-<li>另一方面是<strong>计算效率也比较高</strong>，<code>31 * n</code> 与 <code>32 * n - n</code>，即 <code>(n &lt;&lt; 5) - n</code> 等价，可以用更高效率的移位和减法操作代替乘法操作。</li>
+<h4 id="7-String-类中-hashCode-方法怎样计算-hash-值"><a href="#7-String-类中-hashCode-方法怎样计算-hash-值" class="headerlink" title="7. String 类中 hashCode() 方法怎样计算 hash 值"></a>7. <code>String</code> 类中 <code>hashCode()</code> 方法怎样计算 <code>hash</code> 值</h4><ul>
+<li>看 <code>hashCode()</code> 方法源码可知，<code>hash</code> 是一个私有的整型变量。<strong><code>hash</code> 变量缓存了 <code>hashCode()</code> 方法的值</strong>，第一次调用 <code>hashCode()</code> 方法的时候会把结果保存在 <code>hash</code> 这个变量中，以后再调用就直接返回保存的值</li>
+<li>如果缓存的 <code>hash</code> 值不为 0，就直接返回了，否则根据字符数组中的内容计算 <code>hash</code></li>
+<li><strong>计算 <code>hash</code> 的算法是</strong>：<strong><code>s[0] * 31^ (n-1) + s[1] * 31^ (n-2) + …… + s[n-1]</code></strong><ul>
+<li>分析：<code>s</code> 表示字符串，<code>s[0]</code> 表示第一个字符，<code>n</code> 表示字符串长度，<code>s[0] * 31^ (n-1)</code> 表示第一个字符的值乘以 31 的 (n-1) 次方</li>
 </ul>
 </li>
-<li>在 Java 中，普遍使用以上思路来实现 <code>hashCode()</code> 方法。</li>
+</ul>
+<h4 id="8-计算-String-类的-hash，为什么要用上面的那个公式"><a href="#8-计算-String-类的-hash，为什么要用上面的那个公式" class="headerlink" title="8. 计算 String 类的 hash，为什么要用上面的那个公式"></a>8. 计算 <code>String</code> 类的 <code>hash</code>，为什么要用上面的那个公式</h4><ul>
+<li>使用这个公式，从<strong>数学的角度</strong>显而易见</li>
+<li><strong>可以让 <code>hash</code> 值与每个字符的值有关，也与每个字符的位置有关</strong></li>
+</ul>
+<h4 id="9-计算-String-类的-hash-的公式为什么用数字-31"><a href="#9-计算-String-类的-hash-的公式为什么用数字-31" class="headerlink" title="9. 计算 String 类的 hash 的公式为什么用数字 31"></a>9. 计算 <code>String</code> 类的 <code>hash</code> 的公式为什么用数字 31</h4><ul>
+<li>使用 31 大致有两个原因<ul>
+<li>一方面可以<strong>产生更分散的散列</strong>，即不同字符串 <code>hash</code> 值也一般不同</li>
+<li>另一方面是<strong>计算效率也比较高</strong>，<code>31 * n</code> 与 <code>32 * n - n</code>，即 <code>(n &lt;&lt; 5) - n</code> 等价，可以用更高效率的移位和减法操作代替乘法操作</li>
+</ul>
+</li>
+<li>在 Java 中，普遍使用以上思路来实现 <code>hashCode()</code> 方法</li>
 </ul>
 <h4 id="10-什么是正则表达式"><a href="#10-什么是正则表达式" class="headerlink" title="10. 什么是正则表达式"></a>10. 什么是正则表达式</h4><ul>
-<li>正则表达式可以理解为一个<strong>字符串</strong>，但表达的是一个<strong>规则</strong>，一般用于文本的<strong>匹配</strong>、<strong>查找</strong>、<strong>替换</strong>等。</li>
-<li>Java 中有专门的类（如 <strong><code>Pattern</code></strong> 和 <strong><code>Matcher</code></strong>）用于正则表达式，但对于简单的情况，<code>String</code> 类提供了更为简洁的操作。</li>
+<li>正则表达式可以理解为一个<strong>字符串</strong>，但表达的是一个<strong>规则</strong>，一般用于文本的<strong>匹配</strong>、<strong>查找</strong>、<strong>替换</strong>等</li>
+<li>Java 中有专门的类（如 <strong><code>Pattern</code></strong> 和 <strong><code>Matcher</code></strong>）用于正则表达式，但对于简单的情况，<code>String</code> 类提供了更为简洁的操作</li>
 </ul>
-<h4 id="11-Java-9-对-String-的实现做了哪些优化"><a href="#11-Java-9-对-String-的实现做了哪些优化" class="headerlink" title="11. Java 9 对 String 的实现做了哪些优化"></a>11. Java 9 对 String 的实现做了哪些优化</h4><ul>
-<li><strong>在 Java 9 中，<code>String</code> 的内部不再是 <code>char</code> 数组，而是 <code>byte</code> 数组</strong>。</li>
-<li>如果字符都是 <strong><code>ASCII</code> 字符</strong>（128 个），它就可以使用<strong>一个字节</strong>表示一个字符，而不用 UTF-16BE 编码，节省内存。</li>
+<h4 id="11-Java-9-对-String-的实现做了哪些优化"><a href="#11-Java-9-对-String-的实现做了哪些优化" class="headerlink" title="11. Java 9 对 String 的实现做了哪些优化"></a>11. Java 9 对 <code>String</code> 的实现做了哪些优化</h4><ul>
+<li><strong>在 Java 9 中，<code>String</code> 的内部不再是 <code>char</code> 数组，而是 <code>byte</code> 数组</strong></li>
+<li>如果字符都是 <strong><code>ASCII</code> 字符</strong>（128 个），它就可以使用<strong>一个字节</strong>表示一个字符，而不用 UTF-16BE 编码，节省内存</li>
 </ul>
-<h4 id="12-String-类和常量池"><a href="#12-String-类和常量池" class="headerlink" title="12. String 类和常量池"></a>12. String 类和常量池</h4><p>　参考：<a href="https://mp.weixin.qq.com/s/YfcRjHhbStm2T7Yheif7ug" target="_blank" rel="noopener">可能是把 Java 内存区域讲的最清楚的一篇文章</a></p>
 
     </div>
 
@@ -431,7 +430,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-创建-String-有哪几种方式"><span class="nav-text">1. 创建 String 有哪几种方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-怎样理解-String"><span class="nav-text">2. 怎样理解 String</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-怎样理解-Java-中-String-的编码转换"><span class="nav-text">3. 怎样理解 Java 中 String 的编码转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-如何处理这些不同的编码，这些编码与-Java-内部表示之间如何相互转换呢"><span class="nav-text">4. 如何处理这些不同的编码，这些编码与 Java 内部表示之间如何相互转换呢</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-怎样理解-String-的不可变性"><span class="nav-text">5. 怎样理解 String 的不可变性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-怎样理解字符串常量"><span class="nav-text">6. 怎样理解字符串常量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-String-类中-hashCode-方法怎样计算-hash-值"><span class="nav-text">7. String 类中 hashCode() 方法怎样计算 hash 值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-计算-String-类的-hash，为什么要用上面的那个公式"><span class="nav-text">8. 计算 String 类的 hash，为什么要用上面的那个公式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-计算-String-类的-hash-的公式为什么用数字-31"><span class="nav-text">9. 计算 String 类的 hash 的公式为什么用数字 31</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-什么是正则表达式"><span class="nav-text">10. 什么是正则表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-Java-9-对-String-的实现做了哪些优化"><span class="nav-text">11. Java 9 对 String 的实现做了哪些优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-String-类和常量池"><span class="nav-text">12. String 类和常量池</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-创建-String-有哪几种方式"><span class="nav-text">1. 创建 String 有哪几种方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-怎样理解-String"><span class="nav-text">2. 怎样理解 String</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-怎样理解-Java-中-String-的编码转换"><span class="nav-text">3. 怎样理解 Java 中 String 的编码转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-如何处理这些不同的编码，这些编码与-Java-内部表示之间如何相互转换呢"><span class="nav-text">4. 如何处理这些不同的编码，这些编码与 Java 内部表示之间如何相互转换呢</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-怎样理解-String-的不可变性"><span class="nav-text">5. 怎样理解 String 的不可变性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-怎样理解字符串常量"><span class="nav-text">6. 怎样理解字符串常量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-String-类中-hashCode-方法怎样计算-hash-值"><span class="nav-text">7. String 类中 hashCode() 方法怎样计算 hash 值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-计算-String-类的-hash，为什么要用上面的那个公式"><span class="nav-text">8. 计算 String 类的 hash，为什么要用上面的那个公式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-计算-String-类的-hash-的公式为什么用数字-31"><span class="nav-text">9. 计算 String 类的 hash 的公式为什么用数字 31</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-什么是正则表达式"><span class="nav-text">10. 什么是正则表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-Java-9-对-String-的实现做了哪些优化"><span class="nav-text">11. Java 9 对 String 的实现做了哪些优化</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
