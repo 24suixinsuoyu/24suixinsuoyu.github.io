@@ -31,7 +31,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1ge4noqerynj30la09v75d.jpg">
 <meta property="article:published_time" content="2020-04-23T09:05:03.000Z">
-<meta property="article:modified_time" content="2020-04-24T04:10:24.000Z">
+<meta property="article:modified_time" content="2021-03-31T22:54:01.359Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="列表和队列">
 <meta property="article:tag" content="剖析 ArrayList">
@@ -217,7 +217,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-24 12:10:24" itemprop="dateModified" datetime="2020-04-24T12:10:24+08:00">2020-04-24</time>
+                <time title="修改时间：2021-04-01 06:54:01" itemprop="dateModified" datetime="2021-04-01T06:54:01+08:00">2021-04-01</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -235,14 +235,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>7.2k</span>
+              <span>7.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>7 分钟</span>
+              <span>6 分钟</span>
             </span>
 
         </div>
@@ -258,215 +258,222 @@
 
 <p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ge4noqerynj30la09v75d.jpg" alt="集合框架体系图"></p>
 <h4 id="2-ArrayList-的基本用法"><a href="#2-ArrayList-的基本用法" class="headerlink" title="2. ArrayList 的基本用法"></a>2. ArrayList 的基本用法</h4><ul>
-<li><p><code>ArrayList</code> 是 Java 中真正的<strong>动态数组容器类</strong>。</p>
+<li><p><code>ArrayList</code> 是 Java 中真正的<strong>动态数组容器类</strong></p>
 </li>
-<li><p><code>ArrayList</code> 是一个<strong>泛型容器</strong>，新建 <code>ArrayList</code> 需要<strong>实例化类型参数</strong>。比如：</p>
+<li><p><code>ArrayList</code> 是一个<strong>泛型容器</strong>，新建 <code>ArrayList</code> 需要<strong>实例化类型参数</strong>。比如</p>
   <figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;Integer&gt; intList = <span class="keyword">new</span> <span class="type">ArrayList</span>&lt;Integer&gt; ();</span><br><span class="line">ArrayList&lt;<span class="keyword">String</span>&gt; strList = <span class="keyword">new</span> <span class="type">ArrayList</span>&lt;<span class="keyword">String</span>&gt; ();</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
-<h4 id="3-ArrayList-的基本原理"><a href="#3-ArrayList-的基本原理" class="headerlink" title="3. ArrayList 的基本原理"></a>3. ArrayList 的基本原理</h4><ul>
-<li><p>代码基于 Java 7：</p>
+<h4 id="3-ArrayList-的基本原理"><a href="#3-ArrayList-的基本原理" class="headerlink" title="3. ArrayList 的基本原理"></a>3. <code>ArrayList</code> 的基本原理</h4><ul>
+<li><p>代码基于 Java 7</p>
   <figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">transient</span> <span class="keyword">Object</span>[] elementData;</span><br><span class="line"><span class="keyword">private</span> <span class="built_in">int</span> <span class="built_in">size</span>;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>内部有一个<strong>数组 <code>elementData</code></strong>，一般会有一些预留的空间；有一个<strong>整数 <code>size</code></strong> 纪录实际的元素个数。</p>
+<li><p>内部有一个<strong>数组 <code>elementData</code></strong>，一般会有一些预留的空间；有一个<strong>整数 <code>size</code></strong> 纪录实际的元素个数</p>
 </li>
-<li><p><strong>各种 <code>public</code> 方法内部操作的基本都是这个数组和这个整数</strong>，<code>elementData</code> 会随着实际元素个数的增多而<strong>重新分配</strong>，而 <code>size</code> 则始终<strong>纪录实际的元素个数</strong>。</p>
+<li><p><strong>各种 <code>public</code> 方法内部操作的基本都是这个数组和这个整数</strong>，<code>elementData</code> 会随着实际元素个数的增多而<strong>重新分配</strong>，而 <code>size</code> 则始终<strong>纪录实际的元素个数</strong></p>
 </li>
 </ul>
-<h4 id="4-ArrayList-的-add-方法的实现原理"><a href="#4-ArrayList-的-add-方法的实现原理" class="headerlink" title="4. ArrayList 的 add() 方法的实现原理"></a>4. ArrayList 的 add() 方法的实现原理</h4><ul>
-<li><p><code>add()</code> 方法的主要代码：</p>
+<h4 id="4-ArrayList-的-add-方法的实现原理"><a href="#4-ArrayList-的-add-方法的实现原理" class="headerlink" title="4. ArrayList 的 add() 方法的实现原理"></a>4. <code>ArrayList</code> 的 <code>add()</code> 方法的实现原理</h4><ul>
+<li><p><code>add()</code> 方法的主要代码</p>
   <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">add</span><span class="params">(E e)</span> </span>&#123;</span><br><span class="line">    ensureCapacityInternal(<span class="built_in">size</span> + <span class="number">1</span>);</span><br><span class="line">    elementData[<span class="built_in">size</span>++] = e;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>分析：<strong>首先调用 <code>ensureCapacityInternal()</code> 方法确保数组容量是够的</strong>。</li>
+<li>分析：<strong>首先调用 <code>ensureCapacityInternal()</code> 方法确保数组容量是够的</strong></li>
 </ul>
 </li>
-<li><p><code>ensureCapacityInternal()</code> 方法代码：</p>
+<li><p><code>ensureCapacityInternal()</code> 方法代码</p>
   <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> void ensure<span class="constructor">CapacityInternal(<span class="params">int</span> <span class="params">minCapacity</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span>(elementData<span class="operator"> == </span>EMPTY_ELEMENTDATA) &#123;</span><br><span class="line">        minCapacity = <span class="module-access"><span class="module"><span class="identifier">Math</span>.</span></span>max(DEFAULT_CAPACITY, minCapacity);</span><br><span class="line">    &#125;</span><br><span class="line">    ensure<span class="constructor">ExplicitCapacity(<span class="params">minCapacity</span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>分析：它首先判断数组是不是空的，<strong>如果是空的</strong>，则首次至少要分配的大小为 <code>DEFAULT_CAPACITY</code>，<strong><code>DEFAULT_CAPACITY</code> 的值为 10</strong>。接下来调用 <code>ensureExplicitCapacity()</code> 方法。</li>
+<li>分析：它首先判断数组是不是空的，<strong>如果是空的</strong>，则首次至少要分配的大小为 <code>DEFAULT_CAPACITY</code>，<strong><code>DEFAULT_CAPACITY</code> 的值为 10</strong>。接下来调用 <code>ensureExplicitCapacity()</code> 方法</li>
 </ul>
 </li>
-<li><p><code>ensureExplicitCapacity()</code> 方法代码：</p>
+<li><p><code>ensureExplicitCapacity()</code> 方法代码</p>
   <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="built_in">void</span> ensureExplicitCapacity(<span class="built_in">int</span> minCapacity) &#123;</span><br><span class="line">    modCount++;</span><br><span class="line">    <span class="keyword">if</span>(minCapacity - elementData.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        grow(minCapacity);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>分析：<strong><code>modCount</code> 表示内部的修改次数</strong>，<code>modCount++</code>就是增加修改次数。如果需要的长度大于当前数组的长度，则调用 <code>grow()</code> 方法。</li>
+<li>分析：<strong><code>modCount</code> 表示内部的修改次数</strong>，<code>modCount++</code>就是增加修改次数。如果需要的长度大于当前数组的长度，则调用 <code>grow()</code> 方法</li>
 </ul>
 </li>
-<li><p><code>grow()</code> 方法主要代码：</p>
+<li><p><code>grow()</code> 方法主要代码</p>
   <figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> void grow(int minCapacity) &#123;</span><br><span class="line">    int oldCapacity = elementData.length;</span><br><span class="line">    int <span class="keyword">new</span><span class="type">Capacity</span> = oldCapacity + (oldCapacity &gt;&gt; <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">new</span><span class="type">Capacity</span> - minCapacity &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">new</span><span class="type">Capacity</span> = minCapacity;</span><br><span class="line">    &#125;</span><br><span class="line">    elementData = Arrays.copyOf(elementData, <span class="keyword">new</span><span class="type">Capacity</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li><strong>扩容策略</strong>：右移一位相当于除 2，所以，<code>newCapacity</code> 相当于 <code>oldCapacity</code> 的 <strong>1.5 倍</strong>。如果扩展 1.5 倍还是小于 <code>minCapacity</code>，就扩展为 <code>minCapacity</code>。</li>
+<li><strong>扩容策略</strong>：右移一位相当于除 2，所以，<code>newCapacity</code> 相当于 <code>oldCapacity</code> 的 <strong>1.5 倍</strong>。如果扩展 1.5 倍还是小于 <code>minCapacity</code>，就扩展为 <code>minCapacity</code></li>
 </ul>
 </li>
 </ul>
-<h4 id="5-怎样理解-foreach-语法"><a href="#5-怎样理解-foreach-语法" class="headerlink" title="5. 怎样理解 foreach 语法"></a>5. 怎样理解 foreach 语法</h4><p>　<code>foreach</code> 语法<strong>更简洁</strong>，适用于各种容器、<strong>更通用</strong>。</p>
-<h4 id="6-foreach-语法背后是怎样实现的"><a href="#6-foreach-语法背后是怎样实现的" class="headerlink" title="6. foreach 语法背后是怎样实现的"></a>6. foreach 语法背后是怎样实现的</h4><ul>
-<li><p><strong>Java 编译器</strong>会将 <code>foreach</code> 转换为<strong>迭代器 <code>Iterator</code></strong> 和 <strong><code>while</code> 循环</strong>的形式。</p>
+<h4 id="5-怎样理解-foreach-语法"><a href="#5-怎样理解-foreach-语法" class="headerlink" title="5. 怎样理解 foreach 语法"></a>5. 怎样理解 <code>foreach</code> 语法</h4><ul>
+<li><code>foreach</code> 语法<strong>更简洁</strong>，适用于各种容器、<strong>更通用</strong></li>
+</ul>
+<h4 id="6-foreach-语法背后是怎样实现的"><a href="#6-foreach-语法背后是怎样实现的" class="headerlink" title="6. foreach 语法背后是怎样实现的"></a>6. <code>foreach</code> 语法背后是怎样实现的</h4><ul>
+<li><p><strong>Java 编译器</strong>会将 <code>foreach</code> 转换为<strong>迭代器 <code>Iterator</code></strong> 和 <strong><code>while</code> 循环</strong>的形式</p>
 </li>
-<li><p><code>Demo</code>：</p>
+<li><p>Demo：</p>
   <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;Integer&gt; <span class="built_in">int</span>List = new ArrayList&lt;Integer&gt; ();</span><br><span class="line"><span class="built_in">int</span>List.add(<span class="number">123</span>);</span><br><span class="line"><span class="built_in">int</span>List.add(<span class="number">456</span>);</span><br><span class="line"><span class="built_in">int</span>List.add(<span class="number">789</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//ArrayList 实现了 Iterable 接口</span></span><br><span class="line"><span class="keyword">for</span>(Integer a : <span class="built_in">int</span>List) &#123;</span><br><span class="line">    System.<span class="keyword">out</span>.println(a);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Java 编译器会将 foreach 语法转换为类似如下代码：</span></span><br><span class="line">Iterator&lt;Integer&gt; it = <span class="built_in">int</span>List.iterator();</span><br><span class="line"><span class="keyword">while</span>(it.hasNext()) &#123;</span><br><span class="line">    System.<span class="keyword">out</span>.println(it.next());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
-<h4 id="7-Iterable-和-Iterator-的定义分别是"><a href="#7-Iterable-和-Iterator-的定义分别是" class="headerlink" title="7. Iterable 和 Iterator 的定义分别是"></a>7. Iterable 和 Iterator 的定义分别是</h4><ul>
-<li><p>源码基于 Java 7：</p>
+<h4 id="7-Iterable-和-Iterator-的定义分别是"><a href="#7-Iterable-和-Iterator-的定义分别是" class="headerlink" title="7. Iterable 和 Iterator 的定义分别是"></a>7. <code>Iterable</code> 和 <code>Iterator</code> 的定义分别是</h4><ul>
+<li><p>源码基于 Java 7</p>
 </li>
-<li><p><strong><code>Iterable</code> 表示可迭代</strong>：</p>
+<li><p><strong><code>Iterable</code> 表示可迭代</strong></p>
   <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public<span class="built_in"> interface </span>Iterable&lt;T&gt; &#123;</span><br><span class="line">    Iterator&lt;T&gt; iterator();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p><strong><code>Iterator</code> 表示迭代器</strong>：</p>
+<li><p><strong><code>Iterator</code> 表示迭代器</strong></p>
   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Iterator</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span></span>; <span class="comment">//判断是否还有元素未访问</span></span><br><span class="line">    <span class="function">E <span class="title">next</span><span class="params">()</span></span>; <span class="comment">//返回下一个元素</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">remove</span><span class="params">()</span></span>; <span class="comment">//删除最后返回的元素</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
-<h4 id="8-Iterable-和-Iterator-的联系是"><a href="#8-Iterable-和-Iterator-的联系是" class="headerlink" title="8. Iterable 和 Iterator 的联系是"></a>8. Iterable 和 Iterator 的联系是</h4><ul>
-<li><strong><code>Iterable</code> 表示对象可以被迭代</strong>：<ul>
-<li>它有一个方法 <code>iterator()</code>，返回 <code>Iterator</code> 迭代器对象，<strong>实际通过 <code>Iterator</code> 接口的方法进行遍历</strong>。</li>
-<li><strong>如果对象实现了 <code>Iterable</code> 接口，就可以使用 <code>foreach</code> 语法</strong>（因为 <code>foreach</code> 基于迭代器 <code>Iterator</code>）。</li>
+<h4 id="8-Iterable-和-Iterator-的联系是"><a href="#8-Iterable-和-Iterator-的联系是" class="headerlink" title="8. Iterable 和 Iterator 的联系是"></a>8. <code>Iterable</code> 和 <code>Iterator</code> 的联系是</h4><ul>
+<li><strong><code>Iterable</code> 表示对象可以被迭代</strong><ul>
+<li>它有一个方法 <code>iterator()</code>，返回 <code>Iterator</code> 迭代器对象，<strong>实际通过 <code>Iterator</code> 接口的方法进行遍历</strong></li>
+<li><strong>如果对象实现了 <code>Iterable</code> 接口，就可以使用 <code>foreach</code> 语法</strong>（因为 <code>foreach</code> 基于迭代器 <code>Iterator</code>）</li>
 </ul>
 </li>
-<li><strong>类可以不实现 <code>Iterable</code> 接口，也可以创建 <code>Iterator</code> 对象</strong>。</li>
-<li><strong>Java 8</strong>：<ul>
-<li>对 <code>Iterable</code> 增加了<strong>默认方法</strong> <code>forEach()</code> 和 <code>spliterator()</code>。</li>
-<li>对 <code>Iterator</code> 增加了<strong>默认方法</strong> <code>forEachRemaining()</code> 和 <code>remove()</code>。</li>
+<li><strong>类可以不实现 <code>Iterable</code> 接口，也可以创建 <code>Iterator</code> 对象</strong></li>
+<li><strong>Java 8</strong><ul>
+<li>对 <code>Iterable</code> 增加了<strong>默认方法</strong> <code>forEach()</code> 和 <code>spliterator()</code></li>
+<li>对 <code>Iterator</code> 增加了<strong>默认方法</strong> <code>forEachRemaining()</code> 和 <code>remove()</code></li>
 </ul>
 </li>
 </ul>
-<h4 id="9-ArrayList-对-Iterator-接口的增强有"><a href="#9-ArrayList-对-Iterator-接口的增强有" class="headerlink" title="9. ArrayList 对 Iterator 接口的增强有"></a>9. ArrayList 对 Iterator 接口的增强有</h4><ul>
-<li><p><strong>除了 <code>iterator()</code>，<code>ArrayList</code> 还提供了两个返回 <code>Iterator</code> 接口的方法</strong>：</p>
+<h4 id="9-ArrayList-对-Iterator-接口的增强有"><a href="#9-ArrayList-对-Iterator-接口的增强有" class="headerlink" title="9. ArrayList 对 Iterator 接口的增强有"></a>9. <code>ArrayList</code> 对 <code>Iterator</code> 接口的增强有</h4><ul>
+<li><p><strong>除了 <code>iterator()</code>，<code>ArrayList</code> 还提供了两个返回 <code>Iterator</code> 接口的方法</strong></p>
   <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//返回的迭代器从 0 开始遍历</span></span><br><span class="line">public ListIterator&lt;E&gt; <span class="built_in">list</span><span class="constructor">Iterator()</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//返回的迭代器从指定位置 index 开始遍历</span></span><br><span class="line">public ListIterator&lt;E&gt; <span class="built_in">list</span><span class="constructor">Iterator(<span class="params">int</span> <span class="params">index</span>)</span>;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p><strong><code>ListIterator</code> 扩展了 <code>Iterator</code> 接口，增加了一些方法</strong>：向前遍历、添加元素、修改元素、返回索引位置等，添加的方法有：</p>
+<li><p><strong><code>ListIterator</code> 扩展了 <code>Iterator</code> 接口，增加了一些方法</strong>：向前遍历、添加元素、修改元素、返回索引位置等，添加的方法有</p>
   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ListIterator</span>&lt;<span class="title">E</span>&gt; <span class="keyword">extends</span> <span class="title">Iterator</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">hasPrevious</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function">E <span class="title">previous</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">nextIndex</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">previousIndex</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">set</span><span class="params">(E e)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(E e)</span></span>;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
-<h4 id="10-对于一个-ArrayList，从末尾往前遍历，代码怎样实现"><a href="#10-对于一个-ArrayList，从末尾往前遍历，代码怎样实现" class="headerlink" title="10. 对于一个 ArrayList，从末尾往前遍历，代码怎样实现"></a>10. 对于一个 ArrayList，从末尾往前遍历，代码怎样实现</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public void reverse<span class="constructor">Traverse(List&lt;Integer&gt; <span class="params">list</span>)</span> &#123;</span><br><span class="line">    ListIterator&lt;Integer&gt; it = <span class="built_in">list</span>.<span class="built_in">list</span><span class="constructor">Iterator(<span class="params">list</span>.<span class="params">size</span>()</span>);</span><br><span class="line">    <span class="keyword">while</span>(it.hasPrevious) &#123;</span><br><span class="line">        <span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="built_in">int</span>.previous);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="10-对于一个-ArrayList，从末尾往前遍历，代码怎样实现"><a href="#10-对于一个-ArrayList，从末尾往前遍历，代码怎样实现" class="headerlink" title="10. 对于一个 ArrayList，从末尾往前遍历，代码怎样实现"></a>10. 对于一个 <code>ArrayList</code>，从末尾往前遍历，代码怎样实现</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public void reverse<span class="constructor">Traverse(List&lt;Integer&gt; <span class="params">list</span>)</span> &#123;</span><br><span class="line">    ListIterator&lt;Integer&gt; it = <span class="built_in">list</span>.<span class="built_in">list</span><span class="constructor">Iterator(<span class="params">list</span>.<span class="params">size</span>()</span>);</span><br><span class="line">    <span class="keyword">while</span>(it.hasPrevious) &#123;</span><br><span class="line">        <span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="built_in">int</span>.previous);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="11-关于迭代器，有一种常见的误用是"><a href="#11-关于迭代器，有一种常见的误用是" class="headerlink" title="11. 关于迭代器，有一种常见的误用是"></a>11. 关于迭代器，有一种常见的误用是</h4><p>　<strong>在迭代的过程中调用容器的删除方法（不是迭代器的删除方法）</strong>。</p>
+<h4 id="11-关于迭代器，有一种常见的误用是"><a href="#11-关于迭代器，有一种常见的误用是" class="headerlink" title="11. 关于迭代器，有一种常见的误用是"></a>11. 关于迭代器，有一种常见的误用是</h4><ul>
+<li><strong>在迭代的过程中调用容器的删除方法（不是迭代器的删除方法）</strong></li>
+</ul>
 <h4 id="12-接上题，下面代码是否合法，为什么"><a href="#12-接上题，下面代码是否合法，为什么" class="headerlink" title="12. 接上题，下面代码是否合法，为什么"></a>12. 接上题，下面代码是否合法，为什么</h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//一次迭代删除一个整数，最后删除 ArrayList 中【所有小于 100】 的整数</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(ArrayList&lt;Integer&gt; <span class="built_in">list</span>)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(Integer a : <span class="built_in">list</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span>(a &lt;= <span class="number">100</span>) &#123;</span><br><span class="line">            <span class="built_in">list</span>.<span class="built_in">remove</span>(a);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li><p>结论：运行时抛出 <strong><code>ConcurrentModificationException</code></strong> 并发修改异常。</p>
+<li><p>结论：运行时抛出 <strong><code>ConcurrentModificationException</code></strong> 并发修改异常</p>
 </li>
-<li><p>原因：<strong>因为迭代器内部会维护一些索引位置相关的数据（<code>cursor</code>、<code>lastRet</code>、<code>expectedModCount</code>），要求在迭代过程中，容器不能发生结构性变化，否则这些索引位置就失效了</strong>。</p>
+<li><p>原因：<strong>因为迭代器内部会维护一些索引位置相关的数据（<code>cursor</code>、<code>lastRet</code>、<code>expectedModCount</code>），要求在迭代过程中，容器不能发生结构性变化，否则这些索引位置就失效了</strong></p>
 </li>
-<li><p>概念：所谓<strong>结构性变化</strong>就是添加、插入和删除元素，<strong>只是修改元素内容不算</strong>结构性变化。</p>
+<li><p>概念：所谓<strong>结构性变化</strong>就是添加、插入和删除元素，<strong>只是修改元素内容不算</strong>结构性变化</p>
 </li>
-<li><p>解决方法：<strong>使用迭代器的 <code>remove()</code> 方法</strong>。代码如下：</p>
+<li><p>解决方法：<strong>使用迭代器的 <code>remove()</code> 方法</strong>。代码如下</p>
   <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(ArrayList&lt;Integer&gt; <span class="built_in">list</span>)</span> </span>&#123;</span><br><span class="line">    Iterator&lt;Integer&gt; it = <span class="built_in">list</span>.iterator();</span><br><span class="line">    <span class="keyword">while</span>(it.next &lt;= <span class="number">100</span>) &#123;</span><br><span class="line">        it.<span class="built_in">remove</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
 <h4 id="13-迭代器如何知道发生了结构性变化或者迭代器的实现原理是"><a href="#13-迭代器如何知道发生了结构性变化或者迭代器的实现原理是" class="headerlink" title="13. 迭代器如何知道发生了结构性变化或者迭代器的实现原理是"></a>13. 迭代器如何知道发生了结构性变化或者迭代器的实现原理是</h4><ul>
-<li><p><code>ArrayList</code> 中 <code>iterator()</code> 方法的实现，代码为：</p>
+<li><p><code>ArrayList</code> 中 <code>iterator()</code> 方法的实现，代码为</p>
   <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Iterator&lt;E&gt; <span class="title">iterator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Itr();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li><p>分析：新建了一个 <code>Itr</code> 对象，<code>Itr</code> 是一个<strong>成员内部类</strong>（可以直接访问外部类的实例变量），实现了 <code>Iterator</code> 接口，声明为：<code>private class Itr implements Iterator&lt;E&gt;</code>。</p>
+<li><p>分析：新建了一个 <code>Itr</code> 对象，<code>Itr</code> 是一个<strong>成员内部类</strong>（可以直接访问外部类的实例变量），实现了 <code>Iterator</code> 接口，声明为：<code>private class Itr implements Iterator&lt;E&gt;</code></p>
 </li>
-<li><p><strong>它有三个成员变量</strong>：</p>
+<li><p><strong>它有三个成员变量</strong></p>
   <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> <span class="built_in">cursor</span>; <span class="comment">//表示下一个要返回的元素位置</span></span><br><span class="line"><span class="keyword">int</span> lastRet; <span class="comment">//表示最后一个返回的索引位置</span></span><br><span class="line"><span class="keyword">int</span> expectedModCount = modCount; <span class="comment">//表示期望的修改次数，初始化为外部类当前的修改次数</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
-<li><p><code>Itr</code> 的 <code>hasNext()</code> 方法代码实现：</p>
+<li><p><code>Itr</code> 的 <code>hasNext()</code> 方法代码实现</p>
   <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">cursor</span> != <span class="built_in">size</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>分析：返回 <code>cursor</code> 与 <code>size</code> <strong>是否不相等</strong>的布尔值。</li>
+<li>分析：返回 <code>cursor</code> 与 <code>size</code> <strong>是否不相等</strong>的布尔值</li>
 </ul>
 </li>
-<li><p><code>Itr</code> 的 <code>next()</code> 方法代码实现：</p>
+<li><p><code>Itr</code> 的 <code>next()</code> 方法代码实现</p>
   <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> E <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    checkForComodification();</span><br><span class="line">    <span class="keyword">int</span> i = <span class="built_in">cursor</span>;</span><br><span class="line">    <span class="keyword">if</span>(i &gt;= <span class="built_in">size</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NoSuchElementException();</span><br><span class="line">    &#125;</span><br><span class="line">    Object[] elementData = ArrayList.<span class="keyword">this</span>.elementData;</span><br><span class="line">    <span class="keyword">if</span>(i &gt;= elementData.length) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> ConcurrentModificationException();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cursor</span> = i + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> (E) elementData[lastRet = i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li><p>分析：首先调用了 <strong><code>checkForComodification()</code></strong> 方法，它的代码为：</p>
   <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">checkForComodification</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(modCount != expectedModCount) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> ConcurrentModificationException();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>分析：所以，<code>next()</code> 方法前面部分主要就是在<strong>检查是否发生了结构性变化</strong>，如果没有变化，就更新 <code>cursor</code> 和 <code>lastRet</code> 的值，以保持其语义，然后返回对应的元素。</p>
+<li><p>分析：所以，<code>next()</code> 方法前面部分主要就是在<strong>检查是否发生了结构性变化</strong>，如果没有变化，就更新 <code>cursor</code> 和 <code>lastRet</code> 的值，以保持其语义，然后返回对应的元素</p>
 </li>
 </ul>
 </li>
-<li><p><code>Itr</code> 的 <code>remove()</code> 方法代码实现：</p>
+<li><p><code>Itr</code> 的 <code>remove()</code> 方法代码实现</p>
   <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(lastRet &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException();</span><br><span class="line">    &#125;</span><br><span class="line">    checkForComodification();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        ArrayList.<span class="keyword">this</span>.<span class="built_in">remove</span>(lastRet);</span><br><span class="line">        <span class="built_in">cursor</span> = lastRet;</span><br><span class="line">        lastRet = <span class="number">-1</span>;</span><br><span class="line">        expectedModCount = modCount;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IndexOutOfBoundsException ex) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> ConcurrentModificaitonException();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>分析：它调用了 <code>ArrayList</code> 的 <code>remove()</code> 方法，但<strong>同时更新</strong>了 <code>cursor</code>、<code>lastRet</code>、<code>expectedModCount</code> 的值，<strong>所以它可以正确删除</strong>。</li>
+<li>分析：它调用了 <code>ArrayList</code> 的 <code>remove()</code> 方法，但<strong>同时更新</strong>了 <code>cursor</code>、<code>lastRet</code>、<code>expectedModCount</code> 的值，<strong>所以它可以正确删除</strong></li>
 </ul>
 </li>
-<li><p><strong><code>listIterator()</code> 的实现使用了另一个内部类 <code>ListItr</code>，它继承自 <code>Itr</code>，基本思路类似</strong>。</p>
+<li><p><strong><code>listIterator()</code> 的实现使用了另一个内部类 <code>ListItr</code>，它继承自 <code>Itr</code>，基本思路类似</strong></p>
 </li>
 </ul>
 <h4 id="14-下面代码是否合法，为什么，怎样解决"><a href="#14-下面代码是否合法，为什么，怎样解决" class="headerlink" title="14. 下面代码是否合法，为什么，怎样解决"></a>14. 下面代码是否合法，为什么，怎样解决</h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//通过迭代器【删除所有】元素</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">removeAll</span><span class="params">(ArrayList&lt;Integer&gt; <span class="built_in">list</span>)</span> </span>&#123;</span><br><span class="line">    Iterator&lt;Integer&gt; it = <span class="built_in">list</span>.iterator();</span><br><span class="line">    <span class="keyword">while</span>(it.hasNext()) &#123;</span><br><span class="line">        it.<span class="built_in">remove</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>结论：运行时抛出 <strong><code>IllegalStateException</code></strong> 异常。</li>
-<li>原因：<strong>调用 <code>remove()</code> 方法前必须先调用 <code>next()</code> 方法</strong>。</li>
-<li>解决方法：<ul>
-<li>在 <strong><code>it.remove()</code> 之前先调用 <code>it.next()</code></strong>。</li>
-<li>当然，如果只是要删除所有元素，<code>ArrayList</code> 有现成的方法 <strong><code>clear()</code></strong>。</li>
+<li>结论：运行时抛出 <strong><code>IllegalStateException</code></strong> 异常</li>
+<li>原因：<strong>调用 <code>remove()</code> 方法前必须先调用 <code>next()</code> 方法</strong></li>
+<li>解决方法<ul>
+<li>在 <strong><code>it.remove()</code> 之前先调用 <code>it.next()</code></strong></li>
+<li>当然，如果只是要删除所有元素，<code>ArrayList</code> 有现成的方法 <strong><code>clear()</code></strong></li>
 </ul>
 </li>
 </ul>
-<h4 id="15-为什么要通过迭代器这种方式访问元素呢，直接使用-size-get-index-语法不也可以吗，或者说，迭代器的好处是什么"><a href="#15-为什么要通过迭代器这种方式访问元素呢，直接使用-size-get-index-语法不也可以吗，或者说，迭代器的好处是什么" class="headerlink" title="15. 为什么要通过迭代器这种方式访问元素呢，直接使用 size()/get(index) 语法不也可以吗，或者说，迭代器的好处是什么"></a>15. 为什么要通过迭代器这种方式访问元素呢，直接使用 size()/get(index) 语法不也可以吗，或者说，迭代器的好处是什么</h4><ul>
-<li>在一些场景下，确实没有什么差别，两者都可以。</li>
-<li>不过，<code>foreach</code> 的语法<strong>更简洁</strong>一些。更重要的是，迭代器语法<strong>更通用</strong>，它适用于各种容器类。<ul>
-<li><strong>迭代器设计模式</strong>：是一种<strong>关注点分离</strong>的思想，将数据的实际<strong>组织方式</strong>与数据的<strong>迭代遍历</strong>相分离，是一种常见的设计模式。</li>
-<li><strong>从性能的角度考虑</strong>：<code>ArrayList</code> 的 <code>size()/get(index)</code> 语法与迭代器性能是差不多的；<strong>但在 <code>LinkedList</code>中，迭代器性能就要高很多</strong>。</li>
-<li><strong>从封装的思路上讲</strong>：迭代器<strong>封装</strong>了各种数据组织方法迭代操作，提供了简单和一致的接口。</li>
+<h4 id="15-为什么要通过迭代器这种方式访问元素呢，直接使用-size-、get-index-语法不也可以吗，或者说，迭代器的好处是什么"><a href="#15-为什么要通过迭代器这种方式访问元素呢，直接使用-size-、get-index-语法不也可以吗，或者说，迭代器的好处是什么" class="headerlink" title="15. 为什么要通过迭代器这种方式访问元素呢，直接使用 size()、get(index) 语法不也可以吗，或者说，迭代器的好处是什么"></a>15. 为什么要通过迭代器这种方式访问元素呢，直接使用 <code>size()</code>、<code>get(index)</code> 语法不也可以吗，或者说，迭代器的好处是什么</h4><ul>
+<li>在一些场景下，确实没有什么差别，两者都可以</li>
+<li>不过，<code>foreach</code> 的语法<strong>更简洁</strong>一些。更重要的是，迭代器语法<strong>更通用</strong>，它适用于各种容器类<ul>
+<li><strong>迭代器设计模式</strong>：是一种<strong>关注点分离</strong>的思想，将数据的实际<strong>组织方式</strong>与数据的<strong>迭代遍历</strong>相分离，是一种常见的设计模式</li>
+<li><strong>从性能的角度考虑</strong>：<code>ArrayList</code> 的 <code>size()/get(index)</code> 语法与迭代器性能是差不多的；<strong>但在 <code>LinkedList</code>中，迭代器性能就要高很多</strong></li>
+<li><strong>从封装的思路上讲</strong>：迭代器<strong>封装</strong>了各种数据组织方法迭代操作，提供了简单和一致的接口</li>
 </ul>
 </li>
 </ul>
-<h4 id="16-ArrayList-实现的主要接口有哪几个"><a href="#16-ArrayList-实现的主要接口有哪几个" class="headerlink" title="16. ArrayList 实现的主要接口有哪几个"></a>16. ArrayList 实现的主要接口有哪几个</h4><ul>
-<li><strong><code>Collection</code></strong>: 表示一个数据集合，数据间<strong>没有位置或顺序的概念</strong>。<ul>
-<li><strong>Java 8</strong> 新增了几个默认方法，包括：<code>removeIf()</code>、<code>stream()</code>、<code>spliterator()</code> 等。</li>
+<h4 id="16-ArrayList-实现的主要接口有哪几个"><a href="#16-ArrayList-实现的主要接口有哪几个" class="headerlink" title="16. ArrayList 实现的主要接口有哪几个"></a>16. <code>ArrayList</code> 实现的主要接口有哪几个</h4><ul>
+<li><p><strong><code>Collection</code></strong>: 表示一个数据集合，数据间<strong>没有位置或顺序的概念</strong></p>
+<ul>
+<li><strong>Java 8</strong> 新增了几个默认方法，包括：<code>removeIf()</code>、<code>stream()</code>、<code>spliterator()</code> 等</li>
 </ul>
 </li>
-<li><strong><code>List</code></strong>: 表示<strong>有顺序或位置概念</strong>的数据集合，它扩展了 <code>Collection</code>。<ul>
-<li><strong>Java 8</strong> 新增了几个默认方法，包括：<code>sort()</code>、<code>replaceAll()</code>、<code>spliterator()</code>。</li>
-<li><strong>Java 9</strong> 新增了多个重载的 <code>of()</code> 方法，可以根据一个或多个元素生成一个不变的 <code>List</code>。</li>
+<li><p><strong><code>List</code></strong>: 表示<strong>有顺序或位置概念</strong>的数据集合，它扩展了 <code>Collection</code></p>
+<ul>
+<li><strong>Java 8</strong> 新增了几个默认方法，包括：<code>sort()</code>、<code>replaceAll()</code>、<code>spliterator()</code></li>
+<li><strong>Java 9</strong> 新增了多个重载的 <code>of()</code> 方法，可以根据一个或多个元素生成一个不变的 <code>List</code></li>
 </ul>
 </li>
-<li><strong><code>RandomAccess</code>: 空接口，没有定义任何代码</strong>。<ul>
-<li>又称为<strong>标记接口</strong>，用于<strong>声明实现类的一种属性</strong>。</li>
-<li>这里，<strong>实现了 <code>RandomAccess</code> 接口的类表示可以随机访问（类似数组）</strong>。</li>
+<li><p><strong><code>RandomAccess</code>: 空接口，没有定义任何代码</strong></p>
+<ul>
+<li>又称为<strong>标记接口</strong>，用于<strong>声明实现类的一种属性</strong></li>
+<li>这里，<strong>实现了 <code>RandomAccess</code> 接口的类表示可以随机访问（类似数组）</strong></li>
 </ul>
 </li>
 </ul>
-<h4 id="17-有没有声明-RandomAccess-有什么关系呢"><a href="#17-有没有声明-RandomAccess-有什么关系呢" class="headerlink" title="17. 有没有声明 RandomAccess 有什么关系呢"></a>17. 有没有声明 RandomAccess 有什么关系呢</h4><ul>
-<li><p>主要用于一些<strong>通用的算法代码</strong>中，它可以<strong>根据这个声明而选择效率更高的实现</strong>。</p>
+<h4 id="17-有没有声明-RandomAccess-有什么关系呢"><a href="#17-有没有声明-RandomAccess-有什么关系呢" class="headerlink" title="17. 有没有声明 RandomAccess 有什么关系呢"></a>17. 有没有声明 <code>RandomAccess</code> 有什么关系呢</h4><ul>
+<li><p>主要用于一些<strong>通用的算法代码</strong>中，它可以<strong>根据这个声明而选择效率更高的实现</strong></p>
 </li>
-<li><p>比如，<code>Collection</code> 类中有一个方法 <strong><code>binarySearch()</code></strong>。在 <code>List</code> 中进行<strong>二分查找</strong>，它的实现代码就根据 <code>list</code> <strong>是否实现了 <code>RandomAccess</code> 而采用不同的实现机制</strong>，代码如下：</p>
+<li><p>比如，<code>Collection</code> 类中有一个方法 <strong><code>binarySearch()</code></strong>。在 <code>List</code> 中进行<strong>二分查找</strong>，它的实现代码就根据 <code>list</code> <strong>是否实现了 <code>RandomAccess</code> 而采用不同的实现机制</strong>，代码如下</p>
   <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public static &lt;T&gt; <span class="built_in">int</span> binary<span class="constructor">Search(List&lt;? <span class="params">extends</span> Comparable&lt;? <span class="params">super</span> T&gt;&gt; <span class="params">list</span>, T <span class="params">key</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">list</span> instanceof RandomAccess<span class="operator"> || </span><span class="built_in">list</span>.size &lt; BINARYSEARCH_THRESHOLD) &#123;</span><br><span class="line">        return <span class="module-access"><span class="module"><span class="identifier">Collection</span>.</span></span>indexed<span class="constructor">BinarySearch(<span class="params">list</span>, <span class="params">key</span>)</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        return <span class="module-access"><span class="module"><span class="identifier">Collection</span>.</span></span>iterator<span class="constructor">BinarySearch(<span class="params">list</span>, <span class="params">key</span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
-<h4 id="18-ArrayList-中还有哪些常用的方法"><a href="#18-ArrayList-中还有哪些常用的方法" class="headerlink" title="18. ArrayList 中还有哪些常用的方法"></a>18. ArrayList 中还有哪些常用的方法</h4><ul>
-<li>构造方法：<code>ArrayList()</code>。</li>
-<li><strong>与数组的互相转换：<code>toArray()</code>、<code>Arrays.asList()</code></strong>。</li>
-<li>容量大小控制：<code>ensureCapacity()</code>、<code>trimTosize()</code>。</li>
+<h4 id="18-ArrayList-中还有哪些常用的方法"><a href="#18-ArrayList-中还有哪些常用的方法" class="headerlink" title="18. ArrayList 中还有哪些常用的方法"></a>18. <code>ArrayList</code> 中还有哪些常用的方法</h4><ul>
+<li>构造方法：<code>ArrayList()</code></li>
+<li><strong>与数组的互相转换：<code>toArray()</code>、<code>Arrays.asList()</code></strong></li>
+<li>容量大小控制：<code>ensureCapacity()</code>、<code>trimTosize()</code></li>
 </ul>
-<h4 id="19-ArrayList-的特点是什么"><a href="#19-ArrayList-的特点是什么" class="headerlink" title="19. ArrayList 的特点是什么"></a>19. ArrayList 的特点是什么</h4><ul>
-<li><p>它的特点就是内部采用<strong>动态数组</strong>实现，这决定了下面两点（<strong>性能</strong>和<strong>线程</strong>）：</p>
+<h4 id="19-ArrayList-的特点是什么"><a href="#19-ArrayList-的特点是什么" class="headerlink" title="19. ArrayList 的特点是什么"></a>19. <code>ArrayList</code> 的特点是什么</h4><ul>
+<li><p>它的特点就是内部采用<strong>动态数组</strong>实现，这决定了下面两点（<strong>性能</strong>和<strong>线程</strong>）</p>
 </li>
-<li><p><strong><code>ArrayList</code> 可以随机访问</strong>，按照索引位置进行<strong>访问</strong>效率很高，效率是 <strong><code>O(1)</code></strong>，即一步到位。</p>
+<li><p><strong><code>ArrayList</code> 可以随机访问</strong>，按照索引位置进行<strong>访问</strong>效率很高，效率是 <strong><code>O(1)</code></strong>，即一步到位</p>
 <ul>
-<li>除非数组已排序，否则按照内容<strong>查找</strong>元素效率比较低，具体是 <strong><code>O(N)</code></strong>，<code>N</code> 为数组长度，即性能与数组长度成正比。</li>
-<li><strong>添加</strong>元素的效率还可以，重新分配和复制数组的开销被平摊了。具体来说，添加 <code>N</code> 个元素的效率为 <strong><code>O(N)</code></strong>。</li>
-<li><strong>插入</strong>和<strong>删除</strong>元素的效率比较低，因为需要移动元素，具体为 <strong><code>O(N)</code></strong>。</li>
+<li>除非数组已排序，否则按照内容<strong>查找</strong>元素效率比较低，具体是 <strong><code>O(N)</code></strong>，<code>N</code> 为数组长度，即性能与数组长度成正比</li>
+<li><strong>添加</strong>元素的效率还可以，重新分配和复制数组的开销被平摊了。具体来说，添加 <code>N</code> 个元素的效率为 <strong><code>O(N)</code></strong></li>
+<li><strong>插入</strong>和<strong>删除</strong>元素的效率比较低，因为需要移动元素，具体为 <strong><code>O(N)</code></strong></li>
 </ul>
 </li>
-<li><p><strong><code>ArrayList</code> 是线程不安全的</strong>。</p>
+<li><p><strong><code>ArrayList</code> 是线程不安全的</strong></p>
 <ul>
-<li>实现线程安全的一种方式是使用 <code>Collection</code> 提供的方法装饰 <code>ArrayList</code>。</li>
-<li>另外，类 <strong><code>Vector</code></strong> 作为 Java 最早实现的容器类之一，也实现了 <code>List</code> 接口。基本原理与 <code>ArrayList</code> 类似，<strong>内部使用了 <code>synchronized</code> 实现了线程安全</strong>。</li>
-<li><strong>不需要线程安全的情况下，推荐使用 <code>ArrayList</code></strong>。</li>
+<li>实现线程安全的一种方式是使用 <code>Collection</code> 提供的方法装饰 <code>ArrayList</code></li>
+<li>另外，类 <strong><code>Vector</code></strong> 作为 Java 最早实现的容器类之一，也实现了 <code>List</code> 接口。基本原理与 <code>ArrayList</code> 类似，<strong>内部使用了 <code>synchronized</code> 实现了线程安全</strong></li>
+<li><strong>不需要线程安全的情况下，推荐使用 <code>ArrayList</code></strong></li>
 </ul>
 </li>
 </ul>
@@ -583,7 +590,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Java-集合框架体系图"><span class="nav-text">1. Java 集合框架体系图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-ArrayList-的基本用法"><span class="nav-text">2. ArrayList 的基本用法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-ArrayList-的基本原理"><span class="nav-text">3. ArrayList 的基本原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-ArrayList-的-add-方法的实现原理"><span class="nav-text">4. ArrayList 的 add() 方法的实现原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-怎样理解-foreach-语法"><span class="nav-text">5. 怎样理解 foreach 语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-foreach-语法背后是怎样实现的"><span class="nav-text">6. foreach 语法背后是怎样实现的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-Iterable-和-Iterator-的定义分别是"><span class="nav-text">7. Iterable 和 Iterator 的定义分别是</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-Iterable-和-Iterator-的联系是"><span class="nav-text">8. Iterable 和 Iterator 的联系是</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-ArrayList-对-Iterator-接口的增强有"><span class="nav-text">9. ArrayList 对 Iterator 接口的增强有</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-对于一个-ArrayList，从末尾往前遍历，代码怎样实现"><span class="nav-text">10. 对于一个 ArrayList，从末尾往前遍历，代码怎样实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-关于迭代器，有一种常见的误用是"><span class="nav-text">11. 关于迭代器，有一种常见的误用是</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-接上题，下面代码是否合法，为什么"><span class="nav-text">12. 接上题，下面代码是否合法，为什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-迭代器如何知道发生了结构性变化或者迭代器的实现原理是"><span class="nav-text">13. 迭代器如何知道发生了结构性变化或者迭代器的实现原理是</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-下面代码是否合法，为什么，怎样解决"><span class="nav-text">14. 下面代码是否合法，为什么，怎样解决</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#15-为什么要通过迭代器这种方式访问元素呢，直接使用-size-get-index-语法不也可以吗，或者说，迭代器的好处是什么"><span class="nav-text">15. 为什么要通过迭代器这种方式访问元素呢，直接使用 size()&#x2F;get(index) 语法不也可以吗，或者说，迭代器的好处是什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#16-ArrayList-实现的主要接口有哪几个"><span class="nav-text">16. ArrayList 实现的主要接口有哪几个</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#17-有没有声明-RandomAccess-有什么关系呢"><span class="nav-text">17. 有没有声明 RandomAccess 有什么关系呢</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#18-ArrayList-中还有哪些常用的方法"><span class="nav-text">18. ArrayList 中还有哪些常用的方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#19-ArrayList-的特点是什么"><span class="nav-text">19. ArrayList 的特点是什么</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Java-集合框架体系图"><span class="nav-text">1. Java 集合框架体系图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-ArrayList-的基本用法"><span class="nav-text">2. ArrayList 的基本用法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-ArrayList-的基本原理"><span class="nav-text">3. ArrayList 的基本原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-ArrayList-的-add-方法的实现原理"><span class="nav-text">4. ArrayList 的 add() 方法的实现原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-怎样理解-foreach-语法"><span class="nav-text">5. 怎样理解 foreach 语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-foreach-语法背后是怎样实现的"><span class="nav-text">6. foreach 语法背后是怎样实现的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-Iterable-和-Iterator-的定义分别是"><span class="nav-text">7. Iterable 和 Iterator 的定义分别是</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-Iterable-和-Iterator-的联系是"><span class="nav-text">8. Iterable 和 Iterator 的联系是</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-ArrayList-对-Iterator-接口的增强有"><span class="nav-text">9. ArrayList 对 Iterator 接口的增强有</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-对于一个-ArrayList，从末尾往前遍历，代码怎样实现"><span class="nav-text">10. 对于一个 ArrayList，从末尾往前遍历，代码怎样实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-关于迭代器，有一种常见的误用是"><span class="nav-text">11. 关于迭代器，有一种常见的误用是</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-接上题，下面代码是否合法，为什么"><span class="nav-text">12. 接上题，下面代码是否合法，为什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-迭代器如何知道发生了结构性变化或者迭代器的实现原理是"><span class="nav-text">13. 迭代器如何知道发生了结构性变化或者迭代器的实现原理是</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-下面代码是否合法，为什么，怎样解决"><span class="nav-text">14. 下面代码是否合法，为什么，怎样解决</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#15-为什么要通过迭代器这种方式访问元素呢，直接使用-size-、get-index-语法不也可以吗，或者说，迭代器的好处是什么"><span class="nav-text">15. 为什么要通过迭代器这种方式访问元素呢，直接使用 size()、get(index) 语法不也可以吗，或者说，迭代器的好处是什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#16-ArrayList-实现的主要接口有哪几个"><span class="nav-text">16. ArrayList 实现的主要接口有哪几个</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#17-有没有声明-RandomAccess-有什么关系呢"><span class="nav-text">17. 有没有声明 RandomAccess 有什么关系呢</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#18-ArrayList-中还有哪些常用的方法"><span class="nav-text">18. ArrayList 中还有哪些常用的方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#19-ArrayList-的特点是什么"><span class="nav-text">19. ArrayList 的特点是什么</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
