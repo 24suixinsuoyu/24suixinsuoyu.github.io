@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. 线程的概念">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-05-15T06:59:23.000Z">
-<meta property="article:modified_time" content="2020-05-17T12:30:50.000Z">
+<meta property="article:modified_time" content="2021-04-01T02:47:25.392Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="并发基础知识">
 <meta property="article:tag" content="线程的基本概念">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-17 20:30:50" itemprop="dateModified" datetime="2020-05-17T20:30:50+08:00">2020-05-17</time>
+                <time title="修改时间：2021-04-01 10:47:25" itemprop="dateModified" datetime="2021-04-01T10:47:25+08:00">2021-04-01</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,7 +233,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5.2k</span>
+              <span>5.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -254,172 +254,174 @@
       
         <h4 id="1-线程的概念"><a href="#1-线程的概念" class="headerlink" title="1. 线程的概念"></a>1. 线程的概念</h4><a id="more"></a>
 
-<p>　线程表示一条<strong>单独的执行流</strong>，它有自己的<strong>程序执行计数器</strong>，有自己的<strong>栈</strong>。</p>
+<ul>
+<li>线程表示一条<strong>单独的执行流</strong>，它有自己的<strong>程序执行计数器</strong>，有自己的<strong>栈</strong></li>
+</ul>
 <h4 id="2-在-Java-中创建线程的方式"><a href="#2-在-Java-中创建线程的方式" class="headerlink" title="2. 在 Java 中创建线程的方式"></a>2. 在 Java 中创建线程的方式</h4><ul>
-<li><strong>继承 <code>Thread</code></strong>：继承 <code>Thread</code> 并重写其 <code>run()</code> 方法来实现一个子线程，再调用这个子线程对象的 <code>start()</code> 方法启动该子线程。</li>
-<li><strong>实现 <code>Runnable</code></strong>：实现 <code>Runnable</code> 接口并实现 <code>run()</code> 方法，创建一个 <code>Thread</code> 子线程对象，传递一个 <code>Runnable</code> 对象，调用 <code>Thread</code> 对象的 <code>start()</code> 方法启动该子线程。</li>
+<li><strong>继承 <code>Thread</code></strong>：继承 <code>Thread</code> 并重写其 <code>run()</code> 方法来实现一个子线程，再调用这个子线程对象的 <code>start()</code> 方法启动该子线程</li>
+<li><strong>实现 <code>Runnable</code></strong>：实现 <code>Runnable</code> 接口并实现 <code>run()</code> 方法，创建一个 <code>Thread</code> 子线程对象，传递一个 <code>Runnable</code> 对象，调用 <code>Thread</code> 对象的 <code>start()</code> 方法启动该子线程</li>
 </ul>
-<h4 id="3-为什么调用的是-start-方法，执行的却是-run-方法"><a href="#3-为什么调用的是-start-方法，执行的却是-run-方法" class="headerlink" title="3. 为什么调用的是 start() 方法，执行的却是 run() 方法"></a>3. 为什么调用的是 start() 方法，执行的却是 run() 方法</h4><ul>
-<li><strong><code>start()</code> 表示启动该线程</strong>，使其成为一条单独的执行流。操作系统会分配线程相关的资源，每个线程会有单独的程序执行计数器和栈，操作系统会把这个线程作为一个独立的个体进行调度，分配时间片让它执行。</li>
-<li>执行的<strong>起点</strong>就是 <code>run()</code> 方法。</li>
+<h4 id="3-为什么调用的是-start-方法，执行的却是-run-方法"><a href="#3-为什么调用的是-start-方法，执行的却是-run-方法" class="headerlink" title="3. 为什么调用的是 start() 方法，执行的却是 run() 方法"></a>3. 为什么调用的是 <code>start()</code> 方法，执行的却是 <code>run()</code> 方法</h4><ul>
+<li><strong><code>start()</code> 表示启动该线程</strong>，使其成为一条单独的执行流。操作系统会分配线程相关的资源，每个线程会有单独的程序执行计数器和栈，操作系统会把这个线程作为一个独立的个体进行调度，分配时间片让它执行</li>
+<li>执行的<strong>起点</strong>就是 <code>run()</code> 方法</li>
 </ul>
-<h4 id="4-如果不调用-start-而直接调用-run-方法呢，怎样确认代码是在哪个线程中执行的呢"><a href="#4-如果不调用-start-而直接调用-run-方法呢，怎样确认代码是在哪个线程中执行的呢" class="headerlink" title="4. 如果不调用 start() 而直接调用 run() 方法呢，怎样确认代码是在哪个线程中执行的呢"></a>4. 如果不调用 start() 而直接调用 run() 方法呢，怎样确认代码是在哪个线程中执行的呢</h4><ul>
-<li>这时，并不会启动一条单独的执行流，<code>run()</code> 方法的代码依然是在 <code>main()</code> 线程中执行，<code>run()</code> 方法只是 <code>main()</code> 方法调用的一个普通方法。</li>
-<li><code>Thread</code> 类有一个静态本地方法 <strong><code>currentThread()</code></strong>，返回当前执行的线程对象：<code>public static native Thread currentThread()</code>。</li>
+<h4 id="4-如果不调用-start-而直接调用-run-方法呢，怎样确认代码是在哪个线程中执行的呢"><a href="#4-如果不调用-start-而直接调用-run-方法呢，怎样确认代码是在哪个线程中执行的呢" class="headerlink" title="4. 如果不调用 start() 而直接调用 run() 方法呢，怎样确认代码是在哪个线程中执行的呢"></a>4. 如果不调用 <code>start()</code> 而直接调用 <code>run()</code> 方法呢，怎样确认代码是在哪个线程中执行的呢</h4><ul>
+<li>这时，并不会启动一条单独的执行流，<code>run()</code> 方法的代码依然是在 <code>main()</code> 线程中执行，<code>run()</code> 方法只是 <code>main()</code> 方法调用的一个普通方法</li>
+<li><code>Thread</code> 类有一个静态本地方法 <strong><code>currentThread()</code></strong>，返回当前执行的线程对象：<code>public static native Thread currentThread()</code></li>
 </ul>
 <h4 id="5-线程与-CPU-之间的关系是"><a href="#5-线程与-CPU-之间的关系是" class="headerlink" title="5. 线程与 CPU 之间的关系是"></a>5. 线程与 CPU 之间的关系是</h4><ul>
-<li>调用 <code>start()</code> 方法后就有了多条执行流，多条执行流并发执行，操作系统负责调度。</li>
-<li>在<strong>单 CPU 的机器</strong>上，同一时刻只能有一个线程在执行；在<strong>多 CPU 的机器</strong>上，同一时刻可以有多个线程同时执行。</li>
-<li>但操作系统给我们屏蔽了这种差异，给程序员的感觉就是多个线程并发执行，但哪条语句先执行哪条语句后执行是不一定的。当所有线程都执行完毕的时候，程序退出。</li>
+<li>调用 <code>start()</code> 方法后就有了多条执行流，多条执行流并发执行，操作系统负责调度</li>
+<li>在<strong>单 CPU 的机器</strong>上，同一时刻只能有一个线程在执行；在<strong>多 CPU 的机器</strong>上，同一时刻可以有多个线程同时执行</li>
+<li>但操作系统给我们屏蔽了这种差异，给程序员的感觉就是多个线程并发执行，但哪条语句先执行哪条语句后执行是不一定的。当所有线程都执行完毕的时候，程序退出</li>
 </ul>
 <h4 id="6-一个线程都有哪些基本属性和方法"><a href="#6-一个线程都有哪些基本属性和方法" class="headerlink" title="6. 一个线程都有哪些基本属性和方法"></a>6. 一个线程都有哪些基本属性和方法</h4><ul>
-<li>线程有一些基本属性和方法。</li>
-<li><strong>属性</strong>：<code>id</code>、<code>name</code>、优先级、状态。</li>
-<li><strong>方法</strong>：是否 daemon 线程、<code>sleep()</code> 方法、<code>yield()</code> 方法、<code>join()</code> 方法、过时方法等。</li>
+<li>线程有一些基本属性和方法</li>
+<li><strong>属性</strong>：<code>id</code>、<code>name</code>、优先级、状态</li>
+<li><strong>方法</strong>：是否 daemon 线程、<code>sleep()</code> 方法、<code>yield()</code> 方法、<code>join()</code> 方法、过时方法等</li>
 </ul>
 <h4 id="7-怎样理解线程的-id-和-name"><a href="#7-怎样理解线程的-id-和-name" class="headerlink" title="7. 怎样理解线程的 id 和 name"></a>7. 怎样理解线程的 id 和 name</h4><ul>
-<li>每个线程都有一个 id 和 name。</li>
-<li>id 是一个<strong>递增</strong>的整数，每创建一个线程就加 1。</li>
-<li>name 的<strong>默认值</strong>是 Thread- 后跟一个编号。</li>
-<li>name 可以在 Thread 的构造方法中进行指定，也可以在 <code>setName()</code> 方法中进行设置。</li>
-<li>给 Thread 设置一个友好的名字，可以方便<strong>调试</strong>。</li>
+<li>每个线程都有一个 id 和 name</li>
+<li>id 是一个<strong>递增</strong>的整数，每创建一个线程就加 1</li>
+<li>name 的<strong>默认值</strong>是 Thread- 后跟一个编号</li>
+<li>name 可以在 Thread 的构造方法中进行指定，也可以在 <code>setName()</code> 方法中进行设置</li>
+<li>给 Thread 设置一个友好的名字，可以方便<strong>调试</strong></li>
 </ul>
 <h4 id="8-怎样理解线程的优先级"><a href="#8-怎样理解线程的优先级" class="headerlink" title="8. 怎样理解线程的优先级"></a>8. 怎样理解线程的优先级</h4><ul>
-<li>线程有一个优先级的概念，<strong>在 Java 中，优先级从 1 到 10，默认为 5</strong>（不是从 0 开始）。</li>
-<li>相关方法是：<code>public final void setPriority(int newPriority)/public fianl int getPriority()</code>。</li>
-<li><strong>这个优先级会被映射到操作系统中线程的优先级</strong>。不过，因为操作系统各不相同，不一定都是 10 个优先级，<strong>Java 中不同的优先级可能会被映射到操作系统中相同的优先级</strong>。</li>
-<li>优先级对操作系统而言主要是一种<strong>建议和提示</strong>，而非强制。简单说，在编程中，<strong>不要过于依赖</strong>优先级。</li>
+<li>线程有一个优先级的概念，<strong>在 Java 中，优先级从 1 到 10，默认为 5</strong>（不是从 0 开始）</li>
+<li>相关方法是：<code>public final void setPriority(int newPriority)/public fianl int getPriority()</code></li>
+<li><strong>这个优先级会被映射到操作系统中线程的优先级</strong>。不过，因为操作系统各不相同，不一定都是 10 个优先级，<strong>Java 中不同的优先级可能会被映射到操作系统中相同的优先级</strong></li>
+<li>优先级对操作系统而言主要是一种<strong>建议和提示</strong>，而非强制。简单说，在编程中，<strong>不要过于依赖</strong>优先级</li>
 </ul>
 <h4 id="9-怎样理解线程的状态，一个线程有哪些状态"><a href="#9-怎样理解线程的状态，一个线程有哪些状态" class="headerlink" title="9. 怎样理解线程的状态，一个线程有哪些状态"></a>9. 怎样理解线程的状态，一个线程有哪些状态</h4><ul>
-<li><p>线程有一个<strong>状态</strong>的概念，Thread 有一个方法用于获取线程的状态：<code>public State getState()</code>。</p>
+<li><p>线程有一个<strong>状态</strong>的概念，Thread 有一个方法用于获取线程的状态：<code>public State getState()</code></p>
 </li>
-<li><p>返回值类型为：<strong><code>Thread.State</code></strong>，它是一个<strong>枚举</strong>类型，有如下值：<code>NEW</code>、<code>RUNNABLE</code>、<code>BLOCKED</code>、<code>WAITING</code>、<code>TIMED_WAITING</code>、<code>TERMINATED</code>：</p>
+<li><p>返回值类型为：<strong><code>Thread.State</code></strong>，它是一个<strong>枚举</strong>类型，有如下值：<code>NEW</code>、<code>RUNNABLE</code>、<code>BLOCKED</code>、<code>WAITING</code>、<code>TIMED_WAITING</code>、<code>TERMINATED</code></p>
 <ul>
-<li><strong><code>NEW</code></strong>：没有调用 <code>start()</code> 方法的线程的状态是 <code>NEW</code>。</li>
-<li><strong><code>RUNNABLE</code></strong>：调用 <code>start()</code> 方法后线程在执行 <code>run()</code> 且没有阻塞时的状态是 <code>RUNNABLE</code>。不过，<strong><code>RUNNABLE</code> 不代表 CPU 一定在执行该线程的代码</strong>，可能正在执行也可能在等待操作系统分配时间片，只是它没有在等待其他条件。</li>
-<li><strong><code>BLOCKED</code></strong>、<strong><code>WAITING</code></strong>、<strong><code>TIMED_WAITING</code></strong>：都表示线程被阻塞了，在等待一些条件。</li>
-<li><strong><code>TERMINATED</code></strong>：线程运行结束后状态是 TERMINATED。</li>
+<li><strong><code>NEW</code></strong>：没有调用 <code>start()</code> 方法的线程的状态是 <code>NEW</code></li>
+<li><strong><code>RUNNABLE</code></strong>：调用 <code>start()</code> 方法后线程在执行 <code>run()</code> 且没有阻塞时的状态是 <code>RUNNABLE</code>。不过，<strong><code>RUNNABLE</code> 不代表 CPU 一定在执行该线程的代码</strong>，可能正在执行也可能在等待操作系统分配时间片，只是它没有在等待其他条件</li>
+<li><strong><code>BLOCKED</code></strong>、<strong><code>WAITING</code></strong>、<strong><code>TIMED_WAITING</code></strong>：都表示线程被阻塞了，在等待一些条件</li>
+<li><strong><code>TERMINATED</code></strong>：线程运行结束后状态是 TERMINATED</li>
 </ul>
 </li>
-<li><p>Thread 还有一个方法，返回<strong>线程是否活着</strong>：<code>public final native boolean isAlive()</code>。线程被启动后，<code>run()</code> 方法运行结束前，返回值都是 <code>true</code>。</p>
+<li><p><code>Thread</code> 还有一个方法，返回<strong>线程是否活着</strong>：<code>public final native boolean isAlive()</code>。线程被启动后，<code>run()</code> 方法运行结束前，返回值都是 <code>true</code></p>
 </li>
 </ul>
 <h4 id="10-怎样理解一个线程是否是-daemon-线程"><a href="#10-怎样理解一个线程是否是-daemon-线程" class="headerlink" title="10. 怎样理解一个线程是否是 daemon 线程"></a>10. 怎样理解一个线程是否是 daemon 线程</h4><ul>
-<li>Thread 有一个是否 daemon 线程的属性，相关方法是：<code>public final void setDaemon(boolean on)/public final boolean isDaemon()</code>。</li>
-<li>启动线程会启动一条单独的执行流，整个程序只有在所有线程都结束的时候才退出。<strong>但 daemon 线程是个例外，当整个线程剩下的都是 daemon 线程的时候，程序就会退出</strong>。</li>
-<li>daemon 线程的作用是：它一般是其他线程的<strong>辅助线程</strong>，在它辅助的主线程退出的时候，它就没有存在的意义了。</li>
-<li>即使运行一个最简单的程序，实际上，Java 也会创建多个线程。除了 main 线程外，至少还有一个<strong>负责垃圾回收的线程</strong>，这个线程就是 daemon 线程。在 main 线程结束的时候，垃圾回收线程也会退出。</li>
+<li>Thread 有一个是否 daemon 线程的属性，相关方法是：<code>public final void setDaemon(boolean on)/public final boolean isDaemon()</code></li>
+<li>启动线程会启动一条单独的执行流，整个程序只有在所有线程都结束的时候才退出。<strong>但 daemon 线程是个例外，当整个线程剩下的都是 daemon 线程的时候，程序就会退出</strong></li>
+<li>daemon 线程的作用是：它一般是其他线程的<strong>辅助线程</strong>，在它辅助的主线程退出的时候，它就没有存在的意义了</li>
+<li>即使运行一个最简单的程序，实际上，Java 也会创建多个线程。除了 main 线程外，至少还有一个<strong>负责垃圾回收的线程</strong>，这个线程就是 daemon 线程。在 main 线程结束的时候，垃圾回收线程也会退出</li>
 </ul>
-<h4 id="11-对线程的-sleep-方法的理解"><a href="#11-对线程的-sleep-方法的理解" class="headerlink" title="11. 对线程的 sleep() 方法的理解"></a>11. 对线程的 sleep() 方法的理解</h4><ul>
-<li>作用：<code>sleep()</code> 是 Thread 的一个<strong>静态本地方法</strong>，调用该方法会<strong>让当前线程睡眠指定的时间</strong>，单位是毫秒：<code>public static native void sleep(long millis) throws InterruptedException</code>。</li>
-<li>原理：<strong>睡眠期间，该线程会让出 CPU，但睡眠时间不一定是确切的给定毫秒数，可能有一定偏差，偏差与系统定时器和操作系统调度器的准确度和精度有关</strong>。</li>
-<li><strong>中断</strong>：睡眠期间，线程可以被中断，如果被中断，<code>sleep()</code> 会抛出 <code>InterruptedException</code> 异常。</li>
+<h4 id="11-对线程的-sleep-方法的理解"><a href="#11-对线程的-sleep-方法的理解" class="headerlink" title="11. 对线程的 sleep() 方法的理解"></a>11. 对线程的 <code>sleep()</code> 方法的理解</h4><ul>
+<li>作用：<code>sleep()</code> 是 Thread 的一个<strong>静态本地方法</strong>，调用该方法会<strong>让当前线程睡眠指定的时间</strong>，单位是毫秒：<code>public static native void sleep(long millis) throws InterruptedException</code></li>
+<li>原理：<strong>睡眠期间，该线程会让出 CPU，但睡眠时间不一定是确切的给定毫秒数，可能有一定偏差，偏差与系统定时器和操作系统调度器的准确度和精度有关</strong></li>
+<li><strong>中断</strong>：睡眠期间，线程可以被中断，如果被中断，<code>sleep()</code> 会抛出 <code>InterruptedException</code> 异常</li>
 </ul>
-<h4 id="12-对线程的-yield-方法的理解"><a href="#12-对线程的-yield-方法的理解" class="headerlink" title="12. 对线程的 yield() 方法的理解"></a>12. 对线程的 yield() 方法的理解</h4><ul>
-<li><code>yield()</code> 也是 Thread 的一个<strong>静态本地方法</strong>：<code>public static native void yield()</code>。</li>
-<li>调用该方法，<strong>是告诉操作系统的调度器，现在不着急占用 CPU，可以让其他线程先运行</strong>。</li>
-<li>不过，这对调度器也<strong>仅仅是建议</strong>，调度器如何处理是不一定的，它<strong>可能完全忽略</strong>该调用。</li>
+<h4 id="12-对线程的-yield-方法的理解"><a href="#12-对线程的-yield-方法的理解" class="headerlink" title="12. 对线程的 yield() 方法的理解"></a>12. 对线程的 <code>yield()</code> 方法的理解</h4><ul>
+<li><code>yield()</code> 也是 <code>Thread</code> 的一个<strong>静态本地方法</strong>：<code>public static native void yield()</code></li>
+<li>调用该方法，<strong>是告诉操作系统的调度器，现在不着急占用 CPU，可以让其他线程先运行</strong></li>
+<li>不过，这对调度器也<strong>仅仅是建议</strong>，调度器如何处理是不一定的，它<strong>可能完全忽略</strong>该调用</li>
 </ul>
-<h4 id="13-对线程的-join-方法的理解"><a href="#13-对线程的-join-方法的理解" class="headerlink" title="13. 对线程的 join() 方法的理解"></a>13. 对线程的 join() 方法的理解</h4><ul>
-<li>作用：<strong><code>join()</code> 方法可以让调用 <code>join()</code> 的线程等待该线程结束（相当于把子线程放到主线程中串行执行，更符合 join 单词的本意）</strong>。<code>join()</code> 方法的声明为：<code>public final void join() throws InterruptedException</code>。</li>
-<li><strong>中断</strong>：在等待线程结束的过程中，这个等待可能被中断，如果被中断，会抛出 <code>InterruptedException</code> 异常。</li>
-<li>扩展：<code>join()</code> 方法还有一个<strong>变体</strong>，可以<strong>限定等待的最长时间</strong>。单位是毫秒，<strong>如果是 0，表示无限期等待</strong>：<code>public final synchronized void join() throws InterruptedException</code>。</li>
+<h4 id="13-对线程的-join-方法的理解"><a href="#13-对线程的-join-方法的理解" class="headerlink" title="13. 对线程的 join() 方法的理解"></a>13. 对线程的 <code>join()</code> 方法的理解</h4><ul>
+<li>作用：<strong><code>join()</code> 方法可以让调用 <code>join()</code> 的线程等待该线程结束（相当于把子线程放到主线程中串行执行，更符合 join 单词的本意）</strong>。<code>join()</code> 方法的声明为：<code>public final void join() throws InterruptedException</code></li>
+<li><strong>中断</strong>：在等待线程结束的过程中，这个等待可能被中断，如果被中断，会抛出 <code>InterruptedException</code> 异常</li>
+<li>扩展：<code>join()</code> 方法还有一个<strong>变体</strong>，可以<strong>限定等待的最长时间</strong>。单位是毫秒，<strong>如果是 0，表示无限期等待</strong>：<code>public final synchronized void join() throws InterruptedException</code></li>
 </ul>
-<h4 id="14-Thread-类中的过时方法有哪些"><a href="#14-Thread-类中的过时方法有哪些" class="headerlink" title="14. Thread 类中的过时方法有哪些"></a>14. Thread 类中的过时方法有哪些</h4><ul>
-<li><code>Thread</code> 类中还有一些看上去可以控制线程生命周期的方法，如：<code>public final void stop()/public final void suspend()/public final void resume()</code>。</li>
-<li>这些方法因为各种原因已被标记为了<strong>过时</strong>，不应该在程序中使用它们。</li>
+<h4 id="14-Thread-类中的过时方法有哪些"><a href="#14-Thread-类中的过时方法有哪些" class="headerlink" title="14. Thread 类中的过时方法有哪些"></a>14. <code>Thread</code> 类中的过时方法有哪些</h4><ul>
+<li><code>Thread</code> 类中还有一些看上去可以控制线程生命周期的方法，如：<code>public final void stop()/public final void suspend()/public final void resume()</code></li>
+<li>这些方法因为各种原因已被标记为了<strong>过时</strong>，不应该在程序中使用它们</li>
 </ul>
 <h4 id="15-线程之间共享内存导致可能的问题有哪些"><a href="#15-线程之间共享内存导致可能的问题有哪些" class="headerlink" title="15. 线程之间共享内存导致可能的问题有哪些"></a>15. 线程之间共享内存导致可能的问题有哪些</h4><ul>
-<li>每个线程表示一条<strong>单独的执行流</strong>，有自己的<strong>程序计数器</strong>，有自己的<strong>栈</strong>。但是，线程之间可以<strong>共享内存</strong>，它们可以访问和操作相同的对象。这就导致可能出现一些意料之外的结果，包括：<ul>
-<li><strong>竞态条件（race condition）</strong>。</li>
-<li><strong>内存可见性问题</strong>。</li>
+<li>每个线程表示一条<strong>单独的执行流</strong>，有自己的<strong>程序计数器</strong>，有自己的<strong>栈</strong>。但是，线程之间可以<strong>共享内存</strong>，它们可以访问和操作相同的对象。这就导致可能出现一些意料之外的结果，包括<ul>
+<li><strong>竞态条件（race condition）</strong></li>
+<li><strong>内存可见性问题</strong></li>
 </ul>
 </li>
 </ul>
 <h4 id="16-什么是竞态条件（race-condition），出现竞态条件的原因是，怎样解决"><a href="#16-什么是竞态条件（race-condition），出现竞态条件的原因是，怎样解决" class="headerlink" title="16. 什么是竞态条件（race condition），出现竞态条件的原因是，怎样解决"></a>16. 什么是竞态条件（race condition），出现竞态条件的原因是，怎样解决</h4><ul>
-<li><p>概念：当多个线程访问和操作同一个对象时，最终执行结果<strong>与时序有关</strong>，可能正确也可能不正确。</p>
+<li><p>概念：当多个线程访问和操作同一个对象时，最终执行结果<strong>与时序有关</strong>，可能正确也可能不正确</p>
 </li>
-<li><p>原因：<strong>很多操作并不是原子操作</strong>。比如，<strong>自增操作：<code>counter++</code></strong>，它分为三个步骤：</p>
+<li><p>原因：<strong>很多操作并不是原子操作</strong>。比如，<strong>自增操作：<code>counter++</code></strong>，它分为三个步骤</p>
 <ul>
-<li><strong>取</strong> <code>counter</code> 的当前值。</li>
-<li>在当前值基础上<strong>加</strong> 1。</li>
-<li>将新值重新<strong>赋</strong>值给 <code>counter</code>。</li>
+<li><strong>取</strong> <code>counter</code> 的当前值</li>
+<li>在当前值基础上<strong>加</strong> 1</li>
+<li>将新值重新<strong>赋</strong>值给 <code>counter</code></li>
 </ul>
 </li>
-<li><p>解决：</p>
+<li><p>解决</p>
 <ul>
-<li>使用 <strong><code>synchronized</code> 关键字</strong>。</li>
-<li>使用<strong>显示锁</strong>。</li>
-<li>使用<strong>原子变量</strong>。</li>
+<li>使用 <strong><code>synchronized</code> 关键字</strong></li>
+<li>使用<strong>显示锁</strong></li>
+<li>使用<strong>原子变量</strong></li>
 </ul>
 </li>
 </ul>
 <h4 id="17-什么是内存可见性问题，出现内存可见性问题的原因是"><a href="#17-什么是内存可见性问题，出现内存可见性问题的原因是" class="headerlink" title="17. 什么是内存可见性问题，出现内存可见性问题的原因是"></a>17. 什么是内存可见性问题，出现内存可见性问题的原因是</h4><ul>
-<li>概念：多个线程可以共享访问和操作相同的变量，但<strong>一个线程对一个共享变量的修改，另一个线程不一定马上就能看到，甚至永远也看不到</strong>。</li>
-<li>原因：在计算机系统中，除了内存，数据还会被<strong>缓存</strong>在 CPU 的<strong>寄存器</strong>以及<strong>各级缓存</strong>中。当访问一个变量时，可能直接从寄存器或 CPU 缓存中获取，而不一定到内存中去取；当修改一个变量时，也可能是先写到缓存中，稍后才会同步更新到内存中。在单线程的程序中，这一般不是问题，但在多线程的程序中，尤其是在有多 CPU 的情况下，这就是严重的问题。<strong>一个线程对内存的修改，另一个线程看不到，一是修改没有及时同步到内存，二是另一个线程根本就没从内存读</strong>。</li>
-<li>解决：<ul>
-<li>使用 <strong><code>volatile</code> 关键字</strong>。</li>
-<li>使用 <strong><code>synchronized</code> 关键字</strong>。</li>
-<li>使用<strong>显示锁</strong>同步。</li>
+<li>概念：多个线程可以共享访问和操作相同的变量，但<strong>一个线程对一个共享变量的修改，另一个线程不一定马上就能看到，甚至永远也看不到</strong></li>
+<li>原因：在计算机系统中，除了内存，数据还会被<strong>缓存</strong>在 CPU 的<strong>寄存器</strong>以及<strong>各级缓存</strong>中。当访问一个变量时，可能直接从寄存器或 CPU 缓存中获取，而不一定到内存中去取；当修改一个变量时，也可能是先写到缓存中，稍后才会同步更新到内存中。在单线程的程序中，这一般不是问题，但在多线程的程序中，尤其是在有多 CPU 的情况下，这就是严重的问题。<strong>一个线程对内存的修改，另一个线程看不到，一是修改没有及时同步到内存，二是另一个线程根本就没从内存读</strong></li>
+<li>解决<ul>
+<li>使用 <strong><code>volatile</code> 关键字</strong></li>
+<li>使用 <strong><code>synchronized</code> 关键字</strong></li>
+<li>使用<strong>显示锁</strong>同步</li>
 </ul>
 </li>
 </ul>
 <h4 id="18-多线程的优点"><a href="#18-多线程的优点" class="headerlink" title="18. 多线程的优点"></a>18. 多线程的优点</h4><ul>
-<li><strong>充分利用多 CPU 的计算能力</strong>。单线程只能利用一个 CPU，使用多线程可以利用多 CPU 的计算能力。</li>
-<li><strong>充分利用硬件资源</strong>。CPU 和硬盘、网络是可以同时工作的，一个线程在等待网络 IO 的同时，另一个线程完全可以利用 CPU，对于多个独立的网络请求，完全可以使用多个线程同时请求。</li>
-<li><strong>在用户界面（GUI）应用程序中，保持程序的响应性</strong>。界面和后台任务通常是不同的线程，否则，如果所有事情都是一个线程来执行，当执行一个很慢的任务时，整个界面将停止响应，也无法取消该任务。</li>
-<li><strong>简化建模及 IO 处理</strong>。比如，在服务器应用程序中，对每个用户请求使用一个单独的线程进行处理，相比使用一个线程，处理来自各种用户的各种请求，以及各种网络和文件 IO 事件，建模和编写线程要容易得多。</li>
+<li><strong>充分利用多 CPU 的计算能力</strong>。单线程只能利用一个 CPU，使用多线程可以利用多 CPU 的计算能力</li>
+<li><strong>充分利用硬件资源</strong>。CPU 和硬盘、网络是可以同时工作的，一个线程在等待网络 IO 的同时，另一个线程完全可以利用 CPU，对于多个独立的网络请求，完全可以使用多个线程同时请求</li>
+<li><strong>在用户界面（GUI）应用程序中，保持程序的响应性</strong>。界面和后台任务通常是不同的线程，否则，如果所有事情都是一个线程来执行，当执行一个很慢的任务时，整个界面将停止响应，也无法取消该任务</li>
+<li><strong>简化建模及 IO 处理</strong>。比如，在服务器应用程序中，对每个用户请求使用一个单独的线程进行处理，相比使用一个线程，处理来自各种用户的各种请求，以及各种网络和文件 IO 事件，建模和编写线程要容易得多</li>
 </ul>
 <h4 id="19-线程的成本"><a href="#19-线程的成本" class="headerlink" title="19. 线程的成本"></a>19. 线程的成本</h4><ul>
-<li><strong>线程是有成本的</strong>，创建线程需要消耗操作系统的资源，操作系统会为每个线程创建必要的数据结构、栈、程序计数器等，创建也需要一定的时间。</li>
-<li><strong>线程调度和切换也是有成本的</strong>，当有大量可运行线程的时候，操作系统会忙于调度，为一个线程分配一段时间，执行完后，再让另一个线程执行；一个线程被切换出去后，操作系统需要保存它的当前<strong>上下文状态</strong>到内存，上下文状态包括当前 CPU 寄存器的值、程序计数器的值等。而一个线程被切换回来后，操作系统需要恢复它原来的上下文状态，整个过程称为<strong>上下文切换</strong>。这个切换不仅耗时，而且使 CPU 中的很多缓存失效。</li>
-<li><strong>成本是相对而言的</strong>，如果线程中实际执行的事情比较多，这些成本是可以接受的。</li>
-<li>另外，如果执行的任务都是 <strong>CPU 密集型</strong>的，即主要消耗的都是 CPU，那创建超过 CPU 数量的线程就是没有必要的，并不会加快程序的执行。</li>
+<li><strong>线程是有成本的</strong>，创建线程需要消耗操作系统的资源，操作系统会为每个线程创建必要的数据结构、栈、程序计数器等，创建也需要一定的时间</li>
+<li><strong>线程调度和切换也是有成本的</strong>，当有大量可运行线程的时候，操作系统会忙于调度，为一个线程分配一段时间，执行完后，再让另一个线程执行；一个线程被切换出去后，操作系统需要保存它的当前<strong>上下文状态</strong>到内存，上下文状态包括当前 CPU 寄存器的值、程序计数器的值等。而一个线程被切换回来后，操作系统需要恢复它原来的上下文状态，整个过程称为<strong>上下文切换</strong>。这个切换不仅耗时，而且使 CPU 中的很多缓存失效</li>
+<li><strong>成本是相对而言的</strong>，如果线程中实际执行的事情比较多，这些成本是可以接受的</li>
+<li>另外，如果执行的任务都是 <strong>CPU 密集型</strong>的，即主要消耗的都是 CPU，那创建超过 CPU 数量的线程就是没有必要的，并不会加快程序的执行</li>
 </ul>
 <h4 id="20-进程和线程的区别"><a href="#20-进程和线程的区别" class="headerlink" title="20. 进程和线程的区别"></a>20. 进程和线程的区别</h4><ul>
-<li><p>概念：</p>
+<li><p>概念</p>
 <ul>
-<li><strong>进程</strong>：是并发执行的程序在执行过程中分配和管理<strong>资源</strong>的基本单位，是一个动态概念，竞争计算机系统资源的基本单位。</li>
-<li><strong>线程</strong>：是进程的一个执行单元，是进程内的<strong>调度</strong>实体。比进程更小的独立运行的基本单位。线程也被称为轻量级进程。</li>
-<li><strong>一个程序至少一个进程，一个进程至少一个线程</strong>。</li>
+<li><strong>进程</strong>：是并发执行的程序在执行过程中分配和管理<strong>资源</strong>的基本单位，是一个动态概念，竞争计算机系统资源的基本单位</li>
+<li><strong>线程</strong>：是进程的一个执行单元，是进程内的<strong>调度</strong>实体。比进程更小的独立运行的基本单位。线程也被称为轻量级进程</li>
+<li><strong>一个程序至少一个进程，一个进程至少一个线程</strong></li>
 </ul>
 </li>
-<li><p>为什么会有线程：</p>
+<li><p>为什么会有线程</p>
 <ul>
-<li>每个进程都有自己的地址空间，即<strong>进程空间</strong>。在网络或多用户换机下，一个服务器通常需要接收大量不确定数量用户的并发请求，为每一个请求都创建一个进程显然行不通（系统开销大响应用户请求效率低），因此操作系统中线程概念被引进。</li>
-<li>线程的执行过程是<strong>线性</strong>的，尽管中间会发生中断或者暂停，但是进程所拥有的资源只为该线状执行过程服务，一旦发生线程切换，这些资源需要被保护起来。</li>
-<li>进程分为<strong>单线程进程</strong>和<strong>多线程进程</strong>，单线程进程宏观来看也是线性执行过程，微观上只有单一的执行过程。多线程进程宏观是线性的，微观上多个执行操作。</li>
-<li><strong>线程的改变只代表CPU的执行过程的改变，而没有发生进程所拥有的资源的变化</strong>。</li>
+<li>每个进程都有自己的地址空间，即<strong>进程空间</strong>。在网络或多用户换机下，一个服务器通常需要接收大量不确定数量用户的并发请求，为每一个请求都创建一个进程显然行不通（系统开销大响应用户请求效率低），因此操作系统中线程概念被引进</li>
+<li>线程的执行过程是<strong>线性</strong>的，尽管中间会发生中断或者暂停，但是进程所拥有的资源只为该线状执行过程服务，一旦发生线程切换，这些资源需要被保护起来</li>
+<li>进程分为<strong>单线程进程</strong>和<strong>多线程进程</strong>，单线程进程宏观来看也是线性执行过程，微观上只有单一的执行过程。多线程进程宏观是线性的，微观上多个执行操作</li>
+<li><strong>线程的改变只代表CPU的执行过程的改变，而没有发生进程所拥有的资源的变化</strong></li>
 </ul>
 </li>
-<li><p>区别：</p>
+<li><p>区别</p>
 <ul>
-<li><p><strong>地址空间</strong>：同一进程的线程共享本进程的地址空间，而进程之间则是独立的地址空间。</p>
+<li><p><strong>地址空间</strong>：同一进程的线程共享本进程的地址空间，而进程之间则是独立的地址空间</p>
 </li>
-<li><p><strong>资源拥有</strong>：同一进程内的线程共享本进程的资源如内存、I/O、cpu 等，但是进程之间的资源是独立的。</p>
+<li><p><strong>资源拥有</strong>：同一进程内的线程共享本进程的资源如内存、I/O、cpu 等，但是进程之间的资源是独立的</p>
 <ul>
 <li>一个进程崩溃后，在保护模式下不会对其他进程产生影响，但是<strong>一个线程崩溃整个进程都死掉</strong>。所以多进程要比多线程健壮。</li>
-<li><strong>进程切换时，消耗的资源大、效率高</strong>。所以涉及到频繁的切换时，使用线程要好于进程。同样如果要求同时进行并且又要共享某些变量的并发操作，只能用线程不能用进程.</li>
+<li><strong>进程切换时，消耗的资源大、效率高</strong>。所以涉及到频繁的切换时，使用线程要好于进程。同样如果要求同时进行并且又要共享某些变量的并发操作，只能用线程不能用进程</li>
 </ul>
 </li>
-<li><p><strong>执行过程</strong>：每个独立的进程有一个程序运行的入口、顺序执行序列和程序入口。但是<strong>线程不能独立执行，必须依存在应用程序中</strong>，由应用程序提供多个线程执行控制。</p>
+<li><p><strong>执行过程</strong>：每个独立的进程有一个程序运行的入口、顺序执行序列和程序入口。但是<strong>线程不能独立执行，必须依存在应用程序中</strong>，由应用程序提供多个线程执行控制</p>
 </li>
-<li><p><strong>线程是处理器调度的基本单位，进程是系统资源分配的基本单位</strong>。</p>
+<li><p><strong>线程是处理器调度的基本单位，进程是系统资源分配的基本单位</strong></p>
 </li>
-<li><p>进程和线程都可以并发执行。</p>
+<li><p>进程和线程都可以并发执行</p>
 </li>
 </ul>
 </li>
-<li><p>优缺点：</p>
+<li><p>优缺点</p>
 <ul>
-<li>线程执行开销小，但是不利于资源的管理和保护。线程适合在SMP机器（双CPU系统）上运行。</li>
-<li>进程执行开销大，但是能够很好的进行资源管理和保护。进程可以跨机器迁移。</li>
+<li>线程执行开销小，但是不利于资源的管理和保护。线程适合在SMP机器（双CPU系统）上运行</li>
+<li>进程执行开销大，但是能够很好的进行资源管理和保护。进程可以跨机器迁移</li>
 </ul>
 </li>
-<li><p>进程、线程的使用场景：</p>
+<li><p>进程、线程的使用场景</p>
 <ul>
-<li>对<strong>资源</strong>的管理和保护要求高，不限制开销和效率时，使用<strong>多进程</strong>。</li>
-<li>要求效率高，频繁<strong>切换</strong>时，资源的保护管理要求不是很高时，使用<strong>多线程</strong>。</li>
+<li>对<strong>资源</strong>的管理和保护要求高，不限制开销和效率时，使用<strong>多进程</strong></li>
+<li>要求效率高，频繁<strong>切换</strong>时，资源的保护管理要求不是很高时，使用<strong>多线程</strong></li>
 </ul>
 </li>
 </ul>
