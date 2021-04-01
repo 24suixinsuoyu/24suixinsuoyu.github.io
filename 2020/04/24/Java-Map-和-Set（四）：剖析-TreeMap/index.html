@@ -31,7 +31,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1ge9mhhrekhj30m80ap0t5.jpg">
 <meta property="article:published_time" content="2020-04-24T08:17:36.000Z">
-<meta property="article:modified_time" content="2020-04-28T09:50:46.000Z">
+<meta property="article:modified_time" content="2021-04-01T01:02:57.164Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Map 和 Set">
 <meta property="article:tag" content="剖析 TreeMap">
@@ -217,7 +217,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-28 17:50:46" itemprop="dateModified" datetime="2020-04-28T17:50:46+08:00">2020-04-28</time>
+                <time title="修改时间：2021-04-01 09:02:57" itemprop="dateModified" datetime="2021-04-01T09:02:57+08:00">2021-04-01</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -235,7 +235,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.3k</span>
+              <span>4.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -254,139 +254,140 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-TreeMap-基本用法之构造方法是怎样的"><a href="#1-TreeMap-基本用法之构造方法是怎样的" class="headerlink" title="1. TreeMap 基本用法之构造方法是怎样的"></a>1. TreeMap 基本用法之构造方法是怎样的</h4><a id="more"></a>
+        <h4 id="1-TreeMap-基本用法之构造方法是怎样的"><a href="#1-TreeMap-基本用法之构造方法是怎样的" class="headerlink" title="1. TreeMap 基本用法之构造方法是怎样的"></a>1. <code>TreeMap</code> 基本用法之构造方法是怎样的</h4><a id="more"></a>
 
 <ul>
-<li><code>TreeMap</code> 有两个构造方法：<ul>
-<li><code>public TreeMap()</code>：<ul>
-<li><strong>默认构造方法</strong>，要求 <code>Map</code> 中的键实现 <code>Comparable</code> 接口。</li>
-<li><code>TreeMap</code> 内部进行各种比较时会调用键的 <code>Comparable</code> 接口中的 <code>compareTo()</code> 方法。</li>
+<li><code>TreeMap</code> 有两个构造方法<ul>
+<li><code>public TreeMap()</code><ul>
+<li><strong>默认构造方法</strong>，要求 <code>Map</code> 中的键实现 <code>Comparable</code> 接口</li>
+<li><code>TreeMap</code> 内部进行各种比较时会调用键的 <code>Comparable</code> 接口中的 <code>compareTo()</code> 方法</li>
 </ul>
 </li>
-<li><code>public TreeMap(Comparator&lt;? super K&gt; comparator)</code>：<ul>
-<li><strong>接受一个比较器对象 <code>comparator</code></strong>。</li>
-<li>如果 <code>comparator</code> 不为 <code>null</code>，在 <code>TreeMap</code> 内部进行比较时会调用这个 <code>comparator</code> 的 <code>compare()</code> 方法，而不再调用键的 <code>compareTo()</code> 方法，也不再要求键实现 <code>Comparable</code> 接口。</li>
+<li><code>public TreeMap(Comparator&lt;? super K&gt; comparator)</code><ul>
+<li><strong>接受一个比较器对象 <code>comparator</code></strong></li>
+<li>如果 <code>comparator</code> 不为 <code>null</code>，在 <code>TreeMap</code> 内部进行比较时会调用这个 <code>comparator</code> 的 <code>compare()</code> 方法，而不再调用键的 <code>compareTo()</code> 方法，也不再要求键实现 <code>Comparable</code> 接口</li>
 </ul>
 </li>
 </ul>
 </li>
-<li><strong><code>TreeMap</code> 是按键而不是按值有序，无论哪一种，都是对键而非值进行比较</strong>。</li>
+<li><strong><code>TreeMap</code> 是按键而不是按值有序，无论哪一种，都是对键而非值进行比较</strong></li>
 </ul>
 <h4 id="2-下面代码的输出结果是"><a href="#2-下面代码的输出结果是" class="headerlink" title="2. 下面代码的输出结果是"></a>2. 下面代码的输出结果是</h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;<span class="keyword">String</span>, <span class="keyword">String</span>&gt; <span class="built_in">map</span> = <span class="keyword">new</span> TreeMap();</span><br><span class="line"><span class="built_in">map</span>.<span class="built_in">put</span>(<span class="string">"a"</span>, <span class="string">"abstract"</span>);</span><br><span class="line"><span class="built_in">map</span>.<span class="built_in">put</span>(<span class="string">"c"</span>, <span class="string">"call"</span>);</span><br><span class="line"><span class="built_in">map</span>.<span class="built_in">put</span>(<span class="string">"b"</span>, <span class="string">"basic"</span>);</span><br><span class="line"><span class="built_in">map</span>.<span class="built_in">put</span>(<span class="string">"T"</span>, <span class="string">"tree"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(Entry&lt;<span class="keyword">String</span>, <span class="keyword">String</span>&gt; kv : <span class="built_in">map</span>.entrySet()) &#123;</span><br><span class="line">    System.out.<span class="built_in">print</span>(kv.<span class="built_in">getKey</span>() + <span class="string">"="</span> + kv.getValue() + <span class="string">" "</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>结果：<code>T=tree a=abstract b=basic c=call</code>。</li>
-<li>分析：创建了一个 <code>TreeMap</code>，但只是当作 <code>Map</code> 使用，不过迭代时，输出是<strong>按键有序</strong>的。<code>T</code> 排在最前面，是因为<strong>大写字母的 ASCII 码都小于小写字母</strong>。</li>
+<li>结果：<code>T=tree a=abstract b=basic c=call</code></li>
+<li>分析：创建了一个 <code>TreeMap</code>，但只是当作 <code>Map</code> 使用，不过迭代时，输出是<strong>按键有序</strong>的。<code>T</code> 排在最前面，是因为<strong>大写字母的 ASCII 码都小于小写字母</strong></li>
 </ul>
 <h4 id="3-接上题，如果希望忽略大小写呢"><a href="#3-接上题，如果希望忽略大小写呢" class="headerlink" title="3. 接上题，如果希望忽略大小写呢"></a>3. 接上题，如果希望忽略大小写呢</h4><ul>
-<li>可以传递一个<strong>比较器</strong>，<strong><code>String</code> 类有一个静态成员 <code>CASE_INSENSITIVE_ORDER</code>，它就是一个忽略大小写的 <code>Comparator</code> 对象</strong>。</li>
-<li>替换第一行代码为：<code>Map&lt;String, String&gt; map = new TreeMap&lt;&gt; (String.CASE_INSENSITIVE_ORDER);</code>。输出为：<code>a=abstract b=basic c=call T=tree</code>。</li>
+<li>可以传递一个<strong>比较器</strong>，<strong><code>String</code> 类有一个静态成员 <code>CASE_INSENSITIVE_ORDER</code>，它就是一个忽略大小写的 <code>Comparator</code> 对象</strong></li>
+<li>替换第一行代码为：<code>Map&lt;String, String&gt; map = new TreeMap&lt;&gt; (String.CASE_INSENSITIVE_ORDER);</code>。输出为：<code>a=abstract b=basic c=call T=tree</code></li>
 </ul>
 <h4 id="4-接上题，正常排序是从小到大，如果希望逆序呢"><a href="#4-接上题，正常排序是从小到大，如果希望逆序呢" class="headerlink" title="4. 接上题，正常排序是从小到大，如果希望逆序呢"></a>4. 接上题，正常排序是从小到大，如果希望逆序呢</h4><ul>
-<li><p>可以传递一个<strong>自定义的 <code>Comparator</code> 对象</strong>，替换第一行代码为：</p>
+<li><p>可以传递一个<strong>自定义的 <code>Comparator</code> 对象</strong>，替换第一行代码为</p>
   <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;<span class="keyword">String</span>, <span class="keyword">String</span>&gt; <span class="built_in">map</span> = <span class="keyword">new</span> TreeMap&lt;&gt; (<span class="keyword">new</span> Comparator&lt;<span class="keyword">String</span>&gt;() &#123;</span><br><span class="line">    @Override</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> compare(<span class="keyword">String</span> o1, <span class="keyword">String</span> o2) &#123;</span><br><span class="line">        <span class="keyword">return</span> o2.compareTo(o1);</span><br><span class="line">    &#125;    </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>结果：<code>c=call b=basic a=abstract T=tree</code>。</li>
-<li>分析：因为正常排序中，<code>compare()</code> 方法内是 <code>o1.compareTo(o2)</code>，两个对象翻过来，自然就是逆序了。</li>
+<li>结果：<code>c=call b=basic a=abstract T=tree</code></li>
+<li>分析：因为正常排序中，<code>compare()</code> 方法内是 <code>o1.compareTo(o2)</code>，两个对象翻过来，自然就是逆序了</li>
 </ul>
 </li>
-<li><p><strong><code>Collection</code> 类有一个静态方法 <code>reverseOrder()</code> 可以返回一个逆序比较器</strong>，所以，上面代码也可以替换为：<code>Map&lt;String, Sttring&gt; map = new TreeMap&lt;&gt; (Collections.reverseOrder());</code>。</p>
+<li><p><strong><code>Collection</code> 类有一个静态方法 <code>reverseOrder()</code> 可以返回一个逆序比较器</strong>，所以，上面代码也可以替换为：<code>Map&lt;String, Sttring&gt; map = new TreeMap&lt;&gt; (Collections.reverseOrder());</code></p>
 </li>
 </ul>
 <h4 id="5-接上题，如果希望逆序且忽略大小写呢"><a href="#5-接上题，如果希望逆序且忽略大小写呢" class="headerlink" title="5. 接上题，如果希望逆序且忽略大小写呢"></a>5. 接上题，如果希望逆序且忽略大小写呢</h4><ul>
-<li>组合 <code>Collection</code> 的逆序和 <code>String</code> 的忽略大小写。</li>
-<li>第一行可以替换为：<code>Map&lt;String, String&gt; map = new TreeMap&lt;&gt; (Colleciton.reverseOrder(String.CASE_INSENSITIVE_ORDER));</code>。</li>
+<li>组合 <code>Collection</code> 的逆序和 <code>String</code> 的忽略大小写</li>
+<li>第一行可以替换为：<code>Map&lt;String, String&gt; map = new TreeMap&lt;&gt; (Colleciton.reverseOrder(String.CASE_INSENSITIVE_ORDER));</code></li>
 </ul>
 <h4 id="6-下面代码的输出结果是"><a href="#6-下面代码的输出结果是" class="headerlink" title="6. 下面代码的输出结果是"></a>6. 下面代码的输出结果是</h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;<span class="keyword">String</span>, <span class="keyword">String</span>&gt; <span class="built_in">map</span> = <span class="keyword">new</span> TreeMap&lt;&gt; (<span class="keyword">String</span>.CASE_INSENSITIVE_ORDER);</span><br><span class="line"><span class="built_in">map</span>.<span class="built_in">put</span>(<span class="string">"T"</span>, <span class="string">"tree"</span>);</span><br><span class="line"><span class="built_in">map</span>.<span class="built_in">put</span>(<span class="string">"t"</span>, <span class="string">"try"</span>);</span><br><span class="line"><span class="keyword">for</span>(Entry&lt;<span class="keyword">String</span>, <span class="keyword">String</span>&gt; kv : <span class="built_in">map</span>.entrySet()) &#123;</span><br><span class="line">    System.out.<span class="built_in">print</span>(kv.<span class="built_in">getKey</span>() + <span class="string">"="</span> + kv.getValue() + <span class="string">"  "</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>结果：<code>T=try</code>。</li>
-<li>分析：看上去有两个不同的键 <code>T</code> 和 <code>t</code>，但因为比较器忽略大小写，所以只会有一个。键为第一次 <code>put()</code> 时的值，即 <code>T</code>，而值为最后一次 <code>put()</code> 时<strong>覆盖</strong>的值，这里即 <code>try</code>。</li>
+<li>结果：<code>T=try</code></li>
+<li>分析：看上去有两个不同的键 <code>T</code> 和 <code>t</code>，但因为比较器忽略大小写，所以只会有一个。键为第一次 <code>put()</code> 时的值，即 <code>T</code>，而值为最后一次 <code>put()</code> 时<strong>覆盖</strong>的值，这里即 <code>try</code></li>
 </ul>
 <h4 id="7-下面代码的输出结果是"><a href="#7-下面代码的输出结果是" class="headerlink" title="7. 下面代码的输出结果是"></a>7. 下面代码的输出结果是</h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;<span class="keyword">String</span>, Integer&gt; <span class="built_in">map</span> = <span class="keyword">new</span> TreeMap&lt;&gt; ();</span><br><span class="line"><span class="built_in">map</span>.<span class="built_in">put</span>(<span class="string">"2016-7-3"</span>, <span class="number">100</span>);</span><br><span class="line"><span class="built_in">map</span>.<span class="built_in">put</span>(<span class="string">"2016-7-10"</span>, <span class="number">120</span>);</span><br><span class="line"><span class="built_in">map</span>.<span class="built_in">put</span>(<span class="string">"2016-8-1"</span>, <span class="number">90</span>);</span><br><span class="line"><span class="keyword">for</span>(Entry&lt;<span class="keyword">String</span>, Integer&gt; kv : <span class="built_in">map</span>.entrySet()) &#123;</span><br><span class="line">    System.out.<span class="built_in">print</span>(kv.<span class="built_in">getKey</span>() + <span class="string">", "</span> + kv.getValue() + <span class="string">" "</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>结果：<code>2016-7-10,120 2016-7-3, 100 2016-8-1, 90</code>。</li>
-<li>分析：7 月 10 号排在了 7 月 3 号 前面，与期望的不符。这是因为，它们是<strong>按照字符串比较</strong>的。按字符串，<code>2016-7-10</code> 就是小于 <code>2016-7-3</code>，<strong>因为第一个不同之处 1 小于 3</strong>。</li>
+<li>结果：<code>2016-7-10,120 2016-7-3, 100 2016-8-1, 90</code></li>
+<li>分析：7 月 10 号排在了 7 月 3 号 前面，与期望的不符。这是因为，它们是<strong>按照字符串比较</strong>的。按字符串，<code>2016-7-10</code> 就是小于 <code>2016-7-3</code>，<strong>因为第一个不同之处 1 小于 3</strong></li>
 </ul>
 <h4 id="8-接上题，怎样解决使与期望相符"><a href="#8-接上题，怎样解决使与期望相符" class="headerlink" title="8. 接上题，怎样解决使与期望相符"></a>8. 接上题，怎样解决使与期望相符</h4><ul>
-<li><p>可以使用一个<strong>自定义的比较器，将字符串转换为日期，按日期进行比较</strong>。</p>
+<li><p>可以使用一个<strong>自定义的比较器，将字符串转换为日期，按日期进行比较</strong></p>
 </li>
-<li><p><code>Demo</code>：</p>
+<li><p>Demo</p>
   <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;String, Integer&gt; map = new TreeMap&lt;&gt; (new Comparator&lt;String&gt;() &#123;</span><br><span class="line">    SimpleDateFormat sdf = new SimpleDateFormat(<span class="string">"yyyy-MM-dd"</span>);</span><br><span class="line">    @Override</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> compare(String o1, String o2) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> sdf.parse(o1).compareTo(sdf.parse(o2));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ParseException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">//输出结果</span></span><br><span class="line"><span class="number">2016</span><span class="number">-7</span><span class="number">-3</span>, <span class="number">100</span></span><br><span class="line"><span class="number">2016</span><span class="number">-7</span><span class="number">-10</span>, <span class="number">120</span></span><br><span class="line"><span class="number">2016</span><span class="number">-8</span><span class="number">-1</span>, <span class="number">90</span></span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
-<h4 id="9-TreeMap-实现原理是怎样的"><a href="#9-TreeMap-实现原理是怎样的" class="headerlink" title="9. TreeMap 实现原理是怎样的"></a>9. TreeMap 实现原理是怎样的</h4><ul>
-<li><p><strong><code>TreeMap</code> 内部是用红黑树实现的，红黑树是一种大致平衡的排序二叉树</strong>。</p>
+<h4 id="9-TreeMap-实现原理是怎样的"><a href="#9-TreeMap-实现原理是怎样的" class="headerlink" title="9. TreeMap 实现原理是怎样的"></a>9. <code>TreeMap</code> 实现原理是怎样的</h4><ul>
+<li><p><strong><code>TreeMap</code> 内部是用红黑树实现的，红黑树是一种大致平衡的排序二叉树</strong></p>
 </li>
-<li><p><code>TreeMap</code> 内部主要有如下成员：</p>
+<li><p><code>TreeMap</code> 内部主要有如下成员</p>
   <figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Comparator&lt;? <span class="keyword">super</span> K&gt; comparator;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">transient</span> Entry&lt;K, V&gt; root = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">transient</span> <span class="keyword">int</span> <span class="keyword">size</span> = <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li><p><strong><code>comparator</code> 就是比较器</strong>，在构造方法中传递，如果没传，就是 <code>null</code>。</p>
+<li><p><strong><code>comparator</code> 就是比较器</strong>，在构造方法中传递，如果没传，就是 <code>null</code></p>
 </li>
-<li><p><strong><code>size</code> 为当前键值对个数</strong>。</p>
+<li><p><strong><code>size</code> 为当前键值对个数</strong></p>
 </li>
-<li><p><strong><code>root</code> 指向树的根节点</strong>，从根节点可以访问到每个节点，节点的类型是 <code>Entry</code>。</p>
+<li><p><strong><code>root</code> 指向树的根节点</strong>，从根节点可以访问到每个节点，节点的类型是 <code>Entry</code></p>
 </li>
-<li><p><strong><code>Entry</code> 是 <code>TreeMap</code> 的一个内部类</strong>，其内部成员和构造方法为：</p>
+<li><p><strong><code>Entry</code> 是 <code>TreeMap</code> 的一个内部类</strong>，其内部成员和构造方法为</p>
   <figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">static <span class="keyword">final</span> <span class="keyword">class</span> <span class="built_in">Entry</span>&lt;K, V&gt; implements Map.<span class="built_in">Entry</span>&lt;K, V&gt; &#123;</span><br><span class="line">    K key;</span><br><span class="line">    V <span class="keyword">value</span>;</span><br><span class="line">    <span class="built_in">Entry</span>&lt;K, V&gt; left = null;</span><br><span class="line">    <span class="built_in">Entry</span>&lt;K, V&gt; right = null;</span><br><span class="line">    <span class="built_in">Entry</span>&lt;K, V&gt; parent;</span><br><span class="line">    boolean color = BLACK;</span><br><span class="line">    <span class="built_in">Entry</span>(K key, V <span class="keyword">value</span>, <span class="built_in">Entry</span>&lt;K, V&gt; parent) &#123;</span><br><span class="line">        this.key = key;</span><br><span class="line">        this.<span class="keyword">value</span> = <span class="keyword">value</span>;</span><br><span class="line">        this.parent = parent;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
-<li><p>每个节点除了键（<code>key</code>）和值（<code>value</code>）之外，<strong>还有三个引用</strong>，分别指向其<strong>左孩子</strong>（left）、<strong>右孩子</strong>（right）和<strong>父节点</strong>（parent)。</p>
+<li><p>每个节点除了键（<code>key</code>）和值（<code>value</code>）之外，<strong>还有三个引用</strong>，分别指向其<strong>左孩子</strong>（left）、<strong>右孩子</strong>（right）和<strong>父节点</strong>（parent)</p>
 <ul>
-<li>对于根节点，父节点为 <code>null</code>；对于叶子节点，孩子节点都为 <code>null</code>。</li>
-<li>还有一个成员 <strong><code>color</code> 表示颜色</strong>，<code>TreeMap</code> 是用红黑树实现的，每个节点都有一个颜色，<strong>非黑即红</strong>。</li>
+<li>对于根节点，父节点为 <code>null</code>；对于叶子节点，孩子节点都为 <code>null</code></li>
+<li>还有一个成员 <strong><code>color</code> 表示颜色</strong>，<code>TreeMap</code> 是用红黑树实现的，每个节点都有一个颜色，<strong>非黑即红</strong></li>
 </ul>
 </li>
-<li><p><strong>保存键值对 <code>put(K key, V value)</code> 的基本思路</strong>：循环比较找到父节点，并插入作为其左孩子或右孩子，然后调整保持树的大致平衡。</p>
+<li><p><strong>保存键值对 <code>put(K key, V value)</code> 的基本思路</strong>：循环比较找到父节点，并插入作为其左孩子或右孩子，然后调整保持树的大致平衡</p>
 </li>
-<li><p><strong>根据键获取值 <code>get(Object key)</code> 的基本思路</strong>：从根开始找，小于往左边找，大于往右边找，直到找到为止，如果没找到，返回 <code>null</code>。</p>
+<li><p><strong>根据键获取值 <code>get(Object key)</code> 的基本思路</strong>：从根开始找，小于往左边找，大于往右边找，直到找到为止，如果没找到，返回 <code>null</code></p>
 </li>
-<li><p><strong>查看是否包含某个值 <code>containsValue(Object value)</code> 的基本思路</strong>：主体就是一个循环遍历，从第一个节点开始，逐个进行比较，直到找到为止，如果循环结束也没找到则返回 <code>false</code>。</p>
+<li><p><strong>查看是否包含某个值 <code>containsValue(Object value)</code> 的基本思路</strong>：主体就是一个循环遍历，从第一个节点开始，逐个进行比较，直到找到为止，如果循环结束也没找到则返回 <code>false</code></p>
 </li>
-<li><p><strong>根据键删除键值对 <code>remove(Object key)</code> 的基本思路</strong>：与排序二叉树删除节点类似，分三种情况。</p>
+<li><p><strong>根据键删除键值对 <code>remove(Object key)</code> 的基本思路</strong>：与排序二叉树删除节点类似，分三种情况</p>
 </li>
 </ul>
 <h4 id="10-怎样理解红黑树"><a href="#10-怎样理解红黑树" class="headerlink" title="10. 怎样理解红黑树"></a>10. 怎样理解红黑树</h4><ul>
-<li><p>定义：<strong>红黑树是一种大致平衡的排序二叉树</strong>。</p>
+<li><p>定义：<strong>红黑树是一种大致平衡的排序二叉树</strong></p>
 </li>
-<li><p>特征：红黑树除了符合排序二叉树左小右大的<strong>基本特征</strong>外，还具有下列<strong>附加特征</strong>：</p>
+<li><p>特征：红黑树除了符合排序二叉树左小右大的<strong>基本特征</strong>外，还具有下列<strong>附加特征</strong></p>
 <ul>
-<li>根节点是黑色。</li>
-<li>其他节点是红色或黑色。</li>
-<li>每个叶子节点都是黑色的空节点。</li>
-<li>每个红色节点的两个孩子节点都是黑色（从每个叶子节点到根节点的所有路径上不能有两个连续的红色节点）。</li>
-<li>从任一节点到其每个叶子节点的所有路径都包含相同数目的黑色节点。</li>
+<li>根节点是黑色</li>
+<li>其他节点是红色或黑色</li>
+<li>每个叶子节点都是黑色的空节点</li>
+<li>每个红色节点的两个孩子节点都是黑色（从每个叶子节点到根节点的所有路径上不能有两个连续的红色节点）</li>
+<li>从任一节点到其每个叶子节点的所有路径都包含相同数目的黑色节点</li>
 </ul>
 </li>
-<li><p>举例：<br><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ge9mhhrekhj30m80ap0t5.jpg" alt="红黑树"></p>
+<li><p>举例</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/007S8ZIlly1ge9mhhrekhj30m80ap0t5.jpg" alt="红黑树"></p>
 </li>
-<li><p>调整：</p>
+<li><p>调整</p>
 <ul>
-<li><strong>变色</strong>：红变黑、黑变红。</li>
-<li><strong>旋转</strong>：<ul>
-<li><strong>左旋转</strong>：逆时针旋转红黑树的两个节点，使得父节点被自己的右孩子取代，而自己成为自己的左孩子。</li>
-<li><strong>右旋转</strong>：顺时针旋转红黑树的两个节点，使得父节点被自己的左孩子取代，而自己成为自己的右孩子。</li>
+<li><strong>变色</strong>：红变黑、黑变红</li>
+<li><strong>旋转</strong><ul>
+<li><strong>左旋转</strong>：逆时针旋转红黑树的两个节点，使得父节点被自己的右孩子取代，而自己成为自己的左孩子</li>
+<li><strong>右旋转</strong>：顺时针旋转红黑树的两个节点，使得父节点被自己的左孩子取代，而自己成为自己的右孩子</li>
 </ul>
 </li>
 </ul>
 </li>
-<li><p>参考：</p>
+<li><p>参考</p>
 <ul>
 <li><a href="https://zh.wikipedia.org/wiki/%E7%BA%A2%E9%BB%91%E6%A0%91" target="_blank" rel="noopener">维基百科：红黑树</a></li>
 <li><a href="https://mp.weixin.qq.com/s/BE_UdHdwTna9dq-qeTPAAQ" target="_blank" rel="noopener">漫画：什么是红黑树</a></li>
 </ul>
 </li>
 </ul>
-<h4 id="11-TreeMap-的特点"><a href="#11-TreeMap-的特点" class="headerlink" title="11. TreeMap 的特点"></a>11. TreeMap 的特点</h4><ul>
-<li><strong>按键有序</strong>，<code>TreeMap</code> 同样实现了 <code>SortedMap</code> 和 <code>NavigableMap</code> 接口，可以方便地<strong>根据键的顺序进行查找</strong>，如<strong>第一个、最后一个、某一范围的键、临近键</strong>等。</li>
-<li><strong>为了按键有序</strong>，<code>TreeMap</code> 要求键实现 <strong><code>Comparable</code> 接口</strong>或通过构造方法提供一个 <strong><code>Comparator</code> 比较器对象</strong>。</li>
-<li>根据键保存、查找、删除的<strong>效率比较高，为 <code>O(h)</code>，<code>h</code> 为树的高度</strong>，在树平衡的情况下，<code>h = log2(N)</code>，<code>N</code> 为节点数。</li>
-<li><strong>不要求排序，优先考虑 <code>HashMap</code>；要求排序，考虑 <code>TreeMap</code></strong>。</li>
+<h4 id="11-TreeMap-的特点"><a href="#11-TreeMap-的特点" class="headerlink" title="11. TreeMap 的特点"></a>11. <code>TreeMap</code> 的特点</h4><ul>
+<li><strong>按键有序</strong>，<code>TreeMap</code> 同样实现了 <code>SortedMap</code> 和 <code>NavigableMap</code> 接口，可以方便地<strong>根据键的顺序进行查找</strong>，如<strong>第一个、最后一个、某一范围的键、临近键</strong>等</li>
+<li><strong>为了按键有序</strong>，<code>TreeMap</code> 要求键实现 <strong><code>Comparable</code> 接口</strong>或通过构造方法提供一个 <strong><code>Comparator</code> 比较器对象</strong></li>
+<li>根据键保存、查找、删除的<strong>效率比较高，为 <code>O(h)</code>，<code>h</code> 为树的高度</strong>，在树平衡的情况下，<code>h = log2(N)</code>，<code>N</code> 为节点数</li>
+<li><strong>不要求排序，优先考虑 <code>HashMap</code>；要求排序，考虑 <code>TreeMap</code></strong></li>
 </ul>
 
     </div>
