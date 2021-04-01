@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. synchronized 的用法">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-05-15T07:00:17.000Z">
-<meta property="article:modified_time" content="2020-05-18T07:40:04.000Z">
+<meta property="article:modified_time" content="2021-04-01T02:57:39.428Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="并发基础知识">
 <meta property="article:tag" content="理解 synchronized">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-18 15:40:04" itemprop="dateModified" datetime="2020-05-18T15:40:04+08:00">2020-05-18</time>
+                <time title="修改时间：2021-04-01 10:57:39" itemprop="dateModified" datetime="2021-04-01T10:57:39+08:00">2021-04-01</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,7 +233,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.5k</span>
+              <span>4.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -252,37 +252,39 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-synchronized-的用法"><a href="#1-synchronized-的用法" class="headerlink" title="1. synchronized 的用法"></a>1. synchronized 的用法</h4><a id="more"></a>
+        <h4 id="1-synchronized-的用法"><a href="#1-synchronized-的用法" class="headerlink" title="1. synchronized 的用法"></a>1. <code>synchronized</code> 的用法</h4><a id="more"></a>
 
-<p>　<code>synchronized</code> 可以用于修饰类的<strong>实例方法</strong>、<strong>静态方法</strong>、和<strong>代码块</strong>。</p>
-<h4 id="2-synchronized-修饰实例方法的基本原理"><a href="#2-synchronized-修饰实例方法的基本原理" class="headerlink" title="2. synchronized 修饰实例方法的基本原理"></a>2. synchronized 修饰实例方法的基本原理</h4><ul>
-<li>加了 <code>synchronized</code> 修饰符后，方法内的代码就变成了<strong>原子操作</strong>。</li>
-<li><code>synchronized</code> 实例方法实际保护的是<strong>同一个对象的方法调用</strong>，确保同时只能有一个线程执行。</li>
-<li><code>synchronized</code> 实例方法保护的是<strong>当前实例对象</strong>，即 <strong><code>this</code></strong>。<code>this</code> 对象有一个<strong>锁</strong>和一个<strong>等待队列</strong>，<strong>锁只能被一个线程持有</strong>，其他试图获得同样锁的线程需要等待。</li>
+<ul>
+<li><code>synchronized</code> 可以用于修饰类的<strong>实例方法</strong>、<strong>静态方法</strong>、和<strong>代码块</strong></li>
 </ul>
-<h4 id="3-执行-synchronized-实例方法的过程大致是"><a href="#3-执行-synchronized-实例方法的过程大致是" class="headerlink" title="3. 执行 synchronized 实例方法的过程大致是"></a>3. 执行 synchronized 实例方法的过程大致是</h4><ul>
-<li><strong><code>synchronized</code> 的实际执行过程很复杂</strong>，而且 <strong>Java 虚拟机</strong>采用了多种优化方式以提高性能。</li>
-<li>从概念上，可以如下简单理解：<ul>
-<li><strong>尝试获得锁</strong>，如果能够获得锁，继续下一步，否则加入<strong>等待队列</strong>，阻塞并等待唤醒。</li>
-<li><strong>执行</strong>实例方法体代码。</li>
-<li><strong>释放锁</strong>，如果等待队列上有等待的线程，从中取一个并唤醒，如果有多个等待的线程，<strong>唤醒哪一个是不一定的，不保证公平性</strong>。</li>
-<li>当前线程不能获得锁的时候，它会加入<strong>等待队列</strong>等待，线程的状态会变为 <strong><code>BLOCKED</code></strong>。</li>
+<h4 id="2-synchronized-修饰实例方法的基本原理"><a href="#2-synchronized-修饰实例方法的基本原理" class="headerlink" title="2. synchronized 修饰实例方法的基本原理"></a>2. <code>synchronized</code> 修饰实例方法的基本原理</h4><ul>
+<li>加了 <code>synchronized</code> 修饰符后，方法内的代码就变成了<strong>原子操作</strong></li>
+<li><code>synchronized</code> 实例方法实际保护的是<strong>同一个对象的方法调用</strong>，确保同时只能有一个线程执行</li>
+<li><code>synchronized</code> 实例方法保护的是<strong>当前实例对象</strong>，即 <strong><code>this</code></strong>。<code>this</code> 对象有一个<strong>锁</strong>和一个<strong>等待队列</strong>，<strong>锁只能被一个线程持有</strong>，其他试图获得同样锁的线程需要等待</li>
+</ul>
+<h4 id="3-执行-synchronized-实例方法的过程大致是"><a href="#3-执行-synchronized-实例方法的过程大致是" class="headerlink" title="3. 执行 synchronized 实例方法的过程大致是"></a>3. 执行 <code>synchronized</code> 实例方法的过程大致是</h4><ul>
+<li><strong><code>synchronized</code> 的实际执行过程很复杂</strong>，而且 <strong>Java 虚拟机</strong>采用了多种优化方式以提高性能</li>
+<li>从概念上，可以如下简单理解<ul>
+<li><strong>尝试获得锁</strong>，如果能够获得锁，继续下一步，否则加入<strong>等待队列</strong>，阻塞并等待唤醒</li>
+<li><strong>执行</strong>实例方法体代码</li>
+<li><strong>释放锁</strong>，如果等待队列上有等待的线程，从中取一个并唤醒，如果有多个等待的线程，<strong>唤醒哪一个是不一定的，不保证公平性</strong></li>
+<li>当前线程不能获得锁的时候，它会加入<strong>等待队列</strong>等待，线程的状态会变为 <strong><code>BLOCKED</code></strong></li>
 </ul>
 </li>
 </ul>
-<h4 id="4-synchronized-修饰实例方法的注意事项"><a href="#4-synchronized-修饰实例方法的注意事项" class="headerlink" title="4. synchronized 修饰实例方法的注意事项"></a>4. synchronized 修饰实例方法的注意事项</h4><ul>
-<li><code>synchronized</code> 保护的是<strong>对象</strong>而非代码，只要访问的是同一个对象的 <code>synchronized</code> 方法，即使是不同的代码，也会被同步顺序访问。</li>
-<li><code>synchronized</code> 方法不能防止非 <code>synchronized</code> 方法被同时执行。</li>
-<li><strong>一般在保护变量时，需要在所有访问该变量的方法上加上 <code>synchronized</code></strong>。</li>
+<h4 id="4-synchronized-修饰实例方法的注意事项"><a href="#4-synchronized-修饰实例方法的注意事项" class="headerlink" title="4. synchronized 修饰实例方法的注意事项"></a>4. <code>synchronized</code> 修饰实例方法的注意事项</h4><ul>
+<li><code>synchronized</code> 保护的是<strong>对象</strong>而非代码，只要访问的是同一个对象的 <code>synchronized</code> 方法，即使是不同的代码，也会被同步顺序访问</li>
+<li><code>synchronized</code> 方法不能防止非 <code>synchronized</code> 方法被同时执行</li>
+<li><strong>一般在保护变量时，需要在所有访问该变量的方法上加上 <code>synchronized</code></strong></li>
 </ul>
-<h4 id="5-synchronized-修饰静态方法的基本原理"><a href="#5-synchronized-修饰静态方法的基本原理" class="headerlink" title="5. synchronized 修饰静态方法的基本原理"></a>5. synchronized 修饰静态方法的基本原理</h4><ul>
-<li><strong><code>synchronized</code> 保护的是对象</strong>。对静态方法，<code>synchronized</code> 保护的是<strong>类对象</strong>。</li>
-<li>每个对象都有一个<strong>锁</strong>和一个<strong>等待队列</strong>，类对象也不例外。</li>
-<li><code>synchronized</code> 静态方法和 <code>synchronized</code> 实例方法保护的是不同的对象。不同的两个线程，可以一个执行 <code>synchronized</code> 静态方法，另一个执行 <code>synchronized</code> 实例方法。</li>
+<h4 id="5-synchronized-修饰静态方法的基本原理"><a href="#5-synchronized-修饰静态方法的基本原理" class="headerlink" title="5. synchronized 修饰静态方法的基本原理"></a>5. <code>synchronized</code> 修饰静态方法的基本原理</h4><ul>
+<li><strong><code>synchronized</code> 保护的是对象</strong>。对静态方法，<code>synchronized</code> 保护的是<strong>类对象</strong></li>
+<li>每个对象都有一个<strong>锁</strong>和一个<strong>等待队列</strong>，类对象也不例外</li>
+<li><code>synchronized</code> 静态方法和 <code>synchronized</code> 实例方法保护的是不同的对象。不同的两个线程，可以一个执行 <code>synchronized</code> 静态方法，另一个执行 <code>synchronized</code> 实例方法</li>
 </ul>
-<h4 id="6-synchronized-包装代码块的基本原理"><a href="#6-synchronized-包装代码块的基本原理" class="headerlink" title="6. synchronized 包装代码块的基本原理"></a>6. synchronized 包装代码块的基本原理</h4><ul>
-<li><code>synchronized</code> <strong>括号里面</strong>的就是要保护的对象。</li>
-<li><code>synchronized</code> 同步的对象可以是任意对象，任意对象都有一个锁和等待队列。或者说，<strong>任何对象都可以作为锁对象</strong>。</li>
+<h4 id="6-synchronized-包装代码块的基本原理"><a href="#6-synchronized-包装代码块的基本原理" class="headerlink" title="6. synchronized 包装代码块的基本原理"></a>6. <code>synchronized</code> 包装代码块的基本原理</h4><ul>
+<li><code>synchronized</code> <strong>括号里面</strong>的就是要保护的对象</li>
+<li><code>synchronized</code> 同步的对象可以是任意对象，任意对象都有一个锁和等待队列。或者说，<strong>任何对象都可以作为锁对象</strong></li>
 </ul>
 <h4 id="7-请用代码块的方式写出下面代码的等价形式"><a href="#7-请用代码块的方式写出下面代码的等价形式" class="headerlink" title="7. 请用代码块的方式写出下面代码的等价形式"></a>7. 请用代码块的方式写出下面代码的等价形式</h4><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//synchronized 修饰实例方法</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> Counter &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> <span class="keyword">count</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> incr() &#123;</span><br><span class="line">        <span class="keyword">count</span>++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">int</span> getCount() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">count</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//synchronized 修饰静态方法</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> StaticCounter &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="keyword">count</span> = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> incr() &#123;</span><br><span class="line">        <span class="keyword">count</span>++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> <span class="keyword">int</span> getCount() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">count</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -290,72 +292,72 @@
 
 <h4 id="8-使用单独对象作为锁的-Counter-类"><a href="#8-使用单独对象作为锁的-Counter-类" class="headerlink" title="8. 使用单独对象作为锁的 Counter 类"></a>8. 使用单独对象作为锁的 Counter 类</h4><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Counter</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> count;</span><br><span class="line">    <span class="keyword">private</span> Object <span class="keyword">lock</span> = <span class="keyword">new</span> Object();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">incr</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        synchronized(<span class="keyword">lock</span>) &#123;</span><br><span class="line">            count++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getCount</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        synchronized(<span class="keyword">lock</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> count;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="9-synchronized-可重入性的概念"><a href="#9-synchronized-可重入性的概念" class="headerlink" title="9. synchronized 可重入性的概念"></a>9. synchronized 可重入性的概念</h4><ul>
-<li><strong>概念</strong>：对同一个执行线程，它在获得了锁之后，在调用其他需要同样锁的代码时，可以直接调用。</li>
-<li><strong>举例</strong>：在一个 <code>synchronized</code> 实例方法内，可以直接调用其他 <code>synchronized</code> 实例方法。</li>
-<li><strong>范围</strong>：可重入是一个非常自然的属性，很容易理解，但<strong>并不是所有的锁都是可重入的</strong>。</li>
+<h4 id="9-synchronized-可重入性的概念"><a href="#9-synchronized-可重入性的概念" class="headerlink" title="9. synchronized 可重入性的概念"></a>9. <code>synchronized</code> 可重入性的概念</h4><ul>
+<li><strong>概念</strong>：对同一个执行线程，它在获得了锁之后，在调用其他需要同样锁的代码时，可以直接调用</li>
+<li><strong>举例</strong>：在一个 <code>synchronized</code> 实例方法内，可以直接调用其他 <code>synchronized</code> 实例方法</li>
+<li><strong>范围</strong>：可重入是一个非常自然的属性，很容易理解，但<strong>并不是所有的锁都是可重入的</strong></li>
 </ul>
-<h4 id="10-synchronized-的可重入性是怎样实现的"><a href="#10-synchronized-的可重入性是怎样实现的" class="headerlink" title="10. synchronized 的可重入性是怎样实现的"></a>10. synchronized 的可重入性是怎样实现的</h4><ul>
-<li><strong>原理</strong>：可重入是通过<strong>记录</strong>锁的<strong>持有线程</strong>和<strong>持有数量</strong>来实现的。</li>
-<li><strong>细节</strong>：当调用被 <code>synchronized</code> 保护的代码时，检查对象是否已被锁。如果是，再检查是否被当前线程锁定。如果是，增加持有数量；如果不是被当前线程锁定，才加入等待队列。当释放锁时，减少持有数量，当数量变为 0 时才释放整个锁。</li>
+<h4 id="10-synchronized-的可重入性是怎样实现的"><a href="#10-synchronized-的可重入性是怎样实现的" class="headerlink" title="10. synchronized 的可重入性是怎样实现的"></a>10. <code>synchronized</code> 的可重入性是怎样实现的</h4><ul>
+<li><strong>原理</strong>：可重入是通过<strong>记录</strong>锁的<strong>持有线程</strong>和<strong>持有数量</strong>来实现的</li>
+<li><strong>细节</strong>：当调用被 <code>synchronized</code> 保护的代码时，检查对象是否已被锁。如果是，再检查是否被当前线程锁定。如果是，增加持有数量；如果不是被当前线程锁定，才加入等待队列。当释放锁时，减少持有数量，当数量变为 0 时才释放整个锁</li>
 </ul>
-<h4 id="11-怎样理解-synchronized-保证内存可见性"><a href="#11-怎样理解-synchronized-保证内存可见性" class="headerlink" title="11. 怎样理解 synchronized 保证内存可见性"></a>11. 怎样理解 synchronized 保证内存可见性</h4><ul>
-<li><code>synchronized</code> 除了<strong>保证原子操作</strong>外，还有一个重要的作用，就是<strong>保证内存可见性</strong>。</li>
-<li>在<strong>释放锁</strong>时，所有写入都会<strong>写回内存</strong>。</li>
-<li>在<strong>获得锁</strong>后，都会从内存中<strong>读最新数据</strong>。</li>
+<h4 id="11-怎样理解-synchronized-保证内存可见性"><a href="#11-怎样理解-synchronized-保证内存可见性" class="headerlink" title="11. 怎样理解 synchronized 保证内存可见性"></a>11. 怎样理解 <code>synchronized</code> 保证内存可见性</h4><ul>
+<li><code>synchronized</code> 除了<strong>保证原子操作</strong>外，还有一个重要的作用，就是<strong>保证内存可见性</strong></li>
+<li>在<strong>释放锁</strong>时，所有写入都会<strong>写回内存</strong></li>
+<li>在<strong>获得锁</strong>后，都会从内存中<strong>读最新数据</strong></li>
 </ul>
-<h4 id="12-关键字-volatile-的作用及原理"><a href="#12-关键字-volatile-的作用及原理" class="headerlink" title="12. 关键字 volatile 的作用及原理"></a>12. 关键字 volatile 的作用及原理</h4><ul>
-<li><strong>作用</strong>：给<strong>变量</strong>加 <code>volatile</code> 修饰符是<strong>更轻量级的保证内存可见性</strong>的方式。如果只是为了保证内存可见性，使用 <code>synchronized</code> 的成本有点高。</li>
-<li><strong>原理</strong>：加了 <code>volatile</code> 之后，Java 会在操作对应变量时<strong>插入特殊的指令，保证读写到内存最新值，而非缓存的值</strong>。</li>
-<li><strong>结论</strong>：<code>volatile</code> 可以<strong>保证内存可见性</strong>、<strong>有序性（禁止指令重排）</strong>，但<strong>不能保证原子性</strong>。</li>
-<li>参考：关于 <code>volatile</code> 的两篇不错的文章：<ul>
+<h4 id="12-关键字-volatile-的作用及原理"><a href="#12-关键字-volatile-的作用及原理" class="headerlink" title="12. 关键字 volatile 的作用及原理"></a>12. 关键字 <code>volatile</code> 的作用及原理</h4><ul>
+<li><strong>作用</strong>：给<strong>变量</strong>加 <code>volatile</code> 修饰符是<strong>更轻量级的保证内存可见性</strong>的方式。如果只是为了保证内存可见性，使用 <code>synchronized</code> 的成本有点高</li>
+<li><strong>原理</strong>：加了 <code>volatile</code> 之后，Java 会在操作对应变量时<strong>插入特殊的指令，保证读写到内存最新值，而非缓存的值</strong></li>
+<li><strong>结论</strong>：<code>volatile</code> 可以<strong>保证内存可见性</strong>、<strong>有序性（禁止指令重排）</strong>，但<strong>不能保证原子性</strong></li>
+<li>参考：关于 <code>volatile</code> 的两篇不错的文章<ul>
 <li><a href="https://mp.weixin.qq.com/s/bx3VeOx1GvuTtfs3Qjhk-g" target="_blank" rel="noopener">面试官最爱的 volatile 关键字</a></li>
 <li><a href="https://mp.weixin.qq.com/s/rlXDOOJl2WKz7aosj2OqNg" target="_blank" rel="noopener">从计算机的角度理解 volatile 关键字</a></li>
 </ul>
 </li>
 </ul>
 <h4 id="13-什么叫死锁"><a href="#13-什么叫死锁" class="headerlink" title="13. 什么叫死锁"></a>13. 什么叫死锁</h4><ul>
-<li>死锁就是类似这种现象，比如，<strong>有 A、B 两个线程，A 持有锁 a，在等待锁 b；而 B 持有锁 b，在等待锁 a</strong>。</li>
-<li>线程 A 和 B 陷入了<strong>互相等待</strong>，最后谁都执行不下去。</li>
+<li>死锁就是类似这种现象，比如，<strong>有 A、B 两个线程，A 持有锁 a，在等待锁 b；而 B 持有锁 b，在等待锁 a</strong></li>
+<li>线程 A 和 B 陷入了<strong>互相等待</strong>，最后谁都执行不下去</li>
 </ul>
 <h4 id="14-手写一个死锁-Demo"><a href="#14-手写一个死锁-Demo" class="headerlink" title="14. 手写一个死锁 Demo"></a>14. 手写一个死锁 Demo</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DeadLockDemo</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Object lockA = <span class="keyword">new</span> Object();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Object lockB = <span class="keyword">new</span> Object();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">startThreadA</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Thread aThread = <span class="keyword">new</span> Thread() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">synchronized</span>(lockA) &#123;</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">                    &#125; <span class="keyword">catch</span>(InterruptedException e) &#123;</span><br><span class="line"></span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">synchronized</span>(lockB) &#123;    </span><br><span class="line">                    	<span class="comment">//do something</span></span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;    </span><br><span class="line">        &#125;;</span><br><span class="line">        aThread.start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">startThreadB</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Thread bThread = <span class="keyword">new</span> Thread() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">synchronized</span>(lockB) &#123;</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">                    &#125; <span class="keyword">catch</span>(InterruptedException e) &#123;</span><br><span class="line"></span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">synchronized</span>(lockA) &#123;</span><br><span class="line">                    	<span class="comment">//do something</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        bThread.start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123; <span class="comment">//运行后 aThread 和 bThread 陷入了互相等待，最后谁都执行不下去，导致死锁</span></span><br><span class="line">        startThreadA();</span><br><span class="line">        startThreadB();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h4 id="15-怎样解决死锁"><a href="#15-怎样解决死锁" class="headerlink" title="15. 怎样解决死锁"></a>15. 怎样解决死锁</h4><ul>
-<li><p>首先，应该<strong>尽量避免在持有一个锁的同时去申请另一个锁</strong>，如果确实需要多个锁，所有代码都应该按照相同的约定顺序去申请锁。</p>
+<li><p>首先，应该<strong>尽量避免在持有一个锁的同时去申请另一个锁</strong>，如果确实需要多个锁，所有代码都应该按照相同的约定顺序去申请锁</p>
 </li>
-<li><p>不过，在复杂的项目中，这种约定可能难以做到。</p>
+<li><p>不过，在复杂的项目中，这种约定可能难以做到</p>
 <ul>
-<li>此时，可以使用<strong>显示锁接口 <code>Lock</code></strong>，它支持<strong>尝试获取锁（tryLock）</strong>和<strong>带时间限制的获取锁方法</strong>。</li>
-<li>使用这些方法可以在<strong>获取不到锁的时候释放已经持有的锁</strong>，然后<strong>再次尝试获取锁</strong>或<strong>干脆放弃</strong>，以避免死锁。</li>
+<li>此时，可以使用<strong>显示锁接口 <code>Lock</code></strong>，它支持<strong>尝试获取锁（tryLock）</strong>和<strong>带时间限制的获取锁方法</strong></li>
+<li>使用这些方法可以在<strong>获取不到锁的时候释放已经持有的锁</strong>，然后<strong>再次尝试获取锁</strong>或<strong>干脆放弃</strong>，以避免死锁</li>
 </ul>
 </li>
-<li><p><strong>如果还是出现了死锁，Java 不会主动处理</strong>。此时，可以借助一些<strong>工具</strong>发现运行中的死锁，比如，<strong>Java 自带的 jstack 命令</strong>会报告发现的死锁。</p>
+<li><p><strong>如果还是出现了死锁，Java 不会主动处理</strong>。此时，可以借助一些<strong>工具</strong>发现运行中的死锁，比如，<strong>Java 自带的 jstack 命令</strong>会报告发现的死锁</p>
 </li>
 </ul>
 <h4 id="16-Java-中的同步容器内部是怎样实现的"><a href="#16-Java-中的同步容器内部是怎样实现的" class="headerlink" title="16. Java 中的同步容器内部是怎样实现的"></a>16. Java 中的同步容器内部是怎样实现的</h4><ul>
-<li>类 <code>Collection</code> 中有一些方法，可以返回线程安全的同步容器。</li>
-<li>它们是给所有容器方法都加上 <strong><code>synchronized</code></strong> 来实现安全的。</li>
+<li>类 <code>Collection</code> 中有一些方法，可以返回线程安全的同步容器</li>
+<li>它们是给所有容器方法都加上 <strong><code>synchronized</code></strong> 来实现安全的</li>
 </ul>
-<h4 id="17-加了-synchronized，所有方法调用变成了原子操作，客户端在调用时，是不是就绝对安全了呢"><a href="#17-加了-synchronized，所有方法调用变成了原子操作，客户端在调用时，是不是就绝对安全了呢" class="headerlink" title="17. 加了 synchronized，所有方法调用变成了原子操作，客户端在调用时，是不是就绝对安全了呢"></a>17. 加了 synchronized，所有方法调用变成了原子操作，客户端在调用时，是不是就绝对安全了呢</h4><ul>
-<li><strong>不会绝对安全</strong>，至少有以下情况需要注意：<ul>
-<li><strong>复合操作</strong>（比如先检查再更新）。</li>
-<li><strong>伪同步</strong>（同步错对象）。</li>
-<li><strong>迭代</strong>（遍历时给整个容器对象加锁）。</li>
+<h4 id="17-加了-synchronized，所有方法调用变成了原子操作，客户端在调用时，是不是就绝对安全了呢"><a href="#17-加了-synchronized，所有方法调用变成了原子操作，客户端在调用时，是不是就绝对安全了呢" class="headerlink" title="17. 加了 synchronized，所有方法调用变成了原子操作，客户端在调用时，是不是就绝对安全了呢"></a>17. 加了 <code>synchronized</code>，所有方法调用变成了原子操作，客户端在调用时，是不是就绝对安全了呢</h4><ul>
+<li><strong>不会绝对安全</strong>，至少有以下情况需要注意<ul>
+<li><strong>复合操作</strong>（比如先检查再更新）</li>
+<li><strong>伪同步</strong>（同步错对象）</li>
+<li><strong>迭代</strong>（遍历时给整个容器对象加锁）</li>
 </ul>
 </li>
 </ul>
 <h4 id="18-简要描述一下-Java-中的并发容器"><a href="#18-简要描述一下-Java-中的并发容器" class="headerlink" title="18. 简要描述一下 Java 中的并发容器"></a>18. 简要描述一下 Java 中的并发容器</h4><ul>
-<li><p><strong>同步容器的性能是比较低的</strong>，当并发访问量比较大的时候性能比较差。</p>
+<li><p><strong>同步容器的性能是比较低的</strong>，当并发访问量比较大的时候性能比较差</p>
 </li>
-<li><p>Java 中有很多<strong>专为并发设计的容器类</strong>，比如：</p>
+<li><p>Java 中有很多<strong>专为并发设计的容器类</strong>，比如</p>
 <ul>
-<li><code>CopyOnWriteArrayList</code>。</li>
-<li><code>ConcurrentHashMap</code>。</li>
-<li><code>ConcurrentLinkedQueue</code>。</li>
-<li><code>ConcurrentSkipListSet</code>。</li>
+<li><code>CopyOnWriteArrayList</code></li>
+<li><code>ConcurrentHashMap</code></li>
+<li><code>ConcurrentLinkedQueue</code></li>
+<li><code>ConcurrentSkipListSet</code></li>
 </ul>
 </li>
-<li><p>这些容器类<strong>都是线程安全的</strong>，但<strong>都没有使用 <code>synchronized</code>，没有迭代问题，直接支持一些复合操作，性能也高得多</strong>。</p>
+<li><p>这些容器类<strong>都是线程安全的</strong>，但<strong>都没有使用 <code>synchronized</code>，没有迭代问题，直接支持一些复合操作，性能也高得多</strong></p>
 </li>
 </ul>
 <h4 id="19-JVM-内存结构、Java-内存模型、Java-对象模型的区别"><a href="#19-JVM-内存结构、Java-内存模型、Java-对象模型的区别" class="headerlink" title="19. JVM 内存结构、Java 内存模型、Java 对象模型的区别"></a>19. JVM 内存结构、Java 内存模型、Java 对象模型的区别</h4><ul>
