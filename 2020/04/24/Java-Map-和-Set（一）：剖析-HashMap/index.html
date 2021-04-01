@@ -31,7 +31,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1ge8egq3ligj30hs0dgmxm.jpg">
 <meta property="article:published_time" content="2020-04-24T08:15:40.000Z">
-<meta property="article:modified_time" content="2021-04-01T00:18:59.734Z">
+<meta property="article:modified_time" content="2021-04-01T00:30:28.744Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Map 和 Set">
 <meta property="article:tag" content="剖析 HashMap">
@@ -217,7 +217,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-04-01 08:18:59" itemprop="dateModified" datetime="2021-04-01T08:18:59+08:00">2021-04-01</time>
+                <time title="修改时间：2021-04-01 08:30:28" itemprop="dateModified" datetime="2021-04-01T08:30:28+08:00">2021-04-01</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -235,7 +235,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>7.7k</span>
+              <span>7.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -314,7 +314,7 @@
 <ul>
 <li>表示整体上 <code>table</code> <strong>被占用的程度</strong></li>
 <li>是一个浮点数，<strong>默认为 0.75</strong>，可以通过构造方法进行修改</li>
-<li>默认值是 0.75 是因为：<strong>通过源码里的 javadoc 注释可以看到，元素在哈希表中分布的桶频率服从参数为 0.5 的泊松分布</strong></li>
+<li>默认值是 0.75 是因为：<strong>通过源码里的 javadoc 注释可以看到，元素在哈希表中分布的桶频率服从参数为 0.5 的<a href="https://zh.wikipedia.org/wiki/%E5%8D%9C%E7%93%A6%E6%9D%BE%E5%88%86%E5%B8%83" target="_blank" rel="noopener">泊松分布（Poisson Distribution）</a></strong></li>
 </ul>
 </li>
 <li><p><strong><code>Entry</code> 是一个内部类</strong>，它的实例变量和构造方法如下</p>
@@ -425,7 +425,7 @@
 </li>
 </ul>
 <h4 id="10-HashMap-实现原理总结"><a href="#10-HashMap-实现原理总结" class="headerlink" title="10. HashMap 实现原理总结"></a>10. <code>HashMap</code> 实现原理总结</h4><ul>
-<li><strong>基本原理</strong>：<code>HashMap</code> 内部有一个<strong>哈希表</strong>（哈希桶），即数组 <code>table</code> 。<strong>每个元素 <code>table[i]</code> 指向一个单向链表</strong>，根据键存取值，首先用键算出 <code>hash</code> 值，然后取模得到数组中的索引位置 <code>bucketIndex</code>，然后操作 <code>table[bucketIndex]</code> 指向的单向链表</li>
+<li><strong>基本原理</strong>：<code>HashMap</code> 内部有一个<strong>哈希表</strong>（哈希桶），即 <code>Entry</code> 类型的数组 <code>table</code> 。<strong>每个元素 <code>table[i]</code> 指向一个单向链表</strong>，根据键存取值，首先用键算出 <code>hash</code> 值，然后取模得到数组中的索引位置 <code>bucketIndex</code>，然后操作 <code>table[bucketIndex]</code> 指向的单向链表</li>
 <li><strong>需要注意的是</strong>，存取的时候依据键的 <code>hash</code> 值，<strong>只在对应的链表中操作，不会访问别的链表</strong>。在对应链表操作时也是先比较 <code>hash</code> 值，如果相同再用 <code>equals()</code> 方法比较。<strong>这就要求，相同的对象其 <code>hashCode()</code> 返回值必须相同，如果键是自定义的类，就特别需要注意这一点</strong>。这也是 <code>hashCode()</code> 和 <code>equals()</code> 方法的一个<strong>关键约束</strong></li>
 <li><strong>需要说明的是</strong>，<strong>Java 8</strong> 对 <code>HashMap</code> 的实现做了优化<ol>
 <li>在<strong>哈希冲突</strong>比较严重的情况下，即大量元素映射到同一个链表的情况下（<strong>具体是至少 8 个元素，且总的键值对个数至少是 64</strong>）</li>
