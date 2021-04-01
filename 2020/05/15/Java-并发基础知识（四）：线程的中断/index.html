@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. 正常情况下，一个线程怎样退出">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-05-15T07:01:36.000Z">
-<meta property="article:modified_time" content="2020-05-19T17:08:12.000Z">
+<meta property="article:modified_time" content="2021-04-01T03:14:33.167Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="并发基础知识">
 <meta property="article:tag" content="线程的中断">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-20 01:08:12" itemprop="dateModified" datetime="2020-05-20T01:08:12+08:00">2020-05-20</time>
+                <time title="修改时间：2021-04-01 11:14:33" itemprop="dateModified" datetime="2021-04-01T11:14:33+08:00">2021-04-01</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -255,70 +255,70 @@
         <h4 id="1-正常情况下，一个线程怎样退出"><a href="#1-正常情况下，一个线程怎样退出" class="headerlink" title="1. 正常情况下，一个线程怎样退出"></a>1. 正常情况下，一个线程怎样退出</h4><a id="more"></a>
 
 <ul>
-<li>正常情况下，通过线程的 <code>start()</code> 方法启动一个线程后，线程开始执行 <code>run()</code> 方法。</li>
-<li><strong><code>run()</code> 方法运行结束后线程退出</strong>。</li>
+<li>正常情况下，通过线程的 <code>start()</code> 方法启动一个线程后，线程开始执行 <code>run()</code> 方法</li>
+<li><strong><code>run()</code> 方法运行结束后线程退出</strong></li>
 </ul>
 <h4 id="2-接上题，那为什么还需要结束一个线程呢，或者说需要特别结束一个线程的场景有哪些"><a href="#2-接上题，那为什么还需要结束一个线程呢，或者说需要特别结束一个线程的场景有哪些" class="headerlink" title="2. 接上题，那为什么还需要结束一个线程呢，或者说需要特别结束一个线程的场景有哪些"></a>2. 接上题，那为什么还需要结束一个线程呢，或者说需要特别结束一个线程的场景有哪些</h4><ul>
-<li>很多线程运行的模式是<strong>死循环</strong>，比如在生产者/消费者模式中，消费者主体就是一个死循环，它不停地从队列中接受任务、执行任务。在停止程序时，我们需要一种优雅的方法以关闭该线程。</li>
-<li>在一些<strong>图形用户界面程序</strong>中，线程是用户启动的，完成一些任务，比如从远程服务器上下载一个文件，在下载过程中，用户可能会希望取消该任务。</li>
-<li>在一些场景中，比如从第三方服务器查询一个结果，我们希望在限定的时间内得到结果，如果得不到，我们会希望<strong>取消</strong>该任务。</li>
-<li>有时，我们会启动多个线程做同一件事，比如类似抢火车票，我们可能会让多个好友帮忙从多个渠道买火车票，只要有一个渠道买到了，我们会通知<strong>取消</strong>其他渠道。</li>
+<li>很多线程运行的模式是<strong>死循环</strong>，比如在生产者/消费者模式中，消费者主体就是一个死循环，它不停地从队列中接受任务、执行任务。在停止程序时，我们需要一种优雅的方法以关闭该线程</li>
+<li>在一些<strong>图形用户界面程序</strong>中，线程是用户启动的，完成一些任务，比如从远程服务器上下载一个文件，在下载过程中，用户可能会希望取消该任务</li>
+<li>在一些场景中，比如从第三方服务器查询一个结果，我们希望在限定的时间内得到结果，如果得不到，我们会希望<strong>取消</strong>该任务</li>
+<li>有时，我们会启动多个线程做同一件事，比如类似抢火车票，我们可能会让多个好友帮忙从多个渠道买火车票，只要有一个渠道买到了，我们会通知<strong>取消</strong>其他渠道</li>
 </ul>
 <h4 id="3-取消-关闭一个线程的机制"><a href="#3-取消-关闭一个线程的机制" class="headerlink" title="3. 取消/关闭一个线程的机制"></a>3. 取消/关闭一个线程的机制</h4><ul>
-<li>Java 的 <code>Thread</code> 类定义了如下方法：<code>public final void stop()</code>，但被标记为了<strong>过时</strong>，不应该再使用。</li>
-<li><strong>在 Java 中，停止一个线程的主要机制是中断</strong>。</li>
-<li>中断并不是强迫终止一个线程，它是一种<strong>协作机制</strong>，是给线程传递一个<strong>取消信号</strong>，但是<strong>由线程来决定如何以及何时退出</strong>。</li>
+<li>Java 的 <code>Thread</code> 类定义了如下方法：<code>public final void stop()</code>，但被标记为了<strong>过时</strong>，不应该再使用</li>
+<li><strong>在 Java 中，停止一个线程的主要机制是中断</strong></li>
+<li>中断并不是强迫终止一个线程，它是一种<strong>协作机制</strong>，是给线程传递一个<strong>取消信号</strong>，但是<strong>由线程来决定如何以及何时退出</strong></li>
 </ul>
-<h4 id="4-Thread-类中定义的关于中断的方法有哪些，它们的区别是"><a href="#4-Thread-类中定义的关于中断的方法有哪些，它们的区别是" class="headerlink" title="4. Thread 类中定义的关于中断的方法有哪些，它们的区别是"></a>4. Thread 类中定义的关于中断的方法有哪些，它们的区别是</h4><ul>
-<li>每个线程都有一个<strong>标志位</strong>，表示<strong>该线程是否被中断了</strong>。</li>
-<li>关于中断的方法有如下几个：<ul>
-<li><code>public boolean isInterrupted()</code>：返回对应线程的<strong>中断标志位</strong>。</li>
-<li><code>public void interupt()</code>：表示<strong>中断</strong>对应的线程。</li>
-<li><code>public static boolean interrupted()</code>：<strong>返回</strong>当前线程的中断标志位是否为 <code>true</code>，但它还有一个重要的副作用，就是<strong>清空</strong>中断标志位。即，连续两次调用 <code>interrupted()</code>，第一次返回的结果为 <code>true</code>，第二次一般就是 <code>false</code>（除非同时又发生了一次中断）。</li>
+<h4 id="4-Thread-类中定义的关于中断的方法有哪些，它们的区别是"><a href="#4-Thread-类中定义的关于中断的方法有哪些，它们的区别是" class="headerlink" title="4. Thread 类中定义的关于中断的方法有哪些，它们的区别是"></a>4. <code>Thread</code> 类中定义的关于中断的方法有哪些，它们的区别是</h4><ul>
+<li>每个线程都有一个<strong>标志位</strong>，表示<strong>该线程是否被中断了</strong></li>
+<li>关于中断的方法有如下几个<ul>
+<li><code>public boolean isInterrupted()</code>：返回对应线程的<strong>中断标志位</strong></li>
+<li><code>public void interupt()</code>：表示<strong>中断</strong>对应的线程</li>
+<li><code>public static boolean interrupted()</code>：<strong>返回</strong>当前线程的中断标志位是否为 <code>true</code>，但它还有一个重要的副作用，就是<strong>清空</strong>中断标志位。即，连续两次调用 <code>interrupted()</code>，第一次返回的结果为 <code>true</code>，第二次一般就是 <code>false</code>（除非同时又发生了一次中断）</li>
 </ul>
 </li>
 </ul>
 <h4 id="5-线程对中断的反应是怎样的"><a href="#5-线程对中断的反应是怎样的" class="headerlink" title="5. 线程对中断的反应是怎样的"></a>5. 线程对中断的反应是怎样的</h4><ul>
-<li><p><code>interrupt()</code> 对线程的影响与线程的状态和在进行的 IO 操作有关。我们<strong>主要考虑线程的状态</strong>，IO 操作的影响和具体 IO 以及操作系统有关。</p>
+<li><p><code>interrupt()</code> 对线程的影响与线程的状态和在进行的 IO 操作有关。我们<strong>主要考虑线程的状态</strong>，IO 操作的影响和具体 IO 以及操作系统有关</p>
 </li>
 <li><p>线程的状态有：</p>
 <ul>
-<li><strong><code>RUNNABLE</code></strong>：线程在运行或具备运行条件只是在等待操作系统调度。</li>
-<li><strong><code>WAITING/TIMED_WAITING</code></strong>：线程在等待某个条件或超时。</li>
-<li><strong><code>BLOCKED</code></strong>：线程在等待锁，试图进入同步块。</li>
-<li><strong><code>NEW/TERMINATED</code></strong>：线程还未启动或已结束。</li>
+<li><strong><code>RUNNABLE</code></strong>：线程在运行或具备运行条件只是在等待操作系统调度</li>
+<li><strong><code>WAITING/TIMED_WAITING</code></strong>：线程在等待某个条件或超时</li>
+<li><strong><code>BLOCKED</code></strong>：线程在等待锁，试图进入同步块</li>
+<li><strong><code>NEW/TERMINATED</code></strong>：线程还未启动或已结束</li>
 </ul>
 </li>
-<li><p><strong><code>RUNNABLE</code></strong>：</p>
+<li><p><strong><code>RUNNABLE</code></strong></p>
 <ul>
-<li>如果线程在运行中，且没有执行 IO 操作，<code>interupt()</code> <strong>只是会设置线程的中断标志位</strong>，没有任何其他作用。</li>
-<li>线程应该<strong>在运行过程中合适的位置检查中断标志位</strong>。比如，如果主体代码是一个循环，可以在循环开始处进行检查。</li>
+<li>如果线程在运行中，且没有执行 IO 操作，<code>interupt()</code> <strong>只是会设置线程的中断标志位</strong>，没有任何其他作用</li>
+<li>线程应该<strong>在运行过程中合适的位置检查中断标志位</strong>。比如，如果主体代码是一个循环，可以在循环开始处进行检查</li>
 </ul>
 </li>
-<li><p><strong><code>WAITING/TIMED_WAITING</code></strong>：</p>
+<li><p><strong><code>WAITING/TIMED_WAITING</code></strong></p>
 <ul>
-<li>线程调用 <strong><code>join()/wait()/sleep()</code></strong> 方法会进入 <strong><code>WAITING</code> 或 <code>TIMED_WAITING</code></strong> 状态。在这些状态时，对线程对象调用 <code>interrupt()</code> 会使得该线程抛出 <code>InterruptedException</code> 异常。<strong>抛出异常后，中断标志位会被清空，而不是被设置</strong>。</li>
-<li><code>InterruptedException</code> 是一个<strong>受检异常</strong>，线程必须进行处理。处理异常的基本思路是：如果知道怎么处理，就进行处理，如果不知道，就应该向上传递，通常情况下不应该捕获异常后然后忽略。</li>
-<li>捕获到 <code>InterruptedException</code> 异常时，<strong>通常希望</strong>结束该线程。</li>
+<li>线程调用 <strong><code>join()/wait()/sleep()</code></strong> 方法会进入 <strong><code>WAITING</code> 或 <code>TIMED_WAITING</code></strong> 状态。在这些状态时，对线程对象调用 <code>interrupt()</code> 会使得该线程抛出 <code>InterruptedException</code> 异常。<strong>抛出异常后，中断标志位会被清空，而不是被设置</strong></li>
+<li><code>InterruptedException</code> 是一个<strong>受检异常</strong>，线程必须进行处理。处理异常的基本思路是：如果知道怎么处理，就进行处理，如果不知道，就应该向上传递，通常情况下不应该捕获异常后然后忽略</li>
+<li>捕获到 <code>InterruptedException</code> 异常时，<strong>通常希望</strong>结束该线程</li>
 </ul>
 </li>
-<li><p><strong><code>BLOCKED</code></strong>：</p>
+<li><p><strong><code>BLOCKED</code></strong></p>
 <ul>
-<li>如果线程在等待锁，对线程对象调用 <code>interrupt()</code> <strong>只是会设置线程的中断标志位，线程依然会处于 <code>BLOCK</code> 状态</strong>。</li>
-<li><code>interrupt()</code> 并不能使一个在等待锁的线程真正“中断”，即 <code>interrupt()</code> 方法<strong>只会设置线程的中断标志，而并不会使它从锁等待队列中出来</strong>。</li>
-<li>在使用 <strong><code>synchronized</code> 关键字获取锁的过程中不响应中断请求</strong>，这是 <code>synchronized</code> 的局限性。如果这对程序是一个问题，应该使用显示锁 <code>Lock</code> 接口，<strong>显示锁接口 <code>Lock</code> 支持以响应中断的方式获取锁</strong>。</li>
+<li>如果线程在等待锁，对线程对象调用 <code>interrupt()</code> <strong>只是会设置线程的中断标志位，线程依然会处于 <code>BLOCK</code> 状态</strong></li>
+<li><code>interrupt()</code> 并不能使一个在等待锁的线程真正“中断”，即 <code>interrupt()</code> 方法<strong>只会设置线程的中断标志，而并不会使它从锁等待队列中出来</strong></li>
+<li>在使用 <strong><code>synchronized</code> 关键字获取锁的过程中不响应中断请求</strong>，这是 <code>synchronized</code> 的局限性。如果这对程序是一个问题，应该使用显示锁 <code>Lock</code> 接口，<strong>显示锁接口 <code>Lock</code> 支持以响应中断的方式获取锁</strong></li>
 </ul>
 </li>
-<li><p><strong><code>NEW/TERMINATER</code></strong>：</p>
+<li><p><strong><code>NEW/TERMINATER</code></strong></p>
 <ul>
-<li>如果线程尚未启动（<code>NEW</code>），或者已经结束（<code>TERMINATER</code>），则调用 <code>interrupt()</code> <strong>对它没有任何效果，中断标志位也不会被设置</strong>。</li>
+<li>如果线程尚未启动（<code>NEW</code>），或者已经结束（<code>TERMINATER</code>），则调用 <code>interrupt()</code> <strong>对它没有任何效果，中断标志位也不会被设置</strong></li>
 </ul>
 </li>
 </ul>
 <h4 id="6-实际开发中，怎样正确地取消-关闭线程"><a href="#6-实际开发中，怎样正确地取消-关闭线程" class="headerlink" title="6. 实际开发中，怎样正确地取消/关闭线程"></a>6. 实际开发中，怎样正确地取消/关闭线程</h4><ul>
-<li><strong><code>interrupt()</code> 方法不一定会真正“中断”线程，它只是一种协作机制</strong>。</li>
-<li>如果不明白线程在做什么，<strong>不应该贸然调用</strong>线程的 <code>interrupt()</code> 方法。</li>
-<li>对于以线程提供服务的程序模块而言，它应该<strong>封装</strong>取消/关闭操作，提供单独的取消/关闭方法给调用者，外部调用者应该调用这些方法而<strong>不是直接调用</strong> <code>interrupt()</code> 方法。</li>
+<li><strong><code>interrupt()</code> 方法不一定会真正“中断”线程，它只是一种协作机制</strong></li>
+<li>如果不明白线程在做什么，<strong>不应该贸然调用</strong>线程的 <code>interrupt()</code> 方法</li>
+<li>对于以线程提供服务的程序模块而言，它应该<strong>封装</strong>取消/关闭操作，提供单独的取消/关闭方法给调用者，外部调用者应该调用这些方法而<strong>不是直接调用</strong> <code>interrupt()</code> 方法</li>
 </ul>
 
     </div>
