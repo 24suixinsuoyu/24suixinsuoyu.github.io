@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. ConcurrentHashMap 的特点">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-05-22T12:22:09.000Z">
-<meta property="article:modified_time" content="2020-05-24T13:37:04.000Z">
+<meta property="article:modified_time" content="2021-04-05T03:52:03.762Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="并发容器">
 <meta property="article:tag" content="ConcurrentHashMap">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-24 21:37:04" itemprop="dateModified" datetime="2020-05-24T21:37:04+08:00">2020-05-24</time>
+                <time title="修改时间：2021-04-05 11:52:03" itemprop="dateModified" datetime="2021-04-05T11:52:03+08:00">2021-04-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,7 +233,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.2k</span>
+              <span>3.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -252,91 +252,91 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-ConcurrentHashMap-的特点"><a href="#1-ConcurrentHashMap-的特点" class="headerlink" title="1. ConcurrentHashMap 的特点"></a>1. ConcurrentHashMap 的特点</h4><a id="more"></a>
+        <h4 id="1-ConcurrentHashMap-的特点"><a href="#1-ConcurrentHashMap-的特点" class="headerlink" title="1. ConcurrentHashMap 的特点"></a>1. <code>ConcurrentHashMap</code> 的特点</h4><a id="more"></a>
 
 <ul>
-<li><code>ConcurrentHashMap</code> 是 <code>HashMap</code> 的<strong>并发版本</strong>，与 <code>HashMap</code> 相比，有如下特点：<ul>
-<li><strong>并发安全</strong>。</li>
-<li>直接支持一些<strong>原子复合操作</strong>。</li>
-<li>支持<strong>高并发</strong>，读操作完全并行，写操作支持一定程度的并行。</li>
-<li>与同步容器 <code>Collections.synchronizedMap</code> 相比，<strong>迭代不用加锁</strong>，不会抛出 <code>ConcurrentModificationException</code> 异常。</li>
-<li><strong>弱一致性</strong>。</li>
+<li><code>ConcurrentHashMap</code> 是 <code>HashMap</code> 的<strong>并发版本</strong>，与 <code>HashMap</code> 相比，有如下特点<ul>
+<li><strong>并发安全</strong></li>
+<li>直接支持一些<strong>原子复合操作</strong></li>
+<li>支持<strong>高并发</strong>，读操作完全并行，写操作支持一定程度的并行</li>
+<li>与同步容器 <code>Collections.synchronizedMap</code> 相比，<strong>迭代不用加锁</strong>，不会抛出 <code>ConcurrentModificationException</code> 异常</li>
+<li><strong>弱一致性</strong></li>
 </ul>
 </li>
 </ul>
-<h4 id="2-写一个-HashMap-死循环-Demo"><a href="#2-写一个-HashMap-死循环-Demo" class="headerlink" title="2. 写一个 HashMap 死循环 Demo"></a>2. 写一个 HashMap 死循环 Demo</h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//HashMap 不是并发安全的，在并发更新的情况下，HashMap 可能出现死循环，占满 CPU</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">unsafeConcurrentUpdate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> Map&lt;Integer, Integer&gt; <span class="built_in">map</span> = <span class="keyword">new</span> HashMap&lt;&gt; ();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">1000</span>; i++) &#123;</span><br><span class="line">        Thread t = <span class="keyword">new</span> Thread() &#123;</span><br><span class="line">            Random rnd = <span class="keyword">new</span> Random();</span><br><span class="line">            @Override</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">1000</span>; i++) &#123;</span><br><span class="line">                    <span class="built_in">map</span>.<span class="built_in">put</span>(rnd.nextInt(), <span class="number">1</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-写一个-HashMap-死循环-Demo"><a href="#2-写一个-HashMap-死循环-Demo" class="headerlink" title="2. 写一个 HashMap 死循环 Demo"></a>2. 写一个 <code>HashMap</code> 死循环 Demo</h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//HashMap 不是并发安全的，在并发更新的情况下，HashMap 可能出现死循环，占满 CPU</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">unsafeConcurrentUpdate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> Map&lt;Integer, Integer&gt; <span class="built_in">map</span> = <span class="keyword">new</span> HashMap&lt;&gt; ();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">1000</span>; i++) &#123;</span><br><span class="line">        Thread t = <span class="keyword">new</span> Thread() &#123;</span><br><span class="line">            Random rnd = <span class="keyword">new</span> Random();</span><br><span class="line">            @Override</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">1000</span>; i++) &#123;</span><br><span class="line">                    <span class="built_in">map</span>.<span class="built_in">put</span>(rnd.nextInt(), <span class="number">1</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h4 id="3-接上题，上面代码为什么会出现死循环"><a href="#3-接上题，上面代码为什么会出现死循环" class="headerlink" title="3. 接上题，上面代码为什么会出现死循环"></a>3. 接上题，上面代码为什么会出现死循环</h4><ul>
-<li>死循环出现在<strong>多个线程同时扩容哈希表</strong>的时候，不是同时更新一个链表的时候，那种情况可能出现更新丢失，但不会死循环，具体过程比较复杂。</li>
-<li>关于 Java 7 的解释可以参考：<a href="http://coolshell.cn/articles/9606.html" target="_blank" rel="noopener">http://coolshell.cn/articles/9606.html</a>。</li>
-<li>Java 8 对 HashMap 的实现进行了大量<strong>优化</strong>，减少了死循环的可能，但在扩容的时候还是可能有死循环。</li>
+<li>死循环出现在<strong>多个线程同时扩容哈希表</strong>的时候，不是同时更新一个链表的时候，那种情况可能出现更新丢失，但不会死循环，具体过程比较复杂</li>
+<li>关于 Java 7 的解释可以参考：<a href="http://coolshell.cn/articles/9606.html" target="_blank" rel="noopener">http://coolshell.cn/articles/9606.html</a></li>
+<li>Java 8 对 <code>HashMap</code> 的实现进行了大量<strong>优化</strong>，减少了死循环的可能，但在扩容的时候还是可能有死循环</li>
 </ul>
 <h4 id="4-接上题，怎样避免产生死循环"><a href="#4-接上题，怎样避免产生死循环" class="headerlink" title="4. 接上题，怎样避免产生死循环"></a>4. 接上题，怎样避免产生死循环</h4><ul>
-<li><p>使用 <code>Collections.synchronizedMap</code> 方法生成一个<strong>同步容器</strong>，替换第一行代码为：<code>final Map&lt;Integer, Integer&gt; map = Collections.synchronizedMap(new HashMap&lt;Integer, Integer&gt; ());</code>。同步容器有两个问题：</p>
+<li><p>使用 <code>Collections.synchronizedMap</code> 方法生成一个<strong>同步容器</strong>，替换第一行代码为：<code>final Map&lt;Integer, Integer&gt; map = Collections.synchronizedMap(new HashMap&lt;Integer, Integer&gt; ());</code>。同步容器有两个问题</p>
 <ul>
-<li>每个方法都需要同步，支持的<strong>并发度</strong>比较低。</li>
-<li>对于迭代和复合操作，需要调用方<strong>加锁</strong>，使用比较麻烦，且容易忘记。</li>
+<li>每个方法都需要同步，支持的<strong>并发度</strong>比较低</li>
+<li>对于迭代和复合操作，需要调用方<strong>加锁</strong>，使用比较麻烦，且容易忘记</li>
 </ul>
 </li>
-<li><p><strong><code>ConcurrentHashMap</code></strong> 没有这些问题，它同样实现了 <code>Map</code> 接口，也是基于哈希表实现的，替换第一行代码为：<code>final Map&lt;Integer, Integer&gt; map = new ConcurrentHashMap&lt;&gt; ();</code>。</p>
+<li><p><strong><code>ConcurrentHashMap</code></strong> 没有这些问题，它同样实现了 <code>Map</code> 接口，也是基于哈希表实现的，替换第一行代码为：<code>final Map&lt;Integer, Integer&gt; map = new ConcurrentHashMap&lt;&gt; ();</code></p>
 </li>
 </ul>
-<h4 id="5-ConcurrentHashMap-是怎样支持原子复合操作的"><a href="#5-ConcurrentHashMap-是怎样支持原子复合操作的" class="headerlink" title="5. ConcurrentHashMap 是怎样支持原子复合操作的"></a>5. ConcurrentHashMap 是怎样支持原子复合操作的</h4><ul>
-<li><code>ConcurrentHashMap</code> 还实现了一个接口 <code>ConcurrentMap</code>，接口定义了一些<strong>条件更新</strong>操作。</li>
-<li>如果使用同步容器，调用方必须加锁，而 <code>ConcurrentHashMap</code> 将它们实现为了<strong>原子操作</strong>。</li>
-<li>实际上，使用 <code>ConcurrentHashMap</code>，调用方也没有办法进行加锁，它没有暴露<strong>锁接口</strong>，也不使用 <code>synchronized</code>。</li>
+<h4 id="5-ConcurrentHashMap-是怎样支持原子复合操作的"><a href="#5-ConcurrentHashMap-是怎样支持原子复合操作的" class="headerlink" title="5. ConcurrentHashMap 是怎样支持原子复合操作的"></a>5. <code>ConcurrentHashMap</code> 是怎样支持原子复合操作的</h4><ul>
+<li><code>ConcurrentHashMap</code> 还实现了一个接口 <code>ConcurrentMap</code>，接口定义了一些<strong>条件更新</strong>操作</li>
+<li>如果使用同步容器，调用方必须加锁，而 <code>ConcurrentHashMap</code> 将它们实现为了<strong>原子操作</strong></li>
+<li>实际上，使用 <code>ConcurrentHashMap</code>，调用方也没有办法进行加锁，它没有暴露<strong>锁接口</strong>，也不使用 <code>synchronized</code></li>
 </ul>
-<h4 id="6-ConcurrentMap-接口的定义是"><a href="#6-ConcurrentMap-接口的定义是" class="headerlink" title="6. ConcurrentMap 接口的定义是"></a>6. ConcurrentMap 接口的定义是</h4><ul>
-<li><p>Java 7 中的具体定义：</p>
+<h4 id="6-ConcurrentMap-接口的定义是"><a href="#6-ConcurrentMap-接口的定义是" class="headerlink" title="6. ConcurrentMap 接口的定义是"></a>6. <code>ConcurrentMap</code> 接口的定义是</h4><ul>
+<li><p>Java 7 中的具体定义</p>
   <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="symbol">ConcurrentMap</span>&lt;<span class="symbol">K</span>, <span class="symbol">V</span>&gt; <span class="symbol">extends</span> <span class="symbol">Map</span>&lt;<span class="symbol">K</span>, <span class="symbol">V</span>&gt; &#123;</span><br><span class="line">    <span class="comment">//条件更新，如果 map 中没有 key，设置 key 为 value，返回原来 key 对应的值</span></span><br><span class="line">    <span class="comment">//如果没有，返回 null</span></span><br><span class="line">    V putIfAbsent(K key, V value);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//条件删除，如果 Map 中有 key，且对应的值为 value，则删除，如果删除了，返回 true</span></span><br><span class="line">    <span class="comment">//否则返回 false</span></span><br><span class="line">    <span class="built_in">bool</span>ean remove(Object key, Object value);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//条件替换，如果 Map 中有 key，且对应的值为 oldValue，则替换为 newValue</span></span><br><span class="line">    <span class="comment">//如果替换了，返回 ture，否则 false</span></span><br><span class="line">    <span class="built_in">bool</span>ean replace(K key, V oldValue, V newValue);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//条件替换，如果 Map 中有 key，则替换值为 value，返回原来 key 对应的值</span></span><br><span class="line">    <span class="comment">//如果原来没有，返回 null</span></span><br><span class="line">    V replace(K key, V value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>Java 8 增加了几个<strong>默认方法</strong>，包括 <code>getOrDefault()</code>、<code>forEach()</code>、<code>computeIfAbsent()</code>、<code>merge()</code> 等。</p>
+<li><p>Java 8 增加了几个<strong>默认方法</strong>，包括 <code>getOrDefault()</code>、<code>forEach()</code>、<code>computeIfAbsent()</code>、<code>merge()</code> 等</p>
 </li>
 </ul>
-<h4 id="7-ConcurrentHashMap-是为高并发设计的，具体怎么实现的呢"><a href="#7-ConcurrentHashMap-是为高并发设计的，具体怎么实现的呢" class="headerlink" title="7. ConcurrentHashMap 是为高并发设计的，具体怎么实现的呢"></a>7. ConcurrentHashMap 是为高并发设计的，具体怎么实现的呢</h4><ul>
-<li><p>在 Java 7 中，主要有两点：</p>
+<h4 id="7-ConcurrentHashMap-是为高并发设计的，具体怎么实现的呢"><a href="#7-ConcurrentHashMap-是为高并发设计的，具体怎么实现的呢" class="headerlink" title="7. ConcurrentHashMap 是为高并发设计的，具体怎么实现的呢"></a>7. <code>ConcurrentHashMap</code> 是为高并发设计的，具体怎么实现的呢</h4><ul>
+<li><p>在 Java 7 中，主要有两点</p>
 <ul>
-<li><strong>分段锁</strong>。</li>
-<li><strong>读不需要锁</strong>。</li>
+<li><strong>分段锁</strong></li>
+<li><strong>读不需要锁</strong></li>
 </ul>
 </li>
-<li><p>同步容器使用 <code>synchronized</code>，所有方法竞争同一个锁；而 <code>ConcurrentHashMap</code> 采用<strong>分段锁</strong>技术：</p>
+<li><p>同步容器使用 <code>synchronized</code>，所有方法竞争同一个锁；而 <code>ConcurrentHashMap</code> 采用<strong>分段锁</strong>技术</p>
 <ul>
-<li>将数据分为<strong>多个段</strong>，而每个段有一个<strong>独立的锁</strong>。</li>
-<li>每一个段相当于一个独立的哈希表，<strong>分段的依据也是哈希值</strong>，无论是保存键值对还是根据键查找，都先根据键的哈希值映射到段，再在对应的哈希表上进行操作。</li>
+<li>将数据分为<strong>多个段</strong>，而每个段有一个<strong>独立的锁</strong></li>
+<li>每一个段相当于一个独立的哈希表，<strong>分段的依据也是哈希值</strong>，无论是保存键值对还是根据键查找，都先根据键的哈希值映射到段，再在对应的哈希表上进行操作</li>
 </ul>
 </li>
-<li><p>采用分段锁，可以大大提高<strong>并发度</strong>，多个段之间可以并行读写。<strong>默认情况下，段是 16 个</strong>，不过，这个数字可以通过<strong>构造方法</strong>进行设置：<code>public ConcurrentHashMap(int initialCapacity, float loadFactor, int concurrencyLevel);</code>。</p>
+<li><p>采用分段锁，可以大大提高<strong>并发度</strong>，多个段之间可以并行读写。<strong>默认情况下，段是 16 个</strong>，不过，这个数字可以通过<strong>构造方法</strong>进行设置：<code>public ConcurrentHashMap(int initialCapacity, float loadFactor, int concurrencyLevel);</code></p>
 <ul>
-<li><strong><code>concurrencyLevel</code> 表示估计的并行更新的线程个数，<code>ConcurrentHashMap</code> 会将该数据转换为 2 的整数次幂</strong>，比如 14 转换为 16，25 转换为 32。</li>
-<li>在对每个段的数据进行读写时，<code>ConcurrentHashMap</code> 也不是简单地使用锁进行同步，<strong>内部使用了 CAS</strong>。对一些写采用<strong>原子方式</strong>的方法，实现比较复杂。</li>
-<li>实现的效果是，<strong>对于写操作，需要获取锁，不能并行；但是读操作可以，多个读可以并行，写的同时也可以读</strong>，这使得 <code>ConcurrentHashMap</code> 的并行度<strong>远高于</strong>同步容器。</li>
+<li><strong><code>concurrencyLevel</code> 表示估计的并行更新的线程个数，<code>ConcurrentHashMap</code> 会将该数据转换为 2 的整数次幂</strong>，比如 14 转换为 16，25 转换为 32</li>
+<li>在对每个段的数据进行读写时，<code>ConcurrentHashMap</code> 也不是简单地使用锁进行同步，<strong>内部使用了 CAS</strong>。对一些写采用<strong>原子方式</strong>的方法，实现比较复杂</li>
+<li>实现的效果是，<strong>对于写操作，需要获取锁，不能并行；但是读操作可以，多个读可以并行，写的同时也可以读</strong>，这使得 <code>ConcurrentHashMap</code> 的并行度<strong>远高于</strong>同步容器</li>
 </ul>
 </li>
-<li><p>Java 8 对 <code>ConcurrentHashMap</code> 的实现进一步做了优化。</p>
+<li><p>Java 8 对 <code>ConcurrentHashMap</code> 的实现进一步做了优化</p>
 <ul>
-<li>首先，与 <code>HashMap</code> 的改进类似，在<strong>哈希冲突</strong>比较严重的时候，会将单向链表转化为平衡的排序二叉树，提高查找的效率。</li>
-<li>其次，<strong>锁的粒度</strong>进一步细化了，以提高并行性，哈希表数组中的每个位置（指向一个单链表或树）都有一个单独的锁，具体比较复杂。</li>
+<li>首先，与 <code>HashMap</code> 的改进类似，在<strong>哈希冲突</strong>比较严重的时候，会将单向链表转化为平衡的排序二叉树，提高查找的效率</li>
+<li>其次，<strong>锁的粒度</strong>进一步细化了，以提高并行性，哈希表数组中的每个位置（指向一个单链表或树）都有一个单独的锁，具体比较复杂</li>
 </ul>
 </li>
 </ul>
-<h4 id="8-怎样理解-ConcurrentHashMap-的迭代安全"><a href="#8-怎样理解-ConcurrentHashMap-的迭代安全" class="headerlink" title="8. 怎样理解 ConcurrentHashMap 的迭代安全"></a>8. 怎样理解 ConcurrentHashMap 的迭代安全</h4><ul>
-<li><strong>使用同步容器，在迭代中需要加锁</strong>，否则可能会抛出 <code>ConcurrentModificationException</code> 异常。</li>
-<li><code>ConcurrentHashMap</code> 没有这个问题，在迭代器创建后，在迭代过程中，如果另一个线程对容器进行了修改，<strong>迭代会继续，不会抛出异常</strong>。</li>
+<h4 id="8-怎样理解-ConcurrentHashMap-的迭代安全"><a href="#8-怎样理解-ConcurrentHashMap-的迭代安全" class="headerlink" title="8. 怎样理解 ConcurrentHashMap 的迭代安全"></a>8. 怎样理解 <code>ConcurrentHashMap</code> 的迭代安全</h4><ul>
+<li><strong>使用同步容器，在迭代中需要加锁</strong>，否则可能会抛出 <code>ConcurrentModificationException</code> 异常</li>
+<li><code>ConcurrentHashMap</code> 没有这个问题，在迭代器创建后，在迭代过程中，如果另一个线程对容器进行了修改，<strong>迭代会继续，不会抛出异常</strong></li>
 </ul>
-<h4 id="9-怎样理解-ConcurrentHashMap-的弱一致性"><a href="#9-怎样理解-ConcurrentHashMap-的弱一致性" class="headerlink" title="9. 怎样理解 ConcurrentHashMap 的弱一致性"></a>9. 怎样理解 ConcurrentHashMap 的弱一致性</h4><ul>
-<li><p><code>ConcurrentHashMap</code> 的<strong>迭代器</strong>创建后，就会按照哈希表结构<strong>遍历</strong>每个元素，但在遍历过程中，<strong>内部元素</strong>可能发生变化。</p>
+<h4 id="9-怎样理解-ConcurrentHashMap-的弱一致性"><a href="#9-怎样理解-ConcurrentHashMap-的弱一致性" class="headerlink" title="9. 怎样理解 ConcurrentHashMap 的弱一致性"></a>9. 怎样理解 <code>ConcurrentHashMap</code> 的弱一致性</h4><ul>
+<li><p><code>ConcurrentHashMap</code> 的<strong>迭代器</strong>创建后，就会按照哈希表结构<strong>遍历</strong>每个元素，但在遍历过程中，<strong>内部元素</strong>可能发生变化</p>
 <ul>
-<li>如果变化发生在<strong>已遍历过</strong>的部分，迭代器就不会反映出来。</li>
-<li>而如果变化发生在<strong>未遍历过</strong>的部分，迭代器就会发现并反映出来，这就是<strong>弱一致性</strong>。</li>
+<li>如果变化发生在<strong>已遍历过</strong>的部分，迭代器就不会反映出来</li>
+<li>而如果变化发生在<strong>未遍历过</strong>的部分，迭代器就会发现并反映出来，这就是<strong>弱一致性</strong></li>
 </ul>
 </li>
-<li><p>类似的情况还会出现在 <code>ConcurrentHashMap</code> 的另一个方法：<code>public void putAll(Map&lt;? extends K, ? extends V&gt; m)（批量添加 m 中的键值对到当前 Map）</code>。<strong>该方法并非原子操作</strong>，而是调用 <code>put()</code> 方法逐个元素进行添加的，在该方法没有结束的时候，部分修改效果就会体现出来。</p>
+<li><p>类似的情况还会出现在 <code>ConcurrentHashMap</code> 的另一个方法：<code>public void putAll(Map&lt;? extends K, ? extends V&gt; m)（批量添加 m 中的键值对到当前 Map）</code>。<strong>该方法并非原子操作</strong>，而是调用 <code>put()</code> 方法逐个元素进行添加的，在该方法没有结束的时候，部分修改效果就会体现出来</p>
 </li>
 </ul>
-<h4 id="10-Java-中有并发版本的-HashSet-吗"><a href="#10-Java-中有并发版本的-HashSet-吗" class="headerlink" title="10. Java 中有并发版本的 HashSet 吗"></a>10. Java 中有并发版本的 HashSet 吗</h4><ul>
-<li><strong>没有</strong>。</li>
-<li>但可以通过 <code>Collections.newSetFromMap</code> 方法基于 <code>ConcurrentHashMap</code> 创建一个。</li>
+<h4 id="10-Java-中有并发版本的-HashSet-吗"><a href="#10-Java-中有并发版本的-HashSet-吗" class="headerlink" title="10. Java 中有并发版本的 HashSet 吗"></a>10. Java 中有并发版本的 <code>HashSet</code> 吗</h4><ul>
+<li><strong>没有</strong></li>
+<li>但可以通过 <code>Collections.newSetFromMap()</code> 方法基于 <code>ConcurrentHashMap</code> 创建一个</li>
 </ul>
 
     </div>
