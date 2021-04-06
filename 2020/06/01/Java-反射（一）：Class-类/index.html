@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. Java 中的动态特性有哪些">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-06-01T13:09:45.000Z">
-<meta property="article:modified_time" content="2020-06-03T14:20:28.000Z">
+<meta property="article:modified_time" content="2021-04-06T09:25:15.701Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="反射">
 <meta property="article:tag" content="Class 类">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-03 22:20:28" itemprop="dateModified" datetime="2020-06-03T22:20:28+08:00">2020-06-03</time>
+                <time title="修改时间：2021-04-06 17:25:15" itemprop="dateModified" datetime="2021-04-06T17:25:15+08:00">2021-04-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -254,57 +254,59 @@
       
         <h4 id="1-Java-中的动态特性有哪些"><a href="#1-Java-中的动态特性有哪些" class="headerlink" title="1. Java 中的动态特性有哪些"></a>1. Java 中的动态特性有哪些</h4><a id="more"></a>
 
-<p>　反射、注解、动态代理、类加载器等。</p>
+<ul>
+<li>反射、注解、动态代理、类加载器等</li>
+</ul>
 <h4 id="2-Java-中的这些动态特性的作用和使用场景有"><a href="#2-Java-中的这些动态特性的作用和使用场景有" class="headerlink" title="2. Java 中的这些动态特性的作用和使用场景有"></a>2. Java 中的这些动态特性的作用和使用场景有</h4><ul>
-<li>作用：利用 Java 的动态特性，可以优雅地实现一些灵活通用的功能，它们经常用于<strong>各种框架</strong>、库和系统程序中。</li>
-<li>场景：<ul>
-<li><strong>Jackson</strong>，利用反射和注解实现了通用的序列化机制。</li>
-<li>有多种库（如 Spring MVC、Jersey）用于<strong>处理 Web 请求</strong>，利用反射和注解，能方便地将用户的请求参数和内容转换为 Java 对象，将 Java 对象转变为响应内容。</li>
-<li>有多种库（如 Spring、Guice）利用 Java 的动态特性实现了<strong>对象管理容器</strong>，方便程序员管理对象的生命周期以及其中复杂的依赖关系。</li>
-<li><strong>应用服务器</strong>（如 Tomcat）利用类加载器实现不同应用之间的隔离，JSP 技术利用类加载器实现修改代码不用重启就能生效的特性。</li>
-<li>面向切面的编程 <strong>AOP</strong>(Aspect Oriented Programming) 将编程中通用的关注点（如日志记录、安全检查等）与业务的主体逻辑相分离，减少冗余代码，提高程序的可维护性，AOP 需要依赖上面的这些特性来实现。</li>
+<li>作用：利用 Java 的动态特性，可以优雅地实现一些灵活通用的功能，它们经常用于<strong>各种框架</strong>、库和系统程序中</li>
+<li>场景<ul>
+<li><strong>Jackson</strong>，利用反射和注解实现了通用的序列化机制</li>
+<li>有多种库（如 Spring MVC、Jersey）用于<strong>处理 Web 请求</strong>，利用反射和注解，能方便地将用户的请求参数和内容转换为 Java 对象，将 Java 对象转变为响应内容</li>
+<li>有多种库（如 Spring、Guice）利用 Java 的动态特性实现了<strong>对象管理容器</strong>，方便程序员管理对象的生命周期以及其中复杂的依赖关系</li>
+<li><strong>应用服务器</strong>（如 Tomcat）利用类加载器实现不同应用之间的隔离，JSP 技术利用类加载器实现修改代码不用重启就能生效的特性</li>
+<li>面向切面的编程 <strong>AOP</strong>(Aspect Oriented Programming) 将编程中通用的关注点（如日志记录、安全检查等）与业务的主体逻辑相分离，减少冗余代码，提高程序的可维护性，AOP 需要依赖上面的这些特性来实现</li>
 </ul>
 </li>
 </ul>
 <h4 id="3-怎样理解反射"><a href="#3-怎样理解反射" class="headerlink" title="3. 怎样理解反射"></a>3. 怎样理解反射</h4><ul>
-<li>Java 是<strong>强类型</strong>语言，一般在操作数据的时候都是要依赖于数据类型的，编译器也是根据类型进行代码的检查编译的。</li>
-<li>反射不一样，<strong>反射是在运行时，而非编译时，动态获取类型的信息</strong>，比如接口信息、成员信息、方法信息、构造方法信息等，根据这些动态获取到的信息创建对象、访问/修改成员、调用方法等。</li>
-<li>反射的入口是名称为 <strong><code>Class</code></strong> 的类。</li>
+<li>Java 是<strong>强类型</strong>语言，一般在操作数据的时候都是要依赖于数据类型的，编译器也是根据类型进行代码的检查编译的</li>
+<li>反射不一样，<strong>反射是在运行时，而非编译时，动态获取类型的信息</strong>，比如接口信息、成员信息、方法信息、构造方法信息等，根据这些动态获取到的信息创建对象、访问/修改成员、调用方法等</li>
+<li>反射的入口是名称为 <strong><code>Class</code></strong> 的类</li>
 </ul>
-<h4 id="4-怎样理解-Class-类？不同数据类型的-Class-是怎样的"><a href="#4-怎样理解-Class-类？不同数据类型的-Class-是怎样的" class="headerlink" title="4. 怎样理解 Class 类？不同数据类型的 Class 是怎样的"></a>4. 怎样理解 Class 类？不同数据类型的 Class 是怎样的</h4><ul>
-<li>每个已加载的类在内存都有一份<strong>类信息</strong>，每个对象都有指向它所属<strong>类信息的引用</strong>。</li>
-<li>Java 中，<strong>类信息对应的类就是 <code>java.lang.Class</code></strong>。注意不是小写的 <code>class</code>，<code>class</code> 是定义类的关键字。</li>
-<li>所有类的<strong>根父类 <code>Object</code> 有一个方法</strong>，可以获取对象的 <code>Class</code> 对象：<strong><code>public final native Class&lt;?&gt; getClass()</code></strong>，<strong><code>Class</code> 是一个泛型类</strong>。</li>
+<h4 id="4-怎样理解-Class-类？不同数据类型的-Class-是怎样的"><a href="#4-怎样理解-Class-类？不同数据类型的-Class-是怎样的" class="headerlink" title="4. 怎样理解 Class 类？不同数据类型的 Class 是怎样的"></a>4. 怎样理解 <code>Class</code> 类？不同数据类型的 <code>Class</code> 是怎样的</h4><ul>
+<li>每个已加载的类在内存都有一份<strong>类信息</strong>，每个对象都有指向它所属<strong>类信息的引用</strong></li>
+<li>Java 中，<strong>类信息对应的类就是 <code>java.lang.Class</code></strong>。注意不是小写的 <code>class</code>，<code>class</code> 是定义类的关键字</li>
+<li>所有类的<strong>根父类 <code>Object</code> 有一个方法</strong>，可以获取对象的 <code>Class</code> 对象：<strong><code>public final native Class&lt;?&gt; getClass()</code></strong>，<strong><code>Class</code> 是一个泛型类</strong></li>
 </ul>
-<h4 id="5-除了实例对象方法外，还有哪些方法可以获取-Class-对象"><a href="#5-除了实例对象方法外，还有哪些方法可以获取-Class-对象" class="headerlink" title="5. 除了实例对象方法外，还有哪些方法可以获取 Class 对象"></a>5. 除了实例对象方法外，还有哪些方法可以获取 Class 对象</h4><ul>
-<li><p>获取 <strong><code>Class</code> 对象</strong>不一定需要实例对象，如果在写程序时就知道类名，可以使用<strong>类名.class</strong>获取 <code>Class</code> 对象，比如：<code>Class&lt;Date&gt; cls = Date.class;</code>。</p>
+<h4 id="5-除了实例对象方法外，还有哪些方法可以获取-Class-对象"><a href="#5-除了实例对象方法外，还有哪些方法可以获取-Class-对象" class="headerlink" title="5. 除了实例对象方法外，还有哪些方法可以获取 Class 对象"></a>5. 除了实例对象方法外，还有哪些方法可以获取 <code>Class</code> 对象</h4><ul>
+<li><p>获取 <strong><code>Class</code> 对象</strong>不一定需要实例对象，如果在写程序时就知道类名，可以使用<strong>类名.class</strong>获取 <code>Class</code> 对象，比如：<code>Class&lt;Date&gt; cls = Date.class;</code></p>
 </li>
-<li><p><strong>接口也有 <code>Class</code> 对象</strong>，且这种方式对于接口也是使用的，比如：<code>Class&lt;Comparable&gt; cls = Comparable.class;</code>。</p>
+<li><p><strong>接口也有 <code>Class</code> 对象</strong>，且这种方式对于接口也是使用的，比如：<code>Class&lt;Comparable&gt; cls = Comparable.class;</code></p>
 </li>
-<li><p><strong>枚举也有对应的 <code>Class</code></strong>，比如：</p>
+<li><p><strong>枚举也有对应的 <code>Class</code></strong>，比如</p>
   <figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Size</span> &#123;</span></span><br><span class="line">    SMALL, MEDIUM, BIG</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Class&lt;Size&gt; cls = Size<span class="class">.<span class="keyword">class</span>;</span></span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
-<h4 id="6-基本数据类型怎样获取-Class-对象"><a href="#6-基本数据类型怎样获取-Class-对象" class="headerlink" title="6. 基本数据类型怎样获取 Class 对象"></a>6. 基本数据类型怎样获取 Class 对象</h4><ul>
-<li><p><strong>基本类型</strong>没有 <code>getClass()</code> 方法，但也都有对应的 <code>Class</code> 对象，<strong>类型参数为对应的包装类型</strong>。比如：</p>
+<h4 id="6-基本数据类型怎样获取-Class-对象"><a href="#6-基本数据类型怎样获取-Class-对象" class="headerlink" title="6. 基本数据类型怎样获取 Class 对象"></a>6. 基本数据类型怎样获取 <code>Class</code> 对象</h4><ul>
+<li><p><strong>基本类型</strong>没有 <code>getClass()</code> 方法，但也都有对应的 <code>Class</code> 对象，<strong>类型参数为对应的包装类型</strong>。比如</p>
   <figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Class</span>&lt;<span class="keyword">Integer</span>&gt; intCls = <span class="built_in">int</span>.<span class="keyword">class</span>;</span><br><span class="line"><span class="keyword">Class</span>&lt;Byte&gt; byteCls = byte.<span class="keyword">class</span>;</span><br><span class="line"><span class="keyword">Class</span>&lt;<span class="keyword">Character</span>&gt; charCls = <span class="built_in">char</span>.<span class="keyword">class</span>;</span><br><span class="line"><span class="keyword">Class</span>&lt;<span class="keyword">Double</span>&gt; doubleCls = <span class="keyword">double</span>.<span class="keyword">class</span>;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p><strong><code>void</code></strong> 作为特殊的返回类型，也有对应的 <code>Class</code>: <code>Class&lt;Void&gt; voidCls = void.class;</code>。</p>
+<li><p><strong><code>void</code></strong> 作为特殊的返回类型，也有对应的 <code>Class</code>: <code>Class&lt;Void&gt; voidCls = void.class;</code></p>
 </li>
-<li><p>对于<strong>数组</strong>，每种类型都有对应数组类型的 <code>Class</code> 对象，每个维度都有一个，即一维数组有一个，二维数组有一个不同的类型。比如：</p>
+<li><p>对于<strong>数组</strong>，每种类型都有对应数组类型的 <code>Class</code> 对象，每个维度都有一个，即一维数组有一个，二维数组有一个不同的类型。比如</p>
   <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">String[] strArr = new String[10];</span><br><span class="line">int[<span class="string"></span>][<span class="symbol"></span>] twoDimArr = new int[<span class="string">3</span>][<span class="symbol">2</span>];</span><br><span class="line">int[] oneDimArr = new int[10];</span><br><span class="line">Class<span class="xml"><span class="php"><span class="meta">&lt;?</span> extends String[][]&gt;</span></span> strArrCls = strArr.getClass(); //TODO: 类型参数有待商榷</span><br><span class="line">Class<span class="xml"><span class="php"><span class="meta">&lt;?</span> extends int[][]&gt;</span></span> twoDimArrCls = twoDimArr.getClass();</span><br><span class="line">Class<span class="xml"><span class="php"><span class="meta">&lt;?</span> extends int[]&gt;</span></span> oneDimArrCls = oneDimArr.getClass();</span><br></pre></td></tr></table></figure>
 </li>
-<li><p><code>Class</code> 有一个<strong>静态方法 <code>forName()</code></strong>，可以根据类名直接加载 <code>Class</code>，获取 <code>Class</code> 对象，比如：</p>
+<li><p><code>Class</code> 有一个<strong>静态方法 <code>forName()</code></strong>，可以根据类名直接加载 <code>Class</code>，获取 <code>Class</code> 对象，比如</p>
   <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    Class&lt;?&gt; cls = <span class="module-access"><span class="module"><span class="identifier">Class</span>.</span></span>for<span class="constructor">Name(<span class="string">"java.util.HashMap"</span>)</span>; <span class="comment">//forName() 方法可能抛出 ClassNotFoundException 异常</span></span><br><span class="line">    <span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(cls.get<span class="constructor">Name()</span>);</span><br><span class="line">&#125; catch(ClassNotFoundException e) &#123;</span><br><span class="line">    e.print<span class="constructor">StackTrace()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
-<h4 id="7-Class-中可以获取与名称有关的信息的方法有哪些"><a href="#7-Class-中可以获取与名称有关的信息的方法有哪些" class="headerlink" title="7. Class 中可以获取与名称有关的信息的方法有哪些"></a>7. Class 中可以获取与名称有关的信息的方法有哪些</h4><ul>
-<li><code>public String getName()</code>：返回的是 <strong>Java 内部使用的真正的名称</strong>。</li>
-<li><code>public String getSimpleName()</code>：返回的名称<strong>不带包信息</strong>。</li>
-<li><code>public String getCanonicalName()</code>：返回的名称<strong>更友好</strong>。</li>
-<li><code>public Package getPackage()</code>：返回的是<strong>包信息</strong>。</li>
+<h4 id="7-Class-中可以获取与名称有关的信息的方法有哪些"><a href="#7-Class-中可以获取与名称有关的信息的方法有哪些" class="headerlink" title="7. Class 中可以获取与名称有关的信息的方法有哪些"></a>7. <code>Class</code> 中可以获取与名称有关的信息的方法有哪些</h4><ul>
+<li><code>public String getName()</code>：返回的是 <strong>Java 内部使用的真正的名称</strong></li>
+<li><code>public String getSimpleName()</code>：返回的名称<strong>不带包信息</strong></li>
+<li><code>public String getCanonicalName()</code>：返回的名称<strong>更友好</strong></li>
+<li><code>public Package getPackage()</code>：返回的是<strong>包信息</strong></li>
 </ul>
 <h4 id="8-填写下面表格并解释说明"><a href="#8-填写下面表格并解释说明" class="headerlink" title="8. 填写下面表格并解释说明"></a>8. 填写下面表格并解释说明</h4><table>
 <thead>
@@ -367,42 +369,42 @@
 </tr>
 </tbody></table>
 <ul>
-<li>需要说明的是数组类型的 <code>getName()</code> 返回值，它使用<strong>前缀 <code>[</code></strong> 表示数组，有几个 <code>[</code> 表示是几维数组。</li>
-<li>数组的类型用<strong>一个字符</strong>表示，<code>I</code> 表示 <code>int</code>，<code>L</code> 表示类或接口，其他类型与字符的对应关系为：<code>boolean(Z)</code>、<code>byte(B)</code>、<code>char(C)</code>、<code>double(D)</code>、<code>float(F)</code>、<code>long(J)</code>、<code>short(S)</code>。</li>
-<li>对于<strong>引用类型</strong>的数组，注意最后有一个<strong>分号<code>;</code></strong>。</li>
+<li>需要说明的是数组类型的 <code>getName()</code> 返回值，它使用<strong>前缀 <code>[</code></strong> 表示数组，有几个 <code>[</code> 表示是几维数组</li>
+<li>数组的类型用<strong>一个字符</strong>表示，<code>I</code> 表示 <code>int</code>，<code>L</code> 表示类或接口，其他类型与字符的对应关系为：<code>boolean(Z)</code>、<code>byte(B)</code>、<code>char(C)</code>、<code>double(D)</code>、<code>float(F)</code>、<code>long(J)</code>、<code>short(S)</code></li>
+<li>对于<strong>引用类型</strong>的数组，注意最后有一个<strong>分号<code>;</code></strong></li>
 </ul>
-<h4 id="9-Class-中获取字段信息的方法有"><a href="#9-Class-中获取字段信息的方法有" class="headerlink" title="9. Class 中获取字段信息的方法有"></a>9. Class 中获取字段信息的方法有</h4><ul>
-<li>类中定义的<strong>静态</strong>和<strong>实例变量</strong>都被称为<strong>字段</strong>，用类 <strong><code>Field</code></strong> 表示，位于包<code>java.lang.reflect</code> 下：<ul>
-<li><code>public Field[] getFields()</code>：返回所有的 <code>public</code> 字段，包括其父类的，如果没有字段，返回空数组。</li>
-<li><code>public Field[] getDeclaredFields()</code>：返回本类声明的所有字段，包括非 <code>public</code> 的，但不包括父类的。</li>
-<li><code>public Field getField(String name)</code>：返回本类或父类中指定名称的 <code>public</code> 字段，找不到抛出 <code>NoSuchFieldException</code> 异常。</li>
-<li><code>public Field getDeclaredField(String name)</code>：返回本类中声明的指定名称的字段，找不到抛出 <code>NoSuchFieldException</code> 异常。</li>
+<h4 id="9-Class-中获取字段信息的方法有"><a href="#9-Class-中获取字段信息的方法有" class="headerlink" title="9. Class 中获取字段信息的方法有"></a>9. <code>Class</code> 中获取字段信息的方法有</h4><ul>
+<li>类中定义的<strong>静态</strong>和<strong>实例变量</strong>都被称为<strong>字段</strong>，用类 <strong><code>Field</code></strong> 表示，位于包<code>java.lang.reflect</code> 下<ul>
+<li><code>public Field[] getFields()</code>：返回所有的 <code>public</code> 字段，包括其父类的，如果没有字段，返回空数组</li>
+<li><code>public Field[] getDeclaredFields()</code>：返回本类声明的所有字段，包括非 <code>public</code> 的，但不包括父类的</li>
+<li><code>public Field getField(String name)</code>：返回本类或父类中指定名称的 <code>public</code> 字段，找不到抛出 <code>NoSuchFieldException</code> 异常</li>
+<li><code>public Field getDeclaredField(String name)</code>：返回本类中声明的指定名称的字段，找不到抛出 <code>NoSuchFieldException</code> 异常</li>
 </ul>
 </li>
 </ul>
-<h4 id="10-Field-类中和字段有关的方法有哪些"><a href="#10-Field-类中和字段有关的方法有哪些" class="headerlink" title="10. Field 类中和字段有关的方法有哪些"></a>10. Field 类中和字段有关的方法有哪些</h4><ul>
-<li><p><code>public String getName()</code>：获取字段的<strong>名称</strong>。</p>
+<h4 id="10-Field-类中和字段有关的方法有哪些"><a href="#10-Field-类中和字段有关的方法有哪些" class="headerlink" title="10. Field 类中和字段有关的方法有哪些"></a>10. <code>Field</code> 类中和字段有关的方法有哪些</h4><ul>
+<li><p><code>public String getName()</code>：获取字段的<strong>名称</strong></p>
 </li>
-<li><p><code>public boolean isAccessible()</code>：判断当前程序是否有该字段的访问<strong>权限</strong>。</p>
+<li><p><code>public boolean isAccessible()</code>：判断当前程序是否有该字段的访问<strong>权限</strong></p>
 </li>
-<li><p><code>public void setAccessible(boolean flag)</code>：<code>flag</code> 设为 <code>true</code> 表示忽略 Java 的<strong>访问检查机制</strong>，以允许读写非 <code>public</code> 的字段。</p>
+<li><p><code>public void setAccessible(boolean flag)</code>：<code>flag</code> 设为 <code>true</code> 表示忽略 Java 的<strong>访问检查机制</strong>，以允许读写非 <code>public</code> 的字段</p>
 <ul>
-<li>对于 <code>private</code> 字段，直接调用 <code>get()/set()</code> 会抛出 <strong><code>IllegalAccessException</code></strong> 异常，应该先调用 <code>setAccessible(true)</code> 以关闭 Java 的检查机制。</li>
+<li>对于 <code>private</code> 字段，直接调用 <code>get()/set()</code> 会抛出 <strong><code>IllegalAccessException</code></strong> 异常，应该先调用 <code>setAccessible(true)</code> 以关闭 Java 的检查机制</li>
 </ul>
 </li>
-<li><p><code>public Object get(Object obj)</code>：获取<strong>指定对象</strong> <code>obj</code> 中该字段的值。</p>
+<li><p><code>public Object get(Object obj)</code>：获取<strong>指定对象</strong> <code>obj</code> 中该字段的值</p>
 </li>
-<li><p><code>public void set(Object obj, Object value)</code>：将<strong>指定对象</strong> <code>obj</code> 中该字段的值设为 <code>value</code>。</p>
+<li><p><code>public void set(Object obj, Object value)</code>：将<strong>指定对象</strong> <code>obj</code> 中该字段的值设为 <code>value</code></p>
 <ul>
-<li>在 <code>get()/set()</code> 方法中，对于<strong>静态变量</strong>，<code>obj</code> 被忽略，可以为 <code>null</code>。</li>
-<li>如果字段值为<strong>基本类型</strong>，<code>get()/set()</code> 会自动在基本类型与对应的包装类型间进行转换。</li>
+<li>在 <code>get()/set()</code> 方法中，对于<strong>静态变量</strong>，<code>obj</code> 被忽略，可以为 <code>null</code></li>
+<li>如果字段值为<strong>基本类型</strong>，<code>get()/set()</code> 会自动在基本类型与对应的包装类型间进行转换</li>
 </ul>
 </li>
-<li><p><code>public int getModifiers()</code>：返回字段的<strong>修饰符</strong>。</p>
+<li><p><code>public int getModifiers()</code>：返回字段的<strong>修饰符</strong></p>
 </li>
-<li><p><strong>public Class&lt;?&gt; getType()</strong>：返回字段的<strong>类型</strong>。</p>
+<li><p><strong>public Class&lt;?&gt; getType()</strong>：返回字段的<strong>类型</strong></p>
 </li>
-<li><p>以<strong>基本类型</strong>操作字段：</p>
+<li><p>以<strong>基本类型</strong>操作字段</p>
 <ul>
 <li><code>public void setBoolean(Object obj, boolean z);</code></li>
 <li><code>public boolean getBoolean(Object obj);</code></li>
@@ -410,84 +412,84 @@
 <li><code>public double getDouble(Object obj);</code></li>
 </ul>
 </li>
-<li><p>查询字段的<strong>注解</strong>信息：</p>
+<li><p>查询字段的<strong>注解</strong>信息</p>
 <ul>
 <li><code>public &lt;T extends Annotation&gt; T getAnnotation(Class&lt;T&gt; annotationClass);</code></li>
 <li><code>public Annotation[] getDeclaredAnnotations();</code></li>
 </ul>
 </li>
 </ul>
-<h4 id="11-Field-类的-getModifiers-方法-Demo"><a href="#11-Field-类的-getModifiers-方法-Demo" class="headerlink" title="11. Field 类的 getModifiers() 方法 Demo"></a>11. Field 类的 getModifiers() 方法 Demo</h4><ul>
-<li><p>Demo：</p>
+<h4 id="11-Field-类的-getModifiers-方法-Demo"><a href="#11-Field-类的-getModifiers-方法-Demo" class="headerlink" title="11. Field 类的 getModifiers() 方法 Demo"></a>11. <code>Field</code> 类的 <code>getModifiers()</code> 方法 Demo</h4><ul>
+<li><p>Demo</p>
   <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//getModifiers() 方法返回的是一个 int，可以通过 Modifier 类的静态方法进行解读</span></span><br><span class="line"><span class="comment">//假定 Student 类有如下字段</span></span><br><span class="line">public static final <span class="built_in">int</span> MAX_NAME_LEN = <span class="number">255</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//可以这样查看该字段的修饰符</span></span><br><span class="line">Field f = <span class="module-access"><span class="module"><span class="identifier">Student</span>.</span></span><span class="keyword">class</span>.get<span class="constructor">Field(<span class="string">"MAX_NAME_LEN"</span>)</span>;</span><br><span class="line"><span class="built_in">int</span> <span class="keyword">mod</span> = f.get<span class="constructor">Modifiers()</span>;</span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="module-access"><span class="module"><span class="identifier">Modifier</span>.</span></span><span class="keyword">to</span><span class="constructor">String(<span class="params">mod</span>)</span>);</span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="string">"isPublic: "</span> + <span class="module-access"><span class="module"><span class="identifier">Modifier</span>.</span></span>is<span class="constructor">Public(<span class="params">mod</span>)</span>);</span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="string">"isStatic: "</span> + <span class="module-access"><span class="module"><span class="identifier">Modifier</span>.</span></span>is<span class="constructor">Static(<span class="params">mod</span>)</span>);</span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="string">"isFinal: "</span> + <span class="module-access"><span class="module"><span class="identifier">Modifier</span>.</span></span>is<span class="constructor">Final(<span class="params">mod</span>)</span>);</span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="string">"isVolatile: "</span> + <span class="module-access"><span class="module"><span class="identifier">Modifier</span>.</span></span>is<span class="constructor">Volatile(<span class="params">mod</span>)</span>);</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>输出：</p>
+<li><p>输出</p>
   <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">public</span> <span class="string">static</span> <span class="string">final</span></span><br><span class="line"><span class="attr">isPublic:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">isStatic:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">isFinal:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">isVolatile:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
-<h4 id="12-Class-中获取方法信息的方法有"><a href="#12-Class-中获取方法信息的方法有" class="headerlink" title="12. Class 中获取方法信息的方法有"></a>12. Class 中获取方法信息的方法有</h4><ul>
-<li>类中定义的<strong>静态和实例方法</strong>都被称为<strong>方法</strong>，用类 <strong><code>Method</code></strong> 表示：<ul>
-<li><code>public Method[] getMethods()</code>：返回所有的 <code>public</code> 方法，包括其父类的，如果没有方法，返回空数组。</li>
-<li><code>public Method[] getDeclaredMethods()</code>：返回本类声明的所有方法，包括非 <code>public</code> 的，但不包括父类的。</li>
-<li><code>public Method getMethod(String name, Class&lt;?&gt; ... parameterTypes)</code>：返回本类或父类中指定名称和参数类型的 <code>public</code> 方法，找不到的话抛出 <code>NoSuchMethodException</code> 异常。</li>
-<li><code>public Method getDeclaredMethod(String name, Class&lt;?&gt;... parameterTypes)</code>：返回本类中声明的指定名称和参数类型的方法，找不到抛出 <code>NoSuchMethodException</code> 异常。</li>
+<h4 id="12-Class-中获取方法信息的方法有"><a href="#12-Class-中获取方法信息的方法有" class="headerlink" title="12. Class 中获取方法信息的方法有"></a>12. <code>Class</code> 中获取方法信息的方法有</h4><ul>
+<li>类中定义的<strong>静态和实例方法</strong>都被称为<strong>方法</strong>，用类 <strong><code>Method</code></strong> 表示<ul>
+<li><code>public Method[] getMethods()</code>：返回所有的 <code>public</code> 方法，包括其父类的，如果没有方法，返回空数组</li>
+<li><code>public Method[] getDeclaredMethods()</code>：返回本类声明的所有方法，包括非 <code>public</code> 的，但不包括父类的</li>
+<li><code>public Method getMethod(String name, Class&lt;?&gt; ... parameterTypes)</code>：返回本类或父类中指定名称和参数类型的 <code>public</code> 方法，找不到的话抛出 <code>NoSuchMethodException</code> 异常</li>
+<li><code>public Method getDeclaredMethod(String name, Class&lt;?&gt;... parameterTypes)</code>：返回本类中声明的指定名称和参数类型的方法，找不到抛出 <code>NoSuchMethodException</code> 异常</li>
 </ul>
 </li>
 </ul>
-<h4 id="13-Method-的基本方法有"><a href="#13-Method-的基本方法有" class="headerlink" title="13. Method 的基本方法有"></a>13. Method 的基本方法有</h4><ul>
-<li><code>public String getName()</code>：获取方法的<strong>名称</strong>。</li>
-<li><code>public void setAccesible(boolean flag)</code>：<code>flag</code> 设为 <code>true</code> 表示忽略 Java 的<strong>访问检查机制</strong>，以允许调用非 <code>public</code> 的方法。</li>
-<li><code>public Object invoke(Object obj, Object... args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException</code>：在<strong>指定对象</strong> <code>obj</code> 上调用 <code>Method</code> 代表的方法，传递的参数列表为 <code>args</code>。<ul>
-<li>如果 <code>Method</code> 为<strong>静态方法</strong>，<code>obj</code> 被忽略，可以为 <code>null</code>，<code>args</code> 可以为 <code>null</code>，也可以为一个空的数组，方法调用的返回值被包装为 <code>Object</code> 返回。</li>
-<li>如方法调用抛出异常，异常被包装为 <strong><code>InvocationTargetException</code></strong> 异常重新抛出，可以通过 <code>getCause()</code> 方法得到原异常。</li>
+<h4 id="13-Method-的基本方法有"><a href="#13-Method-的基本方法有" class="headerlink" title="13. Method 的基本方法有"></a>13. <code>Method</code> 的基本方法有</h4><ul>
+<li><code>public String getName()</code>：获取方法的<strong>名称</strong></li>
+<li><code>public void setAccesible(boolean flag)</code>：<code>flag</code> 设为 <code>true</code> 表示忽略 Java 的<strong>访问检查机制</strong>，以允许调用非 <code>public</code> 的方法</li>
+<li><code>public Object invoke(Object obj, Object... args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException</code>：在<strong>指定对象</strong> <code>obj</code> 上调用 <code>Method</code> 代表的方法，传递的参数列表为 <code>args</code><ul>
+<li>如果 <code>Method</code> 为<strong>静态方法</strong>，<code>obj</code> 被忽略，可以为 <code>null</code>，<code>args</code> 可以为 <code>null</code>，也可以为一个空的数组，方法调用的返回值被包装为 <code>Object</code> 返回</li>
+<li>如方法调用抛出异常，异常被包装为 <strong><code>InvocationTargetException</code></strong> 异常重新抛出，可以通过 <code>getCause()</code> 方法得到原异常</li>
 </ul>
 </li>
-<li><code>Method</code> 还有很多方法，可以获取其<strong>修饰符</strong>、<strong>参数</strong>、<strong>返回值</strong>、<strong>注解</strong>等信息。</li>
+<li><code>Method</code> 还有很多方法，可以获取其<strong>修饰符</strong>、<strong>参数</strong>、<strong>返回值</strong>、<strong>注解</strong>等信息</li>
 </ul>
-<h4 id="14-Class-中有关创建对象和构造方法的方法有"><a href="#14-Class-中有关创建对象和构造方法的方法有" class="headerlink" title="14. Class 中有关创建对象和构造方法的方法有"></a>14. Class 中有关创建对象和构造方法的方法有</h4><ul>
-<li><p><strong><code>public T newInstance() throws InstantiationException, IllegalAccessException</code></strong>：</p>
+<h4 id="14-Class-中有关创建对象和构造方法的方法有"><a href="#14-Class-中有关创建对象和构造方法的方法有" class="headerlink" title="14. Class 中有关创建对象和构造方法的方法有"></a>14. <code>Class</code> 中有关创建对象和构造方法的方法有</h4><ul>
+<li><p><strong><code>public T newInstance() throws InstantiationException, IllegalAccessException</code></strong></p>
 <ul>
-<li><p>创建对象，会调用类的<strong>默认构造方法</strong>（即无参 <code>public</code> 构造方法），如果类没有该构造方法，会抛出 <strong><code>InstantiationException</code></strong> 异常。</p>
+<li><p>创建对象，会调用类的<strong>默认构造方法</strong>（即无参 <code>public</code> 构造方法），如果类没有该构造方法，会抛出 <strong><code>InstantiationException</code></strong> 异常</p>
 </li>
-<li><p><strong>Demo</strong>：</p>
+<li><p><strong>Demo</strong></p>
   <figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">Integer</span>&gt; <span class="built_in">map</span> = HashMap.class.newInstance();</span><br><span class="line"><span class="built_in">map</span>.put(<span class="string">"hello"</span>, <span class="number">123</span>);</span><br></pre></td></tr></table></figure>
 </li>
-<li><p><strong><code>newInstance</code> 只能使用默认构造方法</strong>。</p>
+<li><p><strong><code>newInstance</code> 只能使用默认构造方法</strong></p>
 </li>
 </ul>
 </li>
-<li><p><code>Class</code> 还有一些方法，可以<strong>获取所有的构造方法</strong>：</p>
+<li><p><code>Class</code> 还有一些方法，可以<strong>获取所有的构造方法</strong></p>
 <ul>
-<li><code>public Constructor&lt;?&gt;[] getConstructors()</code>：获取所有的 <code>public</code> 构造方法，返回值可能为长度为 0 的空数组。</li>
-<li><code>public Constructor&lt;?&gt;[] getDeclaredConstructors()</code>：获取所有的构造方法，包括非 <code>public</code> 的。</li>
-<li><code>public Constructor&lt;T&gt; getConstructor(Class&lt;?&gt;... parameterType)</code>：获取指定参数类型的 <code>public</code> 构造方法，没找到抛出 <code>NoSuchMethodException</code> 异常。</li>
-<li><code>public Constructor&lt;T&gt; getDeclaredConstructor(Class&lt;?&gt;... parameterTypes)</code>：获取指定参数类型的构造方法，包括非 <code>public</code> 的，没找到抛出 <code>NoSuchMethodException</code> 异常。</li>
+<li><code>public Constructor&lt;?&gt;[] getConstructors()</code>：获取所有的 <code>public</code> 构造方法，返回值可能为长度为 0 的空数组</li>
+<li><code>public Constructor&lt;?&gt;[] getDeclaredConstructors()</code>：获取所有的构造方法，包括非 <code>public</code> 的</li>
+<li><code>public Constructor&lt;T&gt; getConstructor(Class&lt;?&gt;... parameterType)</code>：获取指定参数类型的 <code>public</code> 构造方法，没找到抛出 <code>NoSuchMethodException</code> 异常</li>
+<li><code>public Constructor&lt;T&gt; getDeclaredConstructor(Class&lt;?&gt;... parameterTypes)</code>：获取指定参数类型的构造方法，包括非 <code>public</code> 的，没找到抛出 <code>NoSuchMethodException</code> 异常</li>
 </ul>
 </li>
-<li><p>类 <code>Constructor</code> 表示构造方法，通过它可以创建对象，方法为：<code>public T newInstance(Object... initargs) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException</code>。</p>
+<li><p>类 <code>Constructor</code> 表示构造方法，通过它可以创建对象，方法为：<code>public T newInstance(Object... initargs) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException</code></p>
 <ul>
-<li><p><strong>Demo</strong>：</p>
+<li><p><strong>Demo</strong></p>
   <figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">Constructor</span>&lt;<span class="title">StringBuilder</span>&gt; <span class="title">constructor</span> = <span class="title">StringBuilder</span>.<span class="title">class</span>.<span class="title">getConstructor</span><span class="params">(<span class="keyword">new</span> <span class="keyword">Class</span>[] &#123;int.<span class="keyword">class</span>&#125;)</span>;</span></span><br><span class="line">StringBuilder sb = constrcutor.newInstance(<span class="number">100</span>);</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
-<li><p>除了创建对象，<code>Constructor</code> 类还有很多方法，可以获取关于构造方法的很多信息，包括参数、修饰符、注解等。</p>
+<li><p>除了创建对象，<code>Constructor</code> 类还有很多方法，可以获取关于构造方法的很多信息，包括参数、修饰符、注解等</p>
 </li>
 </ul>
-<h4 id="15-Class-类中关于类型检查和转换的方法有"><a href="#15-Class-类中关于类型检查和转换的方法有" class="headerlink" title="15. Class 类中关于类型检查和转换的方法有"></a>15. Class 类中关于类型检查和转换的方法有</h4><ul>
-<li><p><strong><code>instanceof</code> 关键字的作用：判断变量指向的实际对象类型</strong>。</p>
+<h4 id="15-Class-类中关于类型检查和转换的方法有"><a href="#15-Class-类中关于类型检查和转换的方法有" class="headerlink" title="15. Class 类中关于类型检查和转换的方法有"></a>15. <code>Class</code> 类中关于类型检查和转换的方法有</h4><ul>
+<li><p><strong><code>instanceof</code> 关键字的作用：判断变量指向的实际对象类型</strong></p>
 </li>
-<li><p><code>instanceof</code> 后面的类型是在代码中确定的，<strong>如果要检查的类型是动态的，可以使用 <code>Class</code> 类的本地方法：<code>public native boolean isInstance(Object obj)</code></strong>。</p>
+<li><p><code>instanceof</code> 后面的类型是在代码中确定的，<strong>如果要检查的类型是动态的，可以使用 <code>Class</code> 类的本地方法：<code>public native boolean isInstance(Object obj)</code></strong></p>
 </li>
-<li><p>下面两段代码的输出是相同的：</p>
+<li><p>下面两段代码的输出是相同的</p>
   <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="built_in">list</span> instanceof ArrayList) &#123;</span><br><span class="line">    <span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="string">"array list"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
   <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Class cls = <span class="module-access"><span class="module"><span class="identifier">Class</span>.</span></span>for<span class="constructor">Name(<span class="string">"java.util.ArrayList"</span>)</span>;</span><br><span class="line"><span class="keyword">if</span>(cls.is<span class="constructor">Instance(<span class="params">list</span>)</span>) &#123;</span><br><span class="line">    <span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(<span class="string">"array list"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>之前在<strong>强制类型转换</strong>时，强转的类型是在写代码的时候就知道的，<strong>如果是动态的，可以使用 <code>Class</code> 类的 <code>cast()</code> 方法：<code>public T cast(Object obj)</code></strong>。</p>
+<li><p>之前在<strong>强制类型转换</strong>时，强转的类型是在写代码的时候就知道的，<strong>如果是动态的，可以使用 <code>Class</code> 类的 <code>cast()</code> 方法：<code>public T cast(Object obj)</code></strong></p>
 </li>
-<li><p><code>isInstance()/cast()</code> 描述的都是对象和类之间的关系。<code>Class</code> 还有一个方法，可以<strong>判断 <code>Class</code> 之间的关系</strong>：<code>public native boolean isAssignableFrom(Class&lt;?&gt; cls)</code>：检测参数类型 <code>cls</code> 能否赋给当前 <code>Class</code> 类型的变量：</p>
+<li><p><code>isInstance()/cast()</code> 描述的都是对象和类之间的关系。<code>Class</code> 还有一个方法，可以<strong>判断 <code>Class</code> 之间的关系</strong>：<code>public native boolean isAssignableFrom(Class&lt;?&gt; cls)</code>：检测参数类型 <code>cls</code> 能否赋给当前 <code>Class</code> 类型的变量</p>
 <ul>
 <li><code>Object.class.isAssignableFrom(String.class); //true</code></li>
 <li><code>String.class.isAssignableFrom(String.class); //true</code></li>
@@ -495,84 +497,86 @@
 </ul>
 </li>
 </ul>
-<h4 id="16-对于-Class-的类型信息，下面说法：Class-代表的类型既可以是普通的类，也可以是内部类，还可以是基本类型、数组等。是否正确"><a href="#16-对于-Class-的类型信息，下面说法：Class-代表的类型既可以是普通的类，也可以是内部类，还可以是基本类型、数组等。是否正确" class="headerlink" title="16. 对于 Class 的类型信息，下面说法：Class 代表的类型既可以是普通的类，也可以是内部类，还可以是基本类型、数组等。是否正确"></a>16. 对于 Class 的类型信息，下面说法：Class 代表的类型既可以是普通的类，也可以是内部类，还可以是基本类型、数组等。是否正确</h4><p>　正确。</p>
-<h4 id="17-对于一个给定的-Class-对象，它到底是什么类型呢"><a href="#17-对于一个给定的-Class-对象，它到底是什么类型呢" class="headerlink" title="17. 对于一个给定的 Class 对象，它到底是什么类型呢"></a>17. 对于一个给定的 Class 对象，它到底是什么类型呢</h4><ul>
-<li><code>public native boolean isArray()</code>：是否是<strong>数组</strong>。</li>
-<li><code>public native boolean isPrimitive()</code>：是否是<strong>基本类型</strong>。</li>
-<li><code>public native boolean isInterface()</code>：是否是<strong>接口</strong>。</li>
-<li><code>public boolean isEnum()</code>：是否是<strong>枚举</strong>。</li>
-<li><code>public boolean isAnnotation()</code>：是否是<strong>注解</strong>。</li>
-<li><code>public boolean isAnonymousClass()</code>：是否是<strong>匿名内部类</strong>。</li>
-<li><code>public boolean isMemberClass()</code>：是否是<strong>成员类</strong>，成员类定义在<strong>方法外，不是匿名类</strong>。</li>
-<li><code>public boolean isLocalClass()</code>：是否是<strong>本地类</strong>，本地类定义在<strong>方法内，不是匿名类</strong>。</li>
+<h4 id="16-对于-Class-的类型信息，下面说法：Class-代表的类型既可以是普通的类，也可以是内部类，还可以是基本类型、数组等。是否正确"><a href="#16-对于-Class-的类型信息，下面说法：Class-代表的类型既可以是普通的类，也可以是内部类，还可以是基本类型、数组等。是否正确" class="headerlink" title="16. 对于 Class 的类型信息，下面说法：Class 代表的类型既可以是普通的类，也可以是内部类，还可以是基本类型、数组等。是否正确"></a>16. 对于 <code>Class</code> 的类型信息，下面说法：<code>Class</code> 代表的类型既可以是普通的类，也可以是内部类，还可以是基本类型、数组等。是否正确</h4><ul>
+<li>正确</li>
 </ul>
-<h4 id="18-Class-类中有关类的声明信息的方法有"><a href="#18-Class-类中有关类的声明信息的方法有" class="headerlink" title="18. Class 类中有关类的声明信息的方法有"></a>18. Class 类中有关类的声明信息的方法有</h4><ul>
-<li><code>public native int getModifier()</code>：获取<strong>修饰符</strong>，返回值可通过 <code>Modifier</code> 类进行解读。</li>
-<li><code>public native Class&lt;? super T&gt; getSuperClass()</code>：获取<strong>父类</strong>，如果为 <code>Object</code>，父类为 <code>null</code>。</li>
-<li><code>public native Class&lt;?&gt;[] getInterfaces()</code>：对于类，为自己声明实现的所有<strong>接口</strong>；对于接口，为直接扩展的接口，不包括通过父类继承的。</li>
-<li><code>public Annotation[] getDeclaredAnnotations()</code>：自己<strong>声明的注解</strong>。</li>
-<li><code>public Annotation[] getAnnotations()</code>：<strong>所有的注解</strong>，包括继承得到的。</li>
-<li><code>public &lt;A extends Annotation&gt; A getAnnotation(Class&lt;A&gt; annotationClass)</code>：<strong>获取指定类型的注解</strong>，包括继承得到的。</li>
-<li><code>public boolean isAnnotationPresent(Class&lt;? extends Annotation&gt; annotationClass)</code>：<strong>检查指定类型的注解</strong>，包括继承得到的。</li>
+<h4 id="17-对于一个给定的-Class-对象，它到底是什么类型呢"><a href="#17-对于一个给定的-Class-对象，它到底是什么类型呢" class="headerlink" title="17. 对于一个给定的 Class 对象，它到底是什么类型呢"></a>17. 对于一个给定的 <code>Class</code> 对象，它到底是什么类型呢</h4><ul>
+<li><code>public native boolean isArray()</code>：是否是<strong>数组</strong></li>
+<li><code>public native boolean isPrimitive()</code>：是否是<strong>基本类型</strong></li>
+<li><code>public native boolean isInterface()</code>：是否是<strong>接口</strong></li>
+<li><code>public boolean isEnum()</code>：是否是<strong>枚举</strong></li>
+<li><code>public boolean isAnnotation()</code>：是否是<strong>注解</strong></li>
+<li><code>public boolean isAnonymousClass()</code>：是否是<strong>匿名内部类</strong></li>
+<li><code>public boolean isMemberClass()</code>：是否是<strong>成员类</strong>，成员类定义在<strong>方法外，不是匿名类</strong></li>
+<li><code>public boolean isLocalClass()</code>：是否是<strong>本地类</strong>，本地类定义在<strong>方法内，不是匿名类</strong></li>
 </ul>
-<h4 id="19-Class-类中关于类的加载的方法有"><a href="#19-Class-类中关于类的加载的方法有" class="headerlink" title="19. Class 类中关于类的加载的方法有"></a>19. Class 类中关于类的加载的方法有</h4><ul>
-<li><p>方法：</p>
+<h4 id="18-Class-类中有关类的声明信息的方法有"><a href="#18-Class-类中有关类的声明信息的方法有" class="headerlink" title="18. Class 类中有关类的声明信息的方法有"></a>18. <code>Class</code> 类中有关类的声明信息的方法有</h4><ul>
+<li><code>public native int getModifier()</code>：获取<strong>修饰符</strong>，返回值可通过 <code>Modifier</code> 类进行解读</li>
+<li><code>public native Class&lt;? super T&gt; getSuperClass()</code>：获取<strong>父类</strong>，如果为 <code>Object</code>，父类为 <code>null</code></li>
+<li><code>public native Class&lt;?&gt;[] getInterfaces()</code>：对于类，为自己声明实现的所有<strong>接口</strong>；对于接口，为直接扩展的接口，不包括通过父类继承的</li>
+<li><code>public Annotation[] getDeclaredAnnotations()</code>：自己<strong>声明的注解</strong></li>
+<li><code>public Annotation[] getAnnotations()</code>：<strong>所有的注解</strong>，包括继承得到的</li>
+<li><code>public &lt;A extends Annotation&gt; A getAnnotation(Class&lt;A&gt; annotationClass)</code>：<strong>获取指定类型的注解</strong>，包括继承得到的</li>
+<li><code>public boolean isAnnotationPresent(Class&lt;? extends Annotation&gt; annotationClass)</code>：<strong>检查指定类型的注解</strong>，包括继承得到的</li>
+</ul>
+<h4 id="19-Class-类中关于类的加载的方法有"><a href="#19-Class-类中关于类的加载的方法有" class="headerlink" title="19. Class 类中关于类的加载的方法有"></a>19. <code>Class</code> 类中关于类的加载的方法有</h4><ul>
+<li><p>方法</p>
 <ul>
-<li><code>public static Class&lt;?&gt; forName(String className)</code>。</li>
-<li><code>public static Class&lt;?&gt; forName(String name, boolean initialize, ClassLoader loader)</code>。</li>
+<li><code>public static Class&lt;?&gt; forName(String className)</code></li>
+<li><code>public static Class&lt;?&gt; forName(String name, boolean initialize, ClassLoader loader)</code></li>
 </ul>
 </li>
-<li><p>分析：</p>
+<li><p>分析</p>
 <ul>
-<li><p><strong><code>ClassLoader</code> 表示类加载器</strong>。</p>
+<li><p><strong><code>ClassLoader</code> 表示类加载器</strong></p>
 </li>
-<li><p><strong><code>initialize</code> 表示加载后，是否执行类的初始化代码（如 <code>static</code> 语句块）</strong>。</p>
+<li><p><strong><code>initialize</code> 表示加载后，是否执行类的初始化代码（如 <code>static</code> 语句块）</strong></p>
 </li>
-<li><p>第一个方法中没有传这些参数，相当于调用：<code>Class.forName(className, true, currentLoader)</code>。<strong><code>currentLoader</code></strong> 表示加载当前类的 <code>ClassLoader</code>。</p>
+<li><p>第一个方法中没有传这些参数，相当于调用：<code>Class.forName(className, true, currentLoader)</code>。<strong><code>currentLoader</code></strong> 表示加载当前类的 <code>ClassLoader</code></p>
 </li>
-<li><p>这里 <code>className</code> 与 <code>Class.getName()</code> 的返回值是一致的。比如，对于 <code>String</code> 数组：</p>
+<li><p>这里 <code>className</code> 与 <code>Class.getName()</code> 的返回值是一致的。比如，对于 <code>String</code> 数组</p>
   <figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String <span class="type">name</span> = "java.lang.String;";</span><br><span class="line"><span class="keyword">Class</span> cls = <span class="keyword">Class</span>.forName(<span class="type">name</span>);</span><br><span class="line"><span class="keyword">System</span>.<span class="keyword">out</span>.println(cls == String[].<span class="keyword">class</span>);</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
-<li><p>需要注意的是，<strong>基本类型不支持 <code>forName()</code> 方法</strong>。即，如下写法：<code>Class.forName(&quot;int&quot;);</code> 会抛出 <code>ClassNotFoundException</code> 异常。</p>
+<li><p>需要注意的是，<strong>基本类型不支持 <code>forName()</code> 方法</strong>。即，如下写法：<code>Class.forName(&quot;int&quot;);</code> 会抛出 <code>ClassNotFoundException</code> 异常</p>
 </li>
 </ul>
-<h4 id="20-接上题，如何根据原始类型的字符串构造-Class-对象呢"><a href="#20-接上题，如何根据原始类型的字符串构造-Class-对象呢" class="headerlink" title="20. 接上题，如何根据原始类型的字符串构造 Class 对象呢"></a>20. 接上题，如何根据原始类型的字符串构造 Class 对象呢</h4><ul>
-<li><p>可以对 <code>Class.forName()</code> 进行一下包装，比如：</p>
+<h4 id="20-接上题，如何根据原始类型的字符串构造-Class-对象呢"><a href="#20-接上题，如何根据原始类型的字符串构造-Class-对象呢" class="headerlink" title="20. 接上题，如何根据原始类型的字符串构造 Class 对象呢"></a>20. 接上题，如何根据原始类型的字符串构造 <code>Class</code> 对象呢</h4><ul>
+<li><p>可以对 <code>Class.forName()</code> 进行一下包装，比如</p>
   <figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">Class</span>&lt;?&gt; forName(String className) <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="string">"int"</span>.equals(className)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">int</span>.<span class="keyword">class</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//其他基本类型</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">Class</span>.forName(className);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p><strong>Java 9</strong> 还有一个 <code>forName()</code> 方法，用于<strong>加载指定模块</strong>中指定名称的类：<code>public static Class&lt;?&gt; forName(Module module, String name)</code>。</p>
+<li><p><strong>Java 9</strong> 还有一个 <code>forName()</code> 方法，用于<strong>加载指定模块</strong>中指定名称的类：<code>public static Class&lt;?&gt; forName(Module module, String name)</code></p>
 <ul>
-<li>参数 <code>module</code> 表示模块，是 <strong>Java 9</strong> 引入的类，当找不到类的时候，它不会抛出异常，而是返回 <code>null</code>，它也不会执行类的初始化。</li>
+<li>参数 <code>module</code> 表示模块，是 <strong>Java 9</strong> 引入的类，当找不到类的时候，它不会抛出异常，而是返回 <code>null</code>，它也不会执行类的初始化</li>
 </ul>
 </li>
 </ul>
-<h4 id="21-Class-类中有关反射与数组的方法有"><a href="#21-Class-类中有关反射与数组的方法有" class="headerlink" title="21. Class 类中有关反射与数组的方法有"></a>21. Class 类中有关反射与数组的方法有</h4><ul>
-<li><p>对于<strong>数组类型</strong>，有一个专门的方法，可以获取它的<strong>元素类型</strong>：<code>public native Class&lt;?&gt; getComponentType()</code>。</p>
+<h4 id="21-Class-类中有关反射与数组的方法有"><a href="#21-Class-类中有关反射与数组的方法有" class="headerlink" title="21. Class 类中有关反射与数组的方法有"></a>21. <code>Class</code> 类中有关反射与数组的方法有</h4><ul>
+<li><p>对于<strong>数组类型</strong>，有一个专门的方法，可以获取它的<strong>元素类型</strong>：<code>public native Class&lt;?&gt; getComponentType()</code></p>
 <ul>
-<li><p>比如：</p>
+<li><p>比如</p>
   <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String<span class="literal">[]</span> arr = <span class="keyword">new</span> String<span class="literal">[]</span>&#123;&#125;;</span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(arr.get<span class="constructor">Class()</span>.get<span class="constructor">ComponentType()</span>);</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>输出为：<code>class java.lang.String</code>。</p>
+<li><p>输出为：<code>class java.lang.String</code></p>
 </li>
 </ul>
 </li>
-<li><p><code>java.lang.reflect</code> 包中有一个针对数组的专门的类 <strong><code>Array</code></strong> (注意不是 <code>java.util</code> 中的 <code>Arrays</code>)，提供了对于数组的一些<strong>反射支持</strong>，以便于统一处理多种类型的数组，主要方法有：</p>
+<li><p><code>java.lang.reflect</code> 包中有一个针对数组的专门的类 <strong><code>Array</code></strong> (注意不是 <code>java.util</code> 中的 <code>Arrays</code>)，提供了对于数组的一些<strong>反射支持</strong>，以便于统一处理多种类型的数组，主要方法有</p>
 <ul>
-<li><code>public static Object newInstance(Class&lt;?&gt; componentType, int length)</code>：创建指定<strong>元素类型</strong>、指定<strong>长度</strong>的数组。</li>
-<li><code>public static Object newInstance(Class&lt;?&gt; componentType, int... dimensions)</code>：创建<strong>多维</strong>数组。</li>
-<li><code>public static native Object get(Object array, int index)</code>：获取数组 <code>array</code> 指定的<strong>索引</strong>位置 <code>index</code> 处的值。</li>
-<li><code>public static native void set(Object array, int index, Object value)</code>：修改数组 <code>array</code> 指定的<strong>索引</strong>位置 <code>index</code> 处的值为 <code>value</code>。</li>
-<li><code>public static native int getLength(Object array)</code>：返回数组的<strong>长度</strong>。</li>
+<li><code>public static Object newInstance(Class&lt;?&gt; componentType, int length)</code>：创建指定<strong>元素类型</strong>、指定<strong>长度</strong>的数组</li>
+<li><code>public static Object newInstance(Class&lt;?&gt; componentType, int... dimensions)</code>：创建<strong>多维</strong>数组</li>
+<li><code>public static native Object get(Object array, int index)</code>：获取数组 <code>array</code> 指定的<strong>索引</strong>位置 <code>index</code> 处的值</li>
+<li><code>public static native void set(Object array, int index, Object value)</code>：修改数组 <code>array</code> 指定的<strong>索引</strong>位置 <code>index</code> 处的值为 <code>value</code></li>
+<li><code>public static native int getLength(Object array)</code>：返回数组的<strong>长度</strong></li>
 </ul>
 </li>
 </ul>
-<h4 id="22-在-Array-类中，数组是用-Object-而非-Object-表示的，为什么"><a href="#22-在-Array-类中，数组是用-Object-而非-Object-表示的，为什么" class="headerlink" title="22. 在 Array 类中，数组是用 Object 而非 Object[] 表示的，为什么"></a>22. 在 Array 类中，数组是用 Object 而非 Object[] 表示的，为什么</h4><ul>
-<li><p>这是为了<strong>方便处理多种类型的数组</strong>，<code>int[]</code>、<code>String[]</code> 都不能与 <code>Object[]</code> 相互转换，但可以与 <code>Object</code> 相互转换，比如：</p>
+<h4 id="22-在-Array-类中，数组是用-Object-而非-Object-表示的，为什么"><a href="#22-在-Array-类中，数组是用-Object-而非-Object-表示的，为什么" class="headerlink" title="22. 在 Array 类中，数组是用 Object 而非 Object[] 表示的，为什么"></a>22. 在 <code>Array</code> 类中，数组是用 <code>Object</code> 而非 <code>Object[]</code> 表示的，为什么</h4><ul>
+<li><p>这是为了<strong>方便处理多种类型的数组</strong>，<code>int[]</code>、<code>String[]</code> 都不能与 <code>Object[]</code> 相互转换，但可以与 <code>Object</code> 相互转换，比如</p>
   <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span><span class="literal">[]</span> intArr = (<span class="built_in">int</span><span class="literal">[]</span>) <span class="module-access"><span class="module"><span class="identifier">Array</span>.</span></span><span class="keyword">new</span><span class="constructor">Instance(<span class="params">int</span>.<span class="params">class</span>, 10)</span>;</span><br><span class="line">String<span class="literal">[]</span> strArr  =(String<span class="literal">[]</span>) <span class="module-access"><span class="module"><span class="identifier">Array</span>.</span></span><span class="keyword">new</span><span class="constructor">Instance(String.<span class="params">class</span>, 10)</span>;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>除了以 <code>Object</code> 类型操作数组元素外，<code>Array</code> 也支持以各种基本类型操作数组元素，如：</p>
+<li><p>除了以 <code>Object</code> 类型操作数组元素外，<code>Array</code> 也支持以各种基本类型操作数组元素，如</p>
 <ul>
 <li><code>public static native double getDouble(Object array, int index);</code></li>
 <li><code>public static native void setDouble(Object array, int index, double d);</code></li>
@@ -581,8 +585,8 @@
 </ul>
 </li>
 </ul>
-<h4 id="23-Class-类中有关反射与枚举的方法有"><a href="#23-Class-类中有关反射与枚举的方法有" class="headerlink" title="23. Class 类中有关反射与枚举的方法有"></a>23. Class 类中有关反射与枚举的方法有</h4><ul>
-<li><code>public T[] getEnumConstants()</code>：获取所有的<strong>枚举常量</strong>。</li>
+<h4 id="23-Class-类中有关反射与枚举的方法有"><a href="#23-Class-类中有关反射与枚举的方法有" class="headerlink" title="23. Class 类中有关反射与枚举的方法有"></a>23. <code>Class</code> 类中有关反射与枚举的方法有</h4><ul>
+<li><code>public T[] getEnumConstants()</code>：获取所有的<strong>枚举常量</strong></li>
 </ul>
 
     </div>
@@ -802,7 +806,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">21:35</span>
+    <span title="站点阅读时长">21:34</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
