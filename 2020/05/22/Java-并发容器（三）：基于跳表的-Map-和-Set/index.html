@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. Java 并发包中可排序的对应版本工具类是">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-05-22T12:22:57.000Z">
-<meta property="article:modified_time" content="2020-05-25T07:13:54.000Z">
+<meta property="article:modified_time" content="2021-04-06T03:16:14.152Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="并发容器">
 <meta property="article:tag" content="基于跳表的 Map 和 Set">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-25 15:13:54" itemprop="dateModified" datetime="2020-05-25T15:13:54+08:00">2020-05-25</time>
+                <time title="修改时间：2021-04-06 11:16:14" itemprop="dateModified" datetime="2021-04-06T11:16:14+08:00">2021-04-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -255,60 +255,62 @@
         <h4 id="1-Java-并发包中可排序的对应版本工具类是"><a href="#1-Java-并发包中可排序的对应版本工具类是" class="headerlink" title="1. Java 并发包中可排序的对应版本工具类是"></a>1. Java 并发包中可排序的对应版本工具类是</h4><a id="more"></a>
 
 <ul>
-<li><p><code>HashMap/HashSet</code> 基于哈希，不能对元素排序，对应的可排序的容器类是 <code>TreeMap/TreeSet</code>。</p>
+<li><p><code>HashMap/HashSet</code> 基于哈希，不能对元素排序，对应的可排序的容器类是 <code>TreeMap/TreeSet</code></p>
 </li>
-<li><p>Java <strong>并发</strong>包中<strong>可排序</strong>的对应版本不是基于树，而是<strong>基于 <code>SkipList</code>（跳跃表）</strong>。</p>
+<li><p>Java <strong>并发</strong>包中<strong>可排序</strong>的对应版本不是基于树，而是<strong>基于 <code>SkipList</code>（跳跃表）</strong></p>
 <ul>
-<li>Java 并发包中与 <code>TreeMap/TreeSet</code> 对应的并发版本是 <strong><code>ConcurrentSkipListMap</code></strong> 和 <strong><code>ConcurrentSkipListSet</code></strong>。</li>
-<li><code>TreeSet</code> 是基于 <code>TreeMap</code> 实现的，<code>ConcurrentSkipListSet</code> 是<strong>基于</strong> <code>ConcurrentSkipListMap</code> 实现的。</li>
+<li>Java 并发包中与 <code>TreeMap/TreeSet</code> 对应的并发版本是 <strong><code>ConcurrentSkipListMap</code></strong> 和 <strong><code>ConcurrentSkipListSet</code></strong></li>
+<li><code>TreeSet</code> 是基于 <code>TreeMap</code> 实现的，<code>ConcurrentSkipListSet</code> 是<strong>基于</strong> <code>ConcurrentSkipListMap</code> 实现的</li>
 </ul>
 </li>
-<li><p><code>ConcurrentSkipListMap</code> 是基于 <code>SkipList</code> 实现的，<strong><code>SkipList</code> 称为跳跃表或跳表，是一种数据结构</strong>。</p>
+<li><p><code>ConcurrentSkipListMap</code> 是基于 <code>SkipList</code> 实现的，<strong><code>SkipList</code> 称为跳跃表或跳表，是一种数据结构</strong></p>
 </li>
 </ul>
-<h4 id="2-Java-可排序容器的并发版本为什么采用跳表而不是树呢"><a href="#2-Java-可排序容器的并发版本为什么采用跳表而不是树呢" class="headerlink" title="2. Java 可排序容器的并发版本为什么采用跳表而不是树呢"></a>2. Java 可排序容器的并发版本为什么采用跳表而不是树呢</h4><p>　因为跳表这种数据结构更易于实现<strong>高效的并发算法</strong>。</p>
-<h4 id="3-ConcurrentSkipListMap-的特点是"><a href="#3-ConcurrentSkipListMap-的特点是" class="headerlink" title="3. ConcurrentSkipListMap 的特点是"></a>3. ConcurrentSkipListMap 的特点是</h4><ul>
-<li><strong>没有使用锁，所有操作都是无阻塞的；所有操作都可以并行，包括写，多线程可以同时写</strong>。</li>
-<li>与 <code>ConcurrentHashMap</code> 类似，迭代器不会抛出 <code>ConcurrentModificationException</code> 异常，也是<strong>弱一致的，迭代可能反映最新修改也可能不反映</strong>。一些方法如 <code>putAll()</code>、<code>clear()</code> 不是原子的。</li>
-<li>与 <code>TreeMap</code> 一样，可排序，默认按键的自然顺序，也可以传递<strong>比较器</strong>自定义排序，实现了 <code>SortedMap</code> 和 <code>NavigableMap</code> 接口。</li>
-<li><strong><code>ConcurrentSkipListMap</code> 和 <code>ConcurrentSkipListSet</code> 基于跳表实现，有序、无锁非阻塞、完全并行，主要操作复杂度都是 <code>O(logN)</code></strong>。</li>
+<h4 id="2-Java-可排序容器的并发版本为什么采用跳表而不是树呢"><a href="#2-Java-可排序容器的并发版本为什么采用跳表而不是树呢" class="headerlink" title="2. Java 可排序容器的并发版本为什么采用跳表而不是树呢"></a>2. Java 可排序容器的并发版本为什么采用跳表而不是树呢</h4><ul>
+<li>因为跳表这种数据结构更易于实现<strong>高效的并发算法</strong></li>
 </ul>
-<h4 id="4-跳表-SkipList-的基本实现原理"><a href="#4-跳表-SkipList-的基本实现原理" class="headerlink" title="4. 跳表 SkipList 的基本实现原理"></a>4. 跳表 SkipList 的基本实现原理</h4><ul>
-<li><p>跳表是基于链表的，在链表的基础上加了<strong>多层索引结构</strong>。</p>
+<h4 id="3-ConcurrentSkipListMap-的特点是"><a href="#3-ConcurrentSkipListMap-的特点是" class="headerlink" title="3. ConcurrentSkipListMap 的特点是"></a>3. <code>ConcurrentSkipListMap</code> 的特点是</h4><ul>
+<li><strong>没有使用锁，所有操作都是无阻塞的；所有操作都可以并行，包括写，多线程可以同时写</strong></li>
+<li>与 <code>ConcurrentHashMap</code> 类似，迭代器不会抛出 <code>ConcurrentModificationException</code> 异常，也是<strong>弱一致的，迭代可能反映最新修改也可能不反映</strong>。一些方法如 <code>putAll()</code>、<code>clear()</code> 不是原子的</li>
+<li>与 <code>TreeMap</code> 一样，可排序，默认按键的自然顺序，也可以传递<strong>比较器</strong>自定义排序，实现了 <code>SortedMap</code> 和 <code>NavigableMap</code> 接口</li>
+<li><strong><code>ConcurrentSkipListMap</code> 和 <code>ConcurrentSkipListSet</code> 基于跳表实现，有序、无锁非阻塞、完全并行，主要操作复杂度都是 <code>O(logN)</code></strong></li>
+</ul>
+<h4 id="4-跳表-SkipList-的基本实现原理"><a href="#4-跳表-SkipList-的基本实现原理" class="headerlink" title="4. 跳表 SkipList 的基本实现原理"></a>4. 跳表 <code>SkipList</code> 的基本实现原理</h4><ul>
+<li><p>跳表是基于链表的，在链表的基础上加了<strong>多层索引结构</strong></p>
 </li>
-<li><p><strong>最下面一层就是最基本的单向链表</strong>，这个链表是<strong>有序</strong>的。虽然有序，但与数组不同，链表不能根据索引直接定位，不能进行二分查找。</p>
+<li><p><strong>最下面一层就是最基本的单向链表</strong>，这个链表是<strong>有序</strong>的。虽然有序，但与数组不同，链表不能根据索引直接定位，不能进行二分查找</p>
 <ul>
-<li>为了<strong>快速查找</strong>，跳表有多层索引结构。<strong>高层的索引节点</strong>一定同时是<strong>低层的索引节点</strong>。高层的索引节点少，低层的多。</li>
-<li><strong>统计概率</strong>上，第一次索引节点是实际元素数的 1/2，第二层是第一层的 1/2，逐层减半，但这不是绝对的，有随机性，只是大致如此。</li>
+<li>为了<strong>快速查找</strong>，跳表有多层索引结构。<strong>高层的索引节点</strong>一定同时是<strong>低层的索引节点</strong>。高层的索引节点少，低层的多</li>
+<li><strong>统计概率</strong>上，第一次索引节点是实际元素数的 1/2，第二层是第一层的 1/2，逐层减半，但这不是绝对的，有随机性，只是大致如此</li>
 </ul>
 </li>
-<li><p><strong>每个索引节点有两个指针</strong>：一个<strong>向右</strong>，指向下一个同层的索引节点；另一个<strong>向下</strong>，指向下一层的索引节点或基本链表节点。</p>
+<li><p><strong>每个索引节点有两个指针</strong>：一个<strong>向右</strong>，指向下一个同层的索引节点；另一个<strong>向下</strong>，指向下一层的索引节点或基本链表节点</p>
 </li>
 </ul>
-<h4 id="5-ConcurrentSkipListMap-怎样实现查找"><a href="#5-ConcurrentSkipListMap-怎样实现查找" class="headerlink" title="5. ConcurrentSkipListMap 怎样实现查找"></a>5. ConcurrentSkipListMap 怎样实现查找</h4><ul>
-<li>有了跳表这个数据结构，就可以实现<strong>类似的二分查找</strong>了。</li>
-<li>查找元素总是从高层开始，将待查值与下一个索引节点的值进行比较，如果大于索引节点，就向右移动，继续比较；如果小于索引节点，则向下移动到下一层进行比较。这个结构是<strong>有序</strong>的，查找的性能与二叉树类似，复杂度是 <strong><code>O(logN)</code></strong>。</li>
-<li>这个结构的构建与二叉树的构建类似，是在<strong>更新过程中进行保持</strong>的，<strong>保存元素的基本思路</strong>是：<ul>
-<li>先保存到<strong>基本链表</strong>，找到待插入的位置，找到位置后，插入基本链表。</li>
-<li><strong>更新索引层</strong>。</li>
+<h4 id="5-ConcurrentSkipListMap-怎样实现查找"><a href="#5-ConcurrentSkipListMap-怎样实现查找" class="headerlink" title="5. ConcurrentSkipListMap 怎样实现查找"></a>5. <code>ConcurrentSkipListMap</code> 怎样实现查找</h4><ul>
+<li>有了跳表这个数据结构，就可以实现<strong>类似的二分查找</strong>了</li>
+<li>查找元素总是从高层开始，将待查值与下一个索引节点的值进行比较，如果大于索引节点，就向右移动，继续比较；如果小于索引节点，则向下移动到下一层进行比较。这个结构是<strong>有序</strong>的，查找的性能与二叉树类似，复杂度是 <strong><code>O(logN)</code></strong></li>
+<li>这个结构的构建与二叉树的构建类似，是在<strong>更新过程中进行保持</strong>的，<strong>保存元素的基本思路</strong>是<ul>
+<li>先保存到<strong>基本链表</strong>，找到待插入的位置，找到位置后，插入基本链表</li>
+<li><strong>更新索引层</strong></li>
 </ul>
 </li>
 </ul>
-<h4 id="6-ConcurrentSkipListMap-怎样更新索引层"><a href="#6-ConcurrentSkipListMap-怎样更新索引层" class="headerlink" title="6. ConcurrentSkipListMap 怎样更新索引层"></a>6. ConcurrentSkipListMap 怎样更新索引层</h4><ul>
-<li><strong>对于索引更新，随机计算一个数，表示为该元素最高建几层索引</strong>，一层的概率为 1/2，二层的概率为 1/4，三层的概率为 1/8，以此类推。</li>
-<li>然后从最高层到最低层，在每一层，为该元素<strong>建立索引节点</strong>，建立索引节点的过程也是先查找位置，再插入。</li>
+<h4 id="6-ConcurrentSkipListMap-怎样更新索引层"><a href="#6-ConcurrentSkipListMap-怎样更新索引层" class="headerlink" title="6. ConcurrentSkipListMap 怎样更新索引层"></a>6. <code>ConcurrentSkipListMap</code> 怎样更新索引层</h4><ul>
+<li><strong>对于索引更新，随机计算一个数，表示为该元素最高建几层索引</strong>，一层的概率为 1/2，二层的概率为 1/4，三层的概率为 1/8，以此类推</li>
+<li>然后从最高层到最低层，在每一层，为该元素<strong>建立索引节点</strong>，建立索引节点的过程也是先查找位置，再插入</li>
 </ul>
-<h4 id="7-ConcurrentSkipListMap-怎样删除元素"><a href="#7-ConcurrentSkipListMap-怎样删除元素" class="headerlink" title="7. ConcurrentSkipListMap 怎样删除元素"></a>7. ConcurrentSkipListMap 怎样删除元素</h4><ul>
-<li>对于删除元素，<strong><code>ConcurrentSkipListMap</code> 不是直接进行真正删除</strong>。</li>
-<li>而是为了<strong>避免并发冲突</strong>，有一个复杂的<strong>标记过程</strong>，在内部遍历元素的过程中进行<strong>真正删除</strong>。</li>
+<h4 id="7-ConcurrentSkipListMap-怎样删除元素"><a href="#7-ConcurrentSkipListMap-怎样删除元素" class="headerlink" title="7. ConcurrentSkipListMap 怎样删除元素"></a>7. <code>ConcurrentSkipListMap</code> 怎样删除元素</h4><ul>
+<li>对于删除元素，<strong><code>ConcurrentSkipListMap</code> 不是直接进行真正删除</strong></li>
+<li>而是为了<strong>避免并发冲突</strong>，有一个复杂的<strong>标记过程</strong>，在内部遍历元素的过程中进行<strong>真正删除</strong></li>
 </ul>
-<h4 id="8-ConcurrentSkipListMap-的常见操作的时间复杂度是"><a href="#8-ConcurrentSkipListMap-的常见操作的时间复杂度是" class="headerlink" title="8. ConcurrentSkipListMap 的常见操作的时间复杂度是"></a>8. ConcurrentSkipListMap 的常见操作的时间复杂度是</h4><ul>
-<li>为了实现并发安全、高效、无锁非阻塞，<strong><code>ConcurrentSkipListMap</code> 的实现非常复杂</strong>，<strong>源码</strong>中提到了多篇<strong>学术论文</strong>，论文中描述了参考的一些<strong>算法</strong>。</li>
-<li>对于常见的操作，如 <code>get()/put()/remove()/containsKey()</code>，<code>ConcurrentSkipListMap</code> 的复杂度都是 <strong><code>O(logN)</code></strong>。</li>
+<h4 id="8-ConcurrentSkipListMap-的常见操作的时间复杂度是"><a href="#8-ConcurrentSkipListMap-的常见操作的时间复杂度是" class="headerlink" title="8. ConcurrentSkipListMap 的常见操作的时间复杂度是"></a>8. <code>ConcurrentSkipListMap</code> 的常见操作的时间复杂度是</h4><ul>
+<li>为了实现并发安全、高效、无锁非阻塞，<strong><code>ConcurrentSkipListMap</code> 的实现非常复杂</strong>，<strong>源码</strong>中提到了多篇<strong>学术论文</strong>，论文中描述了参考的一些<strong>算法</strong></li>
+<li>对于常见的操作，如 <code>get()/put()/remove()/containsKey()</code>，<code>ConcurrentSkipListMap</code> 的复杂度都是 <strong><code>O(logN)</code></strong></li>
 </ul>
 <h4 id="9-如果不需要并发，跳表结果可以怎样改进"><a href="#9-如果不需要并发，跳表结果可以怎样改进" class="headerlink" title="9. 如果不需要并发，跳表结果可以怎样改进"></a>9. 如果不需要并发，跳表结果可以怎样改进</h4><ul>
-<li><code>SkipList</code> 跳表结构是为了便于并发操作的，如果不需要并发，可以使用另一种更为高效的结构：<strong>数据和所有层的索引放到一个节点中</strong>。</li>
-<li>对于一个元素，只有一个节点，只是每个节点的索引个数可能不同。在新建一个节点时，使用<strong>随机算法</strong>决定它的索引个数、平均而言，1/2 的元素有两个索引，1/4 的元素有三个索引，以此类推。</li>
+<li><code>SkipList</code> 跳表结构是为了便于并发操作的，如果不需要并发，可以使用另一种更为高效的结构：<strong>数据和所有层的索引放到一个节点中</strong></li>
+<li>对于一个元素，只有一个节点，只是每个节点的索引个数可能不同。在新建一个节点时，使用<strong>随机算法</strong>决定它的索引个数、平均而言，1/2 的元素有两个索引，1/4 的元素有三个索引，以此类推</li>
 </ul>
 
     </div>
