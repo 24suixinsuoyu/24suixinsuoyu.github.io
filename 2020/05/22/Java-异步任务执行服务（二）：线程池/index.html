@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. 线程池的概念">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-05-22T12:24:58.000Z">
-<meta property="article:modified_time" content="2020-05-26T14:46:08.000Z">
+<meta property="article:modified_time" content="2021-04-06T06:57:09.721Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="异步任务执行服务">
 <meta property="article:tag" content="线程池">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-26 22:46:08" itemprop="dateModified" datetime="2020-05-26T22:46:08+08:00">2020-05-26</time>
+                <time title="修改时间：2021-04-06 14:57:09" itemprop="dateModified" datetime="2021-04-06T14:57:09+08:00">2021-04-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,7 +233,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5.9k</span>
+              <span>5.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -255,206 +255,208 @@
         <h4 id="1-线程池的概念"><a href="#1-线程池的概念" class="headerlink" title="1. 线程池的概念"></a>1. 线程池的概念</h4><a id="more"></a>
 
 <ul>
-<li>顾名思义，就是一个线程的池子，里面有若干线程，它们的目的就是执行提交给线程池的任务，<strong>执行完一个任务后不会退出</strong>，而是<strong>继续等待</strong>或是<strong>执行新任务</strong>。</li>
-<li><strong>线程池</strong>主要由两个概念组成：一个是<strong>任务队列</strong>；一个是<strong>工作者线程</strong>。</li>
-<li>工作者线程主体就是一个<strong>循环</strong>，循环从队列中接收任务并执行，任务队列保存待执行的任务。</li>
+<li>顾名思义，就是一个线程的池子，里面有若干线程，它们的目的就是执行提交给线程池的任务，<strong>执行完一个任务后不会退出</strong>，而是<strong>继续等待</strong>或是<strong>执行新任务</strong></li>
+<li><strong>线程池</strong>主要由两个概念组成：一个是<strong>任务队列</strong>；一个是<strong>工作者线程</strong></li>
+<li>工作者线程主体就是一个<strong>循环</strong>，循环从队列中接收任务并执行，任务队列保存待执行的任务</li>
 </ul>
 <h4 id="2-线程池的优点"><a href="#2-线程池的优点" class="headerlink" title="2. 线程池的优点"></a>2. 线程池的优点</h4><ul>
-<li>可以<strong>重用线程</strong>，避免线程创建的开销。</li>
-<li>任务过多时，通过<strong>排队</strong>避免创建过多线程，减少系统资源消耗和竞争，确保任务有序完成。</li>
+<li>可以<strong>重用线程</strong>，避免线程创建的开销</li>
+<li>任务过多时，通过<strong>排队</strong>避免创建过多线程，减少系统资源消耗和竞争，确保任务有序完成</li>
 </ul>
 <h4 id="3-Java-并发包中线程池的实现类是"><a href="#3-Java-并发包中线程池的实现类是" class="headerlink" title="3. Java 并发包中线程池的实现类是"></a>3. Java 并发包中线程池的实现类是</h4><ul>
-<li><p>Java 并发包中<strong>线程池的实现类是 <code>ThreadPoolExecutor</code></strong>，继承自 <code>AbstractExecutorService</code>，实现了 <code>ExecutorService</code>。</p>
+<li><p>Java 并发包中<strong>线程池的实现类是 <code>ThreadPoolExecutor</code></strong>，继承自 <code>AbstractExecutorService</code>，实现了 <code>ExecutorService</code></p>
 <ul>
-<li><code>ThreadPoolExecutor</code> 有一些重要的<strong>参数</strong>，理解这些参数对于合理使用线程池非常重要。</li>
-<li><code>ThreadPoolExecutor</code> 实现了<strong>生产者/消费者模式</strong>，工作者线程就是消费者，任务提交者就是生产者，<strong>线程池自己维护任务队列</strong>。</li>
+<li><code>ThreadPoolExecutor</code> 有一些重要的<strong>参数</strong>，理解这些参数对于合理使用线程池非常重要</li>
+<li><code>ThreadPoolExecutor</code> 实现了<strong>生产者/消费者模式</strong>，工作者线程就是消费者，任务提交者就是生产者，<strong>线程池自己维护任务队列</strong></li>
 </ul>
 </li>
-<li><p>当碰到<strong>类似生产者/消费者问题</strong>时，应<strong>优先考虑直接使用线程池</strong>，自己管理和维护消费者线程及任务队列。</p>
+<li><p>当碰到<strong>类似生产者/消费者问题</strong>时，应<strong>优先考虑直接使用线程池</strong>，自己管理和维护消费者线程及任务队列</p>
 </li>
 </ul>
-<h4 id="4-ThreadPoolExecutor-线程池的主要构造方法有"><a href="#4-ThreadPoolExecutor-线程池的主要构造方法有" class="headerlink" title="4. ThreadPoolExecutor 线程池的主要构造方法有"></a>4. ThreadPoolExecutor 线程池的主要构造方法有</h4><ul>
-<li><p><code>public ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue&lt;Runnable&gt; workQueue)</code>。</p>
+<h4 id="4-ThreadPoolExecutor-线程池的主要构造方法有"><a href="#4-ThreadPoolExecutor-线程池的主要构造方法有" class="headerlink" title="4. ThreadPoolExecutor 线程池的主要构造方法有"></a>4. <code>ThreadPoolExecutor</code> 线程池的主要构造方法有</h4><ul>
+<li><p><code>public ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue&lt;Runnable&gt; workQueue)</code></p>
 </li>
-<li><p><code>public ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue&lt;Runnable&gt; workQueue, ThreadFactory threadFactory, RejectedExecutionHandler handler)</code>。</p>
+<li><p><code>public ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue&lt;Runnable&gt; workQueue, ThreadFactory threadFactory, RejectedExecutionHandler handler)</code></p>
 <ul>
-<li>该构造方法多了两个参数 <code>threadFactory</code> 和 <code>handler</code>，这两个参数一般不需要，第一个构造方法会设置默认值。</li>
+<li>该构造方法多了两个参数 <code>threadFactory</code> 和 <code>handler</code>，这两个参数一般不需要，第一个构造方法会设置默认值</li>
 </ul>
 </li>
-<li><p>参数 <strong><code>corePoolSize</code></strong>、<strong><code>maximumPoolSize</code></strong>、<strong><code>keepAliveTime</code></strong>、<strong><code>unit</code></strong> 用于控制线程池中<strong>线程个数</strong>。</p>
+<li><p>参数 <strong><code>corePoolSize</code></strong>、<strong><code>maximumPoolSize</code></strong>、<strong><code>keepAliveTime</code></strong>、<strong><code>unit</code></strong> 用于控制线程池中<strong>线程个数</strong></p>
 <ul>
-<li><strong><code>workQueue</code></strong> 表示任务队列。</li>
-<li><strong><code>threadFactory</code></strong> 用于对创建的线程进行一些配置。</li>
-<li><strong><code>handler</code></strong> 用于任务拒绝策略。</li>
+<li><strong><code>workQueue</code></strong> 表示任务队列</li>
+<li><strong><code>threadFactory</code></strong> 用于对创建的线程进行一些配置</li>
+<li><strong><code>handler</code></strong> 用于任务拒绝策略</li>
 </ul>
 </li>
 </ul>
-<h4 id="5-控制线程池-ThreadPoolExecutor-的大小主要与哪四个参数有关，分别是什么意思"><a href="#5-控制线程池-ThreadPoolExecutor-的大小主要与哪四个参数有关，分别是什么意思" class="headerlink" title="5. 控制线程池 ThreadPoolExecutor 的大小主要与哪四个参数有关，分别是什么意思"></a>5. 控制线程池 ThreadPoolExecutor 的大小主要与哪四个参数有关，分别是什么意思</h4><ul>
+<h4 id="5-控制线程池-ThreadPoolExecutor-的大小主要与哪四个参数有关，分别是什么意思"><a href="#5-控制线程池-ThreadPoolExecutor-的大小主要与哪四个参数有关，分别是什么意思" class="headerlink" title="5. 控制线程池 ThreadPoolExecutor 的大小主要与哪四个参数有关，分别是什么意思"></a>5. 控制线程池 <code>ThreadPoolExecutor</code> 的大小主要与哪四个参数有关，分别是什么意思</h4><ul>
 <li><p>主要与 <code>corePoolSize</code>、<code>maximumPoolSize</code>、<code>keepAliveTime</code> 和 <code>unit</code> 四个参数有关，含义如下：</p>
 <ul>
-<li><strong><code>corePoolSize</code></strong>：<strong>核心线程个数</strong>。</li>
-<li><strong><code>maximumPoolSize</code></strong>：<strong>最大线程个数</strong>。</li>
-<li><strong><code>keepAliveTime</code></strong> 和 <strong><code>unit</code></strong>：<strong>空闲线程存活时间</strong>。</li>
+<li><strong><code>corePoolSize</code></strong>：<strong>核心线程个数</strong></li>
+<li><strong><code>maximumPoolSize</code></strong>：<strong>最大线程个数</strong></li>
+<li><strong><code>keepAliveTime</code></strong> 和 <strong><code>unit</code></strong>：<strong>空闲线程存活时间</strong></li>
 </ul>
 </li>
-<li><p><strong><code>maximumPoolSize</code></strong> 表示线程池中的<strong>最大</strong>线程数，线程的个数会<strong>动态变化</strong>，但这是最大值，不管有多少任务，都不会创建比这个值还大的线程个数。</p>
+<li><p><strong><code>maximumPoolSize</code></strong> 表示线程池中的<strong>最大</strong>线程数，线程的个数会<strong>动态变化</strong>，但这是最大值，不管有多少任务，都不会创建比这个值还大的线程个数</p>
 </li>
-<li><p><strong><code>corePoolSize</code></strong> 表示线程池中的<strong>核心</strong>线程个数。不过，并不是一开始就创建这么多线程，<strong>刚创建一个线程池后，实际上并不会创建任何线程</strong>。</p>
+<li><p><strong><code>corePoolSize</code></strong> 表示线程池中的<strong>核心</strong>线程个数。不过，并不是一开始就创建这么多线程，<strong>刚创建一个线程池后，实际上并不会创建任何线程</strong></p>
 <ul>
-<li>一般情况下，有<strong>新任务</strong>到来的时候，如果当前线程个数<strong>小于</strong> <code>corePoolSize</code>，就会创建一个新线程来执行该任务。需要说明的是，<strong>即使其他线程现在也是空闲的，也会创建新线程</strong>。</li>
-<li>不过，如果线程个数<strong>大于等于</strong> <code>corePoolSize</code>，那就不会立即创建新线程了，它会<strong>先尝试排队</strong>。</li>
-<li>需要强调的是，<strong>它是“尝试”排队，而不是“阻塞等待”入队</strong>，如果队列满了或其他原因不能立即入队，它就<strong>不排队</strong>，而是<strong>检查</strong>线程个数是否达到了 <code>maximumPoolSize</code>。如果没有，就会继续创建线程，直到线程个数达到 <code>maximumPoolSize</code>。</li>
+<li>一般情况下，有<strong>新任务</strong>到来的时候，如果当前线程个数<strong>小于</strong> <code>corePoolSize</code>，就会创建一个新线程来执行该任务。需要说明的是，<strong>即使其他线程现在也是空闲的，也会创建新线程</strong></li>
+<li>不过，如果线程个数<strong>大于等于</strong> <code>corePoolSize</code>，那就不会立即创建新线程了，它会<strong>先尝试排队</strong></li>
+<li>需要强调的是，<strong>它是“尝试”排队，而不是“阻塞等待”入队</strong>，如果队列满了或其他原因不能立即入队，它就<strong>不排队</strong>，而是<strong>检查</strong>线程个数是否达到了 <code>maximumPoolSize</code>。如果没有，就会继续创建线程，直到线程个数达到 <code>maximumPoolSize</code></li>
 </ul>
 </li>
-<li><p><strong><code>keepAliveTime</code></strong> 的目的是为了<strong>释放</strong>多余的线程资源，它的含义是：当线程池中的线程个数大于 <code>corePoolSize</code> 时<strong>额外空闲线程的存活时间</strong>。</p>
+<li><p><strong><code>keepAliveTime</code></strong> 的目的是为了<strong>释放</strong>多余的线程资源，它的含义是：当线程池中的线程个数大于 <code>corePoolSize</code> 时<strong>额外空闲线程的存活时间</strong></p>
 <ul>
-<li>即，<strong>一个非核心线程，在空闲等待新任务时，会有一个最长等待时间</strong>，即 <code>keepAliveTime</code>。</li>
-<li>如果到了时间还是没有新任务，就会<strong>被终止</strong>。如果<strong>该值为 0</strong>，则表示所有线程都不会超时终止。</li>
+<li>即，<strong>一个非核心线程，在空闲等待新任务时，会有一个最长等待时间</strong>，即 <code>keepAliveTime</code></li>
+<li>如果到了时间还是没有新任务，就会<strong>被终止</strong>。如果<strong>该值为 0</strong>，则表示所有线程都不会超时终止</li>
 </ul>
 </li>
-<li><p>这几个参数除了可以在<strong>构造方法</strong>中进行指定外，还可以通过 <strong><code>getter()/setter()</code></strong> 方法进行查看和修改。</p>
+<li><p>这几个参数除了可以在<strong>构造方法</strong>中进行指定外，还可以通过 <strong><code>getter()/setter()</code></strong> 方法进行查看和修改</p>
 </li>
 </ul>
-<h4 id="6-除了构造方法里的几个静态参数，线程池-ThreadPoolExecutor-还可以查看关于线程和任务数的动态数字有哪些"><a href="#6-除了构造方法里的几个静态参数，线程池-ThreadPoolExecutor-还可以查看关于线程和任务数的动态数字有哪些" class="headerlink" title="6. 除了构造方法里的几个静态参数，线程池 ThreadPoolExecutor 还可以查看关于线程和任务数的动态数字有哪些"></a>6. 除了构造方法里的几个静态参数，线程池 ThreadPoolExecutor 还可以查看关于线程和任务数的动态数字有哪些</h4><ul>
-<li><code>public int getPoolSize()</code>：返回<strong>当前</strong>线程个数。</li>
-<li><code>public int getLargestPoolSize()</code>：返回线程池<strong>曾经</strong>达到过的最大线程个数。</li>
-<li><code>public long getCompletedTaskCount()</code>：返回线程池<strong>自创建以来</strong>所有已完成的任务数。</li>
-<li><code>public long getTaskCount()</code>：返回<strong>所有</strong>任务数，包括所有已完成的加上所有排队待执行的。</li>
+<h4 id="6-除了构造方法里的几个静态参数，线程池-ThreadPoolExecutor-还可以查看关于线程和任务数的动态数字有哪些"><a href="#6-除了构造方法里的几个静态参数，线程池-ThreadPoolExecutor-还可以查看关于线程和任务数的动态数字有哪些" class="headerlink" title="6. 除了构造方法里的几个静态参数，线程池 ThreadPoolExecutor 还可以查看关于线程和任务数的动态数字有哪些"></a>6. 除了构造方法里的几个静态参数，线程池 <code>ThreadPoolExecutor</code> 还可以查看关于线程和任务数的动态数字有哪些</h4><ul>
+<li><code>public int getPoolSize()</code>：返回<strong>当前</strong>线程个数</li>
+<li><code>public int getLargestPoolSize()</code>：返回线程池<strong>曾经</strong>达到过的最大线程个数</li>
+<li><code>public long getCompletedTaskCount()</code>：返回线程池<strong>自创建以来</strong>所有已完成的任务数</li>
+<li><code>public long getTaskCount()</code>：返回<strong>所有</strong>任务数，包括所有已完成的加上所有排队待执行的</li>
 </ul>
-<h4 id="7-可以用作线程池-ThreadPoolExecutor-的队列有哪些"><a href="#7-可以用作线程池-ThreadPoolExecutor-的队列有哪些" class="headerlink" title="7. 可以用作线程池 ThreadPoolExecutor 的队列有哪些"></a>7. 可以用作线程池 ThreadPoolExecutor 的队列有哪些</h4><ul>
-<li><p>从构造方法中可以看出，线程池 <code>TheadPoolExecutor</code> 要求的队列类型是<strong>阻塞队列</strong> <code>BlockingQueue</code>，可以有：</p>
+<h4 id="7-可以用作线程池-ThreadPoolExecutor-的队列有哪些"><a href="#7-可以用作线程池-ThreadPoolExecutor-的队列有哪些" class="headerlink" title="7. 可以用作线程池 ThreadPoolExecutor 的队列有哪些"></a>7. 可以用作线程池 <code>ThreadPoolExecutor</code> 的队列有哪些</h4><ul>
+<li><p>从构造方法中可以看出，线程池 <code>TheadPoolExecutor</code> 要求的队列类型是<strong>阻塞队列</strong> <code>BlockingQueue</code>，可以有</p>
 <ul>
-<li><code>LinkedBlockingQueue</code>：基于<strong>链表</strong>的阻塞队列，可以指定<strong>最大长度</strong>，但<strong>默认是无界的</strong>。</li>
-<li><code>ArrayBlockingQueue</code>：基于<strong>数组</strong>的<strong>有界</strong>阻塞队列。</li>
-<li><code>PriorityBlockingQueue</code>：基于<strong>堆</strong>的<strong>无界</strong>阻塞优先级队列。</li>
-<li><code>SynchronousQueue</code>：<strong>没有实际存储空间</strong>的同步阻塞队列。</li>
+<li><code>LinkedBlockingQueue</code>：基于<strong>链表</strong>的阻塞队列，可以指定<strong>最大长度</strong>，但<strong>默认是无界的</strong></li>
+<li><code>ArrayBlockingQueue</code>：基于<strong>数组</strong>的<strong>有界</strong>阻塞队列</li>
+<li><code>PriorityBlockingQueue</code>：基于<strong>堆</strong>的<strong>无界</strong>阻塞优先级队列</li>
+<li><code>SynchronousQueue</code>：<strong>没有实际存储空间</strong>的同步阻塞队列</li>
 </ul>
 </li>
-<li><p>如果用的是<strong>无界队列</strong>，需要强调的是，<strong>线程个数最多只能达到 <code>corePoolSize</code></strong>。到达 <code>corePoolSize</code> 后，新的任务<strong>总会排队</strong>，参数 <code>maximumPoolSize</code> 也就没有意义了。</p>
+<li><p>如果用的是<strong>无界队列</strong>，需要强调的是，<strong>线程个数最多只能达到 <code>corePoolSize</code></strong>。到达 <code>corePoolSize</code> 后，新的任务<strong>总会排队</strong>，参数 <code>maximumPoolSize</code> 也就没有意义了</p>
 </li>
-<li><p>对于 <code>SynchronousQueue</code>，它没有实际存储元素的空间，当尝试排队时，只有正好有空闲线程在等待接受任务时，才会入队成功。否则，总是会创建新线程来接受任务，直到达到 <code>maximumPoolSize</code>。</p>
+<li><p>对于 <code>SynchronousQueue</code>，它没有实际存储元素的空间，当尝试排队时，只有正好有空闲线程在等待接受任务时，才会入队成功。否则，总是会创建新线程来接受任务，直到达到 <code>maximumPoolSize</code></p>
 </li>
 </ul>
-<h4 id="8-如果队列有界，且-maximumPoolSize-有限，则当队列排满任务，线程个数也达到了-maximumPoolSize，这时，新任务来了，如何处理呢"><a href="#8-如果队列有界，且-maximumPoolSize-有限，则当队列排满任务，线程个数也达到了-maximumPoolSize，这时，新任务来了，如何处理呢" class="headerlink" title="8. 如果队列有界，且 maximumPoolSize 有限，则当队列排满任务，线程个数也达到了 maximumPoolSize，这时，新任务来了，如何处理呢"></a>8. 如果队列有界，且 maximumPoolSize 有限，则当队列排满任务，线程个数也达到了 maximumPoolSize，这时，新任务来了，如何处理呢</h4><p>　此时，会触发线程池的<strong>任务拒绝策略</strong>。</p>
-<h4 id="9-线程池-ThreadPoolExecutor-的任务拒绝策略是怎样的"><a href="#9-线程池-ThreadPoolExecutor-的任务拒绝策略是怎样的" class="headerlink" title="9. 线程池 ThreadPoolExecutor 的任务拒绝策略是怎样的"></a>9. 线程池 ThreadPoolExecutor 的任务拒绝策略是怎样的</h4><ul>
-<li><p>默认情况下，提交任务的方法，如 <code>execute()/submit()/invokeAll()</code> 等会抛出 <strong><code>RejectedExecutionException</code></strong> 异常。</p>
+<h4 id="8-如果队列有界，且-maximumPoolSize-有限，则当队列排满任务，线程个数也达到了-maximumPoolSize，这时，新任务来了，如何处理呢"><a href="#8-如果队列有界，且-maximumPoolSize-有限，则当队列排满任务，线程个数也达到了-maximumPoolSize，这时，新任务来了，如何处理呢" class="headerlink" title="8. 如果队列有界，且 maximumPoolSize 有限，则当队列排满任务，线程个数也达到了 maximumPoolSize，这时，新任务来了，如何处理呢"></a>8. 如果队列有界，且 <code>maximumPoolSize</code> 有限，则当队列排满任务，线程个数也达到了 <code>maximumPoolSize</code>，这时，新任务来了，如何处理呢</h4><ul>
+<li>此时，会触发线程池的<strong>任务拒绝策略</strong></li>
+</ul>
+<h4 id="9-线程池-ThreadPoolExecutor-的任务拒绝策略是怎样的"><a href="#9-线程池-ThreadPoolExecutor-的任务拒绝策略是怎样的" class="headerlink" title="9. 线程池 ThreadPoolExecutor 的任务拒绝策略是怎样的"></a>9. 线程池 <code>ThreadPoolExecutor</code> 的任务拒绝策略是怎样的</h4><ul>
+<li><p>默认情况下，提交任务的方法，如 <code>execute()/submit()/invokeAll()</code> 等会抛出 <strong><code>RejectedExecutionException</code></strong> 异常</p>
 </li>
-<li><p>不过，<strong>拒绝策略是可以自定义的</strong>，<code>ThreadPoolExecutor</code> 实现了 4 种方式：</p>
+<li><p>不过，<strong>拒绝策略是可以自定义的</strong>，<code>ThreadPoolExecutor</code> 实现了 4 种方式</p>
 <ul>
-<li><code>ThreadPoolExecutor.AbortPolicy</code>：<strong>默认</strong>的方式，抛出异常。</li>
-<li><code>ThreadPoolExecutor.DiscardPolicy</code>：<strong>静默</strong>处理，忽略新任务，不抛出异常，也不执行。</li>
-<li><code>ThreadPoolExecutor.DiscardOldestPolicy</code>：将等待时间<strong>最长</strong>的任务扔掉，然后自己排队。</li>
-<li><code>ThreadPoolExecutor.CallerRunsPolicy</code>：在<strong>任务提交者线程</strong>中执行任务，而不是交给线程池中的线程执行。</li>
+<li><code>ThreadPoolExecutor.AbortPolicy</code>：<strong>默认</strong>的方式，抛出异常</li>
+<li><code>ThreadPoolExecutor.DiscardPolicy</code>：<strong>静默</strong>处理，忽略新任务，不抛出异常，也不执行</li>
+<li><code>ThreadPoolExecutor.DiscardOldestPolicy</code>：将等待时间<strong>最长</strong>的任务扔掉，然后自己排队</li>
+<li><code>ThreadPoolExecutor.CallerRunsPolicy</code>：在<strong>任务提交者线程</strong>中执行任务，而不是交给线程池中的线程执行</li>
 </ul>
 </li>
-<li><p>上面 4 种都是 <code>ThreadPoolExecutor</code> 的 <code>public</code> <strong>静态内部类</strong>，都实现了 <code>RejectedExecutionHandler</code> 接口。</p>
+<li><p>上面 4 种都是 <code>ThreadPoolExecutor</code> 的 <code>public</code> <strong>静态内部类</strong>，都实现了 <code>RejectedExecutionHandler</code> 接口</p>
 <ul>
-<li>这个接口的<strong>定义</strong>为：<code>public interface RejectedExecutionHandler { void rejectedExecution(Runnable r, ThreadPoolExecutor executor); }</code>。</li>
-<li>当线程池不能接受任务时，调用其拒绝策略的 <strong><code>rejectedExecution()</code></strong> 方法。拒绝策略可以在构造方法中进行指定，也可以通过对应的 <code>set()</code> 方法进行指定。</li>
+<li>这个接口的<strong>定义</strong>为：<code>public interface RejectedExecutionHandler { void rejectedExecution(Runnable r, ThreadPoolExecutor executor); }</code></li>
+<li>当线程池不能接受任务时，调用其拒绝策略的 <strong><code>rejectedExecution()</code></strong> 方法。拒绝策略可以在构造方法中进行指定，也可以通过对应的 <code>set()</code> 方法进行指定</li>
 </ul>
 </li>
-<li><p>查看<strong>源码</strong>，默认的 <code>RejectedExecutionHandler</code> 是一个 <code>AbortPolicy</code> 实例，而 <code>AbortPolicy</code> 的 <code>rejectedExecution()</code> 实现就是抛出异常。</p>
+<li><p>查看<strong>源码</strong>，默认的 <code>RejectedExecutionHandler</code> 是一个 <code>AbortPolicy</code> 实例，而 <code>AbortPolicy</code> 的 <code>rejectedExecution()</code> 实现就是抛出异常</p>
 </li>
-<li><p>需要强调的是，拒绝策略只有在<strong>队列有界</strong>，且 <strong><code>maximumPoolSize</code> 有限</strong>的情况下才会触发。</p>
+<li><p>需要强调的是，拒绝策略只有在<strong>队列有界</strong>，且 <strong><code>maximumPoolSize</code> 有限</strong>的情况下才会触发</p>
 <ul>
-<li>如果队列无界，服务不了的任务总是会排队，但这不一定是期望的结果，因为请求处理队列可能会消耗非常大的内存，甚至引发内存不够的异常。</li>
-<li>如果队列有界但 <code>maximumPoolSize</code> 无限，可能会创建过多的线程，占满 CPU 和内存，使得任何任务都难以完成。</li>
-<li>所以，在任务量非常大的场景中，<strong>让拒绝策略有机会执行</strong>是保证系统<strong>稳定</strong>运行很重要的方面。</li>
+<li>如果队列无界，服务不了的任务总是会排队，但这不一定是期望的结果，因为请求处理队列可能会消耗非常大的内存，甚至引发内存不够的异常</li>
+<li>如果队列有界但 <code>maximumPoolSize</code> 无限，可能会创建过多的线程，占满 CPU 和内存，使得任何任务都难以完成</li>
+<li>所以，在任务量非常大的场景中，<strong>让拒绝策略有机会执行</strong>是保证系统<strong>稳定</strong>运行很重要的方面</li>
 </ul>
 </li>
 </ul>
-<h4 id="10-怎样理解线程工厂-ThreadFactory"><a href="#10-怎样理解线程工厂-ThreadFactory" class="headerlink" title="10. 怎样理解线程工厂 ThreadFactory"></a>10. 怎样理解线程工厂 ThreadFactory</h4><ul>
-<li>线程工厂 <code>ThreadFactory</code> 是一个<strong>接口</strong>，定义为：<code>public interface ThreadFactory { Thread newThread(Runnable r); }</code>。</li>
-<li>这个接口根据 <code>Runnable</code> 创建一个 <code>Thread</code>，<code>ThreadPoolExecutor</code> 的<strong>默认实现</strong>是 <code>Executors</code> 类中的<strong>静态内部类</strong> <code>DefaultThreadFactory</code>。<ul>
-<li>主要就是<strong>创建</strong>一个线程，给线程设置一个<strong>名称</strong>，设置 <strong>daemon</strong> 属性为 <code>false</code>，设置<strong>线程优先级</strong>为标准默认优先级 5。</li>
-<li>线程名称的格式为：<strong>pool-&lt;线程池编号&gt;-thread-&lt;线程编号&gt;</strong>。</li>
-<li>如果需要自定义一些线程的属性，比如名称，可以实现<strong>自定义</strong>的 <code>ThreadFactory</code>。</li>
+<h4 id="10-怎样理解线程工厂-ThreadFactory"><a href="#10-怎样理解线程工厂-ThreadFactory" class="headerlink" title="10. 怎样理解线程工厂 ThreadFactory"></a>10. 怎样理解线程工厂 <code>ThreadFactory</code></h4><ul>
+<li>线程工厂 <code>ThreadFactory</code> 是一个<strong>接口</strong>，定义为：<code>public interface ThreadFactory { Thread newThread(Runnable r); }</code></li>
+<li>这个接口根据 <code>Runnable</code> 创建一个 <code>Thread</code>，<code>ThreadPoolExecutor</code> 的<strong>默认实现</strong>是 <code>Executors</code> 类中的<strong>静态内部类</strong> <code>DefaultThreadFactory</code><ul>
+<li>主要就是<strong>创建</strong>一个线程，给线程设置一个<strong>名称</strong>，设置 <strong>daemon</strong> 属性为 <code>false</code>，设置<strong>线程优先级</strong>为标准默认优先级 5</li>
+<li>线程名称的格式为：<strong>pool-&lt;线程池编号&gt;-thread-&lt;线程编号&gt;</strong></li>
+<li>如果需要自定义一些线程的属性，比如名称，可以实现<strong>自定义</strong>的 <code>ThreadFactory</code></li>
 </ul>
 </li>
 </ul>
 <h4 id="11-核心线程是什么意思，核心线程有哪些配置"><a href="#11-核心线程是什么意思，核心线程有哪些配置" class="headerlink" title="11. 核心线程是什么意思，核心线程有哪些配置"></a>11. 核心线程是什么意思，核心线程有哪些配置</h4><ul>
-<li><p>当线程个数<strong>小于等于</strong> <code>corePoolSize</code> 时，这些线程被称为<strong>核心线程</strong>。</p>
+<li><p>当线程个数<strong>小于等于</strong> <code>corePoolSize</code> 时，这些线程被称为<strong>核心线程</strong></p>
 </li>
-<li><p>默认情况下：</p>
+<li><p>默认情况下</p>
 <ul>
-<li>核心线程<strong>不会预先创建，只有当有任务时才会创建</strong>。</li>
-<li>核心线程<strong>不会因为空闲而被终止，<code>keepAliveTime</code> 参数不适用于它</strong>。</li>
+<li>核心线程<strong>不会预先创建，只有当有任务时才会创建</strong></li>
+<li>核心线程<strong>不会因为空闲而被终止，<code>keepAliveTime</code> 参数不适用于它</strong></li>
 </ul>
 </li>
-<li><p>不过，<code>ThreadPoolExecutor</code> 有如下方法，可以<strong>改变这个默认行为</strong>：</p>
+<li><p>不过，<code>ThreadPoolExecutor</code> 有如下方法，可以<strong>改变这个默认行为</strong></p>
 <ul>
-<li><code>public int prestartAllCoreThreads()</code>：<strong>预先</strong>创建所有的核心线程。</li>
-<li><code>public boolean prestartCoreThread()</code>：<strong>创建</strong>一个核心线程，如果所有核心线程都已创建，则返回 <code>false</code>。</li>
-<li><code>public void allowCoreThreadTimeout(boolean value)</code>：如果参数为 <code>true</code>，则参数 <code>keepAliveTime</code> <strong>也适用于</strong>核心线程。</li>
+<li><code>public int prestartAllCoreThreads()</code>：<strong>预先</strong>创建所有的核心线程</li>
+<li><code>public boolean prestartCoreThread()</code>：<strong>创建</strong>一个核心线程，如果所有核心线程都已创建，则返回 <code>false</code></li>
+<li><code>public void allowCoreThreadTimeout(boolean value)</code>：如果参数为 <code>true</code>，则参数 <code>keepAliveTime</code> <strong>也适用于</strong>核心线程</li>
 </ul>
 </li>
 </ul>
-<h4 id="12-类-Executors-的含义是"><a href="#12-类-Executors-的含义是" class="headerlink" title="12. 类 Executors 的含义是"></a>12. 类 Executors 的含义是</h4><ul>
-<li><strong><code>Executors</code></strong> 是一个<strong>工厂类</strong>，提供了一些<strong>静态工厂方法</strong>。</li>
-<li>可以方便地<strong>创建一些预配置的线程池</strong>。</li>
+<h4 id="12-类-Executors-的含义是"><a href="#12-类-Executors-的含义是" class="headerlink" title="12. 类 Executors 的含义是"></a>12. 类 <code>Executors</code> 的含义是</h4><ul>
+<li><strong><code>Executors</code></strong> 是一个<strong>工厂类</strong>，提供了一些<strong>静态工厂方法</strong></li>
+<li>可以方便地<strong>创建一些预配置的线程池</strong></li>
 </ul>
-<h4 id="13-工厂类-Executors-的主要方法有哪些，含义分别是"><a href="#13-工厂类-Executors-的主要方法有哪些，含义分别是" class="headerlink" title="13. 工厂类 Executors 的主要方法有哪些，含义分别是"></a>13. 工厂类 Executors 的主要方法有哪些，含义分别是</h4><ul>
-<li><p><code>public static ExecutorService newSingleThreadPool() { return new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue&lt;Runnable&gt;()); }</code> ：</p>
+<h4 id="13-工厂类-Executors-的主要方法有哪些，含义分别是"><a href="#13-工厂类-Executors-的主要方法有哪些，含义分别是" class="headerlink" title="13. 工厂类 Executors 的主要方法有哪些，含义分别是"></a>13. 工厂类 <code>Executors</code> 的主要方法有哪些，含义分别是</h4><ul>
+<li><p><code>public static ExecutorService newSingleThreadPool() { return new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue&lt;Runnable&gt;()); }</code> </p>
 <ul>
-<li>只使用<strong>一个</strong>线程，使用<strong>无界</strong>队列 <code>LinkedBlockingQueue</code>。</li>
-<li>线程创建后<strong>不会超时终止</strong>，该线程<strong>顺序执行所有任务</strong>。</li>
-<li>该线程池适用于<strong>需要确保所有任务被顺序执行</strong>的场合。</li>
+<li>只使用<strong>一个</strong>线程，使用<strong>无界</strong>队列 <code>LinkedBlockingQueue</code></li>
+<li>线程创建后<strong>不会超时终止</strong>，该线程<strong>顺序执行所有任务</strong></li>
+<li>该线程池适用于<strong>需要确保所有任务被顺序执行</strong>的场合</li>
 </ul>
 </li>
-<li><p><code>public static ExecutorService newFixedThreadPool(int nThreads) { return new ThreadPoolExecutor(nThreadsn nThreads, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue&lt;Runnable&gt;()); }</code>：</p>
+<li><p><code>public static ExecutorService newFixedThreadPool(int nThreads) { return new ThreadPoolExecutor(nThreadsn nThreads, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue&lt;Runnable&gt;()); }</code></p>
 <ul>
-<li>使用<strong>固定数目的 n 个线程</strong>，使用<strong>无界</strong>队列 <code>LinkedBlockingQueue</code>。</li>
-<li>线程创建后<strong>不会超时终止</strong>。</li>
-<li>和 <code>newSingleThreadExecutor</code> 一样，由于是无界队列，如果排队任务<strong>过多</strong>，可能会消耗过多的内存。</li>
+<li>使用<strong>固定数目的 n 个线程</strong>，使用<strong>无界</strong>队列 <code>LinkedBlockingQueue</code></li>
+<li>线程创建后<strong>不会超时终止</strong></li>
+<li>和 <code>newSingleThreadExecutor</code> 一样，由于是无界队列，如果排队任务<strong>过多</strong>，可能会消耗过多的内存</li>
 </ul>
 </li>
-<li><p><code>public static ExecutorService newCachedThreadPool() { return new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS, new SynchronousQueue&lt;Runnable&gt;()); }</code>：</p>
+<li><p><code>public static ExecutorService newCachedThreadPool() { return new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS, new SynchronousQueue&lt;Runnable&gt;()); }</code></p>
 <ul>
-<li>当<strong>新任务</strong>到来时，如果正好有<strong>空闲线程</strong>在等待任务，则<strong>其中一个空闲线程</strong>接受该任务。</li>
-<li><strong>否则就总是创建一个新线程</strong>，创建的<strong>总线程个数不受限制</strong>。</li>
-<li>对任一空闲线程，如果 <strong>60</strong> 秒内没有新任务，就终止。</li>
+<li>当<strong>新任务</strong>到来时，如果正好有<strong>空闲线程</strong>在等待任务，则<strong>其中一个空闲线程</strong>接受该任务</li>
+<li><strong>否则就总是创建一个新线程</strong>，创建的<strong>总线程个数不受限制</strong></li>
+<li>对任一空闲线程，如果 <strong>60</strong> 秒内没有新任务，就终止</li>
 </ul>
 </li>
 </ul>
-<h4 id="14-在实际开发中，应该使用-newFixedThreadPool-还是-newCachedThreadPool-呢"><a href="#14-在实际开发中，应该使用-newFixedThreadPool-还是-newCachedThreadPool-呢" class="headerlink" title="14. 在实际开发中，应该使用 newFixedThreadPool() 还是 newCachedThreadPool() 呢"></a>14. 在实际开发中，应该使用 newFixedThreadPool() 还是 newCachedThreadPool() 呢</h4><ul>
-<li><p>线程的<strong>创建</strong>以及线程上下文的<strong>切换</strong>、线程的<strong>调度</strong>等是有成本的。</p>
+<h4 id="14-在实际开发中，应该使用-newFixedThreadPool-还是-newCachedThreadPool-呢"><a href="#14-在实际开发中，应该使用-newFixedThreadPool-还是-newCachedThreadPool-呢" class="headerlink" title="14. 在实际开发中，应该使用 newFixedThreadPool() 还是 newCachedThreadPool() 呢"></a>14. 在实际开发中，应该使用 <code>newFixedThreadPool()</code> 还是 <code>newCachedThreadPool()</code> 呢</h4><ul>
+<li><p>线程的<strong>创建</strong>以及线程上下文的<strong>切换</strong>、线程的<strong>调度</strong>等是有成本的</p>
 </li>
-<li><p>在系统负载<strong>很高</strong>的情况下：</p>
+<li><p>在系统负载<strong>很高</strong>的情况下</p>
 <ul>
-<li><code>newFixedThreadPool()</code> 可以通过队列对新任务<strong>排队</strong>，保证有足够的资源处理实际的任务；</li>
-<li><code>newCachedThreadPool()</code> 会为每个任务<strong>创建</strong>一个线程，导致创建过多的线程竞争 CPU 和内存资源，使得任何实际任务都难以完成。</li>
-<li>这时，<strong><code>newFixedThreadPool()</code> 更为适用</strong>。</li>
+<li><code>newFixedThreadPool()</code> 可以通过队列对新任务<strong>排队</strong>，保证有足够的资源处理实际的任务</li>
+<li><code>newCachedThreadPool()</code> 会为每个任务<strong>创建</strong>一个线程，导致创建过多的线程竞争 CPU 和内存资源，使得任何实际任务都难以完成</li>
+<li>这时，<strong><code>newFixedThreadPool()</code> 更为适用</strong></li>
 </ul>
 </li>
-<li><p>如果系统负载<strong>不太高</strong>：</p>
+<li><p>如果系统负载<strong>不太高</strong></p>
 <ul>
-<li>单个任务的执行时间也比较短，<code>newCachedThreadPool()</code> 的效率可能更高，因为任务可以不经排队，直接交给某一个空闲线程。</li>
+<li>单个任务的执行时间也比较短，<code>newCachedThreadPool()</code> 的效率可能更高，因为任务可以不经排队，直接交给某一个空闲线程</li>
 </ul>
 </li>
-<li><p>在系统负载可能<strong>极高的</strong>情况下，<strong>两者都不是好的选择</strong>。</p>
+<li><p>在系统负载可能<strong>极高的</strong>情况下，<strong>两者都不是好的选择</strong></p>
 <ul>
-<li><code>newFixedThreadPool()</code> 的问题是*<em>队列过长 *</em>。</li>
-<li><code>newCachedThreadPool()</code> 的问题是<strong>线程过多</strong>。</li>
-<li>这时，应根据具体情况<strong>自定义</strong> <code>ThreadPoolExecutor</code>，传递合适的参数。</li>
+<li><code>newFixedThreadPool()</code> 的问题是*<em>队列过长 *</em></li>
+<li><code>newCachedThreadPool()</code> 的问题是<strong>线程过多</strong></li>
+<li>这时，应根据具体情况<strong>自定义</strong> <code>ThreadPoolExecutor</code>，传递合适的参数</li>
 </ul>
 </li>
 </ul>
 <h4 id="15-线程池有没有可能出现死锁，场景是"><a href="#15-线程池有没有可能出现死锁，场景是" class="headerlink" title="15. 线程池有没有可能出现死锁，场景是"></a>15. 线程池有没有可能出现死锁，场景是</h4><ul>
-<li><p>当提交给线程池的任务，<strong>任务之间有依赖时，这种情况下可能出现死锁</strong>。</p>
+<li><p>当提交给线程池的任务，<strong>任务之间有依赖时，这种情况下可能出现死锁</strong></p>
 <ul>
-<li>举个例子：比如任务 A，在它的执行过程中，它给同样的任务执行服务提交了一个任务 B，但需要等待任务 B 结束。</li>
-<li>如果任务 A 是提交给了一个<strong>单线程线程池，一定会出现死锁</strong>，A 在等待 B 的结果，而 B 在队列中等待被调度。</li>
+<li>举个例子：比如任务 A，在它的执行过程中，它给同样的任务执行服务提交了一个任务 B，但需要等待任务 B 结束</li>
+<li>如果任务 A 是提交给了一个<strong>单线程线程池，一定会出现死锁</strong>，A 在等待 B 的结果，而 B 在队列中等待被调度</li>
 </ul>
 </li>
-<li><p>如果是提交给了一个<strong>限定线程个数</strong>的线程池，也<strong>有可能因线程数限制</strong>出现死锁。</p>
+<li><p>如果是提交给了一个<strong>限定线程个数</strong>的线程池，也<strong>有可能因线程数限制</strong>出现死锁</p>
 </li>
 </ul>
 <h4 id="16-怎样解决线程池可能出现的死锁"><a href="#16-怎样解决线程池可能出现的死锁" class="headerlink" title="16. 怎样解决线程池可能出现的死锁"></a>16. 怎样解决线程池可能出现的死锁</h4><ul>
-<li>可以使用 <strong><code>newCachedThreadPool</code></strong> 创建线程池，让<strong>线程数不受限制</strong>。</li>
-<li>使用 <strong><code>SynchronousQueue</code></strong>:<ul>
-<li><code>newCachedThreadPool</code> <strong>本质上</strong>就是使用了 <code>SynchronousQueue</code>。</li>
-<li>对于普通队列，入队只是把任务放到了队列中，而对于 <code>SynchronousQueue</code>，<strong>入队成功</strong>就意味着已有线程接受处理。</li>
-<li>如果<strong>入队失败</strong>，可以创建更多线程直到 <code>maximumPoolSize</code>，如果达到了 <code>maximumPoolSize</code>，会触发<strong>任务拒绝策略</strong>机制，不管怎么样，都不会死锁。</li>
+<li>可以使用 <strong><code>newCachedThreadPool</code></strong> 创建线程池，让<strong>线程数不受限制</strong></li>
+<li>使用 <strong><code>SynchronousQueue</code></strong><ul>
+<li><code>newCachedThreadPool</code> <strong>本质上</strong>就是使用了 <code>SynchronousQueue</code></li>
+<li>对于普通队列，入队只是把任务放到了队列中，而对于 <code>SynchronousQueue</code>，<strong>入队成功</strong>就意味着已有线程接受处理</li>
+<li>如果<strong>入队失败</strong>，可以创建更多线程直到 <code>maximumPoolSize</code>，如果达到了 <code>maximumPoolSize</code>，会触发<strong>任务拒绝策略</strong>机制，不管怎么样，都不会死锁</li>
 </ul>
 </li>
 </ul>
