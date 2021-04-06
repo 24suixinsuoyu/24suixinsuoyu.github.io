@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. 怎样理解 ThreadLocal">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-05-27T06:34:40.000Z">
-<meta property="article:modified_time" content="2020-12-22T07:09:26.619Z">
+<meta property="article:modified_time" content="2021-04-06T08:36:45.003Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="同步和协作工具类">
 <meta property="article:tag" content="理解 ThreadLocal">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-22 15:09:26" itemprop="dateModified" datetime="2020-12-22T15:09:26+08:00">2020-12-22</time>
+                <time title="修改时间：2021-04-06 16:36:45" itemprop="dateModified" datetime="2021-04-06T16:36:45+08:00">2021-04-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,7 +233,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.4k</span>
+              <span>3.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -252,11 +252,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-怎样理解-ThreadLocal"><a href="#1-怎样理解-ThreadLocal" class="headerlink" title="1. 怎样理解 ThreadLocal"></a>1. 怎样理解 ThreadLocal</h4><a id="more"></a>
+        <h4 id="1-怎样理解-ThreadLocal"><a href="#1-怎样理解-ThreadLocal" class="headerlink" title="1. 怎样理解 ThreadLocal"></a>1. 怎样理解 <code>ThreadLocal</code></h4><a id="more"></a>
 
 <ul>
-<li>Java 中有一个特殊的概念：<strong>线程本地变量</strong>，这个概念在 Java 中的实现类就是 <strong><code>ThreadLocal</code></strong>，是一个<strong>泛型类</strong>。</li>
-<li>线程本地变量 <code>ThreadLocal</code> 的含义是：<strong>每个线程都有同一个变量的独有拷贝</strong>。</li>
+<li>Java 中有一个特殊的概念：<strong>线程本地变量</strong>，这个概念在 Java 中的实现类就是 <strong><code>ThreadLocal</code></strong>，是一个<strong>泛型类</strong></li>
+<li>线程本地变量 <code>ThreadLocal</code> 的含义是：<strong>每个线程都有同一个变量的独有拷贝</strong></li>
 </ul>
 <h4 id="2-写出下面程序的运行结果并分析"><a href="#2-写出下面程序的运行结果并分析" class="headerlink" title="2. 写出下面程序的运行结果并分析"></a>2. 写出下面程序的运行结果并分析</h4><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">public</span> <span class="keyword">class</span> ThreadLocalBasic &#123;</span><br><span class="line">    static ThreadLocal&lt;<span class="type">Integer</span>&gt; <span class="keyword">local</span> = <span class="built_in">new</span> ThreadLocal&lt;&gt; ();</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">public</span> static <span class="type">void</span> main(String[] args) throws InterruptedException &#123;</span><br><span class="line">        Thread child = <span class="built_in">new</span> Thread() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            <span class="built_in">public</span> <span class="type">void</span> run() &#123;</span><br><span class="line">                <span class="keyword">System</span>.<span class="keyword">out</span>.println("child thread initial: " + <span class="keyword">local</span>.<span class="keyword">get</span>());</span><br><span class="line">                <span class="keyword">local</span>.<span class="keyword">set</span>(<span class="number">200</span>);</span><br><span class="line">                <span class="keyword">System</span>.<span class="keyword">out</span>.println("child thread final: " + <span class="keyword">local</span>.<span class="keyword">get</span>());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">local</span>.<span class="keyword">set</span>(<span class="number">100</span>);</span><br><span class="line">        child.<span class="keyword">start</span>();</span><br><span class="line">        child.<span class="keyword">join</span>();</span><br><span class="line">        <span class="keyword">System</span>.<span class="keyword">out</span>.println("main thread final: " + <span class="keyword">local</span>.<span class="keyword">get</span>());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -266,55 +266,55 @@
 </li>
 <li><p>分析：</p>
 <ul>
-<li>主线程 <code>main</code> 对线程本地变量 <code>local</code> 的设置对子线程 <code>child</code> 不起作用。</li>
-<li>同样的，子线程 <code>child</code> 对线程本地变量 <code>local</code> 的改变也不会影响主线程 <code>main</code>。</li>
-<li><strong>二者访问的虽然是同一个变量 <code>local</code>，但每个线程都有自己的独立的值</strong>，这就是线程本地变量的含义。</li>
+<li>主线程 <code>main</code> 对线程本地变量 <code>local</code> 的设置对子线程 <code>child</code> 不起作用</li>
+<li>同样的，子线程 <code>child</code> 对线程本地变量 <code>local</code> 的改变也不会影响主线程 <code>main</code></li>
+<li><strong>二者访问的虽然是同一个变量 <code>local</code>，但每个线程都有自己的独立的值</strong>，这就是线程本地变量的含义</li>
 </ul>
 </li>
 </ul>
-<h4 id="3-ThreadLocal-的主要方法有哪些"><a href="#3-ThreadLocal-的主要方法有哪些" class="headerlink" title="3. ThreadLocal 的主要方法有哪些"></a>3. ThreadLocal 的主要方法有哪些</h4><ul>
-<li><code>ThreadLocal</code> 是一个<strong>泛型类</strong>，接受一个<strong>类型参数 <code>T</code></strong>，它只有一个空的构造方法。</li>
-<li><code>public T get()</code>：<strong>获取值</strong>，如果没有，返回 <code>null</code>。</li>
-<li><code>public void set(T value)</code>：<strong>设置值</strong>。</li>
-<li><code>protected T initialValue()</code>：<strong>提供初始值</strong>，是一个受保护方法，可以通过匿名内部类的方式提供。当调用 <code>get()</code> 方法时，如果之前没有设置过，会调用该方法获取初始值，默认实现是返回 <code>null</code>。</li>
-<li><code>public void remove()</code>：<strong>删掉当前线程对应的值</strong>，如果删掉后，再次调用 <code>get()</code>，会再调用 <code>initialValue()</code> 获取初始值。</li>
+<h4 id="3-ThreadLocal-的主要方法有哪些"><a href="#3-ThreadLocal-的主要方法有哪些" class="headerlink" title="3. ThreadLocal 的主要方法有哪些"></a>3. <code>ThreadLocal</code> 的主要方法有哪些</h4><ul>
+<li><code>ThreadLocal</code> 是一个<strong>泛型类</strong>，接受一个<strong>类型参数 <code>T</code></strong>，它只有一个空的构造方法</li>
+<li><code>public T get()</code>：<strong>获取值</strong>，如果没有，返回 <code>null</code></li>
+<li><code>public void set(T value)</code>：<strong>设置值</strong></li>
+<li><code>protected T initialValue()</code>：<strong>提供初始值</strong>，是一个受保护方法，可以通过匿名内部类的方式提供。当调用 <code>get()</code> 方法时，如果之前没有设置过，会调用该方法获取初始值，默认实现是返回 <code>null</code></li>
+<li><code>public void remove()</code>：<strong>删掉当前线程对应的值</strong>，如果删掉后，再次调用 <code>get()</code>，会再调用 <code>initialValue()</code> 获取初始值</li>
 </ul>
-<h4 id="4-线程本地变量-ThreadLocal-的使用场景"><a href="#4-线程本地变量-ThreadLocal-的使用场景" class="headerlink" title="4. 线程本地变量 ThreadLocal 的使用场景"></a>4. 线程本地变量 ThreadLocal 的使用场景</h4><ul>
-<li><strong>日期</strong>处理。</li>
-<li><strong>随机数</strong>。</li>
-<li><strong>上下文</strong>信息。</li>
+<h4 id="4-线程本地变量-ThreadLocal-的使用场景"><a href="#4-线程本地变量-ThreadLocal-的使用场景" class="headerlink" title="4. 线程本地变量 ThreadLocal 的使用场景"></a>4. 线程本地变量 <code>ThreadLocal</code> 的使用场景</h4><ul>
+<li><strong>日期</strong>处理</li>
+<li><strong>随机数</strong></li>
+<li><strong>上下文</strong>信息</li>
 </ul>
-<h4 id="5-Java-中的日期和时间操作类-DateFormat-SimpleDateFormat-不是线程安全的，那实现线程安全的方法有哪些"><a href="#5-Java-中的日期和时间操作类-DateFormat-SimpleDateFormat-不是线程安全的，那实现线程安全的方法有哪些" class="headerlink" title="5. Java 中的日期和时间操作类 DateFormat/SimpleDateFormat 不是线程安全的，那实现线程安全的方法有哪些"></a>5. Java 中的日期和时间操作类 DateFormat/SimpleDateFormat 不是线程安全的，那实现线程安全的方法有哪些</h4><ul>
-<li>使用<strong>锁</strong>。</li>
-<li>每次都创建一个<strong>新的对象</strong>。</li>
-<li>更好的方式就是使用<strong>线程本地变量 <code>ThreadLocal</code></strong>。</li>
+<h4 id="5-Java-中的日期和时间操作类-DateFormat-SimpleDateFormat-不是线程安全的，那实现线程安全的方法有哪些"><a href="#5-Java-中的日期和时间操作类-DateFormat-SimpleDateFormat-不是线程安全的，那实现线程安全的方法有哪些" class="headerlink" title="5. Java 中的日期和时间操作类 DateFormat/SimpleDateFormat 不是线程安全的，那实现线程安全的方法有哪些"></a>5. Java 中的日期和时间操作类 <code>DateFormat/SimpleDateFormat</code> 不是线程安全的，那实现线程安全的方法有哪些</h4><ul>
+<li>使用<strong>锁</strong></li>
+<li>每次都创建一个<strong>新的对象</strong></li>
+<li>更好的方式就是使用<strong>线程本地变量 <code>ThreadLocal</code></strong></li>
 </ul>
-<h4 id="6-写一个-ThreadLocal-在日期处理的应用实现线程安全的-Demo"><a href="#6-写一个-ThreadLocal-在日期处理的应用实现线程安全的-Demo" class="headerlink" title="6. 写一个 ThreadLocal 在日期处理的应用实现线程安全的 Demo"></a>6. 写一个 ThreadLocal 在日期处理的应用实现线程安全的 Demo</h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadLocalDateFormat</span> &#123;</span></span><br><span class="line">    <span class="keyword">static</span> ThreadLocal&lt;DateFormat&gt; sdf = <span class="keyword">new</span> ThreadLocal&lt;DateFormat&gt; () &#123; <span class="comment">//ThreadLocal 对象一般都定义为 static，便于引用</span></span><br><span class="line">        @Override</span><br><span class="line">        <span class="keyword">protected</span> DateFormat initialValue() &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd HH:mm:ss"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">String</span> <span class="title">date2String</span><span class="params">(Date date)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sdf.<span class="built_in">get</span>().format(date);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Date <span class="title">string2Date</span><span class="params">(<span class="keyword">String</span> str)</span> throws ParseException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sdf.<span class="built_in">get</span>().parse(str);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="6-写一个-ThreadLocal-在日期处理的应用实现线程安全的-Demo"><a href="#6-写一个-ThreadLocal-在日期处理的应用实现线程安全的-Demo" class="headerlink" title="6. 写一个 ThreadLocal 在日期处理的应用实现线程安全的 Demo"></a>6. 写一个 <code>ThreadLocal</code> 在日期处理的应用实现线程安全的 Demo</h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadLocalDateFormat</span> &#123;</span></span><br><span class="line">    <span class="keyword">static</span> ThreadLocal&lt;DateFormat&gt; sdf = <span class="keyword">new</span> ThreadLocal&lt;DateFormat&gt; () &#123; <span class="comment">//ThreadLocal 对象一般都定义为 static，便于引用</span></span><br><span class="line">        @Override</span><br><span class="line">        <span class="keyword">protected</span> DateFormat initialValue() &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd HH:mm:ss"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">String</span> <span class="title">date2String</span><span class="params">(Date date)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sdf.<span class="built_in">get</span>().format(date);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Date <span class="title">string2Date</span><span class="params">(<span class="keyword">String</span> str)</span> throws ParseException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sdf.<span class="built_in">get</span>().parse(str);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="7-ThreadLocal-在随机数中是怎样应用的"><a href="#7-ThreadLocal-在随机数中是怎样应用的" class="headerlink" title="7. ThreadLocal 在随机数中是怎样应用的"></a>7. ThreadLocal 在随机数中是怎样应用的</h4><ul>
-<li>即使对象是线程安全的，使用 <code>ThreadLocal</code> 也可以<strong>减少竞争</strong>。</li>
-<li><code>Random</code> 是线程安全的，但如果并发访问竞争激烈的话，<strong>性能</strong>会下降。</li>
-<li>所以，Java 并发包提供了类 <strong><code>ThreadLocalRandom</code></strong>，它是 <code>Random</code> 的子类，利用了 <code>ThreadLocal</code>。</li>
+<h4 id="7-ThreadLocal-在随机数中是怎样应用的"><a href="#7-ThreadLocal-在随机数中是怎样应用的" class="headerlink" title="7. ThreadLocal 在随机数中是怎样应用的"></a>7. <code>ThreadLocal</code> 在随机数中是怎样应用的</h4><ul>
+<li>即使对象是线程安全的，使用 <code>ThreadLocal</code> 也可以<strong>减少竞争</strong></li>
+<li><code>Random</code> 是线程安全的，但如果并发访问竞争激烈的话，<strong>性能</strong>会下降</li>
+<li>所以，Java 并发包提供了类 <strong><code>ThreadLocalRandom</code></strong>，它是 <code>Random</code> 的子类，利用了 <code>ThreadLocal</code></li>
 </ul>
-<h4 id="8-ThreadLocal-在上下文信息中的应用"><a href="#8-ThreadLocal-在上下文信息中的应用" class="headerlink" title="8. ThreadLocal 在上下文信息中的应用"></a>8. ThreadLocal 在上下文信息中的应用</h4><ul>
-<li><strong><code>ThreadLocal</code> 的典型用途是提供上下文信息</strong>。</li>
-<li>举个例子：<ul>
-<li>在一个 Web 服务器中，一个线程执行用户的请求，在执行过程中，很多代码都会访问一些<strong>共同的信息</strong>，比如请求信息、用户身份信息、数据库连接、当前事务等。</li>
-<li>它们是线程执行过程中的<strong>全局信息</strong>，如果作为参数在不同代码间传递，代码会很烦琐。这时，使用 <code>ThreadLocal</code> 就很方便，所以被用于各种框架如 <code>Spring</code> 中。</li>
+<h4 id="8-ThreadLocal-在上下文信息中的应用"><a href="#8-ThreadLocal-在上下文信息中的应用" class="headerlink" title="8. ThreadLocal 在上下文信息中的应用"></a>8. <code>ThreadLocal</code> 在上下文信息中的应用</h4><ul>
+<li><strong><code>ThreadLocal</code> 的典型用途是提供上下文信息</strong></li>
+<li>举个例子<ul>
+<li>在一个 Web 服务器中，一个线程执行用户的请求，在执行过程中，很多代码都会访问一些<strong>共同的信息</strong>，比如请求信息、用户身份信息、数据库连接、当前事务等</li>
+<li>它们是线程执行过程中的<strong>全局信息</strong>，如果作为参数在不同代码间传递，代码会很烦琐。这时，使用 <code>ThreadLocal</code> 就很方便，所以被用于各种框架如 <code>Spring</code> 中</li>
 </ul>
 </li>
 </ul>
-<h4 id="9-写一个使用-ThreadLocal-保存上下文信息的-Demo"><a href="#9-写一个使用-ThreadLocal-保存上下文信息的-Demo" class="headerlink" title="9. 写一个使用 ThreadLocal 保存上下文信息的 Demo"></a>9. 写一个使用 ThreadLocal 保存上下文信息的 Demo</h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RequestContext</span> &#123;</span> </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> ThreadLocal&lt;<span class="keyword">String</span>&gt; localUserId = <span class="keyword">new</span> ThreadLocal&lt;&gt; ();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> ThreadLocal&lt;Request&gt; localRequest = <span class="keyword">new</span> ThreadLocal&lt;&gt; ();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Request</span> &#123;</span></span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">String</span> <span class="title">getCurrentUserId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> localUserId.<span class="built_in">get</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setCurrentUserId</span><span class="params">(<span class="keyword">String</span> userId)</span> </span>&#123;</span><br><span class="line">        localUserId.<span class="built_in">set</span>(userId);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Request <span class="title">getCurrentRequest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> localRequest.<span class="built_in">get</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setCurrentRequest</span><span class="params">(Request request)</span> </span>&#123;</span><br><span class="line">        localRequest.<span class="built_in">set</span>(request);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="9-写一个使用-ThreadLocal-保存上下文信息的-Demo"><a href="#9-写一个使用-ThreadLocal-保存上下文信息的-Demo" class="headerlink" title="9. 写一个使用 ThreadLocal 保存上下文信息的 Demo"></a>9. 写一个使用 <code>ThreadLocal</code> 保存上下文信息的 Demo</h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RequestContext</span> &#123;</span> </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> ThreadLocal&lt;<span class="keyword">String</span>&gt; localUserId = <span class="keyword">new</span> ThreadLocal&lt;&gt; ();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> ThreadLocal&lt;Request&gt; localRequest = <span class="keyword">new</span> ThreadLocal&lt;&gt; ();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Request</span> &#123;</span></span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">String</span> <span class="title">getCurrentUserId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> localUserId.<span class="built_in">get</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setCurrentUserId</span><span class="params">(<span class="keyword">String</span> userId)</span> </span>&#123;</span><br><span class="line">        localUserId.<span class="built_in">set</span>(userId);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Request <span class="title">getCurrentRequest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> localRequest.<span class="built_in">get</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setCurrentRequest</span><span class="params">(Request request)</span> </span>&#123;</span><br><span class="line">        localRequest.<span class="built_in">set</span>(request);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="10-ThreadLocal-的实现原理"><a href="#10-ThreadLocal-的实现原理" class="headerlink" title="10. ThreadLocal 的实现原理"></a>10. ThreadLocal 的实现原理</h4><ul>
-<li><p>分析源码：</p>
+<h4 id="10-ThreadLocal-的实现原理"><a href="#10-ThreadLocal-的实现原理" class="headerlink" title="10. ThreadLocal 的实现原理"></a>10. <code>ThreadLocal</code> 的实现原理</h4><ul>
+<li><p>分析源码</p>
 <ul>
-<li><strong>每个线程都有一个 <code>Map</code></strong>（<code>set()</code> 方法内部会创建一个 <code>map</code>），<strong>类型为 <code>ThreadLocalMap</code></strong>。</li>
-<li><code>ThreadLocalMap</code> 是一个<strong>内部类</strong>，是专门用于 <code>ThreadLocal</code> 的。与一般的 <code>Map</code> 不同，它的<strong>键类型</strong>为 <code>WeakReference&lt;ThreadLocal&gt;</code>，即<strong>弱引用</strong>，便于回收内存。</li>
-<li>对于每个 <code>ThradLocal</code> 对象，调用其 <code>get()/set()</code> 实际上就是<strong>以 <code>ThreadLocal</code> 对象为键读写当前线程的 <code>Map</code></strong>。这样，就实现了<strong>每个线程都有自己的独立副本</strong>的效果。</li>
+<li><strong>每个线程都有一个 <code>Map</code></strong>（<code>set()</code> 方法内部会创建一个 <code>map</code>），<strong>类型为 <code>ThreadLocalMap</code></strong></li>
+<li><code>ThreadLocalMap</code> 是一个<strong>内部类</strong>，是专门用于 <code>ThreadLocal</code> 的。与一般的 <code>Map</code> 不同，它的<strong>键类型</strong>为 <code>WeakReference&lt;ThreadLocal&gt;</code>，即<strong>弱引用</strong>，便于回收内存</li>
+<li>对于每个 <code>ThradLocal</code> 对象，调用其 <code>get()/set()</code> 实际上就是<strong>以 <code>ThreadLocal</code> 对象为键读写当前线程的 <code>Map</code></strong>。这样，就实现了<strong>每个线程都有自己的独立副本</strong>的效果</li>
 </ul>
 </li>
-<li><p>参考文章：</p>
+<li><p>参考文章</p>
 <ul>
 <li><a href="https://mp.weixin.qq.com/s/vURwBPgVuv4yGT1PeEHxZQ" target="_blank" rel="noopener">一篇文章彻底了解 ThreadLocal 的原理</a></li>
 <li><a href="https://mp.weixin.qq.com/s/SebbO7p2uJHUKQO0Fc6uXQ" target="_blank" rel="noopener">这才是 ThreadLocal 的正确原理与适用场景</a></li>
@@ -323,15 +323,15 @@
 </li>
 </ul>
 <h4 id="11-总结一下-Java-并发包中的一些同步协作工具"><a href="#11-总结一下-Java-并发包中的一些同步协作工具" class="headerlink" title="11. 总结一下 Java 并发包中的一些同步协作工具"></a>11. 总结一下 Java 并发包中的一些同步协作工具</h4><ul>
-<li>在<strong>读多写少</strong>的场景中使用 <strong><code>ReentrantReadWriteLock</code></strong> 代替 ReentrantLock，以提高性能。</li>
-<li>使用 <strong><code>Semaphore</code></strong> <strong>限制</strong>对资源的<strong>并发访问数</strong>。</li>
-<li>使用 <strong><code>CountDownLatch</code></strong> 实现<strong>不同角色</strong>线程间的同步。</li>
-<li>使用 <strong><code>CyclicBarrier</code></strong> 实现<strong>同一角色</strong>线程间的协调一致。</li>
+<li>在<strong>读多写少</strong>的场景中使用 <strong><code>ReentrantReadWriteLock</code></strong> 代替 ReentrantLock，以提高性能</li>
+<li>使用 <strong><code>Semaphore</code></strong> <strong>限制</strong>对资源的<strong>并发访问数</strong></li>
+<li>使用 <strong><code>CountDownLatch</code></strong> 实现<strong>不同角色</strong>线程间的同步</li>
+<li>使用 <strong><code>CyclicBarrier</code></strong> 实现<strong>同一角色</strong>线程间的协调一致</li>
 </ul>
-<h4 id="12-简单总结下-ThreadLocal"><a href="#12-简单总结下-ThreadLocal" class="headerlink" title="12. 简单总结下 ThreadLocal"></a>12. 简单总结下 ThreadLocal</h4><ul>
-<li><code>ThreadLocal</code> 使得<strong>每个线程对同一个变量有自己的独立副本</strong>，是实现<strong>线程安全</strong>、<strong>减少竞争</strong>的一种方案。</li>
-<li><code>ThreadLocal</code> 经常用于<strong>存储上下文信息</strong>，避免在不同代码间来回传递，简化代码。</li>
-<li><strong>每个线程都有一个 <code>Map</code></strong>，调用 <code>ThreadLocal</code> 对象的 <code>get()/set()</code> 方法实际上就是以 <code>ThreadLocal</code> 对象为键读写当前线程的该 <code>Map</code>。</li>
+<h4 id="12-简单总结下-ThreadLocal"><a href="#12-简单总结下-ThreadLocal" class="headerlink" title="12. 简单总结下 ThreadLocal"></a>12. 简单总结下 <code>ThreadLocal</code></h4><ul>
+<li><code>ThreadLocal</code> 使得<strong>每个线程对同一个变量有自己的独立副本</strong>，是实现<strong>线程安全</strong>、<strong>减少竞争</strong>的一种方案</li>
+<li><code>ThreadLocal</code> 经常用于<strong>存储上下文信息</strong>，避免在不同代码间来回传递，简化代码</li>
+<li><strong>每个线程都有一个 <code>Map</code></strong>，调用 <code>ThreadLocal</code> 对象的 <code>get()/set()</code> 方法实际上就是以 <code>ThreadLocal</code> 对象为键读写当前线程的该 <code>Map</code></li>
 </ul>
 
     </div>
