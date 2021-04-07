@@ -25,18 +25,18 @@
   <meta name="description" content="1. 怎样理解 collect">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java 函数式编程（三）：函数式数据处理：强大方便的收集器">
-<meta property="og:url" content="http://24suixinsuoyu.com/2020/06/08/Java-%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E5%87%BD%E6%95%B0%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%EF%BC%9A%E5%BC%BA%E5%A4%A7%E6%96%B9%E4%BE%BF/index.html">
+<meta property="og:url" content="http://24suixinsuoyu.com/2020/06/08/Java-%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E5%87%BD%E6%95%B0%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%EF%BC%9A%E5%BC%BA%E5%A4%A7%E6%96%B9%E4%BE%BF%E7%9A%84%E6%94%B6%E9%9B%86%E5%99%A8/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
 <meta property="og:description" content="1. 怎样理解 collect">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-06-07T18:04:04.000Z">
-<meta property="article:modified_time" content="2020-06-29T16:19:40.000Z">
+<meta property="article:modified_time" content="2021-04-07T08:55:23.865Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="函数式编程">
 <meta property="article:tag" content="函数式数据处理：强大方便的收集器">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://24suixinsuoyu.com/2020/06/08/Java-%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E5%87%BD%E6%95%B0%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%EF%BC%9A%E5%BC%BA%E5%A4%A7%E6%96%B9%E4%BE%BF/">
+<link rel="canonical" href="http://24suixinsuoyu.com/2020/06/08/Java-%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E5%87%BD%E6%95%B0%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%EF%BC%9A%E5%BC%BA%E5%A4%A7%E6%96%B9%E4%BE%BF%E7%9A%84%E6%94%B6%E9%9B%86%E5%99%A8/">
 
 
 <script id="page-configurations">
@@ -185,7 +185,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/06/08/Java-%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E5%87%BD%E6%95%B0%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%EF%BC%9A%E5%BC%BA%E5%A4%A7%E6%96%B9%E4%BE%BF/">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/06/08/Java-%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E5%87%BD%E6%95%B0%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%EF%BC%9A%E5%BC%BA%E5%A4%A7%E6%96%B9%E4%BE%BF%E7%9A%84%E6%94%B6%E9%9B%86%E5%99%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-30 00:19:40" itemprop="dateModified" datetime="2020-06-30T00:19:40+08:00">2020-06-30</time>
+                <time title="修改时间：2021-04-07 16:55:23" itemprop="dateModified" datetime="2021-04-07T16:55:23+08:00">2021-04-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -252,49 +252,49 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-怎样理解-collect"><a href="#1-怎样理解-collect" class="headerlink" title="1. 怎样理解 collect"></a>1. 怎样理解 collect</h4><a id="more"></a>
+        <h4 id="1-怎样理解-collect"><a href="#1-怎样理解-collect" class="headerlink" title="1. 怎样理解 collect"></a>1. 怎样理解 <code>collect</code></h4><a id="more"></a>
 
 <ul>
-<li>定义：<code>&lt;R, A&gt; R collect(Collector&lt;? super T, A, R&gt; collector)</code>。</li>
-<li>它接受一个收集器 <code>collector</code> 作为参数，类型是 <code>Collector</code>，这是一个接口。</li>
+<li>定义：<code>&lt;R, A&gt; R collect(Collector&lt;? super T, A, R&gt; collector)</code></li>
+<li>它接受一个收集器 <code>collector</code> 作为参数，类型是 <code>Collector</code>，这是一个接口</li>
 </ul>
-<h4 id="2-与-toList-类似的容器收集器还有哪些"><a href="#2-与-toList-类似的容器收集器还有哪些" class="headerlink" title="2. 与 toList 类似的容器收集器还有哪些"></a>2. 与 toList 类似的容器收集器还有哪些</h4><ul>
-<li><strong><code>toSet</code></strong>：可以排重。<code>toList</code> 背后的容器是 <code>ArrayList</code>，<code>toSet</code> 背后的容器是 <code>HashSet</code>。</li>
-<li><strong><code>toCollection</code></strong>：通用的容器收集器，可以用于任何 <code>Collection</code> 接口的实现类。比如，如果希望排重但又希望保留出现的顺序，可以使用 <code>LinkedHashSet</code>，<code>Collector</code> 可以这么创建：<code>Collectors.toCollection(LinkedHashSet::new);</code>。</li>
-<li><strong><code>toMap</code></strong>：将元素流转换为一个 <code>Map</code>。<code>Map</code> 有键和值两部分，<code>toMap</code> 至少需要两个参数，一个将元素转换为键，另一个将元素转换为值。</li>
+<h4 id="2-与-toList-类似的容器收集器还有哪些"><a href="#2-与-toList-类似的容器收集器还有哪些" class="headerlink" title="2. 与 toList 类似的容器收集器还有哪些"></a>2. 与 <code>toList</code> 类似的容器收集器还有哪些</h4><ul>
+<li><strong><code>toSet</code></strong>：可以排重。<code>toList</code> 背后的容器是 <code>ArrayList</code>，<code>toSet</code> 背后的容器是 <code>HashSet</code></li>
+<li><strong><code>toCollection</code></strong>：通用的容器收集器，可以用于任何 <code>Collection</code> 接口的实现类。比如，如果希望排重但又希望保留出现的顺序，可以使用 <code>LinkedHashSet</code>，<code>Collector</code> 可以这么创建：<code>Collectors.toCollection(LinkedHashSet::new);</code></li>
+<li><strong><code>toMap</code></strong>：将元素流转换为一个 <code>Map</code>。<code>Map</code> 有键和值两部分，<code>toMap</code> 至少需要两个参数，一个将元素转换为键，另一个将元素转换为值</li>
 </ul>
 <h4 id="3-怎样理解字符串收集器"><a href="#3-怎样理解字符串收集器" class="headerlink" title="3. 怎样理解字符串收集器"></a>3. 怎样理解字符串收集器</h4><ul>
-<li><p>除了将元素流收集到容器中，另一个常见的操作是收集为一个字符串。</p>
+<li><p>除了将元素流收集到容器中，另一个常见的操作是收集为一个字符串</p>
 </li>
-<li><p>针对这种需求，<code>Collectors</code> 提供了 <code>joining</code> 收集器：</p>
+<li><p>针对这种需求，<code>Collectors</code> 提供了 <code>joining</code> 收集器</p>
 <ul>
-<li><code>public static Collector&lt;CharSequence, ?, String&gt; joining()</code>：简单地把元素连接起来。</li>
-<li><code>public static Collector&lt;CharSequence, ?, String&gt; joining(CharSequence delimiter, CharSequence prefix, CharSequence suffix)</code>：支持一个分隔符，还可以给整个结果字符串加前缀和后缀。</li>
+<li><code>public static Collector&lt;CharSequence, ?, String&gt; joining()</code>：简单地把元素连接起来</li>
+<li><code>public static Collector&lt;CharSequence, ?, String&gt; joining(CharSequence delimiter, CharSequence prefix, CharSequence suffix)</code>：支持一个分隔符，还可以给整个结果字符串加前缀和后缀</li>
 </ul>
 </li>
-<li><p><code>joining</code> 收集器的内部也利用了 <code>StringBuilder</code>。</p>
+<li><p><code>joining</code> 收集器的内部也利用了 <code>StringBuilder</code></p>
 </li>
 </ul>
 <h4 id="4-怎样理解分组"><a href="#4-怎样理解分组" class="headerlink" title="4. 怎样理解分组"></a>4. 怎样理解分组</h4><ul>
-<li><p>分组类似于数据库查询语言 SQL 中的 group by 语句，<strong>它将元素流中的每个元素分到一个组，可以针对分组再进行处理和收集</strong>。</p>
+<li><p>分组类似于数据库查询语言 SQL 中的 group by 语句，<strong>它将元素流中的每个元素分到一个组，可以针对分组再进行处理和收集</strong></p>
 </li>
-<li><p>最基本的分组收集器为：<code>public static &lt;T, K&gt; Collector&lt;T, ?, Map&lt;K, List&lt;T&gt;&gt;&gt; groupingBy(Function&lt;? super T, ? extends K&gt; classifier)</code>。</p>
+<li><p>最基本的分组收集器为：<code>public static &lt;T, K&gt; Collector&lt;T, ?, Map&lt;K, List&lt;T&gt;&gt;&gt; groupingBy(Function&lt;? super T, ? extends K&gt; classifier)</code></p>
 <ul>
-<li>参数是一个类型为 <code>Function</code> 的分组器 <code>classifier</code>，它将类型为 <code>T</code> 的元素转换为类型为 <code>K</code> 的一个值，这个值表示分组值。</li>
-<li>所有分组值一样的元素会被归为同一个组，放到一个列表中，所以返回值类型是 <code>Map&lt;K, List&lt;T&gt;&gt;</code>。</li>
+<li>参数是一个类型为 <code>Function</code> 的分组器 <code>classifier</code>，它将类型为 <code>T</code> 的元素转换为类型为 <code>K</code> 的一个值，这个值表示分组值</li>
+<li>所有分组值一样的元素会被归为同一个组，放到一个列表中，所以返回值类型是 <code>Map&lt;K, List&lt;T&gt;&gt;</code></li>
 </ul>
 </li>
-<li><p><strong>分组计数、找最大/最小元素</strong>：将元素按一定标准分为多组，然后计算每组的个数，按一定标准找最大或最小元素。<code>Collectors</code> 提供了一些对应的收集器，一般用作下游收集器，比如 <code>maxBy</code>、<code>minBy</code>、<code>counting</code>。</p>
+<li><p><strong>分组计数、找最大/最小元素</strong>：将元素按一定标准分为多组，然后计算每组的个数，按一定标准找最大或最小元素。<code>Collectors</code> 提供了一些对应的收集器，一般用作下游收集器，比如 <code>maxBy</code>、<code>minBy</code>、<code>counting</code></p>
 </li>
-<li><p><strong>分组数值统计</strong>：除了基本的分组计数，还经常需要进行一些分组数值统计，比如求学生分数的和、平均分、最高分、最低分等，针对 <code>int</code>、<code>long</code> 和 <code>double</code> 类型，<code>Collectors</code> 提供了专门的收集器。</p>
+<li><p><strong>分组数值统计</strong>：除了基本的分组计数，还经常需要进行一些分组数值统计，比如求学生分数的和、平均分、最高分、最低分等，针对 <code>int</code>、<code>long</code> 和 <code>double</code> 类型，<code>Collectors</code> 提供了专门的收集器</p>
 </li>
-<li><p><strong>分组内的 <code>map</code></strong>：对于每个分组内的元素，我们感兴趣的可能不是元素本身，而是它的某部分信息。</p>
+<li><p><strong>分组内的 <code>map</code></strong>：对于每个分组内的元素，我们感兴趣的可能不是元素本身，而是它的某部分信息</p>
 <ul>
-<li>在 Stream API 中，<code>Stream</code> 有 <code>map</code> 方法，可以将元素进行转换，<code>Collectors</code> 也为分组元素提供了函数 <code>mapping</code>：交给下游收集器 <code>downstream</code> 的不再是元素本身，而是应用转换函数 <code>mapper</code> 之后的结果。</li>
-<li><code>Stream</code> 有 <code>flatMap</code> 方法，<strong>Java 9</strong> 为 <code>Collectors</code> 增加了分组内的 <code>flatMap</code> 方法 <code>flatMapping</code>，它与 <code>mapping</code> 的关系如同 <code>Stream</code> 中 <code>flatMap</code> 和 <code>map</code> 的关系。</li>
-<li>分组结果处理（<code>filter</code>、<code>sort</code>、<code>skip</code>、<code>limit</code>）：<code>Collector</code> 没有专门的收集器，但有一个通用的方法：<code>public static&lt;T, A, R, RR&gt; Collector&lt;T, A, RR&gt; collectingAndThen(Collector&lt;T, A, R&gt; downstream, Function&lt;R, RR&gt; finisher)</code>，接受一个下游收集器 <code>downstream</code> 和 一个 <code>finisher</code>，返回一个收集器。</li>
-<li><strong>分区</strong>：分组的一个特殊情况是分区，就是将流按 <code>true</code>、<code>false</code> 分为两个组。<code>Collectors</code> 有专门的分区函数 <code>partitioningBy()</code>。</li>
-<li><strong>多级分组</strong>：<code>groupingBy</code> 和 <code>parttitionBy</code> 都可以接受一个下游收集器，对同一个分组或分区内的元素进行进一步收集，而下游收集器又可以是分组或分区，以构建多级分组。</li>
+<li>在 Stream API 中，<code>Stream</code> 有 <code>map</code> 方法，可以将元素进行转换，<code>Collectors</code> 也为分组元素提供了函数 <code>mapping</code>：交给下游收集器 <code>downstream</code> 的不再是元素本身，而是应用转换函数 <code>mapper</code> 之后的结果</li>
+<li><code>Stream</code> 有 <code>flatMap</code> 方法，<strong>Java 9</strong> 为 <code>Collectors</code> 增加了分组内的 <code>flatMap</code> 方法 <code>flatMapping</code>，它与 <code>mapping</code> 的关系如同 <code>Stream</code> 中 <code>flatMap</code> 和 <code>map</code> 的关系</li>
+<li>分组结果处理（<code>filter</code>、<code>sort</code>、<code>skip</code>、<code>limit</code>）：<code>Collector</code> 没有专门的收集器，但有一个通用的方法：<code>public static&lt;T, A, R, RR&gt; Collector&lt;T, A, RR&gt; collectingAndThen(Collector&lt;T, A, R&gt; downstream, Function&lt;R, RR&gt; finisher)</code>，接受一个下游收集器 <code>downstream</code> 和 一个 <code>finisher</code>，返回一个收集器</li>
+<li><strong>分区</strong>：分组的一个特殊情况是分区，就是将流按 <code>true</code>、<code>false</code> 分为两个组。<code>Collectors</code> 有专门的分区函数 <code>partitioningBy()</code></li>
+<li><strong>多级分组</strong>：<code>groupingBy</code> 和 <code>parttitionBy</code> 都可以接受一个下游收集器，对同一个分组或分区内的元素进行进一步收集，而下游收集器又可以是分组或分区，以构建多级分组</li>
 </ul>
 </li>
 </ul>
@@ -323,7 +323,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://24suixinsuoyu.com/2020/06/08/Java-%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E5%87%BD%E6%95%B0%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%EF%BC%9A%E5%BC%BA%E5%A4%A7%E6%96%B9%E4%BE%BF/" title="Java 函数式编程（三）：函数式数据处理：强大方便的收集器">http://24suixinsuoyu.com/2020/06/08/Java-函数式编程（三）：函数式数据处理：强大方便/</a>
+    <a href="http://24suixinsuoyu.com/2020/06/08/Java-%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E5%87%BD%E6%95%B0%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%EF%BC%9A%E5%BC%BA%E5%A4%A7%E6%96%B9%E4%BE%BF%E7%9A%84%E6%94%B6%E9%9B%86%E5%99%A8/" title="Java 函数式编程（三）：函数式数据处理：强大方便的收集器">http://24suixinsuoyu.com/2020/06/08/Java-函数式编程（三）：函数式数据处理：强大方便的收集器/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
