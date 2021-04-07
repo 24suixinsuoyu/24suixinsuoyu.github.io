@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. Java API 中正则表达式相关的类有">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-06-07T17:59:59.000Z">
-<meta property="article:modified_time" content="2020-06-26T18:53:50.000Z">
+<meta property="article:modified_time" content="2021-04-07T07:46:55.890Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="正则表达式">
 <meta property="article:tag" content="Java API">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-27 02:53:50" itemprop="dateModified" datetime="2020-06-27T02:53:50+08:00">2020-06-27</time>
+                <time title="修改时间：2021-04-07 15:46:55" itemprop="dateModified" datetime="2021-04-07T15:46:55+08:00">2021-04-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -255,99 +255,100 @@
         <h4 id="1-Java-API-中正则表达式相关的类有"><a href="#1-Java-API-中正则表达式相关的类有" class="headerlink" title="1. Java API 中正则表达式相关的类有"></a>1. Java API 中正则表达式相关的类有</h4><a id="more"></a>
 
 <ul>
-<li><p>正则表达式相关的类位于包 <code>java.util.regex</code> 下，有两个主要的类 <code>Pattern</code> 和 <code>Matcher</code>：</p>
+<li><p>正则表达式相关的类位于包 <code>java.util.regex</code> 下，有两个主要的类 <code>Pattern</code> 和 <code>Matcher</code></p>
 <ul>
-<li><strong><code>Pattern</code></strong>：表示<strong>正则表达式对象</strong>，它与要处理的具体字符串无关。</li>
-<li><strong><code>Matcher</code></strong>：表示一个<strong>匹配</strong>，它将正则表达式应用于一个具体字符串，通过它对字符串进行处理。</li>
+<li><strong><code>Pattern</code></strong>：表示<strong>正则表达式对象</strong>，它与要处理的具体字符串无关</li>
+<li><strong><code>Matcher</code></strong>：表示一个<strong>匹配</strong>，它将正则表达式应用于一个具体字符串，通过它对字符串进行处理</li>
 </ul>
 </li>
-<li><p>正则表达式在 Java 中是需要先以<strong>字符串形式</strong>表示的。</p>
+<li><p>正则表达式在 Java 中是需要先以<strong>字符串形式</strong>表示的</p>
 </li>
 </ul>
 <h4 id="2-在-Java-中怎样表示正则表达式"><a href="#2-在-Java-中怎样表示正则表达式" class="headerlink" title="2. 在 Java 中怎样表示正则表达式"></a>2. 在 Java 中怎样表示正则表达式</h4><ul>
-<li><p>在 Java 中，没有什么特殊语法能直接表示正则表达式，<strong>正则表达式需要用字符串表示</strong>。</p>
+<li><p>在 Java 中，没有什么特殊语法能直接表示正则表达式，<strong>正则表达式需要用字符串表示</strong></p>
 <ul>
-<li>而在字符串中，<code>\</code> 也是一个元字符，为了在字符串中表示正则表达式的 <code>\</code>，就需要使用两个 <code>\</code>，即 <code>\\</code>。</li>
-<li>而<strong>要匹配 <code>\</code> 本身，就需要 4 个 <code>\</code>，即 <code>\\\\</code></strong>。比如，表达式 <code>&lt;(\w+)&gt;(.*)&lt;/\1&gt;</code> 对应的字符串表示就是 <code>&lt;(\\w+)&gt;(.*)&lt;/\\1&gt;</code>。</li>
-<li>一个简单的规则是：<strong>正则表达式中的任何一个 <code>\</code>，在字符串中，需要替换为两个 <code>\</code></strong>。</li>
+<li>而在字符串中，<code>\</code> 也是一个元字符，为了在字符串中表示正则表达式的 <code>\</code>，就需要使用两个 <code>\</code>，即 <code>\\</code></li>
+<li>而<strong>要匹配 <code>\</code> 本身，就需要 4 个 <code>\</code>，即 <code>\\\\</code></strong>。比如，表达式 <code>&lt;(\w+)&gt;(.*)&lt;/\1&gt;</code> 对应的字符串表示就是 <code>&lt;(\\w+)&gt;(.*)&lt;/\\1&gt;</code></li>
+<li>一个简单的规则是：<strong>正则表达式中的任何一个 <code>\</code>，在字符串中，需要替换为两个 <code>\</code></strong></li>
 </ul>
 </li>
-<li><p><strong>字符串表示的正则表达式可以被编译为一个 <code>Pattern</code> 对象</strong>。比如 <code>String regex = &quot;&lt;(\\w+)&gt;(.*)&lt;/\\1&gt;&quot;;</code>，可以被编译为 <code>Pattern pattern = Pattern.compile(regex);</code>。</p>
+<li><p><strong>字符串表示的正则表达式可以被编译为一个 <code>Pattern</code> 对象</strong>。比如 <code>String regex = &quot;&lt;(\\w+)&gt;(.*)&lt;/\\1&gt;&quot;;</code>，可以被编译为 <code>Pattern pattern = Pattern.compile(regex);</code></p>
 <ul>
-<li><code>Pattern</code> 是正则表达式的面向对象表示。所谓<strong>编译</strong>，简单理解就是将字符串表示为了一个内部结构，这个结构是一个<strong>有穷自动机</strong>。</li>
-<li>编译有一定的成本，而且 <code>Pattern</code> 对象只与正则表达式有关，与要处理的具体文本无关，它<strong>可以安全地被多线程共享</strong>。所以，在使用同一个正则表达式处理多个文本时，应该尽量重用同一个 <code>Pattern</code> 对象，<strong>避免重复编译</strong>。</li>
+<li><code>Pattern</code> 是正则表达式的面向对象表示。所谓<strong>编译</strong>，简单理解就是将字符串表示为了一个内部结构，这个结构是一个<strong>有穷自动机</strong></li>
+<li>编译有一定的成本，而且 <code>Pattern</code> 对象只与正则表达式有关，与要处理的具体文本无关，它<strong>可以安全地被多线程共享</strong>。所以，在使用同一个正则表达式处理多个文本时，应该尽量重用同一个 <code>Pattern</code> 对象，<strong>避免重复编译</strong></li>
 </ul>
 </li>
-<li><p><code>Pattern</code> 的 <code>compile()</code> 方法接受一个额外参数，可以指定<strong>匹配模式</strong>：<code>public static Pattern compile(String regex, int flags)</code>。其中，单行模式（点号模式）、多行模式和大小写无关模式，对应的常量分别是：<strong><code>Pattern.DOTALL</code></strong>、<strong><code>Pattern.MULTILINE</code></strong> 和 <strong><code>Pattern.CASE_INSENSITIVE</code></strong>。多个模式可以一起使用，通过 <code>|</code> 连起来即可，比如：<code>Pattern.compile(regex, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);</code>。</p>
+<li><p><code>Pattern</code> 的 <code>compile()</code> 方法接受一个额外参数，可以指定<strong>匹配模式</strong>：<code>public static Pattern compile(String regex, int flags)</code>。其中，单行模式（点号模式）、多行模式和大小写无关模式，对应的常量分别是：<strong><code>Pattern.DOTALL</code></strong>、<strong><code>Pattern.MULTILINE</code></strong> 和 <strong><code>Pattern.CASE_INSENSITIVE</code></strong>。多个模式可以一起使用，通过 <code>|</code> 连起来即可，比如：<code>Pattern.compile(regex, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);</code></p>
 <ul>
-<li>还有一个模式 <strong><code>Pattern.LITERAL</code></strong>，在此模式下，正则表达式字符串中的元字符将失去特殊含义，被看作普通字符。</li>
-<li><code>Pattern</code> 有一个静态方法：<code>public static String quote(String s)</code>，与模式 <code>Pattern.LITERAL</code> 类似，它将 <code>s</code> 中的字符都看作普通字符。<code>quote()</code> 方法基本上就是在字符串 <code>s</code> 的前后加了 <code>\Q</code> 和 <code>\E</code>。比如，如果 <code>s</code> 为 <code>\\d{6}</code>，则 <code>quote()</code> 的返回值就是 <code>\\Q\\d{6}\\E</code>。</li>
-</ul>
-</li>
-</ul>
-<h4 id="3-怎样理解-String-的-split-方法：public-String-split-String-regex"><a href="#3-怎样理解-String-的-split-方法：public-String-split-String-regex" class="headerlink" title="3. 怎样理解 String 的 split() 方法：public String[] split(String regex)"></a>3. 怎样理解 String 的 split() 方法：public String[] split(String regex)</h4><ul>
-<li><p><code>split()</code> 方法将参数 <code>regex</code> 看作正则表达式，而不是普通的字符。所以，如果分隔符是元字符，比如 <code>. $ | () [ { ^ ? * + \</code>，就需要转义。比如，按点号 <code>.</code> 分隔，需要写为：<code>String[] fields = str.split(&quot;\\.&quot;);</code>。</p>
-<ul>
-<li>如果分隔符是用户指定的，程序事先不知道，可以通过 <code>Pattern.quote()</code> 将其看作普通字符串。</li>
-</ul>
-</li>
-<li><p>既然是正则表达式，分隔符就不一定是一个字符。比如，可以将一个或多个空白字符或点号作为分隔符，如下：<code>String str = &quot;abc def hello.\n world&quot;;，String [] fields = str.split(&quot;[\\s.]+&quot;);</code>。<code>fields</code> 内容是 <code>[abc, def, hello, world]</code>。</p>
-<ul>
-<li>需要说明的是，<strong>尾部</strong>的空白字符串不会包含在返回的结果数组中，但<strong>头部和中间</strong>的空白字符串会被包含在内。</li>
-<li>如果字符串中找不到匹配 <code>regex</code> 的分隔符，返回数组长度为 1，元素为原字符串。</li>
+<li>还有一个模式 <strong><code>Pattern.LITERAL</code></strong>，在此模式下，正则表达式字符串中的元字符将失去特殊含义，被看作普通字符</li>
+<li><code>Pattern</code> 有一个静态方法：<code>public static String quote(String s)</code>，与模式 <code>Pattern.LITERAL</code> 类似，它将 <code>s</code> 中的字符都看作普通字符。<code>quote()</code> 方法基本上就是在字符串 <code>s</code> 的前后加了 <code>\Q</code> 和 <code>\E</code>。比如，如果 <code>s</code> 为 <code>\\d{6}</code>，则 <code>quote()</code> 的返回值就是 <code>\\Q\\d{6}\\E</code></li>
 </ul>
 </li>
 </ul>
-<h4 id="4-Pattern-的-split-方法：public-String-split-CharSequence-和-String-的-split-方法：public-String-split-String-regex-的区别是"><a href="#4-Pattern-的-split-方法：public-String-split-CharSequence-和-String-的-split-方法：public-String-split-String-regex-的区别是" class="headerlink" title="4. Pattern 的 split() 方法：public String[] split(CharSequence) 和 String 的 split() 方法：public String[] split(String regex) 的区别是"></a>4. Pattern 的 split() 方法：public String[] split(CharSequence) 和 String 的 split() 方法：public String[] split(String regex) 的区别是</h4><ul>
-<li><code>Pattern</code> 接受的参数是 <strong><code>CharSequence</code></strong>，更为通用。<code>String</code> <code>StringBuilder</code> <code>StringBuffer</code> <code>CharBuffer</code> 等都实现了该接口。</li>
-<li><strong>如果 <code>regex</code> 长度大于 1 或包含元字符</strong>，<code>String</code> 的 <code>split()</code> 方法必须先将 <code>regex</code> 编译为 <code>Pattern</code> 对象，再调用 <code>Pattern</code> 的 <code>split()</code> 方法。这时，<strong>为避免重复编译</strong>，应该优先采用 <code>Pattern</code> 的 <code>split()</code> 方法。</li>
-<li><strong>如果 <code>regex</code> 就是一个字符且不是元字符</strong>，<code>String</code> 的 <code>split()</code> 方法会采用<strong>更为简单高效</strong>的实现。所以，这时应该优先采用 <code>String</code> 的 <code>split()</code> 方法。</li>
+<h4 id="3-怎样理解-String-的-split-方法：public-String-split-String-regex"><a href="#3-怎样理解-String-的-split-方法：public-String-split-String-regex" class="headerlink" title="3. 怎样理解 String 的 split() 方法：public String[] split(String regex)"></a>3. 怎样理解 <code>String</code> 的 <code>split()</code> 方法：<code>public String[] split(String regex)</code></h4><ul>
+<li><p><code>split()</code> 方法将参数 <code>regex</code> 看作正则表达式，而不是普通的字符。所以，如果分隔符是元字符，比如 <code>. $ | () [ { ^ ? * + \</code>，就需要转义。比如，按点号 <code>.</code> 分隔，需要写为：<code>String[] fields = str.split(&quot;\\.&quot;);</code></p>
+<ul>
+<li>如果分隔符是用户指定的，程序事先不知道，可以通过 <code>Pattern.quote()</code> 将其看作普通字符串</li>
 </ul>
-<h4 id="5-怎样理解-String-的-matches-方法-public-boolean-matches-String-regex"><a href="#5-怎样理解-String-的-matches-方法-public-boolean-matches-String-regex" class="headerlink" title="5. 怎样理解 String 的 matches() 方法 public boolean matches(String regex)"></a>5. 怎样理解 String 的 matches() 方法 public boolean matches(String regex)</h4><ul>
-<li><p><code>String</code> 的 <code>matches()</code> 方法实际调用的是 <code>Pattern</code> 的 <code>matches()</code> 方法：</p>
+</li>
+<li><p>既然是正则表达式，分隔符就不一定是一个字符。比如，可以将一个或多个空白字符或点号作为分隔符，如下：<code>String str = &quot;abc def hello.\n world&quot;;，String [] fields = str.split(&quot;[\\s.]+&quot;);</code>。<code>fields</code> 内容是 <code>[abc, def, hello, world]</code></p>
+<ul>
+<li>需要说明的是，<strong>尾部</strong>的空白字符串不会包含在返回的结果数组中，但<strong>头部和中间</strong>的空白字符串会被包含在内</li>
+<li>如果字符串中找不到匹配 <code>regex</code> 的分隔符，返回数组长度为 1，元素为原字符串</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-Pattern-的-split-方法：public-String-split-CharSequence-和-String-的-split-方法：public-String-split-String-regex-的区别是"><a href="#4-Pattern-的-split-方法：public-String-split-CharSequence-和-String-的-split-方法：public-String-split-String-regex-的区别是" class="headerlink" title="4. Pattern 的 split() 方法：public String[] split(CharSequence) 和 String 的 split() 方法：public String[] split(String regex) 的区别是"></a>4. <code>Pattern</code> 的 <code>split()</code> 方法：<code>public String[] split(CharSequence)</code> 和 <code>String</code> 的 <code>split()</code> 方法：<code>public String[] split(String regex)</code> 的区别是</h4><ul>
+<li><code>Pattern</code> 接受的参数是 <strong><code>CharSequence</code></strong>，更为通用。<code>String</code> <code>StringBuilder</code> <code>StringBuffer</code> <code>CharBuffer</code> 等都实现了该接口</li>
+<li><strong>如果 <code>regex</code> 长度大于 1 或包含元字符</strong>，<code>String</code> 的 <code>split()</code> 方法必须先将 <code>regex</code> 编译为 <code>Pattern</code> 对象，再调用 <code>Pattern</code> 的 <code>split()</code> 方法。这时，<strong>为避免重复编译</strong>，应该优先采用 <code>Pattern</code> 的 <code>split()</code> 方法</li>
+<li><strong>如果 <code>regex</code> 就是一个字符且不是元字符</strong>，<code>String</code> 的 <code>split()</code> 方法会采用<strong>更为简单高效</strong>的实现。所以，这时应该优先采用 <code>String</code> 的 <code>split()</code> 方法</li>
+</ul>
+<h4 id="5-怎样理解-String-的-matches-方法-public-boolean-matches-String-regex"><a href="#5-怎样理解-String-的-matches-方法-public-boolean-matches-String-regex" class="headerlink" title="5. 怎样理解 String 的 matches() 方法 public boolean matches(String regex)"></a>5. 怎样理解 <code>String</code> 的 <code>matches()</code> 方法 <code>public boolean matches(String regex)</code></h4><ul>
+<li><p><code>String</code> 的 <code>matches()</code> 方法实际调用的是 <code>Pattern</code> 的 <code>matches()</code> 方法</p>
   <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">matches</span><span class="params">(<span class="keyword">String</span> regex, CharSequence input)</span> </span>&#123;</span><br><span class="line">    Pattern p = Pattern.compile(regex); <span class="comment">//编译 regex 为 Pattern 对象</span></span><br><span class="line">    Matcher m = p.matcher(input); <span class="comment">//调用 matcher() 方法生成一个匹配对象 Matcher</span></span><br><span class="line">    <span class="keyword">return</span> m.matches(); <span class="comment">//Matcher 的 matches() 方法返回是否完整匹配</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
-<h4 id="6-怎样理解-Matcher-的查找方法-find"><a href="#6-怎样理解-Matcher-的查找方法-find" class="headerlink" title="6. 怎样理解 Matcher 的查找方法 find()"></a>6. 怎样理解 Matcher 的查找方法 find()</h4><ul>
-<li><p><code>Matcher</code> 的<strong>内部纪录有一个位置</strong>，起始为 0，<code>find()</code> 方法从这个位置查找匹配正则表达式的子字符串。找到后，返回 <code>true</code>，并更新这个内部位置，匹配到的子字符串信息可以通过如下方法获取：</p>
+<h4 id="6-怎样理解-Matcher-的查找方法-find"><a href="#6-怎样理解-Matcher-的查找方法-find" class="headerlink" title="6. 怎样理解 Matcher 的查找方法 find()"></a>6. 怎样理解 <code>Matcher</code> 的查找方法 <code>find()</code></h4><ul>
+<li><p><code>Matcher</code> 的<strong>内部纪录有一个位置</strong>，起始为 0，<code>find()</code> 方法从这个位置查找匹配正则表达式的子字符串。找到后，返回 <code>true</code>，并更新这个内部位置，匹配到的子字符串信息可以通过如下方法获取</p>
 <ul>
-<li><code>public String group()</code>：匹配到的完整子字符串。</li>
-<li><code>public int start()</code>：子字符串在整个字符串中的起始位置。</li>
-<li><code>public int end()</code>：子字符串在整个字符串中的结束位置加 1。</li>
+<li><code>public String group()</code>：匹配到的完整子字符串</li>
+<li><code>public int start()</code>：子字符串在整个字符串中的起始位置</li>
+<li><code>public int end()</code>：子字符串在整个字符串中的结束位置加 1</li>
 </ul>
 </li>
-<li><p><code>group()</code> 方法其实调用的是 <code>group(0)</code> 方法，表示获取匹配的第 0 个分组的内容。<strong>分组 0 是一个特殊的捕获分组，表示匹配的整个子字符串</strong>。除了分组 0，<code>Matcher</code> 还有如下方法，获取分组的更多信息：</p>
+<li><p><code>group()</code> 方法其实调用的是 <code>group(0)</code> 方法，表示获取匹配的第 0 个分组的内容。<strong>分组 0 是一个特殊的捕获分组，表示匹配的整个子字符串</strong>。除了分组 0，<code>Matcher</code> 还有如下方法，获取分组的更多信息</p>
 <ul>
-<li><code>public int groupCount()</code>：分组个数。</li>
-<li><code>public String group(int group)</code>：分组编号为 <code>group</code> 的内容。</li>
-<li><code>public String group(String name)</code>：分组命名为 <code>name</code> 的内容。</li>
-<li><code>public int start(int group)</code>：分组编号为 <code>group</code> 的起始位置。</li>
-<li><code>public int end(int group)</code>：分组编号为 <code>group</code> 的结束位置加 1。</li>
+<li><code>public int groupCount()</code>：分组个数</li>
+<li><code>public String group(int group)</code>：分组编号为 <code>group</code> 的内容</li>
+<li><code>public String group(String name)</code>：分组命名为 <code>name</code> 的内容</li>
+<li><code>public int start(int group)</code>：分组编号为 <code>group</code> 的起始位置</li>
+<li><code>public int end(int group)</code>：分组编号为 <code>group</code> 的结束位置加 1</li>
 </ul>
 </li>
 </ul>
-<h4 id="7-怎样理解-String-的替换方法"><a href="#7-怎样理解-String-的替换方法" class="headerlink" title="7. 怎样理解 String 的替换方法"></a>7. 怎样理解 String 的替换方法</h4><ul>
-<li><p><code>String</code> 有多个替换方法：</p>
+<h4 id="7-怎样理解-String-的替换方法"><a href="#7-怎样理解-String-的替换方法" class="headerlink" title="7. 怎样理解 String 的替换方法"></a>7. 怎样理解 <code>String</code> 的替换方法</h4><ul>
+<li><p><code>String</code> 有多个替换方法</p>
 <ul>
-<li><code>public String replace(char oldChar, char newChar)</code>。</li>
-<li><code>public String replace(CharSequence target, CharSequence replacement)</code>。</li>
-<li><code>pubilc String replaceAll(String regex, String replacement)</code>。</li>
-<li><code>public String replaceFirst(String regex, String replacement)</code>。</li>
+<li><code>public String replace(char oldChar, char newChar)</code></li>
+<li><code>public String replace(CharSequence target, CharSequence replacement)</code></li>
+<li><code>pubilc String replaceAll(String regex, String replacement)</code></li>
+<li><code>public String replaceFirst(String regex, String replacement)</code></li>
 </ul>
 </li>
-<li><p>第一个 <code>replace()</code> 方法操作的是单个字符，第二个是 <code>CharSequence</code>，它们都是将参数看作普通字符。而 <code>replaceAll()</code> 和 <code>replaceFirst()</code> 则将参数 <code>regex</code> 看作正则表达式，它们的区别是，<code>replaceAll()</code> 替换所有找到的子字符串，而 <code>replaceFirst()</code> 则只替换第一个找到的。</p>
+<li><p>第一个 <code>replace()</code> 方法操作的是单个字符，第二个是 <code>CharSequence</code>，它们都是将参数看作普通字符。而 <code>replaceAll()</code> 和 <code>replaceFirst()</code> 则将参数 <code>regex</code> 看作正则表达式，它们的区别是，<code>replaceAll()</code> 替换所有找到的子字符串，而 <code>replaceFirst()</code> 则只替换第一个找到的</p>
 <ul>
-<li>在 <code>replaceAll()</code> 和 <code>replaceFirst()</code> 中，参数 <code>replacement</code> 也不是被看作普通的字符串，可以使用美元符号加数字的形式（比如 <code>$1</code>）引用捕获分组。字符 <code>$</code> 在 <code>replacement</code> 中是元字符，如果需要替换为字符 <code>$</code> 本身，需要使用转义。</li>
-<li>如果替换字符串是用户提供的，为避免元字符的干扰，可以使用 <code>Matcher</code> 的如下静态方法将其视为普通字符串：<code>public static String quoteReplacement(String s)</code>。</li>
+<li>在 <code>replaceAll()</code> 和 <code>replaceFirst()</code> 中，参数 <code>replacement</code> 也不是被看作普通的字符串，可以使用美元符号加数字的形式（比如 <code>$1</code>）引用捕获分组。字符 <code>$</code> 在 <code>replacement</code> 中是元字符，如果需要替换为字符 <code>$</code> 本身，需要使用转义</li>
+<li>如果替换字符串是用户提供的，为避免元字符的干扰，可以使用 <code>Matcher</code> 的如下静态方法将其视为普通字符串：<code>public static String quoteReplacement(String s)</code></li>
 </ul>
 </li>
-<li><p><strong><code>String</code> 的 <code>replaceAll()</code> 和 <code>replaceFirst()</code> 调用的其实是 <code>Pattern</code> 和 <code>Matcher</code> 中的方法</strong>。比如，<code>replaceAll()</code> 方法的代码是：<code>public String replaceAll(String regex, String replacement) { return Pattern.compile(regex).matcher(this).replaceAll(replacement); }</code>。</p>
+<li><p><strong><code>String</code> 的 <code>replaceAll()</code> 和 <code>replaceFirst()</code> 调用的其实是 <code>Pattern</code> 和 <code>Matcher</code> 中的方法</strong>。比如，<code>replaceAll()</code> 方法的代码是：<code>public String replaceAll(String regex, String replacement) { return Pattern.compile(regex).matcher(this).replaceAll(replacement); }</code></p>
 </li>
-<li><p><code>replaceAll()</code> 和 <code>replaceFirst()</code> 都定义在 <code>Matcher</code> 中。<strong>除了一次性的替换操作外，<code>Matcher</code> 还定义了边查找、边替换的方法</strong>：<code>public Matcher appendReplacement(StringBuffer sb, String replacement)</code> 和 <code>public StringBuilder appendTail(StringBuffer sb)</code>。这两个方法用于和 <code>find()</code> 方法一起用。</p>
+<li><p><code>replaceAll()</code> 和 <code>replaceFirst()</code> 都定义在 <code>Matcher</code> 中。<strong>除了一次性的替换操作外，<code>Matcher</code> 还定义了边查找、边替换的方法</strong>：<code>public Matcher appendReplacement(StringBuffer sb, String replacement)</code> 和 <code>public StringBuilder appendTail(StringBuffer sb)</code>。这两个方法用于和 <code>find()</code> 方法一起用</p>
 </li>
 </ul>
 <h4 id="8-写出下面代码的输出结果并分析"><a href="#8-写出下面代码的输出结果并分析" class="headerlink" title="8. 写出下面代码的输出结果并分析"></a>8. 写出下面代码的输出结果并分析</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">public static void replace<span class="constructor">Cat()</span> &#123;</span><br><span class="line">    Pattern p = <span class="module-access"><span class="module"><span class="identifier">Pattern</span>.</span></span>compile(<span class="string">"cat"</span>);</span><br><span class="line">    Matcher m = p.matcher(<span class="string">"one cat, two cat, three cat"</span>);</span><br><span class="line">    StringBuffer sb = <span class="keyword">new</span> <span class="constructor">StringBuffer()</span>; <span class="comment">//存放最终的替换结果</span></span><br><span class="line">    <span class="built_in">int</span> foundNum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(m.find<span class="literal">()</span>) &#123; </span><br><span class="line">        <span class="comment">//Matcher 内部除了有一个查找位置，还有一个 append 位置，初始为 0，当找到一个匹配的子字符串后，appendReplacement() 做了三件事：</span></span><br><span class="line">        <span class="comment">//1) 将  append 位置到当前匹配之前的子字符串 append 到 sb 中，在第一次操作中为 "one"，第二次为 ", two"</span></span><br><span class="line">        <span class="comment">//2) 将替换字符串 append 到 sb 中</span></span><br><span class="line">        <span class="comment">//3) 更新 append 位置为当前匹配之后的位置</span></span><br><span class="line">        m.append<span class="constructor">Replacement(<span class="params">sb</span>, <span class="string">"dog"</span>)</span>;</span><br><span class="line">        foundNum++;</span><br><span class="line">        <span class="keyword">if</span>(foundNum<span class="operator"> == </span><span class="number">2</span>) &#123;</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    m.append<span class="constructor">Tail(<span class="params">sb</span>)</span>; <span class="comment">//将 append 之后所有的字符 append 到 sb 中</span></span><br><span class="line">    <span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(sb.<span class="keyword">to</span><span class="constructor">String()</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//输出：one dog, tow dog, three dog</span></span><br><span class="line"><span class="comment">//分析见注释</span></span><br></pre></td></tr></table></figure>
+
     </div>
 
     
