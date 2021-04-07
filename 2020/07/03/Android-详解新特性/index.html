@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. Android 中创建定时任务的方式">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-07-03T03:21:24.000Z">
-<meta property="article:modified_time" content="2021-04-07T15:56:52.124Z">
+<meta property="article:modified_time" content="2021-04-07T16:18:50.807Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="新特性">
 <meta name="twitter:card" content="summary">
@@ -214,7 +214,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-04-07 23:56:52" itemprop="dateModified" datetime="2021-04-07T23:56:52+08:00">2021-04-07</time>
+                <time title="修改时间：2021-04-08 00:18:50" itemprop="dateModified" datetime="2021-04-08T00:18:50+08:00">2021-04-08</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -232,7 +232,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5.2k</span>
+              <span>5.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -369,7 +369,32 @@
 </ul>
 </li>
 </ul>
-<h4 id="6-Android-10-0-中的新特性"><a href="#6-Android-10-0-中的新特性" class="headerlink" title="6. Android 10.0 中的新特性"></a>6. Android 10.0 中的新特性</h4><ul>
+<h4 id="6-ART-与-Dalvik-概述"><a href="#6-ART-与-Dalvik-概述" class="headerlink" title="6. ART 与 Dalvik 概述"></a>6. ART 与 Dalvik 概述</h4><ul>
+<li><p>从 <strong>Android 5.0</strong> （Lollipop）开始，Android Runtime（ART）就彻底代替了原先的 Dalvik，成为 Android 系统上新的虚拟机</p>
+</li>
+<li><p><strong>ART 对 Dalvik 的改进</strong></p>
+<ul>
+<li>Dalvik 是为 <strong>32</strong> 位设计的，不适用于 <strong>64</strong> 位 CPU</li>
+<li>单纯的字节码解释加 JIT 编译的执行方式，性能要弱于本地机器码的执行</li>
+<li>无论是解释执行还是 JIT 编译都是单次运行过程中发生，每运行一次都可能需要重新做这些工作，浪费资源</li>
+<li>原先的垃圾回收机制不够好，会导致卡顿</li>
+</ul>
+</li>
+<li><p>除了 64 位，ART 最主要的两项改进</p>
+<ul>
+<li><strong>AOT 编译</strong>：Ahead-of-time(AOT) 是相对于 Just-in-time(JIT) 而言的。JIT 是在运行时进行字节码到本地机器码的编译，这也是为什么 Java 普遍被认为效率比 C++ 差的原因。无论是解释器的解释，还是运行过程中即时编译，都比 C++ 编译出来的本地机器码执行多了一个耗费时间的过程。而 AOT 就是向 C++ 编译过程靠拢的一项技术：当 APK 在安装的时候，系统会通过一个名词为 dex2oat 的工具将 APK 中的 dex 文件编译成包含本地机器码的 oat 文件存放下来。这样做之后，在程序执行的时候，就可以直接使用已经编译好的机器码以加快效率</li>
+<li><strong>垃圾回收的改进</strong>：GC 是虚拟机非常重要的一个特性，因为它的实现好坏会影响所有在虚拟机上运行的应用。GC 实现得不好可能会导致画面跳跃、掉帧、UI 响应过慢等问题。ART 的垃圾回收机制相较于 Dalvik 虚拟机有如下改进<ul>
+<li>将 GC 的停顿由 2 次改成 1 次</li>
+<li>在仅有的一次 GC 停顿中进行并行处理</li>
+<li>在特殊场景下，对近期创建的具有较短生命的对象消耗更少的时间进行垃圾回收</li>
+<li>改进垃圾收集的工效，更频繁地执行并行垃圾收集</li>
+<li>对于后台进程的内存在垃圾回收过程中进行压缩以解决碎片化问题</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="7-Android-10-0-中的新特性"><a href="#7-Android-10-0-中的新特性" class="headerlink" title="7. Android 10.0 中的新特性"></a>7. Android 10.0 中的新特性</h4><ul>
 <li>参考：<a href="https://mp.weixin.qq.com/s/WGZOH8hoXDkFGNl00hHYOA" target="_blank" rel="noopener">Android 10.0 来了，居然有这新特性</a></li>
 </ul>
 
@@ -484,7 +509,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Android-中创建定时任务的方式"><span class="nav-text">1. Android 中创建定时任务的方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-写一个使用-Alarm-机制创建定时任务的-Demo"><span class="nav-text">2. 写一个使用 Alarm 机制创建定时任务的 Demo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-什么是-Doze-模式"><span class="nav-text">3. 什么是 Doze 模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-什么是多窗口模式"><span class="nav-text">4. 什么是多窗口模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-Lambda-表达式在-Android-中的应用"><span class="nav-text">5. Lambda 表达式在 Android 中的应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-Android-10-0-中的新特性"><span class="nav-text">6. Android 10.0 中的新特性</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Android-中创建定时任务的方式"><span class="nav-text">1. Android 中创建定时任务的方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-写一个使用-Alarm-机制创建定时任务的-Demo"><span class="nav-text">2. 写一个使用 Alarm 机制创建定时任务的 Demo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-什么是-Doze-模式"><span class="nav-text">3. 什么是 Doze 模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-什么是多窗口模式"><span class="nav-text">4. 什么是多窗口模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-Lambda-表达式在-Android-中的应用"><span class="nav-text">5. Lambda 表达式在 Android 中的应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-ART-与-Dalvik-概述"><span class="nav-text">6. ART 与 Dalvik 概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-Android-10-0-中的新特性"><span class="nav-text">7. Android 10.0 中的新特性</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
