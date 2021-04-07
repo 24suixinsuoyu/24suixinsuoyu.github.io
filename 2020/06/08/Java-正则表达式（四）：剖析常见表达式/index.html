@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. 日常开发中，常用的正则表达式有哪些">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-06-07T18:01:44.000Z">
-<meta property="article:modified_time" content="2020-06-27T15:04:36.000Z">
+<meta property="article:modified_time" content="2021-04-07T07:56:32.614Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="正则表达式">
 <meta property="article:tag" content="剖析常见表达式">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-27 23:04:36" itemprop="dateModified" datetime="2020-06-27T23:04:36+08:00">2020-06-27</time>
+                <time title="修改时间：2021-04-07 15:56:32" itemprop="dateModified" datetime="2021-04-07T15:56:32+08:00">2021-04-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,7 +233,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>6.5k</span>
+              <span>6.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -255,57 +255,57 @@
         <h4 id="1-日常开发中，常用的正则表达式有哪些"><a href="#1-日常开发中，常用的正则表达式有哪些" class="headerlink" title="1. 日常开发中，常用的正则表达式有哪些"></a>1. 日常开发中，常用的正则表达式有哪些</h4><a id="more"></a>
 
 <ul>
-<li>邮编。</li>
-<li>电话号码，包括手机号码和固定电话号码。</li>
-<li>日期和时间。</li>
-<li>身份证号。</li>
-<li>IP 地址。</li>
-<li>URL。</li>
-<li>Email 地址。</li>
-<li>中文字符。</li>
+<li>邮编</li>
+<li>电话号码，包括手机号码和固定电话号码</li>
+<li>日期和时间</li>
+<li>身份证号</li>
+<li>IP 地址</li>
+<li>URL</li>
+<li>Email 地址</li>
+<li>中文字符</li>
 </ul>
 <h4 id="2-写正则表达式时的细节有"><a href="#2-写正则表达式时的细节有" class="headerlink" title="2. 写正则表达式时的细节有"></a>2. 写正则表达式时的细节有</h4><ul>
-<li>对于同一个目的，正则表达式<strong>往往有多种写法，大多没有唯一正确的写法</strong>。</li>
-<li>写一个正则表达式，匹配希望匹配的内容往往比较容易，但让它不匹配不希望匹配的内容则往往比较困难。即，<strong>保证精确性经常是很难的</strong>。</li>
-<li>很多时候，也没有必要写完全精确的表达式，<strong>需要写到多精确与需要处理的文本和需求有关</strong>。</li>
-<li>正则表达式难以表达的，可以通过写程序进一步处理。</li>
+<li>对于同一个目的，正则表达式<strong>往往有多种写法，大多没有唯一正确的写法</strong></li>
+<li>写一个正则表达式，匹配希望匹配的内容往往比较容易，但让它不匹配不希望匹配的内容则往往比较困难。即，<strong>保证精确性经常是很难的</strong></li>
+<li>很多时候，也没有必要写完全精确的表达式，<strong>需要写到多精确与需要处理的文本和需求有关</strong></li>
+<li>正则表达式难以表达的，可以通过写程序进一步处理</li>
 </ul>
 <h4 id="3-写一个匹配邮编的正则表达式"><a href="#3-写一个匹配邮编的正则表达式" class="headerlink" title="3. 写一个匹配邮编的正则表达式"></a>3. 写一个匹配邮编的正则表达式</h4><ul>
-<li><p><strong>邮编是 6 位数字</strong>。</p>
+<li><p><strong>邮编是 6 位数字</strong></p>
 <ul>
-<li><p><code>[0-9]{6}</code>：如果用于查找，这个表达式是不够的：</p>
+<li><p><code>[0-9]{6}</code>：如果用于查找，这个表达式是不够的</p>
   <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//验证输入是否为邮编</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Pattern ZIP_CODE_PATTERN = Pattern.compile(<span class="string">"[0-9]&#123;6&#125;"</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isZipCode</span><span class="params">(<span class="keyword">String</span> <span class="built_in">text</span>)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> ZIP_CODE_PATTERN.matcher(<span class="built_in">text</span>).matches();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p><code>(?&lt;![0-9])[0-9]{6}(?![0-9])</code>：环视边界匹配：</p>
+<li><p><code>(?&lt;![0-9])[0-9]{6}(?![0-9])</code>：环视边界匹配</p>
   <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//用于查找</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Pattern ZIP_CODE_PATTERN = Pattern.compile(</span><br><span class="line">    <span class="string">"(?&lt;![0-9])"</span> <span class="comment">//左边不能有数字</span></span><br><span class="line">    + <span class="string">"[0-9]&#123;6&#125;"</span></span><br><span class="line">    + <span class="string">"(?![]0-9)"</span> <span class="comment">//右边不能有数字</span></span><br><span class="line">);</span><br><span class="line">		</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">findZipCode</span><span class="params">(<span class="keyword">String</span> <span class="built_in">text</span>)</span> </span>&#123;</span><br><span class="line">    Matcher matcher = ZIP_CODE_PATTERN.matcher(<span class="built_in">text</span>);</span><br><span class="line">    <span class="keyword">while</span>(matcher.<span class="built_in">find</span>()) &#123;</span><br><span class="line">        System.out.<span class="built_in">println</span>(matcher.group());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">		</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">    findZipCode(<span class="string">"邮编 100013， 电话 18612345678"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
-<li><p>6 位数字不一定是邮编，如果需要更精确的验证，可以写程序进一步检查。</p>
+<li><p>6 位数字不一定是邮编，如果需要更精确的验证，可以写程序进一步检查</p>
 </li>
 </ul>
 <h4 id="4-写一个匹配手机号码的正则表达式"><a href="#4-写一个匹配手机号码的正则表达式" class="headerlink" title="4. 写一个匹配手机号码的正则表达式"></a>4. 写一个匹配手机号码的正则表达式</h4><ul>
-<li><p><code>[0-9]{11}</code>：11 数字，最简单的表达式。</p>
+<li><p><code>[0-9]{11}</code>：11 数字，最简单的表达式</p>
 </li>
-<li><p><code>1[34578][0-9]{9}</code>：第 1 位是 1，第 2 位取值 3<code>4</code>5<code>7</code>8 之一。</p>
+<li><p><code>1[34578][0-9]{9}</code>：第 1 位是 1，第 2 位取值 3<code>4</code>5<code>7</code>8 之一</p>
 </li>
-<li><p><code>1[34578][0-9]-?[0-9]{4}-?[0-9]{4}</code>：带有两个连字符的表示形式。</p>
+<li><p><code>1[34578][0-9]-?[0-9]{4}-?[0-9]{4}</code>：带有两个连字符的表示形式</p>
 </li>
-<li><p><code>(?&lt;![0-9])((0|\+86|0086)\s?)?1[34578][0-9]-?[0-9]{4}-?[0-9]{4}(?![0-9])</code>：在手机号前面，可能还有 0、+86 或 0086，和手机号码之间可能还有一个空格；和邮编类似，如果为了抽取，也要在左右加环视边界匹配，左右不能是数字。用 Java 表示的代码为：</p>
+<li><p><code>(?&lt;![0-9])((0|\+86|0086)\s?)?1[34578][0-9]-?[0-9]{4}-?[0-9]{4}(?![0-9])</code>：在手机号前面，可能还有 0、+86 或 0086，和手机号码之间可能还有一个空格；和邮编类似，如果为了抽取，也要在左右加环视边界匹配，左右不能是数字。用 Java 表示的代码为</p>
   <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public static Pattern MOBILE<span class="emphasis">_PHONE_</span>PATTERN = Pattern.compile(</span><br><span class="line"><span class="code">    "(?&lt;![0-9])" //左边不能有数字</span></span><br><span class="line"><span class="bullet">    + </span>"((0|\\+86|0086)\\s?)?" //0 +86 0086</span><br><span class="line"><span class="bullet">    + </span>"1[<span class="string">34578</span>][<span class="symbol">0-9</span>]-?[0-9]&#123;4&#125;-?[0-9]&#123;4&#125;" //186-1234-5678</span><br><span class="line"><span class="bullet">    + </span>"(?![0-9])"); //右边不能有数字</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
 <h4 id="5-写一个匹配固定电话号码的正则表达式"><a href="#5-写一个匹配固定电话号码的正则表达式" class="headerlink" title="5. 写一个匹配固定电话号码的正则表达式"></a>5. 写一个匹配固定电话号码的正则表达式</h4><ul>
-<li><p>不考虑分机，中国的固定电话一般由两部分组成：<strong>区号</strong>和<strong>市内号码</strong>。区号以 0 开头，3 到 4 位；市号是 7 到 8 位：</p>
+<li><p>不考虑分机，中国的固定电话一般由两部分组成：<strong>区号</strong>和<strong>市内号码</strong>。区号以 0 开头，3 到 4 位；市号是 7 到 8 位</p>
 <ul>
-<li><p>区号：0[0-9]{2,3}。</p>
+<li><p>区号：0[0-9]{2,3}</p>
 </li>
-<li><p>市号：[0-9]{7,8}。</p>
+<li><p>市号：[0-9]{7,8}</p>
 </li>
-<li><p><code>(\(?0[0-9]{2,3}\)?-?)?[0-9]{7,8}</code>：区号可能用括号包含，区号与市号之间可能有连字符，整个区号是可选的。</p>
+<li><p><code>(\(?0[0-9]{2,3}\)?-?)?[0-9]{7,8}</code>：区号可能用括号包含，区号与市号之间可能有连字符，整个区号是可选的</p>
 </li>
-<li><p>再加上左右边界环视，完整的 Java 表达式为：</p>
+<li><p>再加上左右边界环视，完整的 Java 表达式为</p>
   <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public <span class="keyword">static</span> <span class="built_in">Pattern</span> FIXED_PHONE_PATTERN = <span class="built_in">Pattern</span>.compile(</span><br><span class="line">    <span class="string">"(?&lt;![0-9])"</span> <span class="comment">//左边不能有数字</span></span><br><span class="line">    + <span class="string">"(\\(?0[0-9]&#123;2,3&#125;\\)?-?)?"</span> <span class="comment">//区号</span></span><br><span class="line">    + <span class="string">"[0-9]&#123;7,8&#125;"</span> <span class="comment">//市内号码</span></span><br><span class="line">    + <span class="string">"(?![0-9])"</span> <span class="comment">//右边不能有数字</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 
 </li>
@@ -313,144 +313,144 @@
 </li>
 </ul>
 <h4 id="6-写一个表示日期的正则表达式（形如-2016-11-21）"><a href="#6-写一个表示日期的正则表达式（形如-2016-11-21）" class="headerlink" title="6. 写一个表示日期的正则表达式（形如 2016-11-21）"></a>6. 写一个表示日期的正则表达式（形如 2016-11-21）</h4><ul>
-<li><p>年月日之间用连字符分隔，月和日可能只有一位。年一般没有限制，但月只能取值 1<del>12，日只能取值 1</del>31。</p>
+<li><p>年月日之间用连字符分隔，月和日可能只有一位。年一般没有限制，但月只能取值 1<del>12，日只能取值 1</del>31</p>
 </li>
-<li><p>对于月，有两种情况：1 月到 9 月，表达式可以为：<code>0?[1-9]</code>；10 月到 12 月，表达式可以为：<code>1[0-2]</code>。所以，月的表达式为：<code>(0?[1-9]|1[0-2])</code>。</p>
+<li><p>对于月，有两种情况：1 月到 9 月，表达式可以为：<code>0?[1-9]</code>；10 月到 12 月，表达式可以为：<code>1[0-2]</code>。所以，月的表达式为：<code>(0?[1-9]|1[0-2])</code></p>
 </li>
-<li><p>对于日，有三种情况：1 到 9 号，表达式为：<code>0?[1-9]</code>；10 号到 29 号，表达式为：<code>[1-2][0-9]</code>；30 号到 31 号，表达式为：<code>3[0-1]</code>。</p>
+<li><p>对于日，有三种情况：1 到 9 号，表达式为：<code>0?[1-9]</code>；10 号到 29 号，表达式为：<code>[1-2][0-9]</code>；30 号到 31 号，表达式为：<code>3[0-1]</code></p>
 </li>
-<li><p>所以，整个表达式为：<code>\d{4}-(0?[1-9]|1[0-2])-(0?[1-9]|[1-2][0-9]|3[0-1])</code>。</p>
+<li><p>所以，整个表达式为：<code>\d{4}-(0?[1-9]|1[0-2])-(0?[1-9]|[1-2][0-9]|3[0-1])</code></p>
 </li>
-<li><p>加上左右边界环视，完整的 Java 表示为：</p>
+<li><p>加上左右边界环视，完整的 Java 表示为</p>
   <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public static Pattern DATE_PATTERN = Pattern.compile(</span><br><span class="line"><span class="code">    "(?&lt;![0-9])" //左边不能有数字</span></span><br><span class="line"><span class="bullet">    + </span>"\\d&#123;4&#125;" //年</span><br><span class="line"><span class="bullet">    + </span>"(0?[1-9]|1[0-2])-" //月</span><br><span class="line"><span class="bullet">    + </span>"(0?[<span class="string">1-9</span>]|[<span class="string">1-2</span>][<span class="symbol">0-9</span>]|3[01])" //日</span><br><span class="line"><span class="bullet">    + </span>"(?![0-9])" //右边不能有数字</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
 <h4 id="7-写一个表示时间的正则表达式"><a href="#7-写一个表示时间的正则表达式" class="headerlink" title="7. 写一个表示时间的正则表达式"></a>7. 写一个表示时间的正则表达式</h4><ul>
-<li><p>考虑 24 小时制，只考虑小时和分钟 ，小时和分钟都用固定两位表示。格式比如：10:57，基本表达式为：<code>\d{2}:\d{2}</code>。</p>
+<li><p>考虑 24 小时制，只考虑小时和分钟 ，小时和分钟都用固定两位表示。格式比如：10:57，基本表达式为：<code>\d{2}:\d{2}</code></p>
 </li>
-<li><p>小时取值范围为 0~23，更精确的表达式为：<code>([0-1][0-9]|2[0-3])</code>。</p>
+<li><p>小时取值范围为 0~23，更精确的表达式为：<code>([0-1][0-9]|2[0-3])</code></p>
 </li>
-<li><p>分钟取值范围为 0~59，更精确的表达式为：<code>[0-5][0-9]</code>。</p>
+<li><p>分钟取值范围为 0~59，更精确的表达式为：<code>[0-5][0-9]</code></p>
 </li>
-<li><p>所以，整个表达式为：<code>([0-1][0-9]|2[0-3]):[0-5][0-9]</code>。</p>
+<li><p>所以，整个表达式为：<code>([0-1][0-9]|2[0-3]):[0-5][0-9]</code></p>
 </li>
-<li><p>加上左右边界环视，完整的 Java 表示为：</p>
+<li><p>加上左右边界环视，完整的 Java 表示为</p>
   <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public static Pattern TIME_PATTERN = Pattern.compile(</span><br><span class="line"><span class="code">    "(?&lt;![0-9])" //左边不能有数字</span></span><br><span class="line"><span class="bullet">    + </span>"([<span class="string">0-1</span>][<span class="symbol">0-9</span>]|2[0-3])" //小时</span><br><span class="line"><span class="bullet">    + </span>":" + "[<span class="string">0-5</span>][<span class="symbol">0-9</span>]" //分钟</span><br><span class="line"><span class="bullet">    + </span>"(?![0-9])" //右边不能有数字</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
 <h4 id="8-写一个表示身份证号的正则表达式"><a href="#8-写一个表示身份证号的正则表达式" class="headerlink" title="8. 写一个表示身份证号的正则表达式"></a>8. 写一个表示身份证号的正则表达式</h4><ul>
-<li><p><strong>身份证有一代和二代之分</strong>，一代身份证号是 15 位数字，二代身份证号是 18 位数字，都不能以 0 开头。对于二代身份证，最后一位可能为 x 或 X，其他是数字（符合这个要求的不一定就是身份证号，身份证号还有一些更为具体的要求）。</p>
+<li><p><strong>身份证有一代和二代之分</strong>，一代身份证号是 15 位数字，二代身份证号是 18 位数字，都不能以 0 开头。对于二代身份证，最后一位可能为 x 或 X，其他是数字（符合这个要求的不一定就是身份证号，身份证号还有一些更为具体的要求）</p>
 </li>
-<li><p>一代身份证号表达式可以为：<code>[1-9][0-9]{14}</code>。</p>
+<li><p>一代身份证号表达式可以为：<code>[1-9][0-9]{14}</code></p>
 </li>
-<li><p>二代身份证号表达式可以为：<code>[1-9][0-9]{16}[0-9xX]</code>。</p>
+<li><p>二代身份证号表达式可以为：<code>[1-9][0-9]{16}[0-9xX]</code></p>
 </li>
-<li><p>上面两个表达式的前面部分是相同的，二代身份证号表达式多了如下内容：<code>[0-9]{2}[0-9xX]</code>。所以，它们可以合并为一个表达式，即：<code>[1-9][0-9]{14}([0-9]{2}[0-9xX])?</code>。</p>
+<li><p>上面两个表达式的前面部分是相同的，二代身份证号表达式多了如下内容：<code>[0-9]{2}[0-9xX]</code>。所以，它们可以合并为一个表达式，即：<code>[1-9][0-9]{14}([0-9]{2}[0-9xX])?</code></p>
 </li>
-<li><p>加上左右边界环视，完整的 Java 表示为：</p>
+<li><p>加上左右边界环视，完整的 Java 表示为</p>
   <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public static Pattern ID<span class="emphasis">_CARD_</span>PATTERN = Pattern.compile(</span><br><span class="line"><span class="code">    "(?&lt;![0-9])" //左边不能有数字</span></span><br><span class="line"><span class="bullet">    + </span>"[<span class="string">1-9</span>][<span class="symbol">0-9</span>]&#123;14&#125;" //一代身份证</span><br><span class="line"><span class="bullet">    + </span>"([0-9]&#123;2&#125;[0-9xX])?" //二代身份证多出的部分</span><br><span class="line"><span class="bullet">    + </span>"(?![0-9])" //右边不能有数字</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
 <h4 id="9-写一个表示-IP-地址的正则表达式"><a href="#9-写一个表示-IP-地址的正则表达式" class="headerlink" title="9. 写一个表示 IP 地址的正则表达式"></a>9. 写一个表示 IP 地址的正则表达式</h4><ul>
-<li><p>IP 地址示例如下：192.168.3.5。点号分隔，4 段数字，每个数字范围是 0~255。最简单的表达式为：<code>(\d{1,3}\.){3}\d{1-3}</code>。</p>
+<li><p>IP 地址示例如下：192.168.3.5。点号分隔，4 段数字，每个数字范围是 0~255。最简单的表达式为：<code>(\d{1,3}\.){3}\d{1-3}</code></p>
 </li>
-<li><p><code>\d{1,3}</code> 太简单，没有满足 0~255 之间的约束，要满足这个约束，需要分多种情况考虑。</p>
+<li><p><code>\d{1,3}</code> 太简单，没有满足 0~255 之间的约束，要满足这个约束，需要分多种情况考虑</p>
 </li>
-<li><p>值是一位数，前面可能有 0~2 个 0，表达式为：<code>0{0,2}[0-9]</code>。</p>
+<li><p>值是一位数，前面可能有 0~2 个 0，表达式为：<code>0{0,2}[0-9]</code></p>
 </li>
-<li><p>值是两位数，前面可能有一个 0，表达式为：<code>0?[0-9]{2}</code>。</p>
+<li><p>值是两位数，前面可能有一个 0，表达式为：<code>0?[0-9]{2}</code></p>
 </li>
-<li><p>值是三位数，又要分为多种情况：</p>
+<li><p>值是三位数，又要分为多种情况</p>
 <ul>
-<li>以 1 开头的，后两位没有限制，表达式为：<code>1[0-9]{2}</code>。</li>
-<li>以 2 开头的，如果第二位是 0 到 4，则第三位没有限制，表达式为：<code>2[0-4][0-9]</code>。</li>
-<li>如果第二位是 5，则第三位取值为 0 到 5，表达式为：<code>25[0-5]</code>。</li>
+<li>以 1 开头的，后两位没有限制，表达式为：<code>1[0-9]{2}</code></li>
+<li>以 2 开头的，如果第二位是 0 到 4，则第三位没有限制，表达式为：<code>2[0-4][0-9]</code></li>
+<li>如果第二位是 5，则第三位取值为 0 到 5，表达式为：<code>25[0-5]</code></li>
 </ul>
 </li>
-<li><p>所以，<code>\d{1,3}</code> 更为精确的表示为：<code>(0{0,2}[0-9]|0?[0-9]{2}|1[0-9]{2}[0-4][0-9]|25[0-5])</code>。</p>
+<li><p>所以，<code>\d{1,3}</code> 更为精确的表示为：<code>(0{0,2}[0-9]|0?[0-9]{2}|1[0-9]{2}[0-4][0-9]|25[0-5])</code></p>
 </li>
-<li><p>加上左右边界环视，IP 地址的完整 Java 表示为：</p>
+<li><p>加上左右边界环视，IP 地址的完整 Java 表示为</p>
   <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public static Pattern IP_PATTERN = Pattern.compile(</span><br><span class="line"><span class="code">    "(?&lt;![0-9])" //左边不能有数字</span></span><br><span class="line"><span class="bullet">    + </span>"((0&#123;0,2&#125;[<span class="string">0-9</span>]|0?[<span class="string">0-9</span>]&#123;2&#125;|1[<span class="string">0-9</span>]&#123;2&#125;|2[<span class="string">0-4</span>][<span class="symbol">0-9</span>]|25[0-5])\\.)&#123;3&#125;"</span><br><span class="line"><span class="bullet">    + </span>"(0&#123;0,2&#125;[<span class="string">0-9</span>]|0?[<span class="string">0-9</span>]&#123;2&#125;|1[<span class="string">0-9</span>]&#123;2&#125;|2[<span class="string">0-4</span>][<span class="symbol">0-9</span>]|25[0-25])"</span><br><span class="line"><span class="bullet">    + </span>"(?![0-9])" //右边不能有数字</span><br><span class="line">);</span><br></pre></td></tr></table></figure></li>
 <li><p><em>（以上答案待商榷）</em></p>
 </li>
 </ul>
 <h4 id="10-写一个表示-URL-的正则表达式"><a href="#10-写一个表示-URL-的正则表达式" class="headerlink" title="10. 写一个表示 URL 的正则表达式"></a>10. 写一个表示 URL 的正则表达式</h4><ul>
-<li><p>URL 的格式比较复杂，其规范定义在 <a href="https://tools.ietf.org/html/rfc1738" target="_blank" rel="noopener">https://tools.ietf.org/html/rfc1738</a>。这里只考虑 HTTP 协议，其通用格式是：<strong>http://<host>:<port>/<path>?<searchpart></strong>。</p>
+<li><p>URL 的格式比较复杂，其规范定义在 <a href="https://tools.ietf.org/html/rfc1738" target="_blank" rel="noopener">https://tools.ietf.org/html/rfc1738</a>。这里只考虑 HTTP 协议，其通用格式是：<strong>http://<host>:<port>/<path>?<searchpart></strong></p>
 </li>
-<li><p>开始是 http://，接着是主机名，主机名之后是可选的端口，再之后是可选的路径，路径后是可选的查询字符串，以 ? 开头。比如，<a href="http://www.example.com:8080/ab/c/def?q1=abc&amp;q2=def。" target="_blank" rel="noopener">http://www.example.com:8080/ab/c/def?q1=abc&amp;q2=def。</a></p>
+<li><p>开始是 http://，接着是主机名，主机名之后是可选的端口，再之后是可选的路径，路径后是可选的查询字符串，以 ? 开头。比如，<a href="http://www.example.com:8080/ab/c/def?q1=abc&amp;q2=def" target="_blank" rel="noopener">http://www.example.com:8080/ab/c/def?q1=abc&amp;q2=def</a></p>
 </li>
-<li><p>主机名中的字符可以是字母、数字、减号和点号，所以表达式可以为：<code>[-0-9a-zA-Z.]+</code>。</p>
+<li><p>主机名中的字符可以是字母、数字、减号和点号，所以表达式可以为：<code>[-0-9a-zA-Z.]+</code></p>
 </li>
-<li><p>端口部分可以写为：<code>(:\d+)?</code>。</p>
+<li><p>端口部分可以写为：<code>(:\d+)?</code></p>
 </li>
-<li><p>路径由多个子路径组成，每个子路径以 / 开头，后跟零个或多个非 / 的字符。简单地说，表达式可以为：<code>(/[^/]*)*</code>；更精确地说，把所有允许的字符列出来，表达式为：<code>(/[-\w$.+!*&#39;(),%;:@&amp;=]*)*</code>。</p>
+<li><p>路径由多个子路径组成，每个子路径以 / 开头，后跟零个或多个非 / 的字符。简单地说，表达式可以为：<code>(/[^/]*)*</code>；更精确地说，把所有允许的字符列出来，表达式为：<code>(/[-\w$.+!*&#39;(),%;:@&amp;=]*)*</code></p>
 </li>
-<li><p>对于查询字符，简单地说，由非空字符串组成，表达式为：<code>\?[\S]*</code>；更精确地说，把所有允许的字符列出来，表达式为：<code>\?[-\w$.+!*&#39;(),%;:@&amp;=]*</code>。</p>
+<li><p>对于查询字符，简单地说，由非空字符串组成，表达式为：<code>\?[\S]*</code>；更精确地说，把所有允许的字符列出来，表达式为：<code>\?[-\w$.+!*&#39;(),%;:@&amp;=]*</code></p>
 </li>
-<li><p>路径和查询字符串是可选的，且查询字符串只有在至少存在一个路径的情况下才能出现，其模式为：<code>(/&lt;sub_path&gt;(/&lt;sub_path&gt;)*(\?&lt;search&gt;)?)?</code>。所以，路径和查询部分的简单表达式为：<code>(/[^/]*(/[^/]*)*(\?[\S]*)?)?</code>；精确表达式为：<code>(/[-\s$.+!*&#39;(),%;:@&amp;=]*(/[-\w$.+!*&#39;(),%;:@&amp;=]*)*(\?[-\w$.+!*&#39;(),%;:@&amp;=]*)?)?</code>。</p>
+<li><p>路径和查询字符串是可选的，且查询字符串只有在至少存在一个路径的情况下才能出现，其模式为：<code>(/&lt;sub_path&gt;(/&lt;sub_path&gt;)*(\?&lt;search&gt;)?)?</code>。所以，路径和查询部分的简单表达式为：<code>(/[^/]*(/[^/]*)*(\?[\S]*)?)?</code>；精确表达式为：<code>(/[-\s$.+!*&#39;(),%;:@&amp;=]*(/[-\w$.+!*&#39;(),%;:@&amp;=]*)*(\?[-\w$.+!*&#39;(),%;:@&amp;=]*)?)?</code></p>
 </li>
-<li><p>HTTP 正则表达式的完整 Java 表达式为：</p>
+<li><p>HTTP 正则表达式的完整 Java 表达式为</p>
   <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public <span class="keyword">static</span> <span class="built_in">Pattern</span> HTTP_PATTERN = <span class="built_in">Pattern</span>.compile(</span><br><span class="line">    <span class="string">"http://"</span> + <span class="string">"[-0-1a-zA-Z.]+"</span> <span class="comment">//主机名</span></span><br><span class="line">    + <span class="string">"(:\\d+)?"</span> <span class="comment">//端口</span></span><br><span class="line">    + <span class="string">"("</span> <span class="comment">//可选的路径和查询 - 开始</span></span><br><span class="line">        + <span class="string">"/[-\\w$.+!*'(),%;:@&amp;=]*"</span> <span class="comment">//第一层路径</span></span><br><span class="line">        + <span class="string">"(/[-\\w$.+!*'(),%;:@&amp;=]*)*"</span> <span class="comment">//可选的其他层路径</span></span><br><span class="line">        + <span class="string">"(\\?[-\\w$.+!*'(),%;:@&amp;=]*)?"</span> <span class="comment">//可选的查询字符串</span></span><br><span class="line">    + <span class="string">")?"</span> <span class="comment">//可选的路径和查询 - 结束</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
 <h4 id="11-写一个-Email-地址的正则表达式"><a href="#11-写一个-Email-地址的正则表达式" class="headerlink" title="11. 写一个 Email 地址的正则表达式"></a>11. 写一个 Email 地址的正则表达式</h4><ul>
-<li><p>完整的 Email 规范比较复杂，定义在 <a href="https://tools.ietf.org/html/rfc822" target="_blank" rel="noopener">https://tools.ietf.org/html/rfc822</a>。</p>
+<li><p>完整的 Email 规范比较复杂，定义在 <a href="https://tools.ietf.org/html/rfc822" target="_blank" rel="noopener">https://tools.ietf.org/html/rfc822</a></p>
 </li>
-<li><p>新浪邮箱：</p>
+<li><p>新浪邮箱</p>
 <ul>
-<li><p>举例：<a href="mailto:abc@sina.com">abc@sina.com</a>。</p>
+<li><p>举例：<a href="mailto:abc@sina.com">abc@sina.com</a></p>
 </li>
-<li><p>对于用户名部分，它的要求是 4~16 个字符，可使用英文小写、数字、下划线，但下划线不能在首尾。</p>
+<li><p>对于用户名部分，它的要求是 4~16 个字符，可使用英文小写、数字、下划线，但下划线不能在首尾</p>
 </li>
-<li><p>验证用户名，可以为：<code>[a-z0-9][a-z0-9_]{2,14}[a-z0-9]</code>。</p>
+<li><p>验证用户名，可以为：<code>[a-z0-9][a-z0-9_]{2,14}[a-z0-9]</code></p>
 </li>
-<li><p>完整的 Java 表达式为：</p>
+<li><p>完整的 Java 表达式为</p>
   <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public <span class="keyword">static</span> <span class="built_in">Pattern</span> SINA_EMAIL-PATTERN = <span class="built_in">Pattern</span>.compile(</span><br><span class="line">    <span class="string">"[a-z0-9]"</span></span><br><span class="line">    + <span class="string">"[a-z0-9_]&#123;2,14&#125;"</span></span><br><span class="line">    + <span class="string">"[a-z0-9]@sina\\.com"</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
-<li><p>QQ 邮箱：</p>
+<li><p>QQ 邮箱</p>
 <ul>
-<li><p>3~18 个字符，可使用英文、数字、减号、点号或下划线。</p>
+<li><p>3~18 个字符，可使用英文、数字、减号、点号或下划线</p>
 </li>
-<li><p>必须以英文字母开头，必须以英文字母或数字结尾。</p>
+<li><p>必须以英文字母开头，必须以英文字母或数字结尾</p>
 </li>
-<li><p>点号、减号、下划线不能连续出现两次或两次以上。</p>
+<li><p>点号、减号、下划线不能连续出现两次或两次以上</p>
 </li>
-<li><p>如果只有第 1 条，可以为：[-0-9a-zA-Z._]{3,18}。</p>
+<li><p>如果只有第 1 条，可以为：[-0-9a-zA-Z._]{3,18}</p>
 </li>
-<li><p>为满足第 2 条，可以改为：[a-zA-Z][-0-9a-zA-Z._]{1,16}[a-zA-Z0-9]。</p>
+<li><p>为满足第 2 条，可以改为：[a-zA-Z][-0-9a-zA-Z._]{1,16}[a-zA-Z0-9]</p>
 </li>
-<li><p>使用边界环视满足第 3 条，左边加如下表达式：(?![-0-9a-zA-Z.<em>]*(–|..|_</em>))。</p>
+<li><p>使用边界环视满足第 3 条，左边加如下表达式：(?![-0-9a-zA-Z.<em>]*(–|..|_</em>))</p>
 </li>
-<li><p>完整表达式可以为：(?![-0-9a-zA-Z.<em>]*(–|..|_</em>))[a-zA-Z][-0-9a-zA-Z._]{1,16}[a-zA-Z0-9]。</p>
+<li><p>完整表达式可以为：(?![-0-9a-zA-Z.<em>]*(–|..|_</em>))[a-zA-Z][-0-9a-zA-Z._]{1,16}[a-zA-Z0-9]</p>
 </li>
-<li><p>完整的 Java 表达式为：</p>
+<li><p>完整的 Java 表达式为</p>
   <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public <span class="keyword">static</span> <span class="built_in">Pattern</span> QQ_EMAIL_PATTERN = <span class="built_in">Pattern</span>.compile(</span><br><span class="line">    <span class="comment">//点号、减号、下划线不能连续出现两次或两次以上</span></span><br><span class="line">    <span class="string">"(?![-0-9a-zA-Z._]*(--|\\.\\.|__))"</span></span><br><span class="line">    + <span class="string">"[a-zA-Z]"</span> <span class="comment">//必须以英文字母开头</span></span><br><span class="line">    + <span class="string">"[-0-9a-zA-Z._]&#123;1,16&#125;"</span> <span class="comment">//3~18位英文、数字、减号、点号、下划线组成</span></span><br><span class="line">    + <span class="string">"[a-zA-Z0-9]@qq\\.com"</span> <span class="comment">//由英文字母、数字结尾</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
-<li><p>一般的邮箱的规则是：以 @ 作为分隔符，前面是用户名，后面是域名：</p>
+<li><p>一般的邮箱的规则是：以 <code>@</code> 作为分隔符，前面是用户名，后面是域名</p>
 <ul>
-<li><p>用户名的一般规则是：</p>
+<li><p>用户名的一般规则是</p>
 <ul>
-<li>由英文字母、数字、下划线、减号、点号组成。</li>
-<li>至少 1 位，不超过 64 位。</li>
-<li>开头不能是减号、点号和下划线。</li>
-<li>比如，<a href="mailto:h_llo-abc.good@example.com">h_llo-abc.good@example.com</a>，表达式可以为：[0-9a-zA-Z][-._0-9a-zA-Z]{0,63}。</li>
+<li>由英文字母、数字、下划线、减号、点号组成</li>
+<li>至少 1 位，不超过 64 位</li>
+<li>开头不能是减号、点号和下划线</li>
+<li>比如，<a href="mailto:h_llo-abc.good@example.com">h_llo-abc.good@example.com</a>，表达式可以为：[0-9a-zA-Z][-._0-9a-zA-Z]{0,63}</li>
 </ul>
 </li>
-<li><p>域名部分以点号分隔为多个部分，至少有两个部分。</p>
+<li><p>域名部分以点号分隔为多个部分，至少有两个部分</p>
 <ul>
-<li><p>最后一部分是顶级域名，由 2~3 个英文字母组成，表达式可以为：[a-zA-Z]{2,3}。</p>
+<li><p>最后一部分是顶级域名，由 2~3 个英文字母组成，表达式可以为：[a-zA-Z]{2,3}</p>
 </li>
-<li><p>对于域名的其他点号分隔的部分，每个部分一般由字母、数字、减号组成，但减号不能在开头，长度不能超过 63 个字符，表达式可以为：[0-9a-zA-Z][-0-9a-zA-Z]{0,62}.)+[a-zA-Z]{2,3}。</p>
+<li><p>对于域名的其他点号分隔的部分，每个部分一般由字母、数字、减号组成，但减号不能在开头，长度不能超过 63 个字符，表达式可以为：[0-9a-zA-Z][-0-9a-zA-Z]{0,62}.)+[a-zA-Z]{2,3}</p>
 </li>
-<li><p>完整的 Java 表示为：</p>
+<li><p>完整的 Java 表示为</p>
   <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public static Pattern GENERAL<span class="emphasis">_EMAIL_</span>PATTERN = Pattern.compile(</span><br><span class="line"><span class="code">    "[0-9a-zA-Z][-._0-9a-zA-Z]&#123;0,63&#125;" //用户名</span></span><br><span class="line"><span class="bullet">    + </span>"@"</span><br><span class="line"><span class="bullet">    + </span>"([<span class="string">0-9a-zA-Z</span>][<span class="symbol">-0-9a-zA-Z</span>]&#123;0,62&#125;\\.)+" //域名部分</span><br><span class="line"><span class="bullet">    + </span>"[a-zA-Z]&#123;2,3&#125;" //顶级域名</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 
 </li>
@@ -460,8 +460,8 @@
 </li>
 </ul>
 <h4 id="12-写一个匹配中文字符的正则表达式"><a href="#12-写一个匹配中文字符的正则表达式" class="headerlink" title="12. 写一个匹配中文字符的正则表达式"></a>12. 写一个匹配中文字符的正则表达式</h4><ul>
-<li><strong>中文字符的 Unicode 编号一般位于 \u4e00~\u9fff 之间</strong>，所以匹配任意一个中文字符的表达式可以为：<strong><code>[\u4e00-\u9fff]</code></strong>。</li>
-<li>Java 表达式为：<code>public static Pattern CHINESE_PATTERN = Pattern.compile(&quot;[\\u4e00-\\u9fff]&quot;);</code>。</li>
+<li><strong>中文字符的 Unicode 编号一般位于 \u4e00~\u9fff 之间</strong>，所以匹配任意一个中文字符的表达式可以为：<strong><code>[\u4e00-\u9fff]</code></strong></li>
+<li>Java 表达式为：<code>public static Pattern CHINESE_PATTERN = Pattern.compile(&quot;[\\u4e00-\\u9fff]&quot;);</code></li>
 </ul>
 
     </div>
