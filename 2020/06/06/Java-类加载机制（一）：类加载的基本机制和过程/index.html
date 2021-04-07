@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. 类加载器 ClassLoader 的作用是">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-06-06T10:47:27.000Z">
-<meta property="article:modified_time" content="2020-06-07T16:04:16.000Z">
+<meta property="article:modified_time" content="2021-04-07T07:04:33.037Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="类加载机制">
 <meta property="article:tag" content="类加载的基本机制和过程">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-08 00:04:16" itemprop="dateModified" datetime="2020-06-08T00:04:16+08:00">2020-06-08</time>
+                <time title="修改时间：2021-04-07 15:04:33" itemprop="dateModified" datetime="2021-04-07T15:04:33+08:00">2021-04-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -252,65 +252,67 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-类加载器-ClassLoader-的作用是"><a href="#1-类加载器-ClassLoader-的作用是" class="headerlink" title="1. 类加载器 ClassLoader 的作用是"></a>1. 类加载器 ClassLoader 的作用是</h4><a id="more"></a>
+        <h4 id="1-类加载器-ClassLoader-的作用是"><a href="#1-类加载器-ClassLoader-的作用是" class="headerlink" title="1. 类加载器 ClassLoader 的作用是"></a>1. 类加载器 <code>ClassLoader</code> 的作用是</h4><a id="more"></a>
 
 <ul>
-<li>类加载器 <code>ClassLoader</code> 就是<strong>加载其他类的类</strong>。</li>
-<li>类加载器负责<strong>将字节码文件加载到内存</strong>，创建 <strong><code>Class</code></strong> 对象。</li>
+<li>类加载器 <code>ClassLoader</code> 就是<strong>加载其他类的类</strong></li>
+<li>类加载器负责<strong>将字节码文件加载到内存</strong>，创建 <strong><code>Class</code></strong> 对象</li>
 </ul>
-<h4 id="2-自定义-ClassLoader-可以实现哪些功能"><a href="#2-自定义-ClassLoader-可以实现哪些功能" class="headerlink" title="2. 自定义 ClassLoader 可以实现哪些功能"></a>2. 自定义 ClassLoader 可以实现哪些功能</h4><ul>
-<li><strong>热部署</strong>。在不重启 Java 程序的情况下，<strong>动态替换类的实现</strong>，比如 Java Web 开发中的 JSP 技术就利用自定义的 <code>ClassLoader</code> 实现修改 JSP 代码即生效；OSGI(Open Service Gateway Initiative) 框架使用自定义的 <code>ClassLoader</code> 实现动态更新。</li>
-<li><strong>应用的模块化和互相隔离</strong>。不同的 <code>ClassLoader</code> 可以加载相同的类但互相隔离、互不影响。Web 应用服务器如 Tomcat 利用这一点在一个程序中管理多个 Web 应用程序，每个 Web 应用使用自己的 <code>ClassLoader</code> ，这些 Web 应用互不干扰。OSGI 和 Java 9 利用这一点实现了一个动态模块化架构，每个模块有自己的 <code>ClassLoader</code>，不同模块可以互不干扰。</li>
-<li><strong>从不同地方灵活加载</strong>。系统默认的 <code>ClassLoader</code> 一般从本地的 .class 文件或 jar 文件中加载字节码文件，通过自定义的 <code>ClassLoader</code>，我们可以从共享的 Web 服务器、数据库、缓存服务器等其他地方加载字节码文件。</li>
+<h4 id="2-自定义-ClassLoader-可以实现哪些功能"><a href="#2-自定义-ClassLoader-可以实现哪些功能" class="headerlink" title="2. 自定义 ClassLoader 可以实现哪些功能"></a>2. 自定义 <code>ClassLoader</code> 可以实现哪些功能</h4><ul>
+<li><strong>热部署</strong>。在不重启 Java 程序的情况下，<strong>动态替换类的实现</strong>，比如 Java Web 开发中的 JSP 技术就利用自定义的 <code>ClassLoader</code> 实现修改 JSP 代码即生效；OSGI(Open Service Gateway Initiative) 框架使用自定义的 <code>ClassLoader</code> 实现动态更新</li>
+<li><strong>应用的模块化和互相隔离</strong>。不同的 <code>ClassLoader</code> 可以加载相同的类但互相隔离、互不影响。Web 应用服务器如 Tomcat 利用这一点在一个程序中管理多个 Web 应用程序，每个 Web 应用使用自己的 <code>ClassLoader</code> ，这些 Web 应用互不干扰。OSGI 和 Java 9 利用这一点实现了一个动态模块化架构，每个模块有自己的 <code>ClassLoader</code>，不同模块可以互不干扰</li>
+<li><strong>从不同地方灵活加载</strong>。系统默认的 <code>ClassLoader</code> 一般从本地的 .class 文件或 jar 文件中加载字节码文件，通过自定义的 <code>ClassLoader</code>，我们可以从共享的 Web 服务器、数据库、缓存服务器等其他地方加载字节码文件</li>
 </ul>
 <h4 id="3-类加载的基本机制"><a href="#3-类加载的基本机制" class="headerlink" title="3. 类加载的基本机制"></a>3. 类加载的基本机制</h4><ul>
-<li>运行 Java 程序，就是执行 java 这个命令，指定包含 <code>main()</code> 方法的<strong>完整类名</strong>，以及一个 <code>classpath</code>，即<strong>类路径</strong>。类路径可以有多个，对于直接的 class 文件，路径是 class 文件的根目录；对于 jar 包，路径是 jar 包的完整名称（包括路径和 jar 包名）。</li>
-<li>Java 运行时，会根据<strong>类的完全限定名</strong>寻找并加载类，寻找的方式基本就是在系统类和指定的类路径中寻找。如果是 class 文件的根目录，则直接查看是否有对应的子目录及文件；如果是 jar 文件，则首先在内存中解压文件，然后再查看是否有对应的类。</li>
-<li><strong>负责加载类的类就是类加载器</strong>，它的<strong>输入</strong>是完全限定的类名，<strong>输出</strong>是 <code>Class</code> 对象。类加载器不是只有一个，一般程序运行时，都会有<strong>三个</strong>（<strong>适用于 Java 9 之前，Java 9 引入了模块化</strong>，基本概念是类似的，但有一些变化）。</li>
+<li>运行 Java 程序，就是执行 java 这个命令，指定包含 <code>main()</code> 方法的<strong>完整类名</strong>，以及一个 <code>classpath</code>，即<strong>类路径</strong>。类路径可以有多个，对于直接的 class 文件，路径是 class 文件的根目录；对于 jar 包，路径是 jar 包的完整名称（包括路径和 jar 包名）</li>
+<li>Java 运行时，会根据<strong>类的完全限定名</strong>寻找并加载类，寻找的方式基本就是在系统类和指定的类路径中寻找。如果是 class 文件的根目录，则直接查看是否有对应的子目录及文件；如果是 jar 文件，则首先在内存中解压文件，然后再查看是否有对应的类</li>
+<li><strong>负责加载类的类就是类加载器</strong>，它的<strong>输入</strong>是完全限定的类名，<strong>输出</strong>是 <code>Class</code> 对象。类加载器不是只有一个，一般程序运行时，都会有<strong>三个</strong>（<strong>适用于 Java 9 之前，Java 9 引入了模块化</strong>，基本概念是类似的，但有一些变化）</li>
 </ul>
 <h4 id="4-Java-程序在运行时，三个类加载器分别是"><a href="#4-Java-程序在运行时，三个类加载器分别是" class="headerlink" title="4. Java 程序在运行时，三个类加载器分别是"></a>4. Java 程序在运行时，三个类加载器分别是</h4><ul>
-<li><p><strong>启动类加载器（Bootstrap ClassLoader）</strong>：</p>
+<li><p><strong>启动类加载器（Bootstrap ClassLoader）</strong></p>
 <ul>
-<li>这个加载器是 <strong>JVM 实现</strong>的一部分，不是 Java 语言实现的，一般是 C++ 实现的。</li>
-<li>它负责<strong>加载 Java 的基础类</strong>，主要是 <code>&lt;JAVA_HOME&gt;/lib/rt.jar</code>，我们日常用的 Java 类库比如 Spring、ArrayList 等都位于该包内。</li>
+<li>这个加载器是 <strong>JVM 实现</strong>的一部分，不是 Java 语言实现的，一般是 C++ 实现的</li>
+<li>它负责<strong>加载 Java 的基础类</strong>，主要是 <code>&lt;JAVA_HOME&gt;/lib/rt.jar</code>，我们日常用的 Java 类库比如 Spring、ArrayList 等都位于该包内</li>
 </ul>
 </li>
-<li><p><strong>扩展类加载器（Extension ClassLoader）</strong>：</p>
+<li><p><strong>扩展类加载器（Extension ClassLoader）</strong></p>
 <ul>
-<li>这个加载器的<strong>实现类</strong>是 <code>sun.misc.Launcher$ExtClassLoader</code>。</li>
-<li>它负责加载 Java 的一些<strong>扩展类</strong>，一般是 <code>&lt;JAVA_HOME&gt;/lib/ext</code> 目录中的 jar 包。</li>
+<li>这个加载器的<strong>实现类</strong>是 <code>sun.misc.Launcher$ExtClassLoader</code></li>
+<li>它负责加载 Java 的一些<strong>扩展类</strong>，一般是 <code>&lt;JAVA_HOME&gt;/lib/ext</code> 目录中的 jar 包</li>
 </ul>
 </li>
-<li><p><strong>应用程序类加载器（Application ClassLoader）/系统类加载器（System ClassLoader）</strong>：</p>
+<li><p><strong>应用程序类加载器（Application ClassLoader）/系统类加载器（System ClassLoader）</strong></p>
 <ul>
-<li>这个加载器的<strong>实现类</strong>是 <code>sun.misc.Launcher$AppClassLoader</code>。</li>
-<li>它负责<strong>加载应用程序的类</strong>，包括自己写的和引入的第三方的类库，即所有在类路径中指定的类。</li>
+<li>这个加载器的<strong>实现类</strong>是 <code>sun.misc.Launcher$AppClassLoader</code></li>
+<li>它负责<strong>加载应用程序的类</strong>，包括自己写的和引入的第三方的类库，即所有在类路径中指定的类</li>
 </ul>
 </li>
 </ul>
 <h4 id="5-这三个类加载器的关系是"><a href="#5-这三个类加载器的关系是" class="headerlink" title="5. 这三个类加载器的关系是"></a>5. 这三个类加载器的关系是</h4><ul>
-<li>这三个类加载器有一定的关系，可以认为是<strong>父子关系</strong>。</li>
-<li><code>Application ClassLoader</code> 的父亲是 <code>Extension ClassLoader</code>，<code>Extension ClassLoader</code> 的父亲是 <code>Bootstrap ClassLoader</code>。</li>
-<li>注意<strong>不是父子继承</strong>关系，而<strong>是父子委派</strong>关系。子 <code>ClassLoader</code> 有一个变量 <strong><code>parent</code></strong> 指向父 <code>ClassLoader</code>，<strong>在子 <code>ClassLoader</code> 加载类时，一般会首先通过父 <code>ClassLoader</code> 加载</strong>。</li>
+<li>这三个类加载器有一定的关系，可以认为是<strong>父子关系</strong></li>
+<li><code>Application ClassLoader</code> 的父亲是 <code>Extension ClassLoader</code>，<code>Extension ClassLoader</code> 的父亲是 <code>Bootstrap ClassLoader</code></li>
+<li>注意<strong>不是父子继承</strong>关系，而<strong>是父子委派</strong>关系。子 <code>ClassLoader</code> 有一个变量 <strong><code>parent</code></strong> 指向父 <code>ClassLoader</code>，<strong>在子 <code>ClassLoader</code> 加载类时，一般会首先通过父 <code>ClassLoader</code> 加载</strong></li>
 </ul>
 <h4 id="6-类加载的基本过程是"><a href="#6-类加载的基本过程是" class="headerlink" title="6. 类加载的基本过程是"></a>6. 类加载的基本过程是</h4><ul>
-<li><strong>判断</strong>是否已经加载过了，如果加载过了，直接返回 <strong><code>Class</code></strong> 对象。<strong>一个类只会被一个 <code>ClassLoader</code> 加载一次</strong>。</li>
-<li><strong>如果没有被加载，先让父 <code>ClassLoader</code> 去加载</strong>，如果加载成功，返回得到的 <code>Class</code> 对象。</li>
-<li><strong>在父 <code>ClassLoader</code> 没有加载成功的前提下，自己尝试加载类</strong>。</li>
-<li>一个程序运行时，会创建一个 <code>Application ClassLoader</code>，<strong>在程序中用到 <code>ClassLoader</code> 的地方，如果没有指定，一般用的都是这个 <code>ClassLoader</code></strong>。所以，这个 <code>ClassLoader</code> 也被称为系统类加载器（<code>System ClassLoader</code>）。</li>
+<li><strong>判断</strong>是否已经加载过了，如果加载过了，直接返回 <strong><code>Class</code></strong> 对象。<strong>一个类只会被一个 <code>ClassLoader</code> 加载一次</strong></li>
+<li><strong>如果没有被加载，先让父 <code>ClassLoader</code> 去加载</strong>，如果加载成功，返回得到的 <code>Class</code> 对象</li>
+<li><strong>在父 <code>ClassLoader</code> 没有加载成功的前提下，自己尝试加载类</strong></li>
+<li>一个程序运行时，会创建一个 <code>Application ClassLoader</code>，<strong>在程序中用到 <code>ClassLoader</code> 的地方，如果没有指定，一般用的都是这个 <code>ClassLoader</code></strong>。所以，这个 <code>ClassLoader</code> 也被称为系统类加载器（<code>System ClassLoader</code>）</li>
 </ul>
-<h4 id="7-类加载过程又称为什么模型"><a href="#7-类加载过程又称为什么模型" class="headerlink" title="7. 类加载过程又称为什么模型"></a>7. 类加载过程又称为什么模型</h4><p>　<strong>双亲委派模型</strong>：即<strong>优先让父</strong> <code>ClassLoader</code> 去加载。</p>
-<h4 id="8-为什么要先让父-ClassLoader-去加载呢"><a href="#8-为什么要先让父-ClassLoader-去加载呢" class="headerlink" title="8. 为什么要先让父 ClassLoader 去加载呢"></a>8. 为什么要先让父 ClassLoader 去加载呢</h4><ul>
-<li><strong>这样可以避免 Java 类库被覆盖的问题</strong>。<ul>
-<li>比如，用户程序也定义了一个类 <code>java.lang.String</code>，通过双亲委派，<code>java.lang.String</code> 只会被 <code>Bootstrap ClassLoader</code> 加载。</li>
-<li>这就避免了自定义的 <code>String</code> 覆盖 Java 类库的定义。</li>
+<h4 id="7-类加载过程又称为什么模型"><a href="#7-类加载过程又称为什么模型" class="headerlink" title="7. 类加载过程又称为什么模型"></a>7. 类加载过程又称为什么模型</h4><ul>
+<li><strong>双亲委派模型</strong>：即<strong>优先让父</strong> <code>ClassLoader</code> 去加载</li>
+</ul>
+<h4 id="8-为什么要先让父-ClassLoader-去加载呢"><a href="#8-为什么要先让父-ClassLoader-去加载呢" class="headerlink" title="8. 为什么要先让父 ClassLoader 去加载呢"></a>8. 为什么要先让父 <code>ClassLoader</code> 去加载呢</h4><ul>
+<li><strong>这样可以避免 Java 类库被覆盖的问题</strong><ul>
+<li>比如，用户程序也定义了一个类 <code>java.lang.String</code>，通过双亲委派，<code>java.lang.String</code> 只会被 <code>Bootstrap ClassLoader</code> 加载</li>
+<li>这就避免了自定义的 <code>String</code> 覆盖 Java 类库的定义</li>
 </ul>
 </li>
 </ul>
 <h4 id="9-双亲委派虽然是一般模型，但也有一些例外，比如说"><a href="#9-双亲委派虽然是一般模型，但也有一些例外，比如说" class="headerlink" title="9. 双亲委派虽然是一般模型，但也有一些例外，比如说"></a>9. 双亲委派虽然是一般模型，但也有一些例外，比如说</h4><ul>
-<li><strong>自定义的加载顺序</strong>：尽管<strong>不被建议</strong>，自定义的 <code>ClassLoader</code> 可以不遵从双亲委派这个约定。不过，即使不遵从，<strong>以 java 开头的类</strong>也不能被自定义类加载器加载，这是由 Java 的<strong>安全机制</strong>保证的，以避免混乱。</li>
-<li><strong>网状加载顺序</strong>：在 OSGI 框架和 Java 9 模块化系统中，类加载器之间的关系是一个网，<strong>每个模块有一个类加载器，不同模块之间可能有依赖关系</strong>。在一个模块加载一个类时，可能是从自己模块加载，也可能是委派给其他模块的类加载器加载。</li>
-<li><strong>父加载器委派给子加载器加载</strong>：典型的例子有 <strong>JNDI</strong>(Java Naming and Directory Interface) 服务，它是 Java 企业级应用中的一项服务。</li>
+<li><strong>自定义的加载顺序</strong>：尽管<strong>不被建议</strong>，自定义的 <code>ClassLoader</code> 可以不遵从双亲委派这个约定。不过，即使不遵从，<strong>以 java 开头的类</strong>也不能被自定义类加载器加载，这是由 Java 的<strong>安全机制</strong>保证的，以避免混乱</li>
+<li><strong>网状加载顺序</strong>：在 OSGI 框架和 Java 9 模块化系统中，类加载器之间的关系是一个网，<strong>每个模块有一个类加载器，不同模块之间可能有依赖关系</strong>。在一个模块加载一个类时，可能是从自己模块加载，也可能是委派给其他模块的类加载器加载</li>
+<li><strong>父加载器委派给子加载器加载</strong>：典型的例子有 <strong>JNDI</strong>(Java Naming and Directory Interface) 服务，它是 Java 企业级应用中的一项服务</li>
 </ul>
 
     </div>
