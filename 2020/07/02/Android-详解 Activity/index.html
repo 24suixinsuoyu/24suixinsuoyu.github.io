@@ -24,20 +24,20 @@
 
   <meta name="description" content="1. Intent 的作用是">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android 详解Activity">
-<meta property="og:url" content="http://24suixinsuoyu.com/2020/07/02/Android-%E8%AF%A6%E8%A7%A3Activity/index.html">
+<meta property="og:title" content="Android 详解 Activity">
+<meta property="og:url" content="http://24suixinsuoyu.com/2020/07/02/Android-%E8%AF%A6%E8%A7%A3%20Activity/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
 <meta property="og:description" content="1. Intent 的作用是">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1gm1lsr6vrbj30u011vq9b.jpg">
 <meta property="article:published_time" content="2020-07-02T01:43:56.000Z">
-<meta property="article:modified_time" content="2020-12-26T14:05:24.103Z">
+<meta property="article:modified_time" content="2021-04-07T10:26:27.219Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Activity">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1gm1lsr6vrbj30u011vq9b.jpg">
 
-<link rel="canonical" href="http://24suixinsuoyu.com/2020/07/02/Android-%E8%AF%A6%E8%A7%A3Activity/">
+<link rel="canonical" href="http://24suixinsuoyu.com/2020/07/02/Android-%E8%AF%A6%E8%A7%A3%20Activity/">
 
 
 <script id="page-configurations">
@@ -49,7 +49,7 @@
   };
 </script>
 
-  <title>Android 详解Activity | 隋钟元’s Blog</title>
+  <title>Android 详解 Activity | 隋钟元’s Blog</title>
   
 
 
@@ -186,7 +186,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/07/02/Android-%E8%AF%A6%E8%A7%A3Activity/">
+    <link itemprop="mainEntityOfPage" href="http://24suixinsuoyu.com/2020/07/02/Android-%E8%AF%A6%E8%A7%A3%20Activity/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -199,7 +199,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Android 详解Activity
+          Android 详解 Activity
         </h1>
 
         <div class="post-meta">
@@ -216,7 +216,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-26 22:05:24" itemprop="dateModified" datetime="2020-12-26T22:05:24+08:00">2020-12-26</time>
+                <time title="修改时间：2021-04-07 18:26:27" itemprop="dateModified" datetime="2021-04-07T18:26:27+08:00">2021-04-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -253,51 +253,51 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-Intent-的作用是"><a href="#1-Intent-的作用是" class="headerlink" title="1. Intent 的作用是"></a>1. Intent 的作用是</h4><a id="more"></a>
+        <h4 id="1-Intent-的作用是"><a href="#1-Intent-的作用是" class="headerlink" title="1. Intent 的作用是"></a>1. <code>Intent</code> 的作用是</h4><a id="more"></a>
 
 <ul>
-<li><code>Intent</code> 是 Android 程序中<strong>各组件之间进行交互</strong>的一种重要方式，它不仅可以指明当前组件想要执行的动作，还可以在不同组件之间<strong>传递数据</strong>。</li>
-<li><code>Intent</code> 一般可用于<strong>启动活动</strong>、<strong>启动服务</strong>、<strong>发送广播</strong>、<strong>创建定时任务</strong>等场景。</li>
-<li><code>Intent</code> 大致可以分为两种：<strong>显示 Intent</strong> 和 <strong>隐式 Intent</strong>。</li>
+<li><code>Intent</code> 是 Android 程序中<strong>各组件之间进行交互</strong>的一种重要方式，它不仅可以指明当前组件想要执行的动作，还可以在不同组件之间<strong>传递数据</strong></li>
+<li><code>Intent</code> 一般可用于<strong>启动活动</strong>、<strong>启动服务</strong>、<strong>发送广播</strong>、<strong>创建定时任务</strong>等场景</li>
+<li><code>Intent</code> 大致可以分为两种：<strong>显示 Intent</strong> 和 <strong>隐式 Intent</strong></li>
 </ul>
-<h4 id="2-使用-Intent-传递对象的方式"><a href="#2-使用-Intent-传递对象的方式" class="headerlink" title="2. 使用 Intent 传递对象的方式"></a>2. 使用 Intent 传递对象的方式</h4><ul>
-<li><p><strong>Serializable</strong> 方式：</p>
+<h4 id="2-使用-Intent-传递对象的方式"><a href="#2-使用-Intent-传递对象的方式" class="headerlink" title="2. 使用 Intent 传递对象的方式"></a>2. 使用 <code>Intent</code> 传递对象的方式</h4><ul>
+<li><p><strong>Serializable</strong> 方式</p>
 <ul>
-<li><p>原理：<strong>把整个对象进行序列化</strong>，因此<strong>效率会比较低</strong>，优点是<strong>使用简单</strong>。</p>
+<li><p>原理：<strong>把整个对象进行序列化</strong>，因此<strong>效率会比较低</strong>，优点是<strong>使用简单</strong></p>
 </li>
-<li><p>Demo：</p>
+<li><p>Demo</p>
   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Person 类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123; <span class="comment">//实现 Serializable 接口</span></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAge</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//传递 Person 对象</span></span><br><span class="line">Person person = <span class="keyword">new</span> Person();</span><br><span class="line">person.setName(<span class="string">"Tom"</span>);</span><br><span class="line">person.setAge(<span class="number">20</span>);</span><br><span class="line">Intent intent = <span class="keyword">new</span> Intent(FirstActivity.<span class="keyword">this</span>, SecondActivity<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">intent.putExtra(<span class="string">"person_data"</span>, person);</span><br><span class="line">startActivity(intent);</span><br><span class="line"></span><br><span class="line"><span class="comment">//获取传递过来的 Person 对象</span></span><br><span class="line">Person person = （Person）getIntent().getSerializableExtra(<span class="string">"person_data"</span>);</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
-<li><p><strong>Parcelable</strong> 方式：</p>
+<li><p><strong>Parcelable</strong> 方式</p>
 <ul>
-<li><p>原理：<strong>将一个完整的对象进行分解，而分解后的每一部分都是 Intent 所支持的数据类型</strong>，使用较麻烦，<strong>效率高</strong>。</p>
+<li><p>原理：<strong>将一个完整的对象进行分解，而分解后的每一部分都是 Intent 所支持的数据类型</strong>，使用较麻烦，<strong>效率高</strong></p>
 </li>
-<li><p>Demo：</p>
+<li><p>Demo</p>
   <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Person 类</span></span><br><span class="line">public <span class="keyword">class</span> Person implements Parcelable &#123; <span class="comment">//实现 Parcelable 接口</span></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> age;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public <span class="built_in">int</span> describe<span class="constructor">Contents()</span> &#123;</span><br><span class="line">        return <span class="number">0</span>; <span class="comment">//直接返回 0 就可以</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void write<span class="constructor">ToParcel(Parcel <span class="params">dest</span>, <span class="params">int</span> <span class="params">flags</span>)</span> &#123; <span class="comment">//将 Person 类中的字段一一写出</span></span><br><span class="line">        dest.write<span class="constructor">String(<span class="params">name</span>)</span>; <span class="comment">//写出 name</span></span><br><span class="line">        dest.write<span class="constructor">Int(<span class="params">age</span>)</span>; <span class="comment">//写出 age</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static final Parcelable.Creator&lt;Person&gt; CREATOR = <span class="keyword">new</span> Parcelable.Creator&lt;Person&gt;<span class="literal">()</span> &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public Person create<span class="constructor">FromParcel(Parcel <span class="params">source</span>)</span> &#123; <span class="comment">//读取写出的字段，并创建一个 Person 对象返回，注意这里读取的顺序一定要和上面写出的顺序完全相同</span></span><br><span class="line">            Person person = <span class="keyword">new</span> <span class="constructor">Person()</span>;</span><br><span class="line">            person.name = source.read<span class="constructor">String()</span>; <span class="comment">//读取 name</span></span><br><span class="line">            person.age = source.read<span class="constructor">Int()</span>; <span class="comment">//读取 age</span></span><br><span class="line">            return person;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public Person<span class="literal">[]</span> <span class="keyword">new</span><span class="constructor">Array(<span class="params">int</span> <span class="params">size</span>)</span> &#123;</span><br><span class="line">            return <span class="keyword">new</span> Person<span class="literal">[<span class="identifier">size</span>]</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//传递 Person 对象</span></span><br><span class="line">Person person = <span class="keyword">new</span> <span class="constructor">Person()</span>;</span><br><span class="line">person.set<span class="constructor">Name(<span class="string">"Tom"</span>)</span>;</span><br><span class="line">person.set<span class="constructor">Age(20)</span>;</span><br><span class="line">Intent intent = <span class="keyword">new</span> <span class="constructor">Intent(FirstActivity.<span class="params">this</span>, SecondActivity.<span class="params">class</span>)</span>;</span><br><span class="line">intent.put<span class="constructor">Extra(<span class="string">"person_data"</span>, <span class="params">person</span>)</span>;</span><br><span class="line">start<span class="constructor">Activity(<span class="params">intent</span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//获取传递过来的 Person 对象</span></span><br><span class="line">Person person = (Person) get<span class="constructor">Intent()</span>.get<span class="constructor">ParcelableExtra(<span class="string">"person_data"</span>)</span>;</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
 </li>
 </ul>
-<h4 id="3-Activity-的生命周期方法"><a href="#3-Activity-的生命周期方法" class="headerlink" title="3. Activity 的生命周期方法"></a>3. Activity 的生命周期方法</h4><ul>
-<li><strong>onCreate()</strong>：这个方法在 <code>Activity</code> <strong>第一次被创建</strong>的时候调用，应该在这个方法中完成 <code>Activity</code> 的<strong>初始化操作</strong>，比如<strong>加载布局</strong>、<strong>绑定事件</strong>等。</li>
-<li><strong>onStart()</strong>：这个方法在 <code>Activity</code> <strong>由不可见变为可见</strong>的时候调用。</li>
-<li><strong>onResume()</strong>：这个方法在 <code>Activity</code> <strong>准备好和用户进行交互</strong>的时候调用。此时的 <code>Activity</code> 一定位于返回栈的<strong>栈顶</strong>，并且处于<strong>运行状态</strong>。</li>
-<li><strong>onPause()</strong>：这个方法在<strong>系统准备去启动或者恢复另一个</strong> <code>Activity</code> 的时候调用。通常会在这个方法中<strong>将一些消耗 CPU 的资源释放掉</strong>，以及<strong>保存一些关键数据</strong>。但这个方法的<strong>执行速度一定要快</strong>，不然会影响到新的栈顶活动的使用。</li>
-<li><strong>onStop()</strong>：这个方法在 <code>Activity</code> <strong>完全不可见</strong>的时候调用。它和 <code>onPause()</code> 方法的主要区别在于，如果启动的新 <code>Activity</code> 是一个<strong>对话框</strong>式的 <code>Activity</code>，那么 <code>onPause()</code> 方法会得到执行，而 <code>onStop()</code> 方法并不会执行。</li>
-<li><strong>onDestroy()</strong>：这个方法在 <code>Activity</code> <strong>被销毁时</strong>调用，之后 <code>Activity</code> 的状态将变为<strong>销毁状态</strong>。</li>
-<li><strong>onRestart()</strong>：这个方法在 <code>Activity</code> <strong>由停止状态变为运行状态</strong>时调用，也就是活动<strong>被重新启动</strong>了。</li>
+<h4 id="3-Activity-的生命周期方法"><a href="#3-Activity-的生命周期方法" class="headerlink" title="3. Activity 的生命周期方法"></a>3. <code>Activity</code> 的生命周期方法</h4><ul>
+<li><strong>onCreate()</strong>：这个方法在 <code>Activity</code> <strong>第一次被创建</strong>的时候调用，应该在这个方法中完成 <code>Activity</code> 的<strong>初始化操作</strong>，比如<strong>加载布局</strong>、<strong>绑定事件</strong>等</li>
+<li><strong>onStart()</strong>：这个方法在 <code>Activity</code> <strong>由不可见变为可见</strong>的时候调用</li>
+<li><strong>onResume()</strong>：这个方法在 <code>Activity</code> <strong>准备好和用户进行交互</strong>的时候调用。此时的 <code>Activity</code> 一定位于返回栈的<strong>栈顶</strong>，并且处于<strong>运行状态</strong></li>
+<li><strong>onPause()</strong>：这个方法在<strong>系统准备去启动或者恢复另一个</strong> <code>Activity</code> 的时候调用。通常会在这个方法中<strong>将一些消耗 CPU 的资源释放掉</strong>，以及<strong>保存一些关键数据</strong>。但这个方法的<strong>执行速度一定要快</strong>，不然会影响到新的栈顶活动的使用</li>
+<li><strong>onStop()</strong>：这个方法在 <code>Activity</code> <strong>完全不可见</strong>的时候调用。它和 <code>onPause()</code> 方法的主要区别在于，如果启动的新 <code>Activity</code> 是一个<strong>对话框</strong>式的 <code>Activity</code>，那么 <code>onPause()</code> 方法会得到执行，而 <code>onStop()</code> 方法并不会执行</li>
+<li><strong>onDestroy()</strong>：这个方法在 <code>Activity</code> <strong>被销毁时</strong>调用，之后 <code>Activity</code> 的状态将变为<strong>销毁状态</strong></li>
+<li><strong>onRestart()</strong>：这个方法在 <code>Activity</code> <strong>由停止状态变为运行状态</strong>时调用，也就是活动<strong>被重新启动</strong>了</li>
 </ul>
-<h4 id="4-Activity-生命周期图"><a href="#4-Activity-生命周期图" class="headerlink" title="4. Activity 生命周期图"></a>4. Activity 生命周期图</h4><p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1gm1lsr6vrbj30u011vq9b.jpg" alt=""></p>
-<h4 id="5-Activity-的启动模式"><a href="#5-Activity-的启动模式" class="headerlink" title="5. Activity 的启动模式"></a>5. Activity 的启动模式</h4><ul>
-<li><strong>standard</strong>：在 standard 模式（即<strong>默认模式</strong>）下，每当启动一个新的 <code>Activity</code>，它就会在返回栈中入栈，并处于栈顶的位置。对于使用 standard 模式的 <code>Activity</code>，系统不会在乎这个 Activity 是否已经在返回栈中存在，每次启动都会创建该 <code>Activity</code> 的一个新的实例。</li>
-<li><strong>singleTop</strong>：当 <code>Activity</code> 的启动模式指定为 singleTop，在启动 <code>Activity</code> 时如果发现返回栈的<strong>栈顶</strong>已经是该 <code>Activity</code>，则认为可以直接使用它，不会再创建新的 <code>Activity</code> 实例。</li>
-<li><strong>singleTask</strong>：当 <code>Activity</code> 的启动模式指定为 singleTask，每次启动该 Activity 时系统首先会在<strong>返回栈</strong>中检查是否存在该 <code>Activity</code> 的实例，如果发现已经存在则直接使用该实例，并把这个 <code>Activity</code> 之上的所有 <code>Activity</code> 统统<strong>出栈</strong>，如果没有就会创建一个新的 <code>Activity</code> 实例。</li>
-<li><strong>singleInstance</strong>：指定为 singleInstance 的 <code>Activity</code> 会启用一个<strong>新的返回栈</strong>来管理这个 <code>Activity</code> （<strong>其实如果 singleTask 模式指定了不同的 taskAffinity，也会启动一个新的返回栈</strong>）。在这种模式下，会有一个单独的返回栈来管理这个 <code>Activity</code>，不管是哪个应用程序来访问这个 <code>Activity</code>，都共用同一个返回栈，也就解决了共享 <code>Activity</code> 实例的问题。</li>
+<h4 id="4-Activity-生命周期图"><a href="#4-Activity-生命周期图" class="headerlink" title="4. Activity 生命周期图"></a>4. <code>Activity</code> 生命周期图</h4><p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1gm1lsr6vrbj30u011vq9b.jpg" alt=""></p>
+<h4 id="5-Activity-的启动模式"><a href="#5-Activity-的启动模式" class="headerlink" title="5. Activity 的启动模式"></a>5. <code>Activity</code> 的启动模式</h4><ul>
+<li><strong>standard</strong>：在 standard 模式（即<strong>默认模式</strong>）下，每当启动一个新的 <code>Activity</code>，它就会在返回栈中入栈，并处于栈顶的位置。对于使用 standard 模式的 <code>Activity</code>，系统不会在乎这个 Activity 是否已经在返回栈中存在，每次启动都会创建该 <code>Activity</code> 的一个新的实例</li>
+<li><strong>singleTop</strong>：当 <code>Activity</code> 的启动模式指定为 singleTop，在启动 <code>Activity</code> 时如果发现返回栈的<strong>栈顶</strong>已经是该 <code>Activity</code>，则认为可以直接使用它，不会再创建新的 <code>Activity</code> 实例</li>
+<li><strong>singleTask</strong>：当 <code>Activity</code> 的启动模式指定为 singleTask，每次启动该 Activity 时系统首先会在<strong>返回栈</strong>中检查是否存在该 <code>Activity</code> 的实例，如果发现已经存在则直接使用该实例，并把这个 <code>Activity</code> 之上的所有 <code>Activity</code> 统统<strong>出栈</strong>，如果没有就会创建一个新的 <code>Activity</code> 实例</li>
+<li><strong>singleInstance</strong>：指定为 singleInstance 的 <code>Activity</code> 会启用一个<strong>新的返回栈</strong>来管理这个 <code>Activity</code> （<strong>其实如果 singleTask 模式指定了不同的 taskAffinity，也会启动一个新的返回栈</strong>）。在这种模式下，会有一个单独的返回栈来管理这个 <code>Activity</code>，不管是哪个应用程序来访问这个 <code>Activity</code>，都共用同一个返回栈，也就解决了共享 <code>Activity</code> 实例的问题</li>
 </ul>
-<h4 id="6-怎样理解-Application"><a href="#6-怎样理解-Application" class="headerlink" title="6. 怎样理解 Application"></a>6. 怎样理解 Application</h4><ul>
+<h4 id="6-怎样理解-Application"><a href="#6-怎样理解-Application" class="headerlink" title="6. 怎样理解 Application"></a>6. 怎样理解 <code>Application</code></h4><ul>
 <li>参考：<a href="https://blog.csdn.net/carson_ho/article/details/78047771" target="_blank" rel="noopener">这是一份全面 &amp; 清晰易懂的 Application 类使用指南</a></li>
 </ul>
 
@@ -325,7 +325,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://24suixinsuoyu.com/2020/07/02/Android-%E8%AF%A6%E8%A7%A3Activity/" title="Android 详解Activity">http://24suixinsuoyu.com/2020/07/02/Android-详解Activity/</a>
+    <a href="http://24suixinsuoyu.com/2020/07/02/Android-%E8%AF%A6%E8%A7%A3%20Activity/" title="Android 详解 Activity">http://24suixinsuoyu.com/2020/07/02/Android-详解 Activity/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
