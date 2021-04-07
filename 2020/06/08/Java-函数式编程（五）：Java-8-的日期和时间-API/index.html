@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. Java 8 日期和时间 API 的优点">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-06-07T18:05:14.000Z">
-<meta property="article:modified_time" content="2020-06-30T03:18:56.000Z">
+<meta property="article:modified_time" content="2021-04-07T09:11:08.606Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="函数式编程">
 <meta property="article:tag" content="Java 8 的日期和时间 API">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-30 11:18:56" itemprop="dateModified" datetime="2020-06-30T11:18:56+08:00">2020-06-30</time>
+                <time title="修改时间：2021-04-07 17:11:08" itemprop="dateModified" datetime="2021-04-07T17:11:08+08:00">2021-04-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -255,85 +255,85 @@
         <h4 id="1-Java-8-日期和时间-API-的优点"><a href="#1-Java-8-日期和时间-API-的优点" class="headerlink" title="1. Java 8 日期和时间 API 的优点"></a>1. Java 8 日期和时间 API 的优点</h4><a id="more"></a>
 
 <ul>
-<li>Java 8 以前的日期和时间 API，主要的类是 <strong><code>Date</code></strong> 和 <strong><code>Calendar</code></strong>，由于它的<strong>设计有一些不足</strong>，<strong>Java 8</strong> 引入了一套新的 API，位于包 <strong><code>java.time</code></strong> 下。</li>
-<li>它引入了更多的类，但<strong>概念更为清晰</strong>，<strong>更为强大和易用</strong>。</li>
+<li>Java 8 以前的日期和时间 API，主要的类是 <strong><code>Date</code></strong> 和 <strong><code>Calendar</code></strong>，由于它的<strong>设计有一些不足</strong>，<strong>Java 8</strong> 引入了一套新的 API，位于包 <strong><code>java.time</code></strong> 下</li>
+<li>它引入了更多的类，但<strong>概念更为清晰</strong>，<strong>更为强大和易用</strong></li>
 </ul>
 <h4 id="2-Java-8-中表示日期和时间的类有"><a href="#2-Java-8-中表示日期和时间的类有" class="headerlink" title="2. Java 8 中表示日期和时间的类有"></a>2. Java 8 中表示日期和时间的类有</h4><ul>
-<li><strong><code>Instant</code></strong>：表示<strong>时刻</strong>，不直接对应年月日信息，需要通过时区转换。</li>
-<li><strong><code>LocalDateTime</code></strong>：表示<strong>与时区无关的日期和时间</strong>，不直接对应时刻，需要通过时区转换。</li>
-<li><strong><code>ZoneId/ZoneOffset</code></strong>：表示<strong>时区</strong>。</li>
-<li><strong><code>LocalDate</code></strong>：表示<strong>与时区无关的日期</strong>，与 <code>LocalDateTime</code> 相比，只有日期，没有时间信息。</li>
-<li><strong><code>LocalTime</code></strong>：表示<strong>与时区无关的时间</strong>，与 <code>LocalDateTime</code> 相比，只有时间，没有日期信息。</li>
-<li><strong><code>ZonedDateTime</code></strong>：表示<strong>特定时区的日期和时间</strong>。</li>
+<li><strong><code>Instant</code></strong>：表示<strong>时刻</strong>，不直接对应年月日信息，需要通过时区转换</li>
+<li><strong><code>LocalDateTime</code></strong>：表示<strong>与时区无关的日期和时间</strong>，不直接对应时刻，需要通过时区转换</li>
+<li><strong><code>ZoneId/ZoneOffset</code></strong>：表示<strong>时区</strong></li>
+<li><strong><code>LocalDate</code></strong>：表示<strong>与时区无关的日期</strong>，与 <code>LocalDateTime</code> 相比，只有日期，没有时间信息</li>
+<li><strong><code>LocalTime</code></strong>：表示<strong>与时区无关的时间</strong>，与 <code>LocalDateTime</code> 相比，只有时间，没有日期信息</li>
+<li><strong><code>ZonedDateTime</code></strong>：表示<strong>特定时区的日期和时间</strong></li>
 </ul>
-<h4 id="3-怎样理解-Instant"><a href="#3-怎样理解-Instant" class="headerlink" title="3. 怎样理解 Instant"></a>3. 怎样理解 Instant</h4><ul>
-<li><strong><code>Instant</code> 表示时刻</strong>，获取当前时刻：<code>Instant now = Instant.now();</code>。</li>
-<li>可以根据 <strong>Epoch Time （纪元时）</strong>创建 <code>Instant</code>。比如，另一种获取当前时刻的代码为：<code>Intant now = Instant.ofEpochMilli( Sytem.currentTimeMillis() );</code>。</li>
-<li><code>Date</code> 也表示时刻，<strong><code>Instant</code> 和 <code>Date</code> 可以通过纪元时相互转换</strong>：<ul>
-<li>转换 <code>Date</code> 为 <code>Instant</code>: <code>public static Instant toInstant(Date date) { return Instant.ofEpochMilli(date.getTime()); }</code>。</li>
-<li>转换 <code>Intant</code> 为 <code>Date</code>: <code>public static Date toDate(Instant instant) { return new Date(instant.toEpochMilli()); }</code>。</li>
-</ul>
-</li>
-</ul>
-<h4 id="4-怎样理解-LocalDateTime"><a href="#4-怎样理解-LocalDateTime" class="headerlink" title="4. 怎样理解 LocalDateTime"></a>4. 怎样理解 LocalDateTime</h4><ul>
-<li><strong><code>LocalDateTime</code> 表示与时区无关的日期和时间</strong>，获取系统默认时区的当前日期和时间：<code>LocalDateTime ldt = LocalDateTime.now();</code>。</li>
-<li>还可以直接用年月日等信息构建 <code>LocalDateTime</code>。比如：<code>LocalDateTime ldt = LocalDateTime.of(2017, 7, 11, 20, 45, 5);</code>。</li>
-<li><code>LocalDateTime</code> 有很多方法，可以获取年月日时分秒星期等信息：<ul>
-<li><code>public int getYear()</code>。</li>
-<li><code>public int getMonthValue()</code>。</li>
-<li><code>public int getDayOfMonth()</code>。</li>
-<li><code>public int getHour()</code>。</li>
-<li><code>pubic int getMinute()</code>。</li>
-<li><code>public int getSecond()</code>。</li>
-<li><code>publict DayOfWeek getDayOfWeek()</code>。</li>
+<h4 id="3-怎样理解-Instant"><a href="#3-怎样理解-Instant" class="headerlink" title="3. 怎样理解 Instant"></a>3. 怎样理解 <code>Instant</code></h4><ul>
+<li><strong><code>Instant</code> 表示时刻</strong>，获取当前时刻：<code>Instant now = Instant.now();</code></li>
+<li>可以根据 <strong>Epoch Time （纪元时）</strong>创建 <code>Instant</code>。比如，另一种获取当前时刻的代码为：<code>Intant now = Instant.ofEpochMilli( Sytem.currentTimeMillis() );</code></li>
+<li><code>Date</code> 也表示时刻，<strong><code>Instant</code> 和 <code>Date</code> 可以通过纪元时相互转换</strong><ul>
+<li>转换 <code>Date</code> 为 <code>Instant</code>: <code>public static Instant toInstant(Date date) { return Instant.ofEpochMilli(date.getTime()); }</code></li>
+<li>转换 <code>Intant</code> 为 <code>Date</code>: <code>public static Date toDate(Instant instant) { return new Date(instant.toEpochMilli()); }</code></li>
 </ul>
 </li>
 </ul>
-<h4 id="5-怎样理解-ZoneId-ZoneOffset"><a href="#5-怎样理解-ZoneId-ZoneOffset" class="headerlink" title="5. 怎样理解 ZoneId/ZoneOffset"></a>5. 怎样理解 ZoneId/ZoneOffset</h4><ul>
-<li><code>LocalDateTime</code> 不能直接转为时刻 <code>Instant</code>，转换需要一个参数 <code>ZoneOffset</code>。</li>
-<li><strong><code>ZoneOffset</code> 表示相对于格林尼治的时区差，北京是 +08:00</strong>。比如，转换一个 <code>LocalDateTime</code> 为北京的时刻：<code>public static Instant boBeijingInstant(LocalDateTime ldt) { return ldt.toInstant(ZoneOffset.of(&quot;+08:00&quot;)); }</code>。</li>
-<li>给定一个时刻，使用不同时区解读，日历信息是不同的，<code>Instant</code> 有方法根据时区返回一个 <code>ZonedDateTime</code>: <code>public ZonedDateTime atZone(ZoneId zone)</code>。</li>
-<li><strong>默认时区是 <code>ZoneId.systemDefault()</code></strong>，可以这样构建 <code>ZoneId</code>: <code>ZoneId bjZone = ZoneId.of(&quot;GMT+08:00);</code>。</li>
-<li><strong><code>ZoneOffset</code> 是 <code>ZoneId</code> 的子类</strong>，可以根据时区差构造。</li>
+<h4 id="4-怎样理解-LocalDateTime"><a href="#4-怎样理解-LocalDateTime" class="headerlink" title="4. 怎样理解 LocalDateTime"></a>4. 怎样理解 <code>LocalDateTime</code></h4><ul>
+<li><strong><code>LocalDateTime</code> 表示与时区无关的日期和时间</strong>，获取系统默认时区的当前日期和时间：<code>LocalDateTime ldt = LocalDateTime.now();</code></li>
+<li>还可以直接用年月日等信息构建 <code>LocalDateTime</code>。比如：<code>LocalDateTime ldt = LocalDateTime.of(2017, 7, 11, 20, 45, 5);</code></li>
+<li><code>LocalDateTime</code> 有很多方法，可以获取年月日时分秒星期等信息<ul>
+<li><code>public int getYear()</code></li>
+<li><code>public int getMonthValue()</code></li>
+<li><code>public int getDayOfMonth()</code></li>
+<li><code>public int getHour()</code></li>
+<li><code>pubic int getMinute()</code></li>
+<li><code>public int getSecond()</code></li>
+<li><code>publict DayOfWeek getDayOfWeek()</code></li>
 </ul>
-<h4 id="6-怎样理解-LocalDate-LocalTime"><a href="#6-怎样理解-LocalDate-LocalTime" class="headerlink" title="6. 怎样理解 LocalDate/LocalTime"></a>6. 怎样理解 LocalDate/LocalTime</h4><ul>
-<li><strong>可以认为 <code>LocalDateTime</code> 由两部分组成，一部分是日期 <code>LocalDate</code>，另一部分是时间 <code>LocalTime</code></strong>。</li>
-<li><code>LocalDate</code> 加上时间可以构成 <code>LocalDateTime</code>；<code>LocalTime</code> 加上日期可以构成 <code>LocalDateTime</code>。</li>
-</ul>
-<h4 id="7-怎样理解-ZonedDateTime"><a href="#7-怎样理解-ZonedDateTime" class="headerlink" title="7. 怎样理解 ZonedDateTime"></a>7. 怎样理解 ZonedDateTime</h4><ul>
-<li><p><strong><code>ZonedDateTime</code> 表示特定时区的日期和时间</strong>，获取系统默认时区的当前日期和时间为：<code>ZonedDateTime zdt = ZonedDateTime.now();</code>。</p>
 </li>
-<li><p><code>LocalDateTime.now()</code> 也是获取默认时区的当前日期和时间，二者的区别是：</p>
+</ul>
+<h4 id="5-怎样理解-ZoneId-ZoneOffset"><a href="#5-怎样理解-ZoneId-ZoneOffset" class="headerlink" title="5. 怎样理解 ZoneId/ZoneOffset"></a>5. 怎样理解 <code>ZoneId/ZoneOffset</code></h4><ul>
+<li><code>LocalDateTime</code> 不能直接转为时刻 <code>Instant</code>，转换需要一个参数 <code>ZoneOffset</code></li>
+<li><strong><code>ZoneOffset</code> 表示相对于格林尼治的时区差，北京是 +08:00</strong>。比如，转换一个 <code>LocalDateTime</code> 为北京的时刻：<code>public static Instant boBeijingInstant(LocalDateTime ldt) { return ldt.toInstant(ZoneOffset.of(&quot;+08:00&quot;)); }</code></li>
+<li>给定一个时刻，使用不同时区解读，日历信息是不同的，<code>Instant</code> 有方法根据时区返回一个 <code>ZonedDateTime</code>: <code>public ZonedDateTime atZone(ZoneId zone)</code></li>
+<li><strong>默认时区是 <code>ZoneId.systemDefault()</code></strong>，可以这样构建 <code>ZoneId</code>: <code>ZoneId bjZone = ZoneId.of(&quot;GMT+08:00);</code></li>
+<li><strong><code>ZoneOffset</code> 是 <code>ZoneId</code> 的子类</strong>，可以根据时区差构造</li>
+</ul>
+<h4 id="6-怎样理解-LocalDate-LocalTime"><a href="#6-怎样理解-LocalDate-LocalTime" class="headerlink" title="6. 怎样理解 LocalDate/LocalTime"></a>6. 怎样理解 <code>LocalDate/LocalTime</code></h4><ul>
+<li><strong>可以认为 <code>LocalDateTime</code> 由两部分组成，一部分是日期 <code>LocalDate</code>，另一部分是时间 <code>LocalTime</code></strong></li>
+<li><code>LocalDate</code> 加上时间可以构成 <code>LocalDateTime</code>；<code>LocalTime</code> 加上日期可以构成 <code>LocalDateTime</code></li>
+</ul>
+<h4 id="7-怎样理解-ZonedDateTime"><a href="#7-怎样理解-ZonedDateTime" class="headerlink" title="7. 怎样理解 ZonedDateTime"></a>7. 怎样理解 <code>ZonedDateTime</code></h4><ul>
+<li><p><strong><code>ZonedDateTime</code> 表示特定时区的日期和时间</strong>，获取系统默认时区的当前日期和时间为：<code>ZonedDateTime zdt = ZonedDateTime.now();</code></p>
+</li>
+<li><p><code>LocalDateTime.now()</code> 也是获取默认时区的当前日期和时间，二者的区别是</p>
 <ul>
-<li><code>LocalDateTime</code> 内部不会记录时区信息，只会单纯记录年月日时分秒等信息。</li>
-<li><code>ZonedDateTime</code> 除了记录日历信息，<strong>还会记录时区</strong>，它的其他大部分构建方法都需要显示传递时区。</li>
+<li><code>LocalDateTime</code> 内部不会记录时区信息，只会单纯记录年月日时分秒等信息</li>
+<li><code>ZonedDateTime</code> 除了记录日历信息，<strong>还会记录时区</strong>，它的其他大部分构建方法都需要显示传递时区</li>
 </ul>
 </li>
-<li><p><code>ZonedDateTime</code> 可以直接转换为 <code>Instant</code>: </p>
+<li><p><code>ZonedDateTime</code> 可以直接转换为 <code>Instant</code></p>
   <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ZonedDateTime ldt = <span class="module-access"><span class="module"><span class="identifier">ZonedDateTime</span>.</span></span>now<span class="literal">()</span>; </span><br><span class="line">Instant now = ldt.<span class="keyword">to</span><span class="constructor">Instant()</span>;</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
 <h4 id="8-Java-8-中的格式化"><a href="#8-Java-8-中的格式化" class="headerlink" title="8. Java 8 中的格式化"></a>8. Java 8 中的格式化</h4><ul>
-<li><p><strong>Java 8 中，主要的格式化类是 <code>java.time.format.DateTimeFormatter</code>，它是线程安全的</strong>。</p>
+<li><p><strong>Java 8 中，主要的格式化类是 <code>java.time.format.DateTimeFormatter</code>，它是线程安全的</strong></p>
 </li>
-<li><p>Demo：</p>
+<li><p>Demo</p>
   <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">DateTimeFormatter formatter = <span class="module-access"><span class="module"><span class="identifier">DateTimeFormatter</span>.</span></span><span class="keyword">of</span><span class="constructor">Pattern(<span class="string">"yyyy-MM-dd HH:mm:ss"</span>)</span>;</span><br><span class="line">LocalDateTime ldt = <span class="module-access"><span class="module"><span class="identifier">LocalDateTime</span>.</span></span><span class="keyword">of</span>(<span class="number">2016</span>, <span class="number">8</span>, <span class="number">18</span>, <span class="number">14</span>, <span class="number">20</span>, <span class="number">45</span>);</span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(formatter.format(ldt));</span><br><span class="line"></span><br><span class="line">输出为：<span class="number">2016</span>-<span class="number">08</span>-<span class="number">18</span> <span class="number">14</span>:<span class="number">20</span>:<span class="number">45</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//将字符串转化为日期和时间对象，可以使用对应类的 parse 方法</span></span><br><span class="line">DateTimeFormatter formatter = <span class="module-access"><span class="module"><span class="identifier">DateTimeFormatter</span>.</span></span><span class="keyword">of</span><span class="constructor">Pattern(<span class="string">"yyyy-MM-dd HH:mm:ss"</span>)</span>;</span><br><span class="line">String str = <span class="string">"2016-08-18 14:20:45"</span>;</span><br><span class="line">LocalDateTime ldt = <span class="module-access"><span class="module"><span class="identifier">LocalDateTime</span>.</span></span>parse(str, formatter);</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
 <h4 id="9-Java-8-中怎样设置-修改时间"><a href="#9-Java-8-中怎样设置-修改时间" class="headerlink" title="9. Java 8 中怎样设置/修改时间"></a>9. Java 8 中怎样设置/修改时间</h4><ul>
-<li>修改时期和时间有两种方式，一种是<strong>直接设置绝对值</strong>，另一中是<strong>在现有值的基础上进行相对增减</strong>操作。Java 8 的大部分类都支持这两种方法。</li>
-<li>Java 8 的大部分类都是<strong>不可变类</strong>，修改操作是通过创建并返回新对象来实现的，原对象本身不会变。</li>
+<li>修改时期和时间有两种方式，一种是<strong>直接设置绝对值</strong>，另一中是<strong>在现有值的基础上进行相对增减</strong>操作。Java 8 的大部分类都支持这两种方法</li>
+<li>Java 8 的大部分类都是<strong>不可变类</strong>，修改操作是通过创建并返回新对象来实现的，原对象本身不会变</li>
 </ul>
 <h4 id="10-Java-8-中时间段的计算"><a href="#10-Java-8-中时间段的计算" class="headerlink" title="10. Java 8 中时间段的计算"></a>10. Java 8 中时间段的计算</h4><ul>
-<li>Java 8 中表示<strong>时间段</strong>的类主要有两个：<code>Period</code> 和 <code>Duration</code>。</li>
-<li><strong><code>Period</code></strong> 表示<strong>日期差</strong>，用年月日表示，不能表示时间。</li>
-<li><strong><code>Duration</code></strong> 表示<strong>时间差</strong>，用时分秒表示，也可以用天表示，一天严格等于 24 小时，不能用年月表示。</li>
+<li>Java 8 中表示<strong>时间段</strong>的类主要有两个：<code>Period</code> 和 <code>Duration</code></li>
+<li><strong><code>Period</code></strong> 表示<strong>日期差</strong>，用年月日表示，不能表示时间</li>
+<li><strong><code>Duration</code></strong> 表示<strong>时间差</strong>，用时分秒表示，也可以用天表示，一天严格等于 24 小时，不能用年月表示</li>
 </ul>
-<h4 id="11-Java-8-中与-Date-Calendar-对象的转换"><a href="#11-Java-8-中与-Date-Calendar-对象的转换" class="headerlink" title="11. Java 8 中与 Date/Calendar 对象的转换"></a>11. Java 8 中与 Date/Calendar 对象的转换</h4><ul>
-<li>Java 8 的日期和时间 API 没有提供与老的 <code>Date/Calendar</code> 相互转换的方法，但在实际中，我们可能是需要的。</li>
-<li><code>Date</code> 可以与 <code>Instant</code> 通过<strong>毫秒数</strong>相互转换。对于其他类型，也可以通过 毫秒数/ <code>Instant</code> 相互转换。</li>
+<h4 id="11-Java-8-中与-Date-Calendar-对象的转换"><a href="#11-Java-8-中与-Date-Calendar-对象的转换" class="headerlink" title="11. Java 8 中与 Date/Calendar 对象的转换"></a>11. Java 8 中与 <code>Date/Calendar</code> 对象的转换</h4><ul>
+<li>Java 8 的日期和时间 API 没有提供与老的 <code>Date/Calendar</code> 相互转换的方法，但在实际中，我们可能是需要的</li>
+<li><code>Date</code> 可以与 <code>Instant</code> 通过<strong>毫秒数</strong>相互转换。对于其他类型，也可以通过 毫秒数/ <code>Instant</code> 相互转换</li>
 </ul>
 
     </div>
