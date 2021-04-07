@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. Java 类加载机制的强大之处">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-06-06T10:50:59.000Z">
-<meta property="article:modified_time" content="2020-06-07T17:48:34.000Z">
+<meta property="article:modified_time" content="2021-04-07T07:17:25.810Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="类加载机制">
 <meta property="article:tag" content="自定义 ClassLoader">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-08 01:48:34" itemprop="dateModified" datetime="2020-06-08T01:48:34+08:00">2020-06-08</time>
+                <time title="修改时间：2021-04-07 15:17:25" itemprop="dateModified" datetime="2021-04-07T15:17:25+08:00">2021-04-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -255,33 +255,33 @@
         <h4 id="1-Java-类加载机制的强大之处"><a href="#1-Java-类加载机制的强大之处" class="headerlink" title="1. Java 类加载机制的强大之处"></a>1. Java 类加载机制的强大之处</h4><a id="more"></a>
 
 <ul>
-<li>在于我们<strong>可以创建自定义的 <code>ClassLoader</code></strong>。</li>
-<li>自定义 <code>ClassLoader</code> 是 Tomcat 实现应用隔离、支持 JSP、OSGI 实现<strong>动态模块化</strong>的基础。</li>
+<li>在于我们<strong>可以创建自定义的 <code>ClassLoader</code></strong></li>
+<li>自定义 <code>ClassLoader</code> 是 Tomcat 实现应用隔离、支持 JSP、OSGI 实现<strong>动态模块化</strong>的基础</li>
 </ul>
-<h4 id="2-怎样自定义-ClassLoader"><a href="#2-怎样自定义-ClassLoader" class="headerlink" title="2. 怎样自定义 ClassLoader"></a>2. 怎样自定义 ClassLoader</h4><ul>
-<li>一般而言，<strong>继承类 <code>ClassLoader</code>，重写 <code>findClass()</code> 方法</strong>就可以了。</li>
-<li><strong>实现 <code>findClass()</code> 方法</strong>：<ul>
-<li>使用自己的逻辑寻找 class 文件字节码的字节形式。</li>
-<li>找到后，使用如下方法转换为 <code>Class</code> 对象：<code>protected final Class&lt;?&gt; defineClass(String name, byte[] b, int off, int len)</code>。</li>
-<li><code>name</code> 表示类名，<code>b</code> 是存放字节码数据的字节数组，有效数据从 <code>off</code> 开始，长度为 <code>len</code>。</li>
+<h4 id="2-怎样自定义-ClassLoader"><a href="#2-怎样自定义-ClassLoader" class="headerlink" title="2. 怎样自定义 ClassLoader"></a>2. 怎样自定义 <code>ClassLoader</code></h4><ul>
+<li>一般而言，<strong>继承类 <code>ClassLoader</code>，重写 <code>findClass()</code> 方法</strong>就可以了</li>
+<li><strong>实现 <code>findClass()</code> 方法</strong><ul>
+<li>使用自己的逻辑寻找 class 文件字节码的字节形式</li>
+<li>找到后，使用如下方法转换为 <code>Class</code> 对象：<code>protected final Class&lt;?&gt; defineClass(String name, byte[] b, int off, int len)</code></li>
+<li><code>name</code> 表示类名，<code>b</code> 是存放字节码数据的字节数组，有效数据从 <code>off</code> 开始，长度为 <code>len</code></li>
 </ul>
 </li>
 </ul>
-<h4 id="3-写一个自定义-ClassLoader-的-Demo"><a href="#3-写一个自定义-ClassLoader-的-Demo" class="headerlink" title="3. 写一个自定义 ClassLoader 的 Demo"></a>3. 写一个自定义 ClassLoader 的 Demo</h4><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">MyClassLoader</span> <span class="keyword">extends</span> <span class="title">ClassLoader</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> static <span class="keyword">final</span> <span class="type">String</span> <span class="type">BASE_DIR</span> = <span class="string">"data/c87/"</span>; <span class="comment">//从 BASE_DIR 下的路径中加载类</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="type">Class</span>&lt;?&gt; findClass(<span class="type">String</span> name) <span class="keyword">throws</span> <span class="type">ClassNotFoundException</span> &#123;</span><br><span class="line">        <span class="type">String</span> fileName = name.replaceAll(<span class="string">"\\."</span>, <span class="string">"/"</span>);</span><br><span class="line">        fileName = <span class="type">BASE_DIR</span> + fileName + <span class="string">".class"</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            byte[] bytes = <span class="type">BinaryFileUtils</span>.readFileToByteArray(fileName); <span class="comment">//使用第 13 章介绍的 readFileToByteArray() 方法读取文件，转换为 byte 数组</span></span><br><span class="line">            <span class="keyword">return</span> defineClass(name, bytes, <span class="number">0</span>, bytes.length);</span><br><span class="line">        &#125; <span class="keyword">catch</span>(<span class="type">IOException</span> ex) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="type">ClassNotFoundException</span>(<span class="string">"failed to load class "</span> + name, ex);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3-写一个自定义-ClassLoader-的-Demo"><a href="#3-写一个自定义-ClassLoader-的-Demo" class="headerlink" title="3. 写一个自定义 ClassLoader 的 Demo"></a>3. 写一个自定义 <code>ClassLoader</code> 的 Demo</h4><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">MyClassLoader</span> <span class="keyword">extends</span> <span class="title">ClassLoader</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> static <span class="keyword">final</span> <span class="type">String</span> <span class="type">BASE_DIR</span> = <span class="string">"data/c87/"</span>; <span class="comment">//从 BASE_DIR 下的路径中加载类</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="type">Class</span>&lt;?&gt; findClass(<span class="type">String</span> name) <span class="keyword">throws</span> <span class="type">ClassNotFoundException</span> &#123;</span><br><span class="line">        <span class="type">String</span> fileName = name.replaceAll(<span class="string">"\\."</span>, <span class="string">"/"</span>);</span><br><span class="line">        fileName = <span class="type">BASE_DIR</span> + fileName + <span class="string">".class"</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            byte[] bytes = <span class="type">BinaryFileUtils</span>.readFileToByteArray(fileName); <span class="comment">//使用第 13 章介绍的 readFileToByteArray() 方法读取文件，转换为 byte 数组</span></span><br><span class="line">            <span class="keyword">return</span> defineClass(name, bytes, <span class="number">0</span>, bytes.length);</span><br><span class="line">        &#125; <span class="keyword">catch</span>(<span class="type">IOException</span> ex) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="type">ClassNotFoundException</span>(<span class="string">"failed to load class "</span> + name, ex);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="4-接上题，自定义的-MyClassLoader-有什么用呢"><a href="#4-接上题，自定义的-MyClassLoader-有什么用呢" class="headerlink" title="4. 接上题，自定义的 MyClassLoader 有什么用呢"></a>4. 接上题，自定义的 MyClassLoader 有什么用呢</h4><ul>
-<li><p><code>MyClassLoader</code> 没有指定父 <code>ClassLoader</code>，<strong>默认是系统类加载器</strong>。</p>
+<h4 id="4-接上题，自定义的-MyClassLoader-有什么用呢"><a href="#4-接上题，自定义的-MyClassLoader-有什么用呢" class="headerlink" title="4. 接上题，自定义的 MyClassLoader 有什么用呢"></a>4. 接上题，自定义的 <code>MyClassLoader</code> 有什么用呢</h4><ul>
+<li><p><code>MyClassLoader</code> 没有指定父 <code>ClassLoader</code>，<strong>默认是系统类加载器</strong></p>
 <ul>
-<li>即 <code>ClassLoader.getSystemClassLoader()</code> 的返回值。</li>
-<li>不过，<code>ClassLoader</code> 有一个可重写的构造方法，可以指定父 <code>ClassLoader</code>: <code>protected ClassLoader(ClassLoader parent)</code>。</li>
+<li>即 <code>ClassLoader.getSystemClassLoader()</code> 的返回值</li>
+<li>不过，<code>ClassLoader</code> 有一个可重写的构造方法，可以指定父 <code>ClassLoader</code>: <code>protected ClassLoader(ClassLoader parent)</code></li>
 </ul>
 </li>
-<li><p>确实可以<strong>将 <code>BASE_DIR</code> 加到 <code>classpath</code> 中</strong>，但从 Web 服务器、数据库和缓存服务器获取 <code>byte</code> 数组，这就不是系统类加载器能做到的了。</p>
+<li><p>确实可以<strong>将 <code>BASE_DIR</code> 加到 <code>classpath</code> 中</strong>，但从 Web 服务器、数据库和缓存服务器获取 <code>byte</code> 数组，这就不是系统类加载器能做到的了</p>
 </li>
-<li><p>使用自定义的 <code>MyClassLoader</code> 还有一个好处，就是<strong>可以创建多个 <code>MyClassLoader</code></strong>。<strong>对同一个类，每个 <code>MyClassLoader</code> 都可以加载一次，得到同一个类的不同对象</strong>。这样的好处是：</p>
+<li><p>使用自定义的 <code>MyClassLoader</code> 还有一个好处，就是<strong>可以创建多个 <code>MyClassLoader</code></strong>。<strong>对同一个类，每个 <code>MyClassLoader</code> 都可以加载一次，得到同一个类的不同对象</strong>。这样的好处是</p>
 <ul>
-<li><strong>可以实现隔离</strong>。一个复杂的程序，内部可能按模块组织，不同模块可能使用同一个类，但使用的是不同的版本，如果使用同一个类加载器，它们是无法共存的。不<strong>同模块使用不同的类加载器就可以实现隔离</strong>，Tomcat 使用它隔离不同的 Web 应用，OSGI 使用它隔离不同模块。</li>
-<li><strong>可以实现热部署</strong>。使用同一个 <code>ClassLoader</code>，类只会被加载一次。加载后，即使 class 文件已经变了，再次加载，得到的也还是原来的 <code>Class</code> 对象。而使用 <code>MyClassLoader</code>，则可以创建一个新的 <code>ClassLoader</code>，再用它加载 <code>Class</code>，得到的 <code>Class</code> 对象就是新的，从而实现<strong>动态更新</strong>。</li>
+<li><strong>可以实现隔离</strong>。一个复杂的程序，内部可能按模块组织，不同模块可能使用同一个类，但使用的是不同的版本，如果使用同一个类加载器，它们是无法共存的。不<strong>同模块使用不同的类加载器就可以实现隔离</strong>，Tomcat 使用它隔离不同的 Web 应用，OSGI 使用它隔离不同模块</li>
+<li><strong>可以实现热部署</strong>。使用同一个 <code>ClassLoader</code>，类只会被加载一次。加载后，即使 class 文件已经变了，再次加载，得到的也还是原来的 <code>Class</code> 对象。而使用 <code>MyClassLoader</code>，则可以创建一个新的 <code>ClassLoader</code>，再用它加载 <code>Class</code>，得到的 <code>Class</code> 对象就是新的，从而实现<strong>动态更新</strong></li>
 </ul>
 </li>
 </ul>
