@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gnzyna9gidj30re0k4wfj.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gnzyvlvzhzj30p60ncwgq.jpg">
 <meta property="article:published_time" content="2020-07-03T02:34:50.000Z">
-<meta property="article:modified_time" content="2021-04-07T13:46:54.811Z">
+<meta property="article:modified_time" content="2021-04-07T13:55:45.338Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="ContentProvider">
 <meta name="twitter:card" content="summary">
@@ -218,7 +218,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-04-07 21:46:54" itemprop="dateModified" datetime="2021-04-07T21:46:54+08:00">2021-04-07</time>
+                <time title="修改时间：2021-04-07 21:55:45" itemprop="dateModified" datetime="2021-04-07T21:55:45+08:00">2021-04-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -408,10 +408,10 @@
 <h4 id="15-使用-ContentProvider-时需要注意的几个方面"><a href="#15-使用-ContentProvider-时需要注意的几个方面" class="headerlink" title="15. 使用 ContentProvider 时需要注意的几个方面"></a>15. 使用 <code>ContentProvider</code> 时需要注意的几个方面</h4><ul>
 <li><p><strong>启动性能</strong></p>
 <ul>
-<li><p><code>ContentProvider</code> 的生命周期默认在 <strong><code>Application#onCreate()</code></strong> 之前，而且都是在主线程创建的。自定义的 <code>ContentProvider</code> 类的构造函数、静态代码块、<code>onCreate()</code> 函数都尽量不要做耗时操作，否则会拖慢启动速度</p>
+<li><p><code>ContentProvider</code> 的生命周期默认在 <strong><code>Application#onCreate()</code></strong> 之前，而且都是在<strong>主线程</strong>创建的。自定义的 <code>ContentProvider</code> 类的构造函数、静态代码块、<code>onCreate()</code> 函数都尽量不要做耗时操作，否则会拖慢启动速度</p>
 <p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gnzyiyc7jhj30z0096766.jpg" alt="ContentProvider 生命周期"></p>
 </li>
-<li><p><code>ContentProvider</code> 还有一个<strong>多进程模式</strong>，它可以和 AndroidManifest 中的 <strong>multiprocess</strong> 属性结合使用。这样调用进程会直接在自己进程里创建一个 push 进程的 <code>Provider</code> 实例，就不需要跨进程调用了。需要注意的是，这样也会带来 Provider 的多实例问题</p>
+<li><p><code>ContentProvider</code> 还有一个<strong>多进程模式</strong>，它可以和 AndroidManifest 中的 <strong>multiprocess</strong> 属性结合使用。这样调用进程会直接在自己进程里创建一个 push 进程的 <code>Provider</code> 实例，就不需要跨进程调用了。需要注意的是，这样也会带来 <code>Provider</code> 的多实例问题</p>
 </li>
 </ul>
 </li>
@@ -428,7 +428,7 @@
 </li>
 <li><p><strong>安全性</strong></p>
 <ul>
-<li>虽然 <code>ContentProvider</code> 为应用程序之间的数据共享提供了很好的安全机制，但是如果 <code>ContentProvider</code> 是 <code>exported</code>，当支持执行 SQL 语句时就需要注意 <strong>SQL 注入</strong>的问题。另外，如果传入的参数是一个文件路径，然后返回文件的内容，此时也要校验<strong>合法性</strong>，不然整个应用的私有数据都有可能被窃取，在 <strong>Intent 传递参数</strong>的时候可能经常会犯这个错误</li>
+<li>虽然 <code>ContentProvider</code> 为应用程序之间的数据共享提供了很好的安全机制，但是如果 <code>ContentProvider</code> 是 <code>exported</code>，当支持执行 SQL 语句时就需要注意 <strong>SQL 注入</strong>的问题。另外，如果传入的参数是一个文件路径，然后返回文件的内容，此时也要校验<strong>合法性</strong>，不然整个应用的私有数据都有可能被窃取，在 <strong><code>Intent</code> 传递参数</strong>的时候可能经常会犯这个错误</li>
 </ul>
 </li>
 <li><p>总结：<code>ContentProvider</code> 的六要素优缺点</p>
