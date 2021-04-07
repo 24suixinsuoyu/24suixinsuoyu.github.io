@@ -30,7 +30,7 @@
 <meta property="og:description" content="1. 什么是组合式异步编程">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-06-07T18:04:35.000Z">
-<meta property="article:modified_time" content="2020-06-30T02:25:52.000Z">
+<meta property="article:modified_time" content="2021-04-07T08:59:44.855Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="函数式编程">
 <meta property="article:tag" content="组合式异步编程">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-30 10:25:52" itemprop="dateModified" datetime="2020-06-30T10:25:52+08:00">2020-06-30</time>
+                <time title="修改时间：2021-04-07 16:59:44" itemprop="dateModified" datetime="2021-04-07T16:59:44+08:00">2021-04-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -255,80 +255,80 @@
         <h4 id="1-什么是组合式异步编程"><a href="#1-什么是组合式异步编程" class="headerlink" title="1. 什么是组合式异步编程"></a>1. 什么是组合式异步编程</h4><a id="more"></a>
 
 <ul>
-<li><p>组合式异步编程主要是 <strong>Java 8</strong> 中的一个新类 <strong><code>CompletableFuture</code></strong>。</p>
+<li><p>组合式异步编程主要是 <strong>Java 8</strong> 中的一个新类 <strong><code>CompletableFuture</code></strong></p>
 <ul>
-<li>它是<strong>对并发编程的增强</strong>。</li>
-<li>它可以方便地<strong>将多个有一定依赖关系的异步任务以流水线的方式组合在一起</strong>，大大简化多异步任务的开发。</li>
+<li>它是<strong>对并发编程的增强</strong></li>
+<li>它可以方便地<strong>将多个有一定依赖关系的异步任务以流水线的方式组合在一起</strong>，大大简化多异步任务的开发</li>
 </ul>
 </li>
-<li><p><strong><code>CompletableFuture</code> 是一个具体的类，实现了两个接口，一个是 <code>Future</code>，另一个是 <code>CompletionStage</code></strong>。</p>
+<li><p><strong><code>CompletableFuture</code> 是一个具体的类，实现了两个接口，一个是 <code>Future</code>，另一个是 <code>CompletionStage</code></strong></p>
 <ul>
-<li><code>Future</code> 表示异步任务的结果，而 <code>CompletionStage</code> 的字面意思是完成阶段。</li>
-<li>多个 <code>CompletionStage</code> 可以以流水线的方式组合起来，对于其中一个 <code>CompletionStage</code>，它有一个计算任务，但可能需要等待其他一个或多个阶段完成才能开始，它完成后，可能会触发其他阶段开始运行。</li>
-<li><code>CompletionStage</code> 提供了大量方法，使用它们，可以方便地响应任务事件，构建任务流水线，实现组合式异步编程。</li>
+<li><code>Future</code> 表示异步任务的结果，而 <code>CompletionStage</code> 的字面意思是完成阶段</li>
+<li>多个 <code>CompletionStage</code> 可以以流水线的方式组合起来，对于其中一个 <code>CompletionStage</code>，它有一个计算任务，但可能需要等待其他一个或多个阶段完成才能开始，它完成后，可能会触发其他阶段开始运行</li>
+<li><code>CompletionStage</code> 提供了大量方法，使用它们，可以方便地响应任务事件，构建任务流水线，实现组合式异步编程</li>
 </ul>
 </li>
 </ul>
-<h4 id="2-怎样理解基本的-CompletableFuture"><a href="#2-怎样理解基本的-CompletableFuture" class="headerlink" title="2. 怎样理解基本的 CompletableFuture"></a>2. 怎样理解基本的 CompletableFuture</h4><ul>
-<li><p><code>CompletableFuture</code> 不支持使用 <code>Callable</code> 表示异步任务，而支持 <code>Runnable</code> 和 <code>Supplier</code>。</p>
+<h4 id="2-怎样理解基本的-CompletableFuture"><a href="#2-怎样理解基本的-CompletableFuture" class="headerlink" title="2. 怎样理解基本的 CompletableFuture"></a>2. 怎样理解基本的 <code>CompletableFuture</code></h4><ul>
+<li><p><code>CompletableFuture</code> 不支持使用 <code>Callable</code> 表示异步任务，而支持 <code>Runnable</code> 和 <code>Supplier</code></p>
 <ul>
-<li><code>Supplier</code> 代替 <code>Callable</code> 表示有返回结果的异步任务。与 <code>Callable</code> 的区别是，它不能抛出受检异常，如果会发生异常，可以抛出运行时异常。</li>
+<li><code>Supplier</code> 代替 <code>Callable</code> 表示有返回结果的异步任务。与 <code>Callable</code> 的区别是，它不能抛出受检异常，如果会发生异常，可以抛出运行时异常</li>
 </ul>
 </li>
-<li><p><code>CompletableFuture</code> 有一个静态方法 <code>supplyAsync</code>，定义为：<code>public static &lt;U&gt; CompletableFuture&lt;U&gt; supplyAsync(Supplier&lt;U&gt; supplier, Executor executor)</code>。</p>
+<li><p><code>CompletableFuture</code> 有一个静态方法 <code>supplyAsync</code>，定义为：<code>public static &lt;U&gt; CompletableFuture&lt;U&gt; supplyAsync(Supplier&lt;U&gt; supplier, Executor executor)</code></p>
 <ul>
-<li>它接受两个参数 <code>supplier</code> 和 <code>executor</code>，使用 <code>executor</code> 执行 <code>supplier</code> 表示的任务，返回一个 <code>CompletableFuture</code>，调用后，任务被异步执行，这个方法立即返回。</li>
-<li><code>supplyAsync</code> 还有一个不带 <code>executor</code> 参数的方法：<code>public static &lt;U&gt; CompletableFuture&lt;U&gt; supplyAsync(Supplier&lt;U&gt; supplier)</code>。没有 <code>executor</code>，任务的执行与系统环境和配置有关，一般来说，如果可用的 CPU 核数大于 2，会使用 <strong>Java 7</strong> 引入的 <strong>Fork/Join</strong> 任务执行服务，即：<code>ForkJoinPool.commonPool()</code>，该任务执行服务背后的工作线程数一般为 CPU 核数减 1，即：<code>Runtime.getRuntime().availableProcessors() - 1</code>。否则，会使用 <code>ThreadPerTaskExecutor</code>，它会为每个任务创建一个线程。</li>
+<li>它接受两个参数 <code>supplier</code> 和 <code>executor</code>，使用 <code>executor</code> 执行 <code>supplier</code> 表示的任务，返回一个 <code>CompletableFuture</code>，调用后，任务被异步执行，这个方法立即返回</li>
+<li><code>supplyAsync</code> 还有一个不带 <code>executor</code> 参数的方法：<code>public static &lt;U&gt; CompletableFuture&lt;U&gt; supplyAsync(Supplier&lt;U&gt; supplier)</code>。没有 <code>executor</code>，任务的执行与系统环境和配置有关，一般来说，如果可用的 CPU 核数大于 2，会使用 <strong>Java 7</strong> 引入的 <strong>Fork/Join</strong> 任务执行服务，即：<code>ForkJoinPool.commonPool()</code>，该任务执行服务背后的工作线程数一般为 CPU 核数减 1，即：<code>Runtime.getRuntime().availableProcessors() - 1</code>。否则，会使用 <code>ThreadPerTaskExecutor</code>，它会为每个任务创建一个线程</li>
 </ul>
 </li>
-<li><p>对于 CPU 密集型的运算任务，使用 Fork/Join 任务执行服务是合适的，但对于一般的调用外部服务的异步任务，Fork/Join 可能是不合适的，因为它的并发度比较低，可能会让本可以并发的多任务串行运行。这时，应该提供 <code>Executor</code> 参数。很多以 <code>Async</code> 结尾命名的方法，一般都有两个版本，一个带 <code>Executor</code> 参数，另一个不带，其含义是相同的。</p>
+<li><p>对于 CPU 密集型的运算任务，使用 Fork/Join 任务执行服务是合适的，但对于一般的调用外部服务的异步任务，Fork/Join 可能是不合适的，因为它的并发度比较低，可能会让本可以并发的多任务串行运行。这时，应该提供 <code>Executor</code> 参数。很多以 <code>Async</code> 结尾命名的方法，一般都有两个版本，一个带 <code>Executor</code> 参数，另一个不带，其含义是相同的</p>
 </li>
-<li><p>对于类型为 <code>Runnable</code> 的任务，构建 <code>CompletableFuture</code> 的方法为：</p>
+<li><p>对于类型为 <code>Runnable</code> 的任务，构建 <code>CompletableFuture</code> 的方法为</p>
 <ul>
-<li><code>public static CompletableFuture&lt;Void&gt; runAsync(Runnable runnable)</code>。</li>
-<li><code>public static CompletableFuture&lt;Void&gt; runAsync(Runnable runnable, Executor executor)</code>。</li>
+<li><code>public static CompletableFuture&lt;Void&gt; runAsync(Runnable runnable)</code></li>
+<li><code>public static CompletableFuture&lt;Void&gt; runAsync(Runnable runnable, Executor executor)</code></li>
 </ul>
 </li>
 </ul>
-<h4 id="3-CompletableFuture-对-Future-的增强有哪些"><a href="#3-CompletableFuture-对-Future-的增强有哪些" class="headerlink" title="3. CompletableFuture 对 Future 的增强有哪些"></a>3. CompletableFuture 对 Future 的增强有哪些</h4><ul>
-<li><code>Future</code> 有的方法，<code>CompletableFuture</code> 都是支持的，不过，<code>CompletableFuture</code> 还有一些额外的相关方法：<ul>
-<li><strong><code>public T join()</code></strong>：与 <code>get()</code> 方法类似，也会等待任务结束，但它不会抛出受检异常。如果任务异常结束了，<code>join()</code> 会将异常包装为运行时异常 <code>CompletionException</code> 抛出。</li>
-<li><strong><code>public boolean isCompletedExceptionally()</code></strong>：<code>Future</code> 有 <code>isDone()</code> 方法检查任务是否结束了，但不知道任务是正常结束还是异常结束，<code>isCompletedExceptionally()</code> 方法可以判断任务是否是异常结束。</li>
-<li><strong><code>public T getNow(T valueIfAbsent)</code></strong>：与 <code>join()</code> 类似，区别是，如果任务还没有结束，<code>getNow()</code> 不会等待，而是会返回传入的参数 <code>valueIfAbsent</code>。</li>
+<h4 id="3-CompletableFuture-对-Future-的增强有哪些"><a href="#3-CompletableFuture-对-Future-的增强有哪些" class="headerlink" title="3. CompletableFuture 对 Future 的增强有哪些"></a>3. <code>CompletableFuture</code> 对 <code>Future</code> 的增强有哪些</h4><ul>
+<li><code>Future</code> 有的方法，<code>CompletableFuture</code> 都是支持的，不过，<code>CompletableFuture</code> 还有一些额外的相关方法<ul>
+<li><strong><code>public T join()</code></strong>：与 <code>get()</code> 方法类似，也会等待任务结束，但它不会抛出受检异常。如果任务异常结束了，<code>join()</code> 会将异常包装为运行时异常 <code>CompletionException</code> 抛出</li>
+<li><strong><code>public boolean isCompletedExceptionally()</code></strong>：<code>Future</code> 有 <code>isDone()</code> 方法检查任务是否结束了，但不知道任务是正常结束还是异常结束，<code>isCompletedExceptionally()</code> 方法可以判断任务是否是异常结束</li>
+<li><strong><code>public T getNow(T valueIfAbsent)</code></strong>：与 <code>join()</code> 类似，区别是，如果任务还没有结束，<code>getNow()</code> 不会等待，而是会返回传入的参数 <code>valueIfAbsent</code></li>
 </ul>
 </li>
 </ul>
-<h4 id="4-进一步理解-Future-CompletableFuture"><a href="#4-进一步理解-Future-CompletableFuture" class="headerlink" title="4. 进一步理解 Future/CompletableFuture"></a>4. 进一步理解 Future/CompletableFuture</h4><ul>
-<li>任务执行服务与异步结果 <code>Future</code> 不是绑在一起的，可以自己创建线程返回异步结果。</li>
-<li><code>CompletableFuture</code> 有两个方法：<code>public boolean complete(T value)</code> 和 <code>public boolean completeExceptionally(Throwable ex)</code>。</li>
+<h4 id="4-进一步理解-Future-CompletableFuture"><a href="#4-进一步理解-Future-CompletableFuture" class="headerlink" title="4. 进一步理解 Future/CompletableFuture"></a>4. 进一步理解 <code>Future/CompletableFuture</code></h4><ul>
+<li>任务执行服务与异步结果 <code>Future</code> 不是绑在一起的，可以自己创建线程返回异步结果</li>
+<li><code>CompletableFuture</code> 有两个方法：<code>public boolean complete(T value)</code> 和 <code>public boolean completeExceptionally(Throwable ex)</code></li>
 </ul>
 <h4 id="5-怎样理解响应结果或异常"><a href="#5-怎样理解响应结果或异常" class="headerlink" title="5. 怎样理解响应结果或异常"></a>5. 怎样理解响应结果或异常</h4><ul>
-<li>使用 <code>Future</code>，我们只能通过 <code>get()</code> 获取结果，而 <code>get()</code> 可能会需要阻塞等待，而通过 <code>CompletionStage</code>，可以注册回调函数，当任务完成或异常结束时自动触发执行。</li>
-<li>有两类注册方法：<code>whenComplete()</code> 和 <code>handle()</code>。</li>
+<li>使用 <code>Future</code>，我们只能通过 <code>get()</code> 获取结果，而 <code>get()</code> 可能会需要阻塞等待，而通过 <code>CompletionStage</code>，可以注册回调函数，当任务完成或异常结束时自动触发执行</li>
+<li>有两类注册方法：<code>whenComplete()</code> 和 <code>handle()</code></li>
 </ul>
 <h4 id="6-构建依赖一个或多个阶段的任务流的方法有"><a href="#6-构建依赖一个或多个阶段的任务流的方法有" class="headerlink" title="6. 构建依赖一个或多个阶段的任务流的方法有"></a>6. 构建依赖一个或多个阶段的任务流的方法有</h4><ul>
-<li>构建依赖<strong>单一阶段</strong>的任务流：<code>thenRun</code>、<code>thenAccept</code>、<code>thenApply</code>、<code>thenCompose</code>。</li>
-<li>构建依赖<strong>两个阶段</strong>的任务流：<code>runAfterBoth</code>、<code>thenCombine</code>、<code>thenAcceptBoth</code>。</li>
-<li>构建依赖<strong>多个阶段</strong>的任务流：<code>allOf</code>、<code>anyOf</code>。</li>
+<li>构建依赖<strong>单一阶段</strong>的任务流：<code>thenRun</code>、<code>thenAccept</code>、<code>thenApply</code>、<code>thenCompose</code></li>
+<li>构建依赖<strong>两个阶段</strong>的任务流：<code>runAfterBoth</code>、<code>thenCombine</code>、<code>thenAcceptBoth</code></li>
+<li>构建依赖<strong>多个阶段</strong>的任务流：<code>allOf</code>、<code>anyOf</code></li>
 </ul>
-<h4 id="7-总结一下-Java-8-中的组合式异步编程-CompletableFuture"><a href="#7-总结一下-Java-8-中的组合式异步编程-CompletableFuture" class="headerlink" title="7. 总结一下 Java 8 中的组合式异步编程 CompletableFuture"></a>7. 总结一下 Java 8 中的组合式异步编程 CompletableFuture</h4><ul>
-<li><p><strong>它是对 <code>Future</code> 的增强，但可以响应结果或异常事件，有很多方法构建异步任务流</strong>。</p>
+<h4 id="7-总结一下-Java-8-中的组合式异步编程-CompletableFuture"><a href="#7-总结一下-Java-8-中的组合式异步编程-CompletableFuture" class="headerlink" title="7. 总结一下 Java 8 中的组合式异步编程 CompletableFuture"></a>7. 总结一下 Java 8 中的组合式异步编程 <code>CompletableFuture</code></h4><ul>
+<li><p><strong>它是对 <code>Future</code> 的增强，但可以响应结果或异常事件，有很多方法构建异步任务流</strong></p>
 </li>
-<li><p>根据任务由谁执行，一般有三类对应方法：</p>
+<li><p>根据任务由谁执行，一般有三类对应方法</p>
 <ul>
-<li>名称不带 <code>Async</code> 的方法由当前线程或前一个阶段的线程执行。</li>
-<li>带 <code>Async</code> 但没有指定 <code>Executor</code> 的方法由默认 <code>Executor（ForkJoinPool.commonPool() 或 ThreadPerTaskExecutor）</code>执行。</li>
-<li>带 <code>Async</code> 且指定 <code>Executor</code> 参数的方法由指定的 <code>Executor</code> 执行。</li>
+<li>名称不带 <code>Async</code> 的方法由当前线程或前一个阶段的线程执行</li>
+<li>带 <code>Async</code> 但没有指定 <code>Executor</code> 的方法由默认 <code>Executor（ForkJoinPool.commonPool() 或 ThreadPerTaskExecutor）</code>执行</li>
+<li>带 <code>Async</code> 且指定 <code>Executor</code> 参数的方法由指定的 <code>Executor</code> 执行</li>
 </ul>
 </li>
-<li><p>根据任务类型，一般也有三类对应方法：</p>
+<li><p>根据任务类型，一般也有三类对应方法</p>
 <ul>
-<li>名称带 <code>run</code> 的对应 <code>Runnable</code>。</li>
-<li>带 <code>accept</code> 的对应 <code>Consumer</code>。</li>
-<li>带 <code>apply</code> 的对应 <code>Function</code>。</li>
+<li>名称带 <code>run</code> 的对应 <code>Runnable</code></li>
+<li>带 <code>accept</code> 的对应 <code>Consumer</code></li>
+<li>带 <code>apply</code> 的对应 <code>Function</code></li>
 </ul>
 </li>
-<li><p><strong>使用 <code>CompletableFuture</code>，可以简洁自然地表达多个异步任务之间的依赖关系和执行流程，大大简化代码，提高可读性</strong>。</p>
+<li><p><strong>使用 <code>CompletableFuture</code>，可以简洁自然地表达多个异步任务之间的依赖关系和执行流程，大大简化代码，提高可读性</strong></p>
 </li>
 </ul>
 
