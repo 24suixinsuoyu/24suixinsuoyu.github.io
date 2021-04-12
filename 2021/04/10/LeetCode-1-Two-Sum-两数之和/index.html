@@ -30,7 +30,7 @@
 <meta property="og:description" content="DescriptionGiven an array of integers nums and an integer target, return indice of the two numbers such that they add up to target.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-04-10T14:26:04.000Z">
-<meta property="article:modified_time" content="2021-04-12T14:38:42.513Z">
+<meta property="article:modified_time" content="2021-04-12T14:41:47.917Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="LeetCode">
 <meta property="article:tag" content="Easy">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-04-12 22:38:42" itemprop="dateModified" datetime="2021-04-12T22:38:42+08:00">2021-04-12</time>
+                <time title="修改时间：2021-04-12 22:41:47" itemprop="dateModified" datetime="2021-04-12T22:41:47+08:00">2021-04-12</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,7 +233,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.4k</span>
+              <span>1.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -269,17 +269,17 @@
 <h3 id="Example-3"><a href="#Example-3" class="headerlink" title="Example 3:"></a>Example 3:</h3><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: nums = [<span class="number">3</span>, <span class="number">3</span>], target = <span class="number">6</span></span><br><span class="line">Output: [<span class="number">0</span>, <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
 
 <h3 id="Constraints"><a href="#Constraints" class="headerlink" title="Constraints:"></a>Constraints:</h3><ul>
-<li><code>2 &lt;= nums.length &lt;= 10&lt;sup&gt;3&lt;/sup&gt;</code></li>
-<li><code>-10&lt;sup&gt;9&lt;/sup&gt; &lt;= nums[i] &lt;= 10&lt;sup&gt;9&lt;/sup&gt;</code></li>
-<li><code>-10&lt;sup&gt;9&lt;/sup&gt; &lt;= target &lt;= 10&lt;sup&gt;9&lt;/sup&gt;</code></li>
+<li>2 &lt;= nums.length &lt;= 10<sup>3</sup></li>
+<li>-10<sup>9</sup> &lt;= nums[i] &lt;= 10<sup>9</sup></li>
+<li>-10<sup>9</sup> &lt;= target &lt;= 10<sup>9</sup></li>
 <li><strong>Only one valid answer exists.</strong></li>
 </ul>
 <h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><h3 id="Approach-1-Brute-Force"><a href="#Approach-1-Brute-Force" class="headerlink" title="Approach 1: Brute Force"></a>Approach 1: Brute Force</h3><h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h4><p>暴力枚举是最容易想到的方法。通过循环遍历数组中的数字 <code>x</code>，寻找数组中是否存在 <code>target - x</code>。需要注意的有两个点：1. 寻找 <code>target - x</code> 时，每一个位于 <code>x</code> 之前的元素都已经和 <code>x</code> 匹配过，所以就不需要重复匹配了；2. 每一个元素不能被使用两次，所以也是只需要在 <code>x</code> 后面的元素中寻找 <code>target - x</code> 即可</p>
 <h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">int</span>[] twoSum(<span class="keyword">int</span> [] nums, <span class="keyword">int</span> <span class="keyword">target</span>) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; nums.length; j++) &#123;</span><br><span class="line">				<span class="keyword">if</span> (nums[j] == <span class="keyword">target</span> - nums[i]) &#123;</span><br><span class="line">					<span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">int</span>[] &#123;i, j&#125;;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"No two sum soluton"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h4 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h4><ul>
-<li>时间复杂度：<code>O(N&lt;sup&gt;2&lt;/sup&gt;)</code>。<code>N</code> 是数组中元素的数量，最坏情况下数组中任意两个数字都要被匹配一次</li>
-<li>空间复杂度：<code>O(1)</code></li>
+<li>时间复杂度：O(N<sup>2</sup>)。N 是数组中元素的数量，最坏情况下数组中任意两个数字都要被匹配一次</li>
+<li>空间复杂度：O(1)</li>
 </ul>
 <h3 id="Approach-2-Two-pass-Hash-Table"><a href="#Approach-2-Two-pass-Hash-Table" class="headerlink" title="Approach 2: Two-pass Hash Table"></a>Approach 2: Two-pass Hash Table</h3><h4 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h4><h4 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h4><h4 id="复杂度分析-1"><a href="#复杂度分析-1" class="headerlink" title="复杂度分析"></a>复杂度分析</h4><h3 id="Approach-3-One-pass-Hash-Table"><a href="#Approach-3-One-pass-Hash-Table" class="headerlink" title="Approach 3: One-pass Hash Table"></a>Approach 3: One-pass Hash Table</h3><h4 id="思路-2"><a href="#思路-2" class="headerlink" title="思路"></a>思路</h4><h4 id="代码-2"><a href="#代码-2" class="headerlink" title="代码"></a>代码</h4><h4 id="复杂度分析-2"><a href="#复杂度分析-2" class="headerlink" title="复杂度分析"></a>复杂度分析</h4>
     </div>
