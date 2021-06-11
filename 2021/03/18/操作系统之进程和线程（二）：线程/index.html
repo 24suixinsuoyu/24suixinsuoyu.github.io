@@ -29,12 +29,14 @@
 <meta property="og:site_name" content="隋钟元’s Blog">
 <meta property="og:description" content="1. 线程的使用">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gre0xrdepsj31440syn23.jpg">
 <meta property="article:published_time" content="2021-03-18T04:04:37.000Z">
-<meta property="article:modified_time" content="2021-05-14T13:01:46.405Z">
+<meta property="article:modified_time" content="2021-06-11T01:03:52.391Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="操作系统之进程和线程">
 <meta property="article:tag" content="线程">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gre0xrdepsj31440syn23.jpg">
 
 <link rel="canonical" href="http://24suixinsuoyu.com/2021/03/18/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E7%BA%BF%E7%A8%8B/">
 
@@ -215,7 +217,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-05-14 21:01:46" itemprop="dateModified" datetime="2021-05-14T21:01:46+08:00">2021-05-14</time>
+                <time title="修改时间：2021-06-11 09:03:52" itemprop="dateModified" datetime="2021-06-11T09:03:52+08:00">2021-06-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,14 +235,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>243</span>
+              <span>2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -258,11 +260,67 @@
 <li><p>进程和线程的区别</p>
 <ul>
 <li>多线程之间会共享同一块地址空间和所有可用数据的能力，这是进程所不具备的</li>
-<li>线程要比进程更轻量级，由于线程更轻，所以它比进程更容易创建，也更容易撤销。在许多系统中，创建一个线程要比创建一个进程快 10 - 100 倍。</li>
+<li>线程要比进程更轻量级，由于线程更轻，所以它比进程更容易创建，也更容易撤销。在许多系统中，创建一个线程要比创建一个进程快 10 - 100 倍</li>
 <li>第三个原因可能是性能方面的探讨，如果多个线程都是 CPU 密集型的，那么并不能获得性能上的增强，但是如果存在着大量的计算和大量的 I/O 处理，拥有多个线程能在这些活动中彼此重叠进行，从而会加快应用程序的执行速度</li>
 </ul>
 </li>
-<li></li>
+<li><p>多线程解决方案</p>
+<ul>
+<li><p>现在考虑一个线程使用的例子：一个万维网服务器，对页面的请求发送给服务器，而所请求的页面发送回客户端。在多数 web 站点上，某些页面较其他页面相比有更多的访问。例如，索尼的主页比任何一个照相机详情介绍页面具有更多的访问，web 服务器可以把获得大量访问的页面集合保存在内存中，避免到磁盘去调入这些页面，从而改善性能。这种页面的集合称为高速缓存(cache)，高速缓存也应用在许多场合中，比如说 CPU 缓存</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gre0xrdepsj31440syn23.jpg" alt="Web 服务器进程"></p>
+</li>
+<li><p>上面是一个 web 服务器的组织方式，一个叫做调度线程(dispatcher thread) 的线程从网络中读入工作请求，在调度线程检查完请求后，它会选择一个空闲的（阻塞的）工作线程来处理请求，通常是将消息的指针写入到每个线程关联的特殊字中。然后调度线程会唤醒正在睡眠中的工作线程，把工作线程的状态从阻塞态变为就绪态</p>
+</li>
+<li><p>当工作线程启动后，它会检查请求是否在 web 页面的高速缓存中存在，这个高速缓存是所有线程都可以访问的。如果高速缓存不存在这个 web 页面的话，它会调用一个 read 操作从磁盘中获取页面并且阻塞线程直到磁盘操作完成。当线程阻塞在硬盘操作的期间，为了完成更多的工作，调度线程可能挑选另一个线程运行，也可能把另一个当前就绪的工作线程投入运行</p>
+</li>
+<li><p>这种模型允许将服务器编写为顺序线程的集合，在分派线程的程序中包含一个死循环，该循环用来获得工作请求并且把请求派给工作线程。每个工作线程的代码包含一个从调度线程接收的请求，并且检查 web 高速缓存中是否存在所需页面，如果有，直接把该页面返回给客户，接着工作线程阻塞，等待一个新请求的到达。如果没有，工作线程就从磁盘调入该页面，将该页面返回给客户机，然后工作线程阻塞，等待一个新请求.下面是调度线程和工作线程的代码，这里假设 TRUE 为常数 1 ，buf 和 page 分别是保存工作请求和 Web 页面的相应结构</p>
+<ul>
+<li><p>调度线程的大致逻辑</p>
+  <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(TRUE) &#123;</span><br><span class="line">			get<span class="constructor">_next_request(&amp;<span class="params">buf</span>)</span>;</span><br><span class="line">		 handoff<span class="constructor">_work(&amp;<span class="params">buf</span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>工作线程的大致逻辑</p>
+  <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(TRUE) &#123;</span><br><span class="line">			wait<span class="constructor">_for_work(&amp;<span class="params">buf</span>)</span>;</span><br><span class="line">			look<span class="constructor">_for_page_in_cache(&amp;<span class="params">buf</span>,&amp;<span class="params">page</span>)</span>;</span><br><span class="line">		 <span class="keyword">if</span>(page<span class="constructor">_not_in_cache(&amp;<span class="params">page</span>)</span>)&#123;</span><br><span class="line"> 					read<span class="constructor">_page_from_disk(&amp;<span class="params">buf</span>,&amp;<span class="params">page</span>)</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			return <span class="constructor">_page(&amp;<span class="params">page</span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>单线程解决方案</p>
+<ul>
+<li>现在考虑没有多线程的情况下，如何编写 Web 服务器。我们很容易的就想象为单个线程了，Web 服务器的主循环获取请求并检查请求，并争取在下一个请求之前完成工作</li>
+<li>在等待磁盘操作时，服务器空转，并且不处理任何到来的其他请求。结果会导致每秒中只有很少的请求被处理，所以这个例子能够说明多线程提高了程序的并行性并提高了程序的性能</li>
+</ul>
+</li>
+<li><p>状态机解决方案</p>
+<ul>
+<li>如果目前只有一个非阻塞版本的 read 系统调用可以使用，那么当请求到达服务器时，这个唯一的 read 调用的线程会进行检查，如果能够从高速缓存中得到响应，那么直接返回，如果不能，则启动一个非阻塞的磁盘操作</li>
+<li>服务器在表中记录当前请求的状态，然后进入并获取下一个事件，紧接着下一个事件可能就是一个新工作的请求或是磁盘对先前操作的回答。如果是新工作的请求，那么就开始处理请求。如果是磁盘的响应，就从表中取出对应的状态信息进行处理。对于非阻塞式磁盘 I/O 而言，这种响应一般都是信号中断响应</li>
+<li>每次服务器从某个请求工作的状态切换到另一个状态时，都必须显示的保存或者重新装入相应的计算状态。这里，每个计算都有一个被保存的状态，存在一个会发生且使得相关状态发生改变的事件集合，我们把这类设计称为有限状态机(finite-state machine)，有限状态机杯广泛的应用在计算机科学中</li>
+<li>这三种解决方案各有各的特性，多线程使得顺序进程的思想得以保留下来，并且实现了并行性，但是顺序进程会阻塞系统调用；单线程服务器保留了阻塞系统的简易性，但是却放弃了性能。有限状态机的处理方法运用了非阻塞调用和中断，通过并行实现了高性能，但是给编程增加了困难</li>
+</ul>
+</li>
+<li><p>三种方案的对比</p>
+<table>
+<thead>
+<tr>
+<th align="center">模型</th>
+<th align="center">特性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">单线程</td>
+<td align="center">无并行性，性能较差，阻塞系统调用</td>
+</tr>
+<tr>
+<td align="center">多线程</td>
+<td align="center">有并行性，阻塞系统调用</td>
+</tr>
+<tr>
+<td align="center">有限状态机</td>
+<td align="center">并行性，非阻塞系统调用、中断</td>
+</tr>
+</tbody></table>
+</li>
 </ul>
 <h4 id="2-经典的线程模型"><a href="#2-经典的线程模型" class="headerlink" title="2. 经典的线程模型"></a>2. 经典的线程模型</h4><h4 id="3-POSIX-线程"><a href="#3-POSIX-线程" class="headerlink" title="3. POSIX 线程"></a>3. POSIX 线程</h4><h4 id="4-线程实现"><a href="#4-线程实现" class="headerlink" title="4. 线程实现"></a>4. 线程实现</h4>
     </div>
@@ -482,7 +540,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">21:38</span>
+    <span title="站点阅读时长">21:40</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
