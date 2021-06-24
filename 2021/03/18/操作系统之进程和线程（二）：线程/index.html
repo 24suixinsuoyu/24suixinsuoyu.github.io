@@ -30,8 +30,12 @@
 <meta property="og:description" content="1. 线程的使用">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gre0xrdepsj31440syn23.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1grtpuh6uchj310m0mumyq.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1grtpwajzqvj30xy0mywfk.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1grtpyyzsmgj30zm0guq4h.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1grtq88fg15j310y0o040w.jpg">
 <meta property="article:published_time" content="2021-03-18T04:04:37.000Z">
-<meta property="article:modified_time" content="2021-06-11T01:03:52.391Z">
+<meta property="article:modified_time" content="2021-06-24T14:32:06.528Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="操作系统之进程和线程">
 <meta property="article:tag" content="线程">
@@ -217,7 +221,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-11 09:03:52" itemprop="dateModified" datetime="2021-06-11T09:03:52+08:00">2021-06-11</time>
+                <time title="修改时间：2021-06-24 22:32:06" itemprop="dateModified" datetime="2021-06-24T22:32:06+08:00">2021-06-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -235,14 +239,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2k</span>
+              <span>3.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -322,7 +326,34 @@
 </tbody></table>
 </li>
 </ul>
-<h4 id="2-经典的线程模型"><a href="#2-经典的线程模型" class="headerlink" title="2. 经典的线程模型"></a>2. 经典的线程模型</h4><h4 id="3-POSIX-线程"><a href="#3-POSIX-线程" class="headerlink" title="3. POSIX 线程"></a>3. POSIX 线程</h4><h4 id="4-线程实现"><a href="#4-线程实现" class="headerlink" title="4. 线程实现"></a>4. 线程实现</h4>
+<h4 id="2-经典的线程模型"><a href="#2-经典的线程模型" class="headerlink" title="2. 经典的线程模型"></a>2. 经典的线程模型</h4><ul>
+<li><p>理解进程的另一个角度是，用某种方法把相关的资源集中在一起。进程有存放程序正文和数据以及其他资源的地址空间。这些资源包括打开的文件、子进程、即将发生的定时器、信号处理程序、账号信息等。把这些信息放在进程中会比较容易管理</p>
+</li>
+<li><p>另一个概念是，进程中拥有一个执行的线程，通常简写为 线程(thread)。线程会有程序计数器，用来记录接着要执行哪一条指令；线程还拥有寄存器，用来保存线程当前正在使用的变量；线程还会有堆栈，用来记录程序的执行路径。尽管线程必须在某个进程中执行，但是进程和线程完完全全是两个不同的概念，并且他们可以分开处理。进程用于把资源集中在一起，而线程则是 CPU 上调度执行的实体</p>
+</li>
+<li><p>线程给进程模型增加了一项内容，即在同一个进程中，允许彼此之间有较大的独立性且互不干扰。在一个进程中并行运行多个线程类似于在一台计算机上运行多个进程。在多个线程中，各个线程共享同一地址空间和其他资源。在多个进程中，进程共享物理内存、磁盘、打印机和其他资源。因为线程会包含有一些进程的属性，所以线程被称为轻量的进程(lightweight processes)。多线程(multithreading)一词还用于描述在同一进程中多个线程的情况</p>
+</li>
+<li><p>下图我们可以看到三个传统的进程，每个进程有自己的地址空间和单个控制线程。每个线程都在不同的地址空间中运行</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNgy1grtpuh6uchj310m0mumyq.jpg" alt="经典的线程模型"></p>
+</li>
+<li><p>下图中，我们可以看到有一个进程三个线程的情况。每个线程都在相同的地址空间中运行</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNgy1grtpwajzqvj30xy0mywfk.jpg" alt="经典的线程模型"></p>
+</li>
+<li><p>线程不像是进程那样具备较强的独立性。同一个进程中的所有线程都会有完全一样的地址空间，这意味着它们也共享同样的全局变量。由于每个线程都可以访问进程地址空间内每个内存地址，因此一个线程可以读取、写入甚至擦除另一个线程的堆栈。线程之间除了共享同一内存空间外，还具有如下不同的内容。下图左边的是同一个进程中每个线程共享的内容，下图右边是每个线程中的内容。也就是说左边的列表是进程的属性，右边的列表是线程的属性</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNgy1grtpyyzsmgj30zm0guq4h.jpg" alt="经典的线程模型"></p>
+</li>
+<li><p>和进程一样，线程可以处于下面这几种状态：运行中、阻塞、就绪和终止（进程图中没有画）。正在运行的线程拥有 CPU 时间片并且状态是运行中。一个被阻塞的线程会等待某个释放它的事件。例如，当一个线程执行从键盘读入数据的系统调用时，该线程就被阻塞直到有输入为止。线程通常会被阻塞，直到它等待某个外部事件的发生或者有其他线程来释放它。线程之间的状态转换和进程之间的状态转换是一样的。每个线程都会有自己的堆栈，如下图所示</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNgy1grtq88fg15j310y0o040w.jpg" alt="经典的线程模型">    </p>
+</li>
+<li><p>线程系统调用</p>
+<ul>
+<li>进程通常会从当前的某个单线程开始，然后这个线程通过调用一个库函数（比如 thread_create ）创建新的线程。线程创建的函数会要求指定新创建线程的名称。创建的线程通常都返回一个线程标识符，该标识符就是新线程的名字</li>
+<li>当一个线程完成工作后，可以通过调用一个函数（比如 thread_exit）来退出。紧接着线程消失，状态变为终止，不能再进行调度。在某些线程的运行过程中，可以通过调用函数例如 thread_join ，表示一个线程可以等待另一个线程退出。这个过程阻塞调用线程直到等待特定的线程退出。在这种情况下，线程的创建和终止非常类似于进程的创建和终止</li>
+<li>另一个常见的线程是调用 thread_yield，它允许线程自动放弃 CPU 从而让另一个线程运行。这样一个调用还是很重要的，因为不同于进程，线程是无法利用时钟中断强制让线程让出 CPU 的</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-POSIX-线程"><a href="#3-POSIX-线程" class="headerlink" title="3. POSIX 线程"></a>3. POSIX 线程</h4><h4 id="4-线程实现"><a href="#4-线程实现" class="headerlink" title="4. 线程实现"></a>4. 线程实现</h4>
     </div>
 
     
@@ -540,7 +571,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">21:40</span>
+    <span title="站点阅读时长">21:41</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
