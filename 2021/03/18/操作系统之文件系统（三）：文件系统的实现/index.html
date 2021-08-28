@@ -38,8 +38,12 @@
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gtv2rwlg6ej61860ig75x02.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gtv2t1z0cyj617k0f4wfr02.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gtv2u9rznpj60ma0eedh202.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gtw8aweqi1j617w0u00w302.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gtw8b7bo9zj61370u0adr02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gtw8cebh2fj60p80k4aao02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gtw8dn2jyij60re0mkq4v02.jpg">
 <meta property="article:published_time" content="2021-03-18T04:18:52.000Z">
-<meta property="article:modified_time" content="2021-08-27T01:13:49.675Z">
+<meta property="article:modified_time" content="2021-08-28T01:11:16.626Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="操作系统之文件系统">
 <meta property="article:tag" content="文件系统的实现">
@@ -225,7 +229,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-08-27 09:13:49" itemprop="dateModified" datetime="2021-08-27T09:13:49+08:00">2021-08-27</time>
+                <time title="修改时间：2021-08-28 09:11:16" itemprop="dateModified" datetime="2021-08-28T09:11:16+08:00">2021-08-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -243,14 +247,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.3k</span>
+              <span>5.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>5 分钟</span>
             </span>
 
         </div>
@@ -351,6 +355,48 @@
 </ul>
 </li>
 <li><p>链表分配</p>
+<ul>
+<li><p>第二种存储文件的方式是为每个文件构造磁盘块链表，每个文件都是磁盘块的链接列表，就像下面所示</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gtw8aweqi1j617w0u00w302.jpg" alt=""></p>
+</li>
+<li><p>每个块的第一个字作为指向下一块的指针，块的其他部分存放数据。如果上面这张图你看的不是很清楚的话，可以看看整个的链表分配方案</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gtw8b7bo9zj61370u0adr02.jpg" alt=""></p>
+</li>
+<li><p>与连续分配方案不同，这一方法可以充分利用每个磁盘块。除了最后一个磁盘块外，不会因为磁盘碎片而浪费存储空间。同样，在目录项中，只要存储了第一个文件块，那么其他文件块也能够被找到</p>
+</li>
+<li><p>另一方面，在链表的分配方案中，尽管顺序读取非常方便，但是随机访问却很困难（这也是数组和链表数据结构的一大区别）</p>
+</li>
+<li><p>还有一个问题是，由于指针会占用一些字节，每个磁盘块实际存储数据的字节数并不再是 2 的整数次幂。虽然这个问题并不会很严重，但是这种方式降低了程序运行效率。许多程序都是以长度为 2 的整数次幂来读写磁盘，由于每个块的前几个字节被指针所使用，所以要读出一个完成的块大小信息，就需要当前块的信息和下一块的信息拼凑而成，因此就引发了查找和拼接的开销</p>
+</li>
+</ul>
+</li>
+<li><p>使用内存表进行链表分配</p>
+<ul>
+<li><p>由于连续分配和链表分配都有其不可忽视的缺点。所以提出了使用内存中的表来解决分配问题。取出每个磁盘块的指针字，把它们放在内存的一个表中，就可以解决上述链表的两个不足之处。下面是一个例子</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gtw8cebh2fj60p80k4aao02.jpg" alt=""></p>
+</li>
+<li><p>上图表示了链表形成的磁盘块的内容。这两个图中都有两个文件，文件 A 依次使用了磁盘块地址 4、7、 2、 10、 12，文件 B 使用了6、3、11 和 14。也就是说，文件 A 从地址 4 处开始，顺着链表走就能找到文件 A 的全部磁盘块。同样，从第 6 块开始，顺着链走到最后，也能够找到文件 B 的全部磁盘块。你会发现，这两个链表都以不属于有效磁盘编号的特殊标记（-1）结束。内存中的这种表格称为 文件分配表(File Application Table,FAT)</p>
+</li>
+<li><p>使用这种组织方式，整个块都可以存放数据。进而，随机访问也容易很多。虽然仍要顺着链在内存中查找给定的偏移量，但是整个链都存放在内存中，所以不需要任何磁盘引用。与前面的方法相同，不管文件有多大，在目录项中只需记录一个整数（起始块号），按照它就可以找到文件的全部块</p>
+</li>
+<li><p>这种方式存在缺点，那就是必须要把整个链表放在内存中。对于 1TB 的磁盘和 1KB 的大小的块，那么这张表需要有 10 亿项。每一项对应于这 10 亿个磁盘块中的一块。每项至少 3 个字节，为了提高查找速度，有时需要 4 个字节。根据系统对空间或时间的优化方案，这张表要占用 3GB 或 2.4GB 的内存。FAT 的管理方式不能较好地扩展并应用于大型磁盘中。而这正是最初 MS-DOS 文件比较实用，并仍被各个 Windows 版本所安全支持</p>
+</li>
+</ul>
+</li>
+<li><p>inode</p>
+<ul>
+<li><p>最后一个记录各个文件分别包含哪些磁盘块的方法是给每个文件赋予一个称为 inode(索引节点) 的数据结构，每个文件都与一个 inode 进行关联，inode 由整数进行标识。下面是一个简单例子的描述</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gtw8dn2jyij60re0mkq4v02.jpg" alt=""></p>
+</li>
+<li><p>给出 inode 的长度，就能够找到文件中的所有块。相对于在内存中使用表的方式而言，这种机制具有很大的优势。即只有在文件打开时，其 inode 才会在内存中。如果每个 inode 需要 n 个字节，最多 k 个文件同时打开，那么 inode 占有总共打开的文件是 kn 字节。仅需预留这么多空间</p>
+</li>
+<li><p>这个数组要比我们上面描述的 FAT(文件分配表) 占用的空间小的多。原因是用于保存所有磁盘块的链接列表的表的大小与磁盘本身成正比。如果磁盘有 n 个块，那么这个表也需要 n 项。随着磁盘空间的变大，那么该表也随之线性增长。相反，inode 需要节点中的数组，其大小和可能需要打开的最大文件个数成正比。它与磁盘是 100GB、4000GB 还是 10000GB 无关</p>
+</li>
+<li><p>inode 的一个问题是如果每个节点都会有固定大小的磁盘地址，那么文件增长到所能允许的最大容量外会发生什么？一个解决方案是最后一个磁盘地址不指向数据块，而是指向一个包含额外磁盘块地址的地址，如上图所示。一个更高级的解决方案是：有两个或者更多包含磁盘地址的块，或者指向其他存放地址的磁盘块的磁盘块。Windows 的 NTFS 文件系统采用了相似的方法，所不同的仅仅是大的 inode 也可以表示小的文件</p>
+</li>
+<li><p>NTFS 的全称是 New Technology File System，是微软公司开发的专用系统文件，NTFS 取代 FAT(文件分配表) 和 HPFS(高性能文件系统) ，并在此基础上进一步改进。例如增强对元数据的支持，使用更高级的数据结构以提升性能、可靠性和磁盘空间利用率等</p>
+</li>
+</ul>
 </li>
 </ul>
 <h4 id="3-目录的实现"><a href="#3-目录的实现" class="headerlink" title="3. 目录的实现"></a>3. 目录的实现</h4><h4 id="4-共享文件"><a href="#4-共享文件" class="headerlink" title="4. 共享文件"></a>4. 共享文件</h4><h4 id="5-日志结构文件系统"><a href="#5-日志结构文件系统" class="headerlink" title="5. 日志结构文件系统"></a>5. 日志结构文件系统</h4><h4 id="6-日志文件系统"><a href="#6-日志文件系统" class="headerlink" title="6. 日志文件系统"></a>6. 日志文件系统</h4><h4 id="7-虚拟文件系统"><a href="#7-虚拟文件系统" class="headerlink" title="7. 虚拟文件系统"></a>7. 虚拟文件系统</h4>
@@ -571,7 +617,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">22:48</span>
+    <span title="站点阅读时长">22:50</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
