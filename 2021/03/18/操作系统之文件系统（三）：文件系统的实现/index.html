@@ -42,8 +42,23 @@
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gtw8b7bo9zj61370u0adr02.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gtw8cebh2fj60p80k4aao02.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gtw8dn2jyij60re0mkq4v02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1guyxw2g3adj30qu0dq3z7.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1guyxwsosu6j60u80eot9902.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1guyxxp858zj60oo0n4wfi02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1guyy303dv9j60oi0nwq4902.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1guyxzvpoj6j60zi0outah02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1guyy0qlgfdj60ra0aaglv02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1guyy7y8bz3j612j0u040q02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1guyy9a9ce3j60yo0r60ur02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1guyya6acesj30yi0qy767.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1guyybt4yj7j610c0kctad02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1guyyfvitttj618u0lk77h02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1guyygfgpd7j61100cy0tr02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1guyyiesjyyj60ry0kggmz02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1guyyje09jpj61100jetap02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1guyykzq9icj611a0u0acg02.jpg">
 <meta property="article:published_time" content="2021-03-18T04:18:52.000Z">
-<meta property="article:modified_time" content="2021-08-28T01:11:16.626Z">
+<meta property="article:modified_time" content="2021-09-30T13:09:04.023Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="操作系统之文件系统">
 <meta property="article:tag" content="文件系统的实现">
@@ -229,7 +244,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-08-28 09:11:16" itemprop="dateModified" datetime="2021-08-28T09:11:16+08:00">2021-08-28</time>
+                <time title="修改时间：2021-09-30 21:09:04" itemprop="dateModified" datetime="2021-09-30T21:09:04+08:00">2021-09-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -247,14 +262,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5.1k</span>
+              <span>12k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
+              <span>11 分钟</span>
             </span>
 
         </div>
@@ -399,7 +414,147 @@
 </ul>
 </li>
 </ul>
-<h4 id="3-目录的实现"><a href="#3-目录的实现" class="headerlink" title="3. 目录的实现"></a>3. 目录的实现</h4><h4 id="4-共享文件"><a href="#4-共享文件" class="headerlink" title="4. 共享文件"></a>4. 共享文件</h4><h4 id="5-日志结构文件系统"><a href="#5-日志结构文件系统" class="headerlink" title="5. 日志结构文件系统"></a>5. 日志结构文件系统</h4><h4 id="6-日志文件系统"><a href="#6-日志文件系统" class="headerlink" title="6. 日志文件系统"></a>6. 日志文件系统</h4><h4 id="7-虚拟文件系统"><a href="#7-虚拟文件系统" class="headerlink" title="7. 虚拟文件系统"></a>7. 虚拟文件系统</h4>
+<h4 id="3-目录的实现"><a href="#3-目录的实现" class="headerlink" title="3. 目录的实现"></a>3. 目录的实现</h4><ul>
+<li><p>文件只有打开后才能够被读取。在文件打开后，操作系统会使用用户提供的路径名来定位磁盘中的目录。目录项提供了查找文件磁盘块所需要的信息。根据系统的不同，提供的信息也不同，可能提供的信息是整个文件的磁盘地址，或者是第一个块的数量（两个链表方案）或 inode的数量。不过不管用那种情况，目录系统的主要功能就是 将文件的 ASCII 码的名称映射到定位数据所需的信息上</p>
+</li>
+<li><p>与此关系密切的问题是属性应该存放在哪里。每个文件系统包含不同的文件属性，例如文件的所有者和创建时间，需要存储的位置。一种显而易见的方法是直接把文件属性存放在目录中。有一些系统恰好是这么做的，如下</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1guyxw2g3adj30qu0dq3z7.jpg" alt=""></p>
+</li>
+<li><p>在这种简单的设计中，目录有一个固定大小的目录项列表，每个文件对应一项，其中包含一个固定长度的文件名，文件属性的结构体以及用以说明磁盘块位置的一个或多个磁盘地址</p>
+</li>
+<li><p>对于采用 inode 的系统，会把 inode 存储在属性中而不是目录项中。在这种情况下，目录项会更短：仅仅只有文件名称和 inode 数量。这种方式如下所示</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1guyxwsosu6j60u80eot9902.jpg" alt=""></p>
+</li>
+<li><p>到目前为止，我们已经假设文件具有较短的、固定长度的名字。在 MS-DOS 中，具有 1 - 8 个字符的基本名称和 1 - 3 个字符的可拓展名称。在 UNIX 版本 7 中，文件有 1 - 14 个字符，包括任何拓展。然而，几乎所有的现代操作系统都支持可变长度的扩展名。这是如何实现的呢</p>
+</li>
+<li><p>最简单的方式是给予文件名一个长度限制，比如 255 个字符，然后使用上图中的设计，并为每个文件名保留 255 个字符空间。这种处理很简单，但是浪费了大量的目录空间，因为只有很少的文件会有那么长的文件名称。所以，需要一种其他的结构来处理</p>
+</li>
+<li><p>一种可选择的方式是放弃所有目录项大小相同的想法。在这种方法中，每个目录项都包含一个固定部分，这个固定部分通常以目录项的长度开始，后面是固定格式的数据，通常包括所有者、创建时间、保护信息和其他属性。这个固定长度的头的后面是一个任意长度的实际文件名，如下图所示</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1guyxxp858zj60oo0n4wfi02.jpg" alt=""></p>
+</li>
+<li><p>上图是 SPARC 机器使用正序放置。处理机中的一串字符存放的顺序有正序(big-endian) 和逆序(little-endian) 之分。正序存放的就是高字节在前低字节在后，而逆序存放的就是低字节在前高字节在后</p>
+</li>
+<li><p>这个例子中，有三个文件，分别是 project-budget、personnel 和 foo。每个文件名以一个特殊字符（通常是 0 ）结束，用矩形中的叉进行表示。为了使每个目录项从字的边界开始，每个文件名被填充成整数个字，如下图所示</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1guyy303dv9j60oi0nwq4902.jpg" alt=""></p>
+</li>
+<li><p>这个方法的缺点是当文件被移除后，就会留下一块固定长度的空间，而新添加进来的文件大小不一定和空闲空间大小一致</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1guyxzvpoj6j60zi0outah02.jpg" alt=""></p>
+</li>
+<li><p>这个问题与我们上面探讨的连续磁盘文件的问题是一样的，由于整个目录在内存中，所以只有对目录进行紧凑拼接操作才可节省空间。另一个问题是，一个目录项可能会分布在多个页上，在读取文件名时可能发生缺页中断</p>
+</li>
+<li><p>处理可变长度文件名字的另外一种方法是，使目录项自身具有固定长度，而将文件名放在目录末尾的堆栈中。如上图所示的这种方式。这种方法的优点是当目录项被移除后，下一个文件将能够正常匹配移除文件的空间。当然，必须要对堆进行管理，因为在处理文件名的时候也会发生缺页异常</p>
+</li>
+<li><p>到目前为止的所有设计中，在需要查找文件名时，所有的方案都是线性的从头到尾对目录进行搜索。对于特别长的目录，线性搜索的效率很低。提高文件检索效率的一种方式是在每个目录上使用哈希表(hash table)，也叫做散列表。我们假设表的大小为 n，在输入文件名时，文件名被散列在 0 和 n - 1 之间，例如，它被 n 除，并取余数。或者对构成文件名字的字求和或类似某种方法</p>
+</li>
+<li><p>无论采用哪种方式，在添加一个文件时都要对与散列值相对 应的散列表进行检查。如果没有使用过，就会将一个指向目录项的指针指向这里。文件目录项紧跟着哈希表后面。如果已经使用过，就会构造一个链表（这种构造方式是不是和 HashMap 使用的数据结构一样？），链表的表头指针存放在表项中，并通过哈希值将所有的表项相连</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1guyy0qlgfdj60ra0aaglv02.jpg" alt=""></p>
+</li>
+<li><p>查找文件的过程和添加类似，首先对文件名进行哈希处理，在哈希表中查找是否有这个哈希值，如果有的话，就检查这条链上所有的哈希项，查看文件名是否存在。如果哈希不在链上，那么文件就不在目录中</p>
+</li>
+<li><p>使用哈希表的优势是查找非常迅速，缺点是管理起来非常复杂。只有在系统中会有成千上万个目录项存在时，才会考虑使用散列表作为解决方案</p>
+</li>
+<li><p>另外一种在大量目录中加快查找指令目录的方法是使用缓存，缓存查找的结果。在开始查找之前，会首先检查文件名是否在缓存中。如果在缓存中，那么文件就能立刻定位。当然，只有在较少的文件下进行多次查找，缓存才会发挥最大功效</p>
+</li>
+</ul>
+<h4 id="4-共享文件"><a href="#4-共享文件" class="headerlink" title="4. 共享文件"></a>4. 共享文件</h4><ul>
+<li><p>当多个用户在同一个项目中工作时，他们通常需要共享文件。如果这个共享文件同时出现在多个用户目录下，那么他们协同工作起来就很方便。下面的这张图我们在上面提到过，但是有一个更改的地方，就是 C 的一个文件也出现在了 B 的目录下</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1guyy7y8bz3j612j0u040q02.jpg" alt=""></p>
+</li>
+<li><p>如果按照如上图的这种组织方式而言，那么 B 的目录与该共享文件的联系称为 链接(link)。那么文件系统现在就是一个 有向无环图(Directed Acyclic Graph, 简称 DAG)，而不是一棵树了。在图论中，如果一个有向图从任意顶点出发无法经过若干条边回到该点，则这个图是一个有向无环图，我们不会在此着重探讨关于图论的东西，大家可以自行 google</p>
+</li>
+<li><p>将文件系统组织成为有向无环图会使得维护复杂化，但也是必须要付出的代价。共享文件很方便，但这也会带来一些问题。如果目录中包含磁盘地址，则当链接文件时，必须把 C 目录中的磁盘地址复制到 B 目录中。如果 B 或者 C 随后又向文件中添加内容，则仅在执行追加的用户的目录中显示新写入的数据块。这种变更将会对其他用户不可见，从而破坏了共享的目的</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1guyy9a9ce3j60yo0r60ur02.jpg" alt=""></p>
+</li>
+<li><p>有两种方案可以解决这种问题</p>
+<ul>
+<li><p>第一种解决方案，磁盘块不列入目录中，而是会把磁盘块放在与文件本身相关联的小型数据结构中。目录将指向这个小型数据结构。这是 UNIX 中使用的方式（小型数据结构就是 inode）</p>
+</li>
+<li><p>在第二种解决方案中，通过让系统建立一个类型为 LINK 的新文件，并把该文件放在 B 的目录下，使得 B 与 C 建立链接。新的文件中只包含了它所链接的文件的路径名。当 B 想要读取文件时，操作系统会检查 B 的目录下存在一个类型为 LINK 的文件，进而找到该链接的文件和路径名，然后再去读文件，这种方式称为 符号链接(symbolic linking)</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1guyya6acesj30yi0qy767.jpg" alt=""></p>
+</li>
+</ul>
+</li>
+<li><p>上面的每一种方法都有各自的缺点，在第一种方式中，B 链接到共享文件时，inode 记录文件的所有者为 C。建立一个链接并不改变所有关系，如下图所示</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1guyybt4yj7j610c0kctad02.jpg" alt=""></p>
+</li>
+<li><p>第一开始的情况如图 a 所示，此时 C 的目录的所有者是 C ，当目录 B 链接到共享文件时，并不会改变 C 的所有者关系，只是把计数 + 1，所以此时 系统知道目前有多少个目录指向这个文件。然后 C 尝试删除这个文件，这个时候有个问题，如果 C 把文件移除并清除了 inode 的话，那么 B 会有一个目录项指向无效的节点。如果 inode 以后分配给另一个文件，则 B 的链接指向一个错误的文件。系统通过 inode 可知文件仍在被引用，但是没有办法找到该文件的全部目录项以删除它们。指向目录的指针不能存储在 inode 中，原因是有可能有无数个这样的目录</p>
+</li>
+<li><p>所以我们能做的就是删除 C 的目录项，但是将 inode 保留下来，并将计数设置为 1 ，如上图 c 所示。c 表示的是只有 B 有指向该文件的目录项，而该文件的前者是 C 。如果系统进行记账操作的话，那么 C 将继续为该文件付账直到 B 决定删除它，如果是这样的话，只有到计数变为 0 的时刻，才会删除该文件</p>
+</li>
+<li><p>对于符号链接，以上问题不会发生，只有真正的文件所有者才有一个指向 inode 的指针。链接到该文件上的用户只有路径名，没有指向 inode 的指针。当文件所有者删除文件时，该文件被销毁。以后若试图通过符号链接访问该文件将会失败，因为系统不能找到该文件。删除符号链接不会影响该文件</p>
+</li>
+<li><p>符号链接的问题是需要额外的开销。必须读取包含路径的文件，然后要一个部分接一个部分地扫描路径，直到找到 inode 。这些操作也许需要很多次额外的磁盘访问。此外，每个符号链接都需要额外的 inode ，以及额外的一个磁盘块用于存储路径，虽然如果路径名很短，作为一种优化，系统可以将它存储在 inode 中。符号链接有一个优势，即只要简单地提供一个机器的网络地址以及文件在该机器上驻留的路径，就可以连接全球任何地方机器上的文件</p>
+</li>
+<li><p>还有另一个由链接带来的问题，在符号链接和其他方式中都存在。如果允许链接，文件有两个或多个路径。查找一指定目录及其子目录下的全部文件的程序将多次定位到被链接的文件。例如，一个将某一目录及其子目录下的文件转存到磁带上的程序有可能多次复制一个被链接的文件。进而，如果接着把磁带读入另一台机器，除非转出程序具有智能，否则被链接的文件将被两次复制到磁盘上，而不是只是被链接起来</p>
+</li>
+</ul>
+<h4 id="5-日志结构文件系统"><a href="#5-日志结构文件系统" class="headerlink" title="5. 日志结构文件系统"></a>5. 日志结构文件系统</h4><ul>
+<li><p>技术的改变会给当前的文件系统带来压力。这种情况下，CPU 会变得越来越快，磁盘会变得越来越大并且越来越便宜（但不会越来越快）。内存容量也是以指数级增长。但是磁盘的寻道时间（除了固态盘，因为固态盘没有寻道时间）并没有获得提高</p>
+</li>
+<li><p>这些因素结合起来意味着许多系统文件中出现性能瓶颈。为此，Berkeley 设计了一种全新的文件系统，试图缓解这个问题，这个文件系统就是 日志结构文件系统(Log-structured File System, LFS)</p>
+</li>
+<li><p>日志结构文件系统由 Rosenblum 和 Ousterhout 于90年代初引入，旨在解决以下问题</p>
+<ul>
+<li>不断增长的系统内存</li>
+<li>顺序 I/O 性能胜过随机 I/O 性能</li>
+<li>现有低效率的文件系统</li>
+<li>文件系统不支持 RAID（虚拟化）</li>
+</ul>
+</li>
+<li><p>另一方面，当时的文件系统不论是 UNIX 还是 FFS，都有大量的随机读写（在 FFS 中创建一个新文件至少需要5次随机写），因此成为整个系统的性能瓶颈。同时因为 Page cache 的存在，作者认为随机读不是主要问题：随着越来越大的内存，大部分的读操作都能被 cache，因此 LFS 主要要解决的是减少对硬盘的随机写操作</p>
+</li>
+<li><p>在这种设计中，inode 甚至具有与 UNIX 中相同的结构，但是现在它们分散在整个日志中，而不是位于磁盘上的固定位置。所以，inode 很定位。为了能够找到 inode ，维护了一个由 inode 索引的 inode map(inode 映射)。表项 i 指向磁盘中的第 i 个 inode 。这个映射保存在磁盘中，但是也保存在缓存中，因此，使用最频繁的部分大部分时间都在内存中。日志结构文件系统主要使用四种数据结构：Inode、Inode Map、Segment、Segment Usage Table</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1guyyfvitttj618u0lk77h02.jpg" alt=""></p>
+</li>
+<li><p>到目前为止，所有写入最初都缓存在内存中，并且追加在日志末尾，所有缓存的写入都定期在单个段中写入磁盘。所以，现在打开文件也就意味着用映射定位文件的索引节点。一旦 inode 被定位后，磁盘块的地址就能够被找到。所有这些块本身都将位于日志中某处的分段中</p>
+</li>
+<li><p>真实情况下的磁盘容量是有限的，所以最终日志会占满整个磁盘空间，这种情况下就会出现没有新的磁盘块被写入到日志中。幸运的是，许多现有段可能具有不再需要的块。例如，如果一个文件被覆盖了，那么它的 inode 将被指向新的块，但是旧的磁盘块仍在先前写入的段中占据着空间</p>
+</li>
+<li><p>为了处理这个问题，LFS 有一个清理(clean)线程，它会循环扫描日志并对日志进行压缩。首先，通过查看日志中第一部分的信息来查看其中存在哪些索引节点和文件。它会检查当前 inode 的映射来查看 inode 否在在当前块中，是否仍在被使用。如果不是，该信息将被丢弃。如果仍然在使用，那么 inode 和块就会进入内存等待写回到下一个段中。然后原来的段被标记为空闲，以便日志可以用来存放新的数据。用这种方法，清理线程遍历日志，从后面移走旧的段，然后将有效的数据放入内存等待写到下一个段中。由此一来整个磁盘会形成一个大的环形缓冲区，写线程将新的段写在前面，而清理线程则清理后面的段</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1guyygfgpd7j61100cy0tr02.jpg" alt=""></p>
+</li>
+</ul>
+<h4 id="6-日志文件系统"><a href="#6-日志文件系统" class="headerlink" title="6. 日志文件系统"></a>6. 日志文件系统</h4><ul>
+<li><p>虽然日志结构系统的设计很优雅，但是由于它们和现有的文件系统不相匹配，因此还没有广泛使用。不过，从日志文件结构系统衍生出来一种新的日志系统，叫做日志文件系统，它会记录系统下一步将要做什么的日志。微软的 NTFS 文件系统、Linux 的 ext3 就使用了此日志。 OS X 将日志系统作为可供选项。为了看清它是如何工作的，我们下面讨论一个例子，比如 移除文件 ，这个操作在 UNIX 中需要三个步骤完成</p>
+<ul>
+<li>在目录中删除文件</li>
+<li>释放 inode 到空闲 inode 池</li>
+<li>将所有磁盘块归还给空闲磁盘池</li>
+</ul>
+</li>
+<li><p>在 Windows 中，也存在类似的步骤。不存在系统崩溃时，这些步骤的执行顺序不会带来问题。但是一旦系统崩溃，就会带来问题。假如在第一步完成后系统崩溃。inode 和文件块将不会被任何文件获得，也不会再分配；它们只存在于废物池中的某个地方，并因此减少了可利用的资源。如果崩溃发生在第二步后，那么只有磁盘块会丢失。日志文件系统保留磁盘写入期间对文件系统所做的更改的日志或日志，该日志可用于快速重建可能由于系统崩溃或断电等事件而发生的损坏。一般文件系统崩溃后必须运行 fsck（文件系统一致性检查）实用程序</p>
+</li>
+<li><p>为了让日志能够正确工作，被写入的日志操作必须是 幂等的(idempotent)，它意味着只要有必要，它们就可以重复执行很多次，并不会带来破坏。像操作 更新位表并标记 inode k 或者块 n 是空闲的 可以重复执行任意次。同样地，查找一个目录并且删除所有叫 foobar 的项也是幂等的。相反，把从 inode k 新释放的块加入空闲表的末端不是幂等的，因为它们可能已经被释放并存放在那里了</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1guyyiesjyyj60ry0kggmz02.jpg" alt=""></p>
+</li>
+<li><p>为了增加可靠性，一个文件系统可以引入数据库中 原子事务(atomic transaction) 的概念。使用这个概念，一组动作可以被界定在开始事务和结束事务操作之间。这样，文件系统就会知道它必须完成所有的动作，要么就一个不做</p>
+</li>
+</ul>
+<h4 id="7-虚拟文件系统"><a href="#7-虚拟文件系统" class="headerlink" title="7. 虚拟文件系统"></a>7. 虚拟文件系统</h4><ul>
+<li><p>即使在同一台计算机上或者在同一个操作系统下，都会使用很多不同的文件系统。Windows 中的主要文件系统是 NTFS 文件系统，但不是说 Windows 只有 NTFS 操作系统，它还有一些其他的例如旧的 FAT -32 或 FAT -16 驱动器或分区，其中包含仍需要的数据，闪存驱动器，旧的 CD-ROM 或 DVD（每个都有自己的独特文件系统）。Windows 通过指定不同的盘符来处理这些不同的文件系统，比如 C:，D: 等。盘符可以显示存在也可以隐式存在，如果你想找指定位置的文件，那么盘符是显示存在；如果当一个进程打开一个文件时，此时盘符是隐式存在，所以 Windows 知道向哪个文件系统传递请求</p>
+</li>
+<li><p>相比之下，UNIX 采用了一种不同的方式，即 UNIX 把多种文件系统整合到一个统一的结构中。一个 Linux 系统可以使用 ext2 作为根文件系统，ext3 分区装载在 /usr 下，另一块采用 Reiser FS 文件系统的硬盘装载到 /home下，以及一个 ISO 9660 的 CD - ROM 临时装载到 /mnt 下。从用户的观点来看，只有一个文件系统层级，但是事实上它们是由多个文件系统组合而成，对于用户和进程是不可见的</p>
+</li>
+<li><p>UNIX 操作系统使用一种 虚拟文件系统(Virtual File System, VFS) 来尝试将多种文件系统构成一个有序的结构。关键的思想是抽象出所有文件系统都共有的部分，并将这部分代码放在一层，这一层再调用具体文件系统来管理数据。下面是一个 VFS 的系统结构</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1guyyje09jpj61100jetap02.jpg" alt=""></p>
+</li>
+<li><p>还是那句经典的话，在计算机世界中，任何解决不了的问题都可以加个代理来解决。所有和文件相关的系统调用在最初的处理上都指向虚拟文件系统。这些来自用户进程的调用，都是标准的 POSIX 系统调用，比如 open、read、write 和 seek 等。VFS 对用户进程有一个 上层 接口，这个接口就是著名的 POSIX 接口</p>
+</li>
+<li><p>VFS 也有一个对于实际文件的 下层 接口，就是上图中标记为 VFS 的接口。这个接口包含许多功能调用，这样 VFS 可以使每一个文件系统完成任务。因此，要创建一个可以与 VFS 一起使用的新文件系统，新文件系统的设计者必须确保它提供了 VFS 要求的功能。一个明显的例子是从磁盘读取特定的块，然后将其放入文件系统的缓冲区高速缓存中，然后返回指向该块的指针的函数。 因此，VFS具有两个不同的接口：上一个到用户进程，下一个到具体文件系统</p>
+</li>
+<li><p>当系统启动时，根文件系统在 VFS 中注册。另外，当装载其他文件时，不管在启动时还是在操作过程中，它们也必须在 VFS 中注册。当一个文件系统注册时，根文件系统注册到 VFS。另外，在引导时或操作期间挂载其他文件系统时，它们也必须向 VFS 注册。当文件系统注册时，其基本作用是提供 VFS 所需功能的地址列表、调用向量表、或者 VFS 对象。因此一旦文件系统注册到 VFS，它就知道从哪里开始读取数据块。装载文件系统后就可以使用它了。比如，如果一个文件系统装载到 /usr 并且一个进程调用它 <code>open(&quot;/usr/include/unistd.h&quot;,O_RDONLY)</code></p>
+</li>
+<li><p>当解析路径时， VFS 看到新的文件系统被挂载到 /usr，并且通过搜索已经装载文件系统的超级块来确定它的超块。然后它找到它所转载的文件的根目录，在那里查找路径 include/unistd.h。然后 VFS 创建一个 vnode 并调用实际文件系统，以返回所有的在文件 inode 中的信息。这个信息和其他信息一起复制到 vnode （内存中）。而这些其他信息中最重要的是指向包含调用 vnode 操作的函数表的指针，比如 read、write 和 close 等</p>
+</li>
+<li><p>当 vnode 被创建后，为了进程调用，VFS 在文件描述符表中创建一个表项，并将它指向新的 vnode，最后，VFS 向调用者返回文件描述符，所以调用者可以用它去 read、write 或者 close 文件</p>
+</li>
+<li><p>当进程用文件描述符进行一个读操作时，VFS 通过进程表和文件描述符确定 vnode 的位置，并跟随指针指向函数表，这样就调用了处理 read 函数，运行在实际系统中的代码并得到所请求的块。VFS 不知道请求时来源于本地硬盘、还是来源于网络中的远程文件系统、CD-ROM 、USB 或者其他介质，所有相关的数据结构欧如下图所示</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1guyykzq9icj611a0u0acg02.jpg" alt=""></p>
+</li>
+<li><p>从调用者进程号和文件描述符开始，进而是 vnode，读函数指针，然后是对实际文件系统的访问函数定位</p>
+</li>
+</ul>
+
     </div>
 
     
@@ -617,7 +772,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">22:50</span>
+    <span title="站点阅读时长">22:57</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
