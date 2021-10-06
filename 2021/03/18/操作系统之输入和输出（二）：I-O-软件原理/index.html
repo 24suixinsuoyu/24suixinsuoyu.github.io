@@ -32,8 +32,10 @@
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gv5f8166b8j60se0iygm802.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gv5f9bv2xzj61940fuaba02.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gv5fax3vk6j61940m0n1402.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gv5gyuwp6vj616g0j2gno02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gv5gzl151nj61640icwga02.jpg">
 <meta property="article:published_time" content="2021-03-18T04:25:49.000Z">
-<meta property="article:modified_time" content="2021-10-06T03:22:49.459Z">
+<meta property="article:modified_time" content="2021-10-06T04:20:10.523Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="操作系统之输入和输出">
 <meta property="article:tag" content="I&#x2F;O 软件原理">
@@ -219,7 +221,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-10-06 11:22:49" itemprop="dateModified" datetime="2021-10-06T11:22:49+08:00">2021-10-06</time>
+                <time title="修改时间：2021-10-06 12:20:10" itemprop="dateModified" datetime="2021-10-06T12:20:10+08:00">2021-10-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -237,14 +239,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.6k</span>
+              <span>2.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -308,7 +310,46 @@
 </ul>
 </li>
 </ul>
-<h4 id="2-使用程序控制-I-O"><a href="#2-使用程序控制-I-O" class="headerlink" title="2. 使用程序控制 I/O"></a>2. 使用程序控制 I/O</h4><h4 id="3-使用中断驱动-I-O"><a href="#3-使用中断驱动-I-O" class="headerlink" title="3. 使用中断驱动 I/O"></a>3. 使用中断驱动 I/O</h4><h4 id="4-使用-DMA-的-I-O"><a href="#4-使用-DMA-的-I-O" class="headerlink" title="4. 使用 DMA 的 I/O"></a>4. 使用 DMA 的 I/O</h4>
+<h4 id="2-使用程序控制-I-O"><a href="#2-使用程序控制-I-O" class="headerlink" title="2. 使用程序控制 I/O"></a>2. 使用程序控制 I/O</h4><ul>
+<li><p>使用程序控制 I/O 又被称为 可编程I/O，它是指由 CPU 在驱动程序软件控制下启动的数据传输，来访问设备上的寄存器或者其他存储器。CPU 会发出命令，然后等待 I/O 操作的完成。由于 CPU 的速度比 I/O 模块的速度快很多，因此可编程 I/O 的问题在于，CPU 必须等待很长时间才能等到处理结果。CPU 在等待时会采用轮询(polling)或者 忙等(busy waiting) 的方式，结果，整个系统的性能被严重拉低。可编程 I/O 十分简单，如果需要等待的时间非常短的话，可编程 I/O 倒是一个很好的方式。一个可编程的 I/O 会经历如下操作</p>
+<ul>
+<li><p>CPU 请求 I/O 操作</p>
+</li>
+<li><p>I/O 模块执行响应</p>
+</li>
+<li><p>I/O 模块设置状态位</p>
+</li>
+<li><p>CPU 会定期检查状态位</p>
+</li>
+<li><p>I/O 不会直接通知 CPU 操作完成</p>
+</li>
+<li><p>I/O 也不会中断 CPU</p>
+</li>
+<li><p>CPU 可能会等待或在随后的过程中返回</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gv5gyuwp6vj616g0j2gno02.jpg" alt=""></p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-使用中断驱动-I-O"><a href="#3-使用中断驱动-I-O" class="headerlink" title="3. 使用中断驱动 I/O"></a>3. 使用中断驱动 I/O</h4><ul>
+<li><p>鉴于上面可编程 I/O 的缺陷，我们提出一种改良方案，我们想要在 CPU 等待 I/O 设备的同时，能够做其他事情，等到 I/O 设备完成后，它就会产生一个中断，这个中断会停止当前进程并保存当前的状态。一个可能的示意图如下</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gv5gzl151nj61640icwga02.jpg" alt=""></p>
+</li>
+<li><p>尽管中断减轻了 CPU 和 I/O 设备的等待时间的负担，但是由于还需要在 CPU 和 I/O 模块之前进行大量的逐字传输，因此在大量数据传输中效率仍然很低。下面是中断的基本操作</p>
+<ul>
+<li>CPU 进行读取操作</li>
+<li>I/O 设备从外围设备获取数据，同时 CPU 执行其他操作</li>
+<li>I/O 设备中断通知 CPU</li>
+<li>CPU 请求数据</li>
+<li>I/O 模块传输数据</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-使用-DMA-的-I-O"><a href="#4-使用-DMA-的-I-O" class="headerlink" title="4. 使用 DMA 的 I/O"></a>4. 使用 DMA 的 I/O</h4><ul>
+<li>DMA 的中文名称是直接内存访问，它意味着 CPU 授予 I/O 模块权限在不涉及 CPU 的情况下读取或写入内存。也就是 DMA 可以不需要 CPU 的参与</li>
+<li>这个过程由称为 DMA 控制器（DMAC）的芯片管理。由于 DMA 设备可以直接在内存之间传输数据，而不是使用 CPU 作为中介，因此可以缓解总线上的拥塞。DMA 通过允许 CPU 执行任务，同时 DMA 系统通过系统和内存总线传输数据来提高系统并发性</li>
+</ul>
+
     </div>
 
     
@@ -526,7 +567,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">23:13</span>
+    <span title="站点阅读时长">23:14</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
