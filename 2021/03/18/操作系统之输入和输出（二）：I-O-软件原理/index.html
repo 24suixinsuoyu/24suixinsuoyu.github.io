@@ -22,19 +22,23 @@
     var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1. AAA">
+  <meta name="description" content="1. I&#x2F;O 原理概述">
 <meta property="og:type" content="article">
 <meta property="og:title" content="操作系统之输入和输出（二）：I&#x2F;O 软件原理">
 <meta property="og:url" content="http://24suixinsuoyu.com/2021/03/18/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E8%BE%93%E5%85%A5%E5%92%8C%E8%BE%93%E5%87%BA%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9AI-O-%E8%BD%AF%E4%BB%B6%E5%8E%9F%E7%90%86/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
-<meta property="og:description" content="1. AAA">
+<meta property="og:description" content="1. I&#x2F;O 原理概述">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gv5f8166b8j60se0iygm802.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gv5f9bv2xzj61940fuaba02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gv5fax3vk6j61940m0n1402.jpg">
 <meta property="article:published_time" content="2021-03-18T04:25:49.000Z">
-<meta property="article:modified_time" content="2021-03-18T04:28:30.438Z">
+<meta property="article:modified_time" content="2021-10-06T03:22:49.459Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="操作系统之输入和输出">
 <meta property="article:tag" content="I&#x2F;O 软件原理">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gv5f8166b8j60se0iygm802.jpg">
 
 <link rel="canonical" href="http://24suixinsuoyu.com/2021/03/18/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E8%BE%93%E5%85%A5%E5%92%8C%E8%BE%93%E5%87%BA%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9AI-O-%E8%BD%AF%E4%BB%B6%E5%8E%9F%E7%90%86/">
 
@@ -207,10 +211,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-03-18 12:25:49 / 修改时间：12:28:30" itemprop="dateCreated datePublished" datetime="2021-03-18T12:25:49+08:00">2021-03-18</time>
+              <time title="创建时间：2021-03-18 12:25:49" itemprop="dateCreated datePublished" datetime="2021-03-18T12:25:49+08:00">2021-03-18</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-10-06 11:22:49" itemprop="dateModified" datetime="2021-10-06T11:22:49+08:00">2021-10-06</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -227,7 +237,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>9</span>
+              <span>1.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -246,10 +256,59 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-AAA"><a href="#1-AAA" class="headerlink" title="1. AAA"></a>1. AAA</h4><a id="more"></a>
+        <h4 id="1-I-O-原理概述"><a href="#1-I-O-原理概述" class="headerlink" title="1. I/O 原理概述"></a>1. I/O 原理概述</h4><a id="more"></a>
 
-<p>敬请期待</p>
-
+<ul>
+<li><p>设备独立性</p>
+<ul>
+<li><p>现在让我们转向对 I/O 软件的研究，I/O 软件设计一个很重要的目标就是设备独立性(device independence)。啥意思呢？这意味着我们能够编写访问任何设备的应用程序，而不用事先指定特定的设备。比如你编写了一个能够从设备读入文件的应用程序，那么这个应用程序可以从硬盘、DVD 或者 USB 进行读入，不必再为每个设备定制应用程序。这其实就体现了设备独立性的概念</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gv5f8166b8j60se0iygm802.jpg" alt=""></p>
+</li>
+</ul>
+</li>
+<li><p>再比如说可以输入一条下面的指令 <code>sort 输入 输出</code>。那么上面这个输入就可以接收来自任意类型的磁盘或者键盘，并且输出可以写入到任意类型的磁盘或者屏幕</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gv5f9bv2xzj61940fuaba02.jpg" alt=""></p>
+</li>
+<li><p>计算机操作系统是这些硬件的媒介，因为不同硬件它们的指令序列不同，所以需要操作系统来做指令间的转换</p>
+</li>
+<li><p>与设备独立性密切相关的一个指标就是统一命名(uniform naming)。设备的代号应该是一个整数或者是字符串，它们不应该依赖于具体的设备。在 UNIX 中，所有的磁盘都能够被集成到文件系统中，所以用户不用记住每个设备的具体名称，直接记住对应的路径即可，如果路径记不住，也可以通过 ls 等指令找到具体的集成位置。举个例子来说，比如一个 USB 磁盘被挂载到了 /usr/cxuan/backup 下，那么你把文件复制到 /usr/cxuan/backup/device 下，就相当于是把文件复制到了磁盘中，通过这种方式，实现了向任何磁盘写入文件都相当于是向指定的路径输出文件</p>
+</li>
+<li><p>错误处理</p>
+<ul>
+<li>除了设备独立性外，I/O 软件实现的第二个重要的目标就是错误处理(error handling)。通常情况下来说，错误应该交给硬件层面去处理。如果设备控制器发现了读错误的话，它会尽可能的去修复这个错误</li>
+<li>如果设备控制器处理不了这个问题，那么设备驱动程序应该进行处理，设备驱动程序会再次尝试读取操作，很多错误都是偶然性的，如果设备驱动程序无法处理这个错误，才会把错误向上抛到硬件层面（上层）进行处理，很多时候，上层并不需要知道下层是如何解决错误的。这就很像项目经理不用把每个决定都告诉老板；程序员不用把每行代码如何写告诉项目经理。这种处理方式不够透明</li>
+</ul>
+</li>
+<li><p>同步和异步传输</p>
+<ul>
+<li><p>I/O 软件实现的第三个目标就是 同步(synchronous) 和 异步(asynchronous，即中断驱动)传输。这里先说一下同步和异步是怎么回事吧</p>
+</li>
+<li><p>同步传输中数据通常以块或帧的形式发送。发送方和接收方在数据传输之前应该具有同步时钟。而在异步传输中，数据通常以字节或者字符的形式发送，异步传输则不需要同步时钟，但是会在传输之前向数据添加奇偶校验位。下面是同步和异步的主要区别</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gv5fax3vk6j61940m0n1402.jpg" alt=""></p>
+</li>
+</ul>
+</li>
+<li><p>回到正题。大部分物理IO(physical I/O) 是异步的。物理 I/O 中的 CPU 是很聪明的，CPU 传输完成后会转而做其他事情，它和中断心灵相通，等到中断发生后，CPU 才会回到传输这件事情上来。I/O 分为两种：物理I/O 和 逻辑I/O(Logical I/O)，物理 I/O 通常是从磁盘等存储设备实际获取数据。逻辑 I/O 是对存储器（块，缓冲区）获取数据</p>
+</li>
+<li><p>缓冲</p>
+<ul>
+<li>I/O 软件的最后一个问题是缓冲(buffering)。通常情况下，从一个设备发出的数据不会直接到达最后的设备。其间会经过一系列的校验、检查、缓冲等操作才能到达</li>
+<li>举个例子来说，从网络上发送一个数据包，会经过一系列检查之后首先到达缓冲区，从而消除缓冲区填满速率和缓冲区过载</li>
+</ul>
+</li>
+<li><p>共享和独占</p>
+<ul>
+<li>I/O 软件引起的最后一个问题就是共享设备和独占设备的问题。有些 I/O 设备能够被许多用户共同使用。一些设备比如磁盘，让多个用户使用一般不会产生什么问题，但是某些设备必须具有独占性，即只允许单个用户使用完成后才能让其他用户使用</li>
+<li>下面，我们来探讨一下如何使用程序来控制 I/O 设备。一共有三种控制 I/O 设备的方法<ul>
+<li>使用程序控制 I/O</li>
+<li>使用中断驱动 I/O</li>
+<li>使用 DMA 驱动 I/O</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-使用程序控制-I-O"><a href="#2-使用程序控制-I-O" class="headerlink" title="2. 使用程序控制 I/O"></a>2. 使用程序控制 I/O</h4><h4 id="3-使用中断驱动-I-O"><a href="#3-使用中断驱动-I-O" class="headerlink" title="3. 使用中断驱动 I/O"></a>3. 使用中断驱动 I/O</h4><h4 id="4-使用-DMA-的-I-O"><a href="#4-使用-DMA-的-I-O" class="headerlink" title="4. 使用 DMA 的 I/O"></a>4. 使用 DMA 的 I/O</h4>
     </div>
 
     
@@ -362,7 +421,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-AAA"><span class="nav-text">1. AAA</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-I-O-原理概述"><span class="nav-text">1. I&#x2F;O 原理概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-使用程序控制-I-O"><span class="nav-text">2. 使用程序控制 I&#x2F;O</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-使用中断驱动-I-O"><span class="nav-text">3. 使用中断驱动 I&#x2F;O</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-使用-DMA-的-I-O"><span class="nav-text">4. 使用 DMA 的 I&#x2F;O</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -467,7 +526,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">23:12</span>
+    <span title="站点阅读时长">23:13</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
