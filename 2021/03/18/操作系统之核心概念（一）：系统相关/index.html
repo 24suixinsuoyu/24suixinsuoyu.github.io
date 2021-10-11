@@ -22,19 +22,35 @@
     var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1. AAA">
+  <meta name="description" content="1. 操作系统（Operating System, OS）">
 <meta property="og:type" content="article">
 <meta property="og:title" content="操作系统之核心概念（一）：系统相关">
 <meta property="og:url" content="http://24suixinsuoyu.com/2021/03/18/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
-<meta property="og:description" content="1. AAA">
+<meta property="og:description" content="1. 操作系统（Operating System, OS）">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvbqjw8cgdj315o0hwdik.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvbqkc37t0j61680r0abd02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvbqky3lx1j617i0ngdko02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvbqo6zee4j610o0pg0v102.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvbqp1h26lj61820n6n4o02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvbqtfx7ppj60iw0c9dgv02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvbqvs8psaj60iw0acaa502.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvbqx4uionj60iw0at0tb02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvbqxqph5bj60iw0cndgv02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvbr18bl79j60iw0efgnt02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvbr1rfcwlj60iw0atgm902.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvbr2eeu03j60iw0euab002.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvbr33qi1ej30iw0aq751.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvbr586hkjj60iw03v3ym02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvbr6v8qtej60iw084t8z02.jpg">
 <meta property="article:published_time" content="2021-03-18T04:50:48.000Z">
-<meta property="article:modified_time" content="2021-03-18T04:52:43.673Z">
+<meta property="article:modified_time" content="2021-10-11T14:45:15.635Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="操作系统之核心概念">
 <meta property="article:tag" content="系统相关">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvbqjw8cgdj315o0hwdik.jpg">
 
 <link rel="canonical" href="http://24suixinsuoyu.com/2021/03/18/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3/">
 
@@ -207,10 +223,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-03-18 12:50:48 / 修改时间：12:52:43" itemprop="dateCreated datePublished" datetime="2021-03-18T12:50:48+08:00">2021-03-18</time>
+              <time title="创建时间：2021-03-18 12:50:48" itemprop="dateCreated datePublished" datetime="2021-03-18T12:50:48+08:00">2021-03-18</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-10-11 22:45:15" itemprop="dateModified" datetime="2021-10-11T22:45:15+08:00">2021-10-11</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -227,14 +249,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>9</span>
+              <span>3.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -246,9 +268,165 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-AAA"><a href="#1-AAA" class="headerlink" title="1. AAA"></a>1. AAA</h4><a id="more"></a>
+        <h4 id="1-操作系统（Operating-System-OS）"><a href="#1-操作系统（Operating-System-OS）" class="headerlink" title="1. 操作系统（Operating System, OS）"></a>1. 操作系统（Operating System, OS）</h4><a id="more"></a>
 
-<p>敬请期待</p>
+<ul>
+<li><p>是管理计算机硬件与软件资源的系统软件，同时也是计算机系统的内核与基石。操作系统需要处理管理与配置内存、决定系统资源供需的优先次序、控制输入与输出设备、操作网络与管理文件系统等基本事务。操作系统也提供一个让用户与系统交互的操作界面</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gvbqjw8cgdj315o0hwdik.jpg" alt=""></p>
+</li>
+</ul>
+<h4 id="2-shell"><a href="#2-shell" class="headerlink" title="2. shell"></a>2. shell</h4><ul>
+<li><p>它是一个程序，可从键盘获取命令并将其提供给操作系统以执行。 在过去，它是类似 Unix 的系统上唯一可用的用户界面。 如今，除了命令行界面（CLI）外，我们还具有图形用户界面</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gvbqkc37t0j61680r0abd02.jpg" alt=""></p>
+</li>
+</ul>
+<h4 id="3-GUI（Graphical-User-Interface）"><a href="#3-GUI（Graphical-User-Interface）" class="headerlink" title="3. GUI（Graphical User Interface）"></a>3. GUI（Graphical User Interface）</h4><ul>
+<li><p>是一种用户界面，允许用户通过图形图标和音频指示符与电子设备进行交互</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gvbqky3lx1j617i0ngdko02.jpg" alt=""></p>
+</li>
+</ul>
+<h4 id="4-内核模式（kernel-mode）"><a href="#4-内核模式（kernel-mode）" class="headerlink" title="4. 内核模式（kernel mode）"></a>4. 内核模式（kernel mode）</h4><ul>
+<li>通常也被称为 超级模式（supervisor mode），在内核模式下，正在执行的代码具有对底层硬件的完整且不受限制的访问。 它可以执行任何 CPU 指令并引用任何内存地址</li>
+<li>内核模式通常保留给操作系统的最低级别，最受信任的功能。 内核模式下的崩溃是灾难性的； 他们将停止整个计算机。 超级用户模式是计算机开机时选择的自动模式</li>
+</ul>
+<h4 id="5-用户模式（user-mode）"><a href="#5-用户模式（user-mode）" class="headerlink" title="5. 用户模式（user mode）"></a>5. 用户模式（user mode）</h4><ul>
+<li>当操作系统运行用户应用程序（例如处理文本编辑器）时，系统处于用户模式。 当应用程序请求操作系统的帮助或发生中断或系统调用时，就会发生从用户模式到内核模式的转换。在用户模式下，模式位设置为1。 从用户模式切换到内核模式时，它从1更改为0</li>
+</ul>
+<h4 id="6-计算机架构（computer-architecture）"><a href="#6-计算机架构（computer-architecture）" class="headerlink" title="6. 计算机架构（computer architecture）"></a>6. 计算机架构（computer architecture）</h4><ul>
+<li><p>在计算机工程中，计算机体系结构是描述计算机系统功能，组织和实现的一组规则和方法。它主要包括指令集、内存管理、I/O 和总线结构</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gvbqo6zee4j610o0pg0v102.jpg" alt=""></p>
+</li>
+</ul>
+<h4 id="7-SATA-Serial-ATA"><a href="#7-SATA-Serial-ATA" class="headerlink" title="7. SATA(Serial ATA)"></a>7. SATA(Serial ATA)</h4><ul>
+<li>串行 ATA (Serial Advanced Technology Attachment)，它是一种电脑总线，负责主板和大容量存储设备（如硬盘及光盘驱动器）之间的数据传输，主要用于个人电脑</li>
+</ul>
+<h4 id="8-复用-multiplexing"><a href="#8-复用-multiplexing" class="headerlink" title="8. 复用(multiplexing)"></a>8. 复用(multiplexing)</h4><ul>
+<li>也称为共享，在操作系统中主要指示了时间和空间的管理。对资源进行复用时，不同的程序或用户轮流使用它。 他们中的第一个开始使用资源，然后再使用另一个，依此类推</li>
+</ul>
+<h4 id="9-大型机-mainframes"><a href="#9-大型机-mainframes" class="headerlink" title="9. 大型机(mainframes)"></a>9. 大型机(mainframes)</h4><ul>
+<li><p>大型机是一类计算机，通常以其大尺寸，存储量，处理能力和高度的可靠性而著称。它们主要由大型组织用于需要大量数据处理的关键任务应用程序</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gvbqp1h26lj61820n6n4o02.jpg" alt=""></p>
+</li>
+</ul>
+<h4 id="10-批处理-batch-system"><a href="#10-批处理-batch-system" class="headerlink" title="10. 批处理(batch system)"></a>10. 批处理(batch system)</h4><ul>
+<li>批处理操作系统的用户不直接与计算机进行交互。 每个用户都在打孔卡等脱机设备上准备工作，并将其提交给计算机操作员。 为了加快处理速度，将具有类似需求的作业一起批处理并成组运行。 程序员将程序留给操作员，然后操作员将具有类似要求的程序分批处理。</li>
+</ul>
+<h4 id="11-OS-360"><a href="#11-OS-360" class="headerlink" title="11. OS/360"></a>11. OS/360</h4><ul>
+<li>OS/360，正式称为IBM System / 360操作系统，是由 IBM 为 1964 年发布的其当时新的System/360 大型机开发的已停产的批处理操作系统</li>
+</ul>
+<h4 id="12-多处理系统-Computer-multitasking"><a href="#12-多处理系统-Computer-multitasking" class="headerlink" title="12. 多处理系统(Computer multitasking)"></a>12. 多处理系统(Computer multitasking)</h4><ul>
+<li>是指计算机同时运行多个程序的能力。多任务的一般方法是运行第一个程序的一段代码，保存工作环境；再运行第二个程序的一段代码，保存环境；……恢复第一个程序的工作环境，执行第一个程序的下一段代码</li>
+</ul>
+<h4 id="13-分时系统-Time-sharing"><a href="#13-分时系统-Time-sharing" class="headerlink" title="13. 分时系统(Time-sharing)"></a>13. 分时系统(Time-sharing)</h4><ul>
+<li>在计算中，分时是通过多程序和多任务同时在许多用户之间共享计算资源的一种系统</li>
+</ul>
+<h4 id="14-相容分时系统-Compatible-Time-Sharing-System"><a href="#14-相容分时系统-Compatible-Time-Sharing-System" class="headerlink" title="14. 相容分时系统(Compatible Time-Sharing System)"></a>14. 相容分时系统(Compatible Time-Sharing System)</h4><ul>
+<li>最早的分时操作系统，由美国麻省理工学院计算机中心设计与实作。</li>
+</ul>
+<h4 id="15-云计算-cloud-computing"><a href="#15-云计算-cloud-computing" class="headerlink" title="15. 云计算(cloud computing)"></a>15. 云计算(cloud computing)</h4><ul>
+<li><p>云计算是计算机系统资源（尤其是数据存储和计算能力）的按需可用性，而无需用户直接进行主动管理。这个术语通常用于描述 Internet 上可供许多用户使用的数据中心。 如今占主导地位的大型云通常具有从中央服务器分布在多个位置的功能。 如果与用户的连接相对较近，则可以将其指定为边缘服务器</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gvbqtfx7ppj60iw0c9dgv02.jpg" alt=""></p>
+</li>
+</ul>
+<h4 id="16-UNIX-操作系统"><a href="#16-UNIX-操作系统" class="headerlink" title="16. UNIX 操作系统"></a>16. UNIX 操作系统</h4><ul>
+<li>UNIX 操作系统，是一个强大的多用户、多任务操作系统，支持多种处理器架构，按照操作系统的分类，属于分时操作系统。</li>
+</ul>
+<h4 id="17-UNIX-System-V"><a href="#17-UNIX-System-V" class="headerlink" title="17. UNIX System V"></a>17. UNIX System V</h4><ul>
+<li>是 UNIX 操作系统的一个分支</li>
+</ul>
+<h4 id="18-BSD-Berkeley-Software-Distribution"><a href="#18-BSD-Berkeley-Software-Distribution" class="headerlink" title="18. BSD(Berkeley Software Distribution)"></a>18. BSD(Berkeley Software Distribution)</h4><ul>
+<li>UNIX 的衍生系统</li>
+</ul>
+<h4 id="19-POSIX"><a href="#19-POSIX" class="headerlink" title="19. POSIX"></a>19. POSIX</h4><ul>
+<li>可移植操作系统接口，是 IEEE 为要在各种 UNIX 操作系统上运行软件，而定义API的一系列互相关联的标准的总称。</li>
+</ul>
+<h4 id="20-MINIX"><a href="#20-MINIX" class="headerlink" title="20. MINIX"></a>20. MINIX</h4><ul>
+<li>Minix，是一个迷你版本的类 UNIX 操作系统</li>
+</ul>
+<h4 id="21-Linux"><a href="#21-Linux" class="headerlink" title="21. Linux"></a>21. Linux</h4><ul>
+<li><p>终于到了大名鼎鼎的 Linux 操作系统了，太强大了，不予以解释了，大家都懂</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gvbqvs8psaj60iw0acaa502.jpg" alt=""></p>
+</li>
+</ul>
+<h4 id="22-DOS-Disk-Operating-System"><a href="#22-DOS-Disk-Operating-System" class="headerlink" title="22. DOS (Disk Operating System)"></a>22. DOS (Disk Operating System)</h4><ul>
+<li>磁盘操作系统（缩写为DOS）是可以使用磁盘存储设备（例如软盘，硬盘驱动器或光盘）的计算机操作系统</li>
+</ul>
+<h4 id="23-MS-DOS-MicroSoft-Disk-Operating-System"><a href="#23-MS-DOS-MicroSoft-Disk-Operating-System" class="headerlink" title="23. MS-DOS(MicroSoft Disk Operating System)"></a>23. MS-DOS(MicroSoft Disk Operating System)</h4><ul>
+<li><p>一个由美国微软公司发展的操作系统，运行在Intel x86个人电脑上。它是DOS操作系统家族中最著名的一个，在Windows 95以前，DOS是IBM PC及兼容机中的最基本配备，而MS-DOS则是个人电脑中最普遍使用的DOS操作系统</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gvbqx4uionj60iw0at0tb02.jpg" alt=""></p>
+</li>
+</ul>
+<h4 id="24-MacOS-X"><a href="#24-MacOS-X" class="headerlink" title="24. MacOS X"></a>24. MacOS X</h4><ul>
+<li><p>怎能少的了苹果操作系统？macOS 是苹果公司推出的基于图形用户界面操作系统，为 Macintosh 的主操作系统</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gvbqxqph5bj60iw0cndgv02.jpg" alt=""></p>
+</li>
+</ul>
+<h4 id="25-Windows-NT-Windows-New-Technology"><a href="#25-Windows-NT-Windows-New-Technology" class="headerlink" title="25. Windows NT(Windows New Technology)"></a>25. Windows NT(Windows New Technology)</h4><ul>
+<li>是美国微软公司 1993 年推出的纯 32 位操作系统核心</li>
+</ul>
+<h4 id="26-Service-Pack-SP"><a href="#26-Service-Pack-SP" class="headerlink" title="26. Service Pack(SP)"></a>26. Service Pack(SP)</h4><ul>
+<li>是程序的更新、修复和（或）增强的集合，以一个独立的安装包的形式发布。许多公司，如微软或Autodesk，通常在为某一程序而做的修补程序达到一定数量时，就发布一个Service Pack</li>
+</ul>
+<h4 id="27-数字版权管理（DRM）"><a href="#27-数字版权管理（DRM）" class="headerlink" title="27. 数字版权管理（DRM）"></a>27. 数字版权管理（DRM）</h4><ul>
+<li>他是工具或技术保护措施（TPM）是一组访问控制技术，用于限制对专有硬件和受版权保护的作品的使用</li>
+</ul>
+<h4 id="28-x86"><a href="#28-x86" class="headerlink" title="28. x86"></a>28. x86</h4><ul>
+<li>x86是一整套指令集体系结构，由 Intel 最初基于 Intel 8086 微处理器及其 8088 变体开发。采用内存分段作为解决方案，用于处理比普通 16 位地址可以覆盖的更多内存。32 位是 x86 默认的位数，除此之外，还有一个 x86-64 位，是x86架构的 64 位拓展，向后兼容于 16 位及 32 位的 x86架构</li>
+</ul>
+<h4 id="29-FreeBSD"><a href="#29-FreeBSD" class="headerlink" title="29. FreeBSD"></a>29. FreeBSD</h4><ul>
+<li>FreeBSD 是一个类 UNIX 的操作系统，也是 FreeBSD 项目的发展成果</li>
+</ul>
+<h4 id="30-X-Window-System"><a href="#30-X-Window-System" class="headerlink" title="30. X Window System"></a>30. X Window System</h4><ul>
+<li><p>X 窗口系统（X11，或简称X）是用于位图显示的窗口系统，在类 UNIX 操作系统上很常见</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gvbr18bl79j60iw0efgnt02.jpg" alt=""></p>
+</li>
+</ul>
+<h4 id="31-Gnome"><a href="#31-Gnome" class="headerlink" title="31. Gnome"></a>31. Gnome</h4><ul>
+<li><p>GNOME 是一个完全由自由软件组成的桌面环境。它的目标操作系统是Linux，但是大部分的 BSD 系统亦支持 GNOME</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gvbr1rfcwlj60iw0atgm902.jpg" alt=""></p>
+</li>
+</ul>
+<h4 id="32-网络操作系统-network-operating-systems"><a href="#32-网络操作系统-network-operating-systems" class="headerlink" title="32. 网络操作系统(network operating systems)"></a>32. 网络操作系统(network operating systems)</h4><ul>
+<li><p>网络操作系统是用于网络设备（如路由器，交换机或防火墙）的专用操作系统</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gvbr2eeu03j60iw0euab002.jpg" alt=""></p>
+</li>
+</ul>
+<h4 id="33-分布式网络系统-distributed-operating-systems"><a href="#33-分布式网络系统-distributed-operating-systems" class="headerlink" title="33. 分布式网络系统(distributed operating systems)"></a>33. 分布式网络系统(distributed operating systems)</h4><ul>
+<li><p>分布式操作系统是在独立，网络，通信和物理上独立计算节点的集合上的软件。 它们处理由多个CPU服务的作业。每个单独的节点都拥有全局集合操作系统的特定软件的一部分</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gvbr33qi1ej30iw0aq751.jpg" alt=""></p>
+</li>
+</ul>
+<h4 id="34-程序计数器-Program-counter"><a href="#34-程序计数器-Program-counter" class="headerlink" title="34. 程序计数器(Program counter)"></a>34. 程序计数器(Program counter)</h4><ul>
+<li>程序计数器 是一个 CPU 中的寄存器，用于指示计算机在其程序序列中的位置</li>
+</ul>
+<h4 id="35-堆栈寄存器-stack-pointer"><a href="#35-堆栈寄存器-stack-pointer" class="headerlink" title="35. 堆栈寄存器(stack pointer)"></a>35. 堆栈寄存器(stack pointer)</h4><ul>
+<li>堆栈寄存器是计算机 CPU 中的寄存器，其目的是跟踪调用堆栈</li>
+</ul>
+<h4 id="36-程序状态字-Program-Status-Word"><a href="#36-程序状态字-Program-Status-Word" class="headerlink" title="36. 程序状态字(Program Status Word)"></a>36. 程序状态字(Program Status Word)</h4><ul>
+<li>它是由操作系统维护的8个字节（或64位）长的数据的集合。它跟踪系统的当前状态。</li>
+</ul>
+<h4 id="37-流水线-Pipeline"><a href="#37-流水线-Pipeline" class="headerlink" title="37. 流水线(Pipeline)"></a>37. 流水线(Pipeline)</h4><ul>
+<li><p>在计算世界中，管道是一组串联连接的数据处理元素，其中一个元素的输出是下一个元素的输入。 流水线的元素通常以并行或按时间分割的方式执行。 通常在元素之间插入一定数量的缓冲区存储</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gvbr586hkjj60iw03v3ym02.jpg" alt=""></p>
+</li>
+</ul>
+<h4 id="38-超标量-superscalar"><a href="#38-超标量-superscalar" class="headerlink" title="38. 超标量(superscalar)"></a>38. 超标量(superscalar)</h4><ul>
+<li>超标量 CPU 架构是指在一颗处理器内核中实行了指令级并发的一类并发运算。这种技术能够在相同的CPU主频下实现更高的 CPU 流量</li>
+</ul>
+<h4 id="39-系统调用-system-call"><a href="#39-系统调用-system-call" class="headerlink" title="39. 系统调用(system call)"></a>39. 系统调用(system call)</h4><ul>
+<li>指运行在用户空间的程序向操作系统内核请求需要更高权限运行的服务。系统调用提供用户程序与操作系统之间的接口。大多数系统交互式操作需求在内核态运行。如设备 IO 操作或者进程间通信</li>
+</ul>
+<h4 id="40-多线程-multithreading"><a href="#40-多线程-multithreading" class="headerlink" title="40. 多线程(multithreading)"></a>40. 多线程(multithreading)</h4><ul>
+<li>是指从软件或者硬件上实现多个线程并发执行的技术。具有多线程能力的计算机因为有硬件支持而能够在同一时间执行多个线程，进而提升整体处理性能。</li>
+</ul>
+<h4 id="41-CPU-核心-core"><a href="#41-CPU-核心-core" class="headerlink" title="41. CPU 核心(core)"></a>41. CPU 核心(core)</h4><ul>
+<li>它是 CPU 的大脑，它接收指令，并执行计算或运算以满足这些指令。一个 CPU 可以有多个内核。</li>
+</ul>
+<h4 id="42-图形处理器-Graphics-Processing-Unit"><a href="#42-图形处理器-Graphics-Processing-Unit" class="headerlink" title="42. 图形处理器(Graphics Processing Unit)"></a>42. 图形处理器(Graphics Processing Unit)</h4><ul>
+<li><p>又称显示核心、视觉处理器、显示芯片或绘图芯片；它是一种专门在个人电脑、工作站、游戏机和一些移动设备（如平板电脑、智能手机等）上运行绘图运算工作的微处理器</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gvbr6v8qtej60iw084t8z02.jpg" alt=""></p>
+</li>
+</ul>
 
     </div>
 
@@ -362,7 +540,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-AAA"><span class="nav-text">1. AAA</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-操作系统（Operating-System-OS）"><span class="nav-text">1. 操作系统（Operating System, OS）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-shell"><span class="nav-text">2. shell</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-GUI（Graphical-User-Interface）"><span class="nav-text">3. GUI（Graphical User Interface）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-内核模式（kernel-mode）"><span class="nav-text">4. 内核模式（kernel mode）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-用户模式（user-mode）"><span class="nav-text">5. 用户模式（user mode）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-计算机架构（computer-architecture）"><span class="nav-text">6. 计算机架构（computer architecture）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-SATA-Serial-ATA"><span class="nav-text">7. SATA(Serial ATA)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-复用-multiplexing"><span class="nav-text">8. 复用(multiplexing)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-大型机-mainframes"><span class="nav-text">9. 大型机(mainframes)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-批处理-batch-system"><span class="nav-text">10. 批处理(batch system)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-OS-360"><span class="nav-text">11. OS&#x2F;360</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-多处理系统-Computer-multitasking"><span class="nav-text">12. 多处理系统(Computer multitasking)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-分时系统-Time-sharing"><span class="nav-text">13. 分时系统(Time-sharing)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-相容分时系统-Compatible-Time-Sharing-System"><span class="nav-text">14. 相容分时系统(Compatible Time-Sharing System)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#15-云计算-cloud-computing"><span class="nav-text">15. 云计算(cloud computing)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#16-UNIX-操作系统"><span class="nav-text">16. UNIX 操作系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#17-UNIX-System-V"><span class="nav-text">17. UNIX System V</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#18-BSD-Berkeley-Software-Distribution"><span class="nav-text">18. BSD(Berkeley Software Distribution)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#19-POSIX"><span class="nav-text">19. POSIX</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#20-MINIX"><span class="nav-text">20. MINIX</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#21-Linux"><span class="nav-text">21. Linux</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-DOS-Disk-Operating-System"><span class="nav-text">22. DOS (Disk Operating System)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#23-MS-DOS-MicroSoft-Disk-Operating-System"><span class="nav-text">23. MS-DOS(MicroSoft Disk Operating System)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#24-MacOS-X"><span class="nav-text">24. MacOS X</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#25-Windows-NT-Windows-New-Technology"><span class="nav-text">25. Windows NT(Windows New Technology)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#26-Service-Pack-SP"><span class="nav-text">26. Service Pack(SP)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#27-数字版权管理（DRM）"><span class="nav-text">27. 数字版权管理（DRM）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#28-x86"><span class="nav-text">28. x86</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#29-FreeBSD"><span class="nav-text">29. FreeBSD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#30-X-Window-System"><span class="nav-text">30. X Window System</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#31-Gnome"><span class="nav-text">31. Gnome</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#32-网络操作系统-network-operating-systems"><span class="nav-text">32. 网络操作系统(network operating systems)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#33-分布式网络系统-distributed-operating-systems"><span class="nav-text">33. 分布式网络系统(distributed operating systems)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#34-程序计数器-Program-counter"><span class="nav-text">34. 程序计数器(Program counter)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#35-堆栈寄存器-stack-pointer"><span class="nav-text">35. 堆栈寄存器(stack pointer)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#36-程序状态字-Program-Status-Word"><span class="nav-text">36. 程序状态字(Program Status Word)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#37-流水线-Pipeline"><span class="nav-text">37. 流水线(Pipeline)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#38-超标量-superscalar"><span class="nav-text">38. 超标量(superscalar)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#39-系统调用-system-call"><span class="nav-text">39. 系统调用(system call)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#40-多线程-multithreading"><span class="nav-text">40. 多线程(multithreading)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#41-CPU-核心-core"><span class="nav-text">41. CPU 核心(core)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#42-图形处理器-Graphics-Processing-Unit"><span class="nav-text">42. 图形处理器(Graphics Processing Unit)</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -467,7 +645,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">23:33</span>
+    <span title="站点阅读时长">23:36</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
