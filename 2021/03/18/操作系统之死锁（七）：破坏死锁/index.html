@@ -22,19 +22,23 @@
     var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1. AAA">
+  <meta name="description" content="1. 破坏死锁概述">
 <meta property="og:type" content="article">
 <meta property="og:title" content="操作系统之死锁（七）：破坏死锁">
 <meta property="og:url" content="http://24suixinsuoyu.com/2021/03/18/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E6%AD%BB%E9%94%81%EF%BC%88%E4%B8%83%EF%BC%89%EF%BC%9A%E7%A0%B4%E5%9D%8F%E6%AD%BB%E9%94%81/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
-<meta property="og:description" content="1. AAA">
+<meta property="og:description" content="1. 破坏死锁概述">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvbq1wxhpjj60mc0d2q3s02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvbq29f3gtj60o20cgmxa02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvbqaat0xhj618c0jqdho02.jpg">
 <meta property="article:published_time" content="2021-03-18T04:35:42.000Z">
-<meta property="article:modified_time" content="2021-03-18T04:44:25.627Z">
+<meta property="article:modified_time" content="2021-10-11T14:17:29.187Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="操作系统之死锁">
 <meta property="article:tag" content="破坏死锁">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvbq1wxhpjj60mc0d2q3s02.jpg">
 
 <link rel="canonical" href="http://24suixinsuoyu.com/2021/03/18/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E6%AD%BB%E9%94%81%EF%BC%88%E4%B8%83%EF%BC%89%EF%BC%9A%E7%A0%B4%E5%9D%8F%E6%AD%BB%E9%94%81/">
 
@@ -207,10 +211,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-03-18 12:35:42 / 修改时间：12:44:25" itemprop="dateCreated datePublished" datetime="2021-03-18T12:35:42+08:00">2021-03-18</time>
+              <time title="创建时间：2021-03-18 12:35:42" itemprop="dateCreated datePublished" datetime="2021-03-18T12:35:42+08:00">2021-03-18</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-10-11 22:17:29" itemprop="dateModified" datetime="2021-10-11T22:17:29+08:00">2021-10-11</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -227,14 +237,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>9</span>
+              <span>2.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -246,9 +256,90 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-AAA"><a href="#1-AAA" class="headerlink" title="1. AAA"></a>1. AAA</h4><a id="more"></a>
+        <h4 id="1-破坏死锁概述"><a href="#1-破坏死锁概述" class="headerlink" title="1. 破坏死锁概述"></a>1. 破坏死锁概述</h4><a id="more"></a>
 
-<p>敬请期待</p>
+<ul>
+<li>死锁本质上是无法避免的，因为它需要获得未知的资源和请求，但是死锁是满足四个条件后才出现的，它们分别是<ul>
+<li>互斥</li>
+<li>保持和等待</li>
+<li>不可抢占</li>
+<li>循环等待</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-破坏互斥条件"><a href="#2-破坏互斥条件" class="headerlink" title="2. 破坏互斥条件"></a>2. 破坏互斥条件</h4><ul>
+<li>我们首先考虑的就是破坏互斥使用条件。如果资源不被一个进程独占，那么死锁肯定不会产生。如果两个打印机同时使用一个资源会造成混乱，打印机的解决方式是使用 假脱机打印机(spooling printer) ，这项技术可以允许多个进程同时产生输出，在这种模型中，实际请求打印机的唯一进程是打印机守护进程，也称为后台进程。后台进程不会请求其他资源。我们可以消除打印机的死锁</li>
+<li>后台进程通常被编写为能够输出完整的文件后才能打印，假如两个进程都占用了假脱机空间的一半，而这两个进程都没有完成全部的输出，就会导致死锁</li>
+<li>因此，尽量做到尽可能少的进程可以请求资源</li>
+</ul>
+<h4 id="3-破坏保持等待的条件"><a href="#3-破坏保持等待的条件" class="headerlink" title="3. 破坏保持等待的条件"></a>3. 破坏保持等待的条件</h4><ul>
+<li>第二种方式是如果我们能阻止持有资源的进程请求其他资源，我们就能够消除死锁。一种实现方式是让所有的进程开始执行前请求全部的资源。如果所需的资源可用，进程会完成资源的分配并运行到结束。如果有任何一个资源处于频繁分配的情况，那么没有分配到资源的进程就会等待</li>
+<li>很多进程无法在执行完成前就知道到底需要多少资源，如果知道的话，就可以使用银行家算法；还有一个问题是这样无法合理有效利用资源</li>
+<li>还有一种方式是进程在请求其他资源时，先释放所占用的资源，然后再尝试一次获取全部的资源</li>
+</ul>
+<h4 id="4-破坏不可抢占条件"><a href="#4-破坏不可抢占条件" class="headerlink" title="4. 破坏不可抢占条件"></a>4. 破坏不可抢占条件</h4><ul>
+<li>破坏不可抢占条件也是可以的。可以通过虚拟化的方式来避免这种情况</li>
+</ul>
+<h4 id="5-破坏循环等待条件"><a href="#5-破坏循环等待条件" class="headerlink" title="5. 破坏循环等待条件"></a>5. 破坏循环等待条件</h4><ul>
+<li><p>现在就剩最后一个条件了，循环等待条件可以通过多种方法来破坏。一种方式是制定一个标准，一个进程在任何时候只能使用一种资源。如果需要另外一种资源，必须释放当前资源。对于需要将大文件从磁带复制到打印机的过程，此限制是不可接受的。另一种方式是将所有的资源统一编号，如下图所示</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gvbq1wxhpjj60mc0d2q3s02.jpg" alt=""></p>
+</li>
+<li><p>进程可以在任何时间提出请求，但是所有的请求都必须按照资源的顺序提出。如果按照此分配规则的话，那么资源分配之间不会出现环</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gvbq29f3gtj60o20cgmxa02.jpg" alt=""></p>
+</li>
+<li><p>尽管通过这种方式来消除死锁，但是编号的顺序不可能让每个进程都会接受</p>
+</li>
+</ul>
+<h4 id="6-其他问题"><a href="#6-其他问题" class="headerlink" title="6. 其他问题"></a>6. 其他问题</h4><ol>
+<li><p>两阶段加锁</p>
+<ul>
+<li>虽然很多情况下死锁的避免和预防都能处理，但是效果并不好。随着时间的推移，提出了很多优秀的算法用来处理死锁。例如在数据库系统中，一个经常发生的操作是请求锁住一些记录，然后更新所有锁定的记录。当同时有多个进程运行时，就会有死锁的风险</li>
+<li>一种解决方式是使用 两阶段提交(two-phase locking)。顾名思义分为两个阶段，一阶段是进程尝试一次锁定它需要的所有记录。如果成功后，才会开始第二阶段，第二阶段是执行更新并释放锁。第一阶段并不做真正有意义的工作</li>
+<li>如果在第一阶段某个进程所需要的记录已经被加锁，那么该进程会释放所有锁定的记录并重新开始第一阶段。从某种意义上来说，这种方法类似于预先请求所有必需的资源或者是在进行一些不可逆的操作之前请求所有的资源。</li>
+<li>不过在一般的应用场景中，两阶段加锁的策略并不通用。如果一个进程缺少资源就会半途中断并重新开始的方式是不可接受的</li>
+</ul>
+</li>
+<li><p>通信死锁</p>
+<ul>
+<li><p>我们上面一直讨论的是资源死锁，资源死锁是一种死锁类型，但并不是唯一类型，还有通信死锁，也就是两个或多个进程在发送消息时出现的死锁。进程 A 给进程 B 发了一条消息，然后进程 A 阻塞直到进程 B 返回响应。假设请求消息丢失了，那么进程 A 在一直等着回复，进程 B 也会阻塞等待请求消息到来，这时候就产生死锁</p>
+</li>
+<li><p>尽管会产生死锁，但是这并不是一个资源死锁，因为 A 并没有占据 B 的资源。事实上，通信死锁并没有完全可见的资源。根据死锁的定义来说：每个进程因为等待其他进程引起的事件而产生阻塞，这就是一种死锁。相较于最常见的通信死锁，我们把上面这种情况称为通信死锁(communication deadlock)</p>
+</li>
+<li><p>通信死锁不能通过调度的方式来避免，但是可以使用通信中一个非常重要的概念来避免：超时(timeout)。在通信过程中，只要一个信息被发出后，发送者就会启动一个定时器，定时器会记录消息的超时时间，如果超时时间到了但是消息还没有返回，就会认为消息已经丢失并重新发送，通过这种方式，可以避免通信死锁</p>
+</li>
+<li><p>但是并非所有网络通信发生的死锁都是通信死锁，也存在资源死锁，下面就是一个典型的资源死锁</p>
+</li>
+<li><p>当一个数据包从主机进入路由器时，会被放入一个缓冲区，然后再传输到另外一个路由器，再到另一个，以此类推直到目的地。缓冲区都是资源并且数量有限。如下图所示，每个路由器都有 10 个缓冲区（实际上有很多）</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gvbqaat0xhj618c0jqdho02.jpg" alt=""></p>
+</li>
+<li><p>假如路由器 A 的所有数据需要发送到 B ，B 的所有数据包需要发送到 D，然后 D 的所有数据包需要发送到 A 。没有数据包可以移动，因为在另一端没有缓冲区可用，这就是一个典型的资源死锁</p>
+</li>
+</ul>
+</li>
+<li><p>活锁</p>
+</li>
+</ol>
+<ul>
+<li>如果说死锁很痴情的话，那么活锁用一则成语来表示就是 弄巧成拙</li>
+<li>某些情况下，当进程意识到它不能获取所需要的下一个锁时，就会尝试礼貌的释放已经获得的锁，然后等待非常短的时间再次尝试获取。可以想像一下这个场景：当两个人在狭路相逢的时候，都想给对方让路，相同的步调会导致双方都无法前进</li>
+<li>现在假想有一对并行的进程用到了两个资源。它们分别尝试获取另一个锁失败后，两个进程都会释放自己持有的锁，再次进行尝试，这个过程会一直进行重复。很明显，这个过程中没有进程阻塞，但是进程仍然不会向下执行，这种状况我们称之为 活锁(livelock)</li>
+</ul>
+<ol start="4">
+<li>饥渴</li>
+</ol>
+<ul>
+<li>与死锁和活锁的一个非常相似的问题是 饥饿(starvvation)。想象一下你什么时候会饿？一段时间不吃东西是不是会饿？对于进程来讲，最重要的就是资源，如果一段时间没有获得资源，那么进程会产生饥饿，这些进程会永远得不到服务</li>
+<li>我们假设打印机的分配方案是每次都会分配给最小文件的进程，那么要打印大文件的进程会永远得不到服务，导致进程饥饿，进程会无限制的推后，虽然它没有阻塞</li>
+</ul>
+<ol start="5">
+<li>总结</li>
+</ol>
+<ul>
+<li>死锁是一类通用问题，任何操作系统都会产生死锁。当每一组进程中的每个进程都因等待由该组的其他进程所占有的资源而导致阻塞，死锁就发生了。这种情况会使所有的进程都处于无限等待的状态</li>
+<li>死锁的检测和避免可以通过安全和不安全状态来判断，其中一个检测方式就是银行家算法；当然你也可以使用鸵鸟算法对死锁置之不理，但是你肯定会遭其反噬</li>
+<li>也可以在设计时通过系统结构的角度来避免死锁，这样能够预防死锁；也可以破坏死锁的四个条件来破坏死锁。资源死锁并不是唯一性的死锁，还有通信间死锁，可以设置适当的超时时间来完成</li>
+<li>活锁和死锁的问题有些相似，它们都是一种进程无法继续向下执行的状态。由于进程调度策略导致尝试获取进程的一方永远无法获得资源后，进程会导致饥饿的出现</li>
+</ul>
 
     </div>
 
@@ -362,7 +453,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-AAA"><span class="nav-text">1. AAA</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-破坏死锁概述"><span class="nav-text">1. 破坏死锁概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-破坏互斥条件"><span class="nav-text">2. 破坏互斥条件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-破坏保持等待的条件"><span class="nav-text">3. 破坏保持等待的条件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-破坏不可抢占条件"><span class="nav-text">4. 破坏不可抢占条件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-破坏循环等待条件"><span class="nav-text">5. 破坏循环等待条件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-其他问题"><span class="nav-text">6. 其他问题</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -467,7 +558,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">23:30</span>
+    <span title="站点阅读时长">23:32</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
