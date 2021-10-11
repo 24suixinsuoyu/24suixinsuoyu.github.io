@@ -22,19 +22,21 @@
     var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1. AAA">
+  <meta name="description" content="1. 死锁概述">
 <meta property="og:type" content="article">
 <meta property="og:title" content="操作系统之死锁（一）：前言">
 <meta property="og:url" content="http://24suixinsuoyu.com/2021/03/18/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E6%AD%BB%E9%94%81%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%89%8D%E8%A8%80/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
-<meta property="og:description" content="1. AAA">
+<meta property="og:description" content="1. 死锁概述">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvb34a2v7kj618u0huwhi02.jpg">
 <meta property="article:published_time" content="2021-03-18T04:34:00.000Z">
-<meta property="article:modified_time" content="2021-03-18T04:37:17.535Z">
+<meta property="article:modified_time" content="2021-10-11T00:52:27.819Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="操作系统之死锁">
 <meta property="article:tag" content="前言">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvb34a2v7kj618u0huwhi02.jpg">
 
 <link rel="canonical" href="http://24suixinsuoyu.com/2021/03/18/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E6%AD%BB%E9%94%81%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%89%8D%E8%A8%80/">
 
@@ -207,10 +209,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-03-18 12:34:00 / 修改时间：12:37:17" itemprop="dateCreated datePublished" datetime="2021-03-18T12:34:00+08:00">2021-03-18</time>
+              <time title="创建时间：2021-03-18 12:34:00" itemprop="dateCreated datePublished" datetime="2021-03-18T12:34:00+08:00">2021-03-18</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-10-11 08:52:27" itemprop="dateModified" datetime="2021-10-11T08:52:27+08:00">2021-10-11</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -227,7 +235,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>9</span>
+              <span>357</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -246,9 +254,23 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-AAA"><a href="#1-AAA" class="headerlink" title="1. AAA"></a>1. AAA</h4><a id="more"></a>
+        <h4 id="1-死锁概述"><a href="#1-死锁概述" class="headerlink" title="1. 死锁概述"></a>1. 死锁概述</h4><a id="more"></a>
 
-<p>敬请期待</p>
+<ul>
+<li><p>计算机系统中有很多独占性的资源，在同一时刻只能每个资源只能由一个进程使用，我们之前经常提到过打印机，这就是一个独占性的资源，同一时刻不能有两个打印机同时输出结果，否则会引起文件系统的瘫痪。所以，操作系统具有授权一个进程单独访问资源的能力</p>
+</li>
+<li><p>两个进程独占性的访问某个资源，从而等待另外一个资源的执行结果，会导致两个进程都被阻塞，并且两个进程都不会释放各自的资源，这种情况就是 死锁(deadlock)</p>
+</li>
+<li><p>死锁可以发生在任何层面，在不同的机器之间可能会发生死锁，在数据库系统中也会导致死锁，比如进程 A 对记录 R1 加锁，进程 B 对记录 R2 加锁，然后进程 A 和 B 都试图把对象的记录加锁，这种情况下就会产生死锁</p>
+<ul>
+<li><p>下面我们就来讨论一下什么是死锁、死锁的条件是什么、死锁如何预防、活锁是什么等</p>
+</li>
+<li><p>首先你需要先了解一个概念，那就是资源是什么</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gvb34a2v7kj618u0huwhi02.jpg" alt=""></p>
+</li>
+</ul>
+</li>
+</ul>
 
     </div>
 
@@ -362,7 +384,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-AAA"><span class="nav-text">1. AAA</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-死锁概述"><span class="nav-text">1. 死锁概述</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
