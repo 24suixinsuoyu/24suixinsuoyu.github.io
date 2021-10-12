@@ -22,19 +22,28 @@
     var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1. AAA">
+  <meta name="description" content="1. 存储体系结构">
 <meta property="og:type" content="article">
 <meta property="og:title" content="操作系统之核心概念（二）：存储相关">
 <meta property="og:url" content="http://24suixinsuoyu.com/2021/03/18/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E5%AD%98%E5%82%A8%E7%9B%B8%E5%85%B3/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
-<meta property="og:description" content="1. AAA">
+<meta property="og:description" content="1. 存储体系结构">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvc8741kbqj60iw08cwes02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvc8d9u6q0j617c0r8tcw02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvc8gip584j60iw0bvt9d02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvc8ha03h5j60iw05tweo02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvc8i3rdohj60iw0d4gmm02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvc8jmwsr4j60iw0fnabq02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvc8mwgeylj60iw08gmxg02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvc8nfuxamj60iw0amdgl02.jpg">
 <meta property="article:published_time" content="2021-03-18T04:51:06.000Z">
-<meta property="article:modified_time" content="2021-03-18T04:53:34.800Z">
+<meta property="article:modified_time" content="2021-10-12T00:49:46.227Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="操作系统之核心概念">
 <meta property="article:tag" content="存储相关">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvc8741kbqj60iw08cwes02.jpg">
 
 <link rel="canonical" href="http://24suixinsuoyu.com/2021/03/18/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E5%AD%98%E5%82%A8%E7%9B%B8%E5%85%B3/">
 
@@ -207,10 +216,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-03-18 12:51:06 / 修改时间：12:53:34" itemprop="dateCreated datePublished" datetime="2021-03-18T12:51:06+08:00">2021-03-18</time>
+              <time title="创建时间：2021-03-18 12:51:06" itemprop="dateCreated datePublished" datetime="2021-03-18T12:51:06+08:00">2021-03-18</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-10-12 08:49:46" itemprop="dateModified" datetime="2021-10-12T08:49:46+08:00">2021-10-12</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -227,14 +242,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>9</span>
+              <span>2.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -246,9 +261,96 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-AAA"><a href="#1-AAA" class="headerlink" title="1. AAA"></a>1. AAA</h4><a id="more"></a>
+        <h4 id="1-存储体系结构"><a href="#1-存储体系结构" class="headerlink" title="1. 存储体系结构"></a>1. 存储体系结构</h4><a id="more"></a>
 
-<p>敬请期待</p>
+<ul>
+<li><p>顶层的存储器速度最高，但是容量最小，成本非常高，层级结构越向下，其访问效率越慢，容量越大，但是造价也就越便宜</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gvc8741kbqj60iw08cwes02.jpg" alt=""></p>
+</li>
+</ul>
+<h4 id="2-高速缓存行-cache-lines"><a href="#2-高速缓存行-cache-lines" class="headerlink" title="2. 高速缓存行(cache lines)"></a>2. 高速缓存行(cache lines)</h4><ul>
+<li>其实就是把高速缓存分割成了固定大小的块，其大小是以突发读或者突发写周期的大小为基础的</li>
+</ul>
+<h4 id="3-缓存命中-cache-hit"><a href="#3-缓存命中-cache-hit" class="headerlink" title="3. 缓存命中(cache hit)"></a>3. 缓存命中(cache hit)</h4><ul>
+<li><p>当应用程序或软件请求数据时，会首先发生缓存命中。 首先，中央处理单元（CPU）在其最近的内存位置（通常是主缓存）中查找数据。 如果在缓存中找到请求的数据，则将其视为缓存命中</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gvc8d9u6q0j617c0r8tcw02.jpg" alt=""></p>
+</li>
+</ul>
+<h4 id="4-L1-cache"><a href="#4-L1-cache" class="headerlink" title="4. L1 cache"></a>4. L1 cache</h4><ul>
+<li>一级缓存是 CPU 芯片中内置的存储库。 L1缓存也称为主缓存，是计算机中最快的内存，并且最接近处理器</li>
+</ul>
+<h4 id="5-L2-cache"><a href="#5-L2-cache" class="headerlink" title="5. L2 cache"></a>5. L2 cache</h4><ul>
+<li>二级缓存存储库，内置在 CPU 芯片中，包装在同一模块中，或者建在主板上。 L2 高速缓存提供给 L1 高速缓存，后者提供给处理器。 L2 内存比 L1 内存慢</li>
+</ul>
+<h4 id="6-L3-cache"><a href="#6-L3-cache" class="headerlink" title="6. L3 cache"></a>6. L3 cache</h4><ul>
+<li>三级缓存内置在主板上或CPU模块内的存储库。 L3 高速缓存为 L2 高速缓存提供数据，其内存通常比 L2 内存慢，但比主内存快。 L3 高速缓存提供给 L2 高速缓存，后者又提供给 L1 高速缓存，后者又提供给处理器</li>
+</ul>
+<h4 id="7-RAM-Random-Access-Memory"><a href="#7-RAM-Random-Access-Memory" class="headerlink" title="7. RAM((Random Access Memory)"></a>7. RAM((Random Access Memory)</h4><ul>
+<li>随机存取存储器，也叫主存，是与 CPU 直接交换数据的内部存储器。它可以随时读写，而且速度很快，通常作为操作系统或其他正在运行中的程序的临时数据存储介质。RAM工作时可以随时从任何一个指定的地址写入（存入）或读出（取出）信息。它与 ROM 的最大区别是数据的易失性，即一旦断电所存储的数据将随之丢失。RAM 在计算机和数字系统中用来暂时存储程序、数据和中间结果</li>
+</ul>
+<h4 id="8-ROM-Read-Only-Memory"><a href="#8-ROM-Read-Only-Memory" class="headerlink" title="8. ROM (Read Only Memory)"></a>8. ROM (Read Only Memory)</h4><ul>
+<li>只读存储器是一种半导体存储器，其特性是一旦存储数据就无法改变或删除，且内容不会因为电源关闭而消失。在电子或电脑系统中，通常用以存储不需经常变更的程序或数据</li>
+</ul>
+<h4 id="9-EEPROM-Electrically-Erasable-PROM"><a href="#9-EEPROM-Electrically-Erasable-PROM" class="headerlink" title="9. EEPROM (Electrically Erasable PROM)"></a>9. EEPROM (Electrically Erasable PROM)</h4><ul>
+<li>电可擦除可编程只读存储器，是一种可以通过电子方式多次复写的半导体存储设备</li>
+</ul>
+<h4 id="10-闪存-flash-memory"><a href="#10-闪存-flash-memory" class="headerlink" title="10. 闪存(flash memory)"></a>10. 闪存(flash memory)</h4><ul>
+<li>是一种电子式可清除程序化只读存储器的形式，允许在操作中被多次擦或写的存储器。这种科技主要用于一般性数据存储，以及在电脑与其他数字产品间交换传输数据，如储存卡与U盘</li>
+</ul>
+<h4 id="11-SSD-Solid-State-Disks"><a href="#11-SSD-Solid-State-Disks" class="headerlink" title="11. SSD(Solid State Disks)"></a>11. SSD(Solid State Disks)</h4><ul>
+<li><p>固态硬盘，是一种主要以闪存作为永久性存储器的电脑存储设备</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gvc8gip584j60iw0bvt9d02.jpg" alt=""></p>
+</li>
+</ul>
+<h4 id="12-虚拟地址-virtual-memory"><a href="#12-虚拟地址-virtual-memory" class="headerlink" title="12. 虚拟地址(virtual memory)"></a>12. 虚拟地址(virtual memory)</h4><ul>
+<li>虚拟内存是计算机系统内存管理的一种机制。它使得应用程序认为它拥有连续可用的内存（一个连续完整的地址空间），而实际上，它通常是被分隔成多个物理内存碎片，还有部分暂时存储在外部磁盘存储器上，在需要时进行数据交换。与没有使用虚拟内存技术的系统相比，使用这种技术的系统使得大型程序的编写变得更容易，对真正的物理内存（例如RAM）的使用也更有效率</li>
+</ul>
+<h4 id="13-MMU-Memory-Management-Unit"><a href="#13-MMU-Memory-Management-Unit" class="headerlink" title="13. MMU (Memory Management Unit)"></a>13. MMU (Memory Management Unit)</h4><ul>
+<li><p>内存管理单元，有时称作分页内存管理单元。它是一种负责处理中央处理器（CPU）的内存访问请求的计算机硬件。它的功能包括虚拟地址到物理地址的转换（即虚拟内存管理）、内存保护、中央处理器高速缓存的控制等</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gvc8ha03h5j60iw05tweo02.jpg" alt=""></p>
+</li>
+</ul>
+<h4 id="14-context-switch"><a href="#14-context-switch" class="headerlink" title="14. context switch"></a>14. context switch</h4><ul>
+<li>上下文切换，又称环境切换。是一个存储和重建 CPU 状态的机制。要交换 CPU 上的进程时，必需先行存储当前进程的状态，然后再将进程状态读回 CPU 中</li>
+</ul>
+<h4 id="15-驱动程序-device-driver"><a href="#15-驱动程序-device-driver" class="headerlink" title="15. 驱动程序(device driver)"></a>15. 驱动程序(device driver)</h4><ul>
+<li><p>设备驱动程序，简称驱动程序（driver），是一个允许高级别电脑软件与硬件交互的程序，这种程序创建了一个硬件与硬件，或硬件与软件沟通的接口，经由主板上的总线或其它沟通子系统与硬件形成连接的机制，这样使得硬件设备上的数据交换成为可能</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gvc8i3rdohj60iw0d4gmm02.jpg" alt=""></p>
+</li>
+</ul>
+<h4 id="16-忙等-busy-waiting"><a href="#16-忙等-busy-waiting" class="headerlink" title="16. 忙等(busy waiting)"></a>16. 忙等(busy waiting)</h4><ul>
+<li>在软件工程中，忙碌等待也称自旋，是一种以进程反复检查一个条件是否为真的条件，这种机制可能为检查键盘输入或某个锁是否可用</li>
+</ul>
+<h4 id="17-中断-Interrupt"><a href="#17-中断-Interrupt" class="headerlink" title="17. 中断(Interrupt)"></a>17. 中断(Interrupt)</h4><ul>
+<li>通常，在接收到来自外围硬件（相对于中央处理器和内存）的异步信号，或来自软件的同步信号之后，处理器将会进行相应的硬件／软件处理。发出这样的信号称为进行中断请求（interrupt request，IRQ）。硬件中断导致处理器通过一个运行信息切换（context switch）来保存执行状态（以程序计数器和程序状态字等寄存器信息为主）；软件中断则通常作为 CPU 指令集中的一个指令，以可编程的方式直接指示这种运行信息切换，并将处理导向一段中断处理代码。中断在计算机多任务处理，尤其是即时系统中尤为有用</li>
+</ul>
+<h4 id="18-中断向量-interrupt-vector"><a href="#18-中断向量-interrupt-vector" class="headerlink" title="18. 中断向量(interrupt vector)"></a>18. 中断向量(interrupt vector)</h4><ul>
+<li><p>中断向量位于中断向量表中。中断向量表（IVT）是将中断处理程序列表与中断向量表中的中断请求列表相关联的数据结构。 中断向量表的每个条目（称为中断向量）都是中断处理程序的地址</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gvc8jmwsr4j60iw0fnabq02.jpg" alt=""></p>
+</li>
+</ul>
+<h4 id="19-DMA-Direct-Memory-Access"><a href="#19-DMA-Direct-Memory-Access" class="headerlink" title="19. DMA (Direct Memory Access)"></a>19. DMA (Direct Memory Access)</h4><ul>
+<li>直接内存访问，直接内存访问是计算机科学中的一种内存访问技术。它允许某些电脑内部的硬件子系统（电脑外设），可以独立地直接读写系统内存，而不需中央处理器（CPU）介入处理</li>
+</ul>
+<h4 id="20-总线-Bus"><a href="#20-总线-Bus" class="headerlink" title="20. 总线(Bus)"></a>20. 总线(Bus)</h4><ul>
+<li>总线（Bus）是指计算机组件间规范化的交换数据的方式，即以一种通用的方式为各组件提供数据传送和控制逻辑</li>
+</ul>
+<h4 id="21-PCIe-Peripheral-Component-Interconnect-Express"><a href="#21-PCIe-Peripheral-Component-Interconnect-Express" class="headerlink" title="21. PCIe (Peripheral Component Interconnect Express)"></a>21. PCIe (Peripheral Component Interconnect Express)</h4><ul>
+<li>官方简称PCIe，是计算机总线的一个重要分支，它沿用现有的PCI编程概念及信号标准，并且构建了更加高速的串行通信系统标准</li>
+</ul>
+<h4 id="22-DMI-Direct-Media-Interface"><a href="#22-DMI-Direct-Media-Interface" class="headerlink" title="22. DMI (Direct Media Interface)"></a>22. DMI (Direct Media Interface)</h4><ul>
+<li>直接媒体接口，是英特尔专用的总线，用于电脑主板上南桥芯片和北桥芯片之间的连接</li>
+</ul>
+<h4 id="23-USB-Universal-Serial-Bus"><a href="#23-USB-Universal-Serial-Bus" class="headerlink" title="23. USB(Universal Serial Bus)"></a>23. USB(Universal Serial Bus)</h4><ul>
+<li><p>是连接计算机系统与外部设备的一种串口总线标准，也是一种输入输出接口的技术规范，被广泛地应用于个人电脑和移动设备等信息通讯产品，并扩展至摄影器材、数字电视（机顶盒）、游戏机等其它相关领域</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gvc8mwgeylj60iw08gmxg02.jpg" alt=""></p>
+</li>
+</ul>
+<h4 id="24-BIOS-Basic-Input-Output-System"><a href="#24-BIOS-Basic-Input-Output-System" class="headerlink" title="24. BIOS(Basic Input Output System)"></a>24. BIOS(Basic Input Output System)</h4><ul>
+<li><p>是在通电引导阶段运行硬件初始化，以及为操作系统提供运行时服务的固件。它是开机时运行的第一个软件</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gvc8nfuxamj60iw0amdgl02.jpg" alt=""></p>
+</li>
+</ul>
 
     </div>
 
@@ -362,7 +464,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-AAA"><span class="nav-text">1. AAA</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-存储体系结构"><span class="nav-text">1. 存储体系结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-高速缓存行-cache-lines"><span class="nav-text">2. 高速缓存行(cache lines)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-缓存命中-cache-hit"><span class="nav-text">3. 缓存命中(cache hit)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-L1-cache"><span class="nav-text">4. L1 cache</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-L2-cache"><span class="nav-text">5. L2 cache</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-L3-cache"><span class="nav-text">6. L3 cache</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-RAM-Random-Access-Memory"><span class="nav-text">7. RAM((Random Access Memory)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-ROM-Read-Only-Memory"><span class="nav-text">8. ROM (Read Only Memory)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-EEPROM-Electrically-Erasable-PROM"><span class="nav-text">9. EEPROM (Electrically Erasable PROM)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-闪存-flash-memory"><span class="nav-text">10. 闪存(flash memory)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-SSD-Solid-State-Disks"><span class="nav-text">11. SSD(Solid State Disks)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-虚拟地址-virtual-memory"><span class="nav-text">12. 虚拟地址(virtual memory)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-MMU-Memory-Management-Unit"><span class="nav-text">13. MMU (Memory Management Unit)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-context-switch"><span class="nav-text">14. context switch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#15-驱动程序-device-driver"><span class="nav-text">15. 驱动程序(device driver)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#16-忙等-busy-waiting"><span class="nav-text">16. 忙等(busy waiting)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#17-中断-Interrupt"><span class="nav-text">17. 中断(Interrupt)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#18-中断向量-interrupt-vector"><span class="nav-text">18. 中断向量(interrupt vector)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#19-DMA-Direct-Memory-Access"><span class="nav-text">19. DMA (Direct Memory Access)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#20-总线-Bus"><span class="nav-text">20. 总线(Bus)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#21-PCIe-Peripheral-Component-Interconnect-Express"><span class="nav-text">21. PCIe (Peripheral Component Interconnect Express)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-DMI-Direct-Media-Interface"><span class="nav-text">22. DMI (Direct Media Interface)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#23-USB-Universal-Serial-Bus"><span class="nav-text">23. USB(Universal Serial Bus)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#24-BIOS-Basic-Input-Output-System"><span class="nav-text">24. BIOS(Basic Input Output System)</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -467,7 +569,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">23:36</span>
+    <span title="站点阅读时长">23:38</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
