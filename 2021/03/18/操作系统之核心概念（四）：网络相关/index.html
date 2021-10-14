@@ -22,19 +22,23 @@
     var CONFIG = {"hostname":"24suixinsuoyu.com","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="1. AAA">
+  <meta name="description" content="1. 分布式系统(distributed system)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="操作系统之核心概念（四）：网络相关">
 <meta property="og:url" content="http://24suixinsuoyu.com/2021/03/18/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E7%BD%91%E7%BB%9C%E7%9B%B8%E5%85%B3/index.html">
 <meta property="og:site_name" content="隋钟元’s Blog">
-<meta property="og:description" content="1. AAA">
+<meta property="og:description" content="1. 分布式系统(distributed system)">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvejfworafj61da0tcado02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvejhml88mj61960ccmyi02.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gveji0w7v3j60ky0cuq3f02.jpg">
 <meta property="article:published_time" content="2021-03-18T04:51:41.000Z">
-<meta property="article:modified_time" content="2021-03-18T04:55:06.175Z">
+<meta property="article:modified_time" content="2021-10-14T00:36:50.705Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="操作系统之核心概念">
 <meta property="article:tag" content="网络相关">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gvejfworafj61da0tcado02.jpg">
 
 <link rel="canonical" href="http://24suixinsuoyu.com/2021/03/18/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E7%BD%91%E7%BB%9C%E7%9B%B8%E5%85%B3/">
 
@@ -207,10 +211,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-03-18 12:51:41 / 修改时间：12:55:06" itemprop="dateCreated datePublished" datetime="2021-03-18T12:51:41+08:00">2021-03-18</time>
+              <time title="创建时间：2021-03-18 12:51:41" itemprop="dateCreated datePublished" datetime="2021-03-18T12:51:41+08:00">2021-03-18</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-10-14 08:36:50" itemprop="dateModified" datetime="2021-10-14T08:36:50+08:00">2021-10-14</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -227,7 +237,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>9</span>
+              <span>1.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -246,9 +256,65 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-AAA"><a href="#1-AAA" class="headerlink" title="1. AAA"></a>1. AAA</h4><a id="more"></a>
+        <h4 id="1-分布式系统-distributed-system"><a href="#1-分布式系统-distributed-system" class="headerlink" title="1. 分布式系统(distributed system)"></a>1. 分布式系统(distributed system)</h4><a id="more"></a>
 
-<p>敬请期待</p>
+<ul>
+<li>分布式系统，也称为分布式计算，是一种具有位于不同机器上的多个组件的系统，这些组件可以通信和协调动作，以便对最终用户显示为单个一致的系统</li>
+</ul>
+<h4 id="2-局域网-LANs-Local-Area-Networks"><a href="#2-局域网-LANs-Local-Area-Networks" class="headerlink" title="2. 局域网(LANs, Local Area Networks)"></a>2. 局域网(LANs, Local Area Networks)</h4><ul>
+<li>局域网（LAN）是一种计算机网络，可将住宅，学校，实验室，大学校园或办公大楼等有限区域内的计算机互连</li>
+</ul>
+<h4 id="3-广域网-WAN-Wide-Area-Network"><a href="#3-广域网-WAN-Wide-Area-Network" class="headerlink" title="3. 广域网(WAN,Wide Area Network)"></a>3. 广域网(WAN,Wide Area Network)</h4><ul>
+<li>又称广域网、外网、公网。是连接不同地区局域网或城域网计算机通信的远程网。通常跨接很大的物理范围，所覆盖的范围从几十公里到几千公里，它能连接多个地区、城市和国家，或横跨几个洲并能提供远距离通信，形成国际性的远程网络</li>
+</ul>
+<h4 id="4-以太网-Ethernet"><a href="#4-以太网-Ethernet" class="headerlink" title="4. 以太网(Ethernet)"></a>4. 以太网(Ethernet)</h4><ul>
+<li>以太网是一种计算机局域网的技术，它规定了包括物理层的连线、电子信号和介质访问层协议的内容</li>
+</ul>
+<h4 id="5-桥接器-bridge"><a href="#5-桥接器-bridge" class="headerlink" title="5. 桥接器(bridge)"></a>5. 桥接器(bridge)</h4><ul>
+<li><p>当指代计算机时，网桥是连接两个 LAN（局域网）或同一 LAN 的两个网段的设备。与路由器不同，网桥是独立于协议的。他们转发数据包时无需分析和重新路由消息</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gvejfworafj61da0tcado02.jpg" alt=""></p>
+</li>
+</ul>
+<h4 id="6-主机-host"><a href="#6-主机-host" class="headerlink" title="6. 主机(host)"></a>6. 主机(host)</h4><ul>
+<li>在网络硬件中，主机又被称为网络主机，网络主机是连接到计算机网络的计算机或其他设备。主机可以充当服务器，向网络上的用户或其他主机提供信息资源，服务和应用程序。主机被分配至少一个网络地址</li>
+</ul>
+<h4 id="7-路由器-router"><a href="#7-路由器-router" class="headerlink" title="7. 路由器(router)"></a>7. 路由器(router)</h4><ul>
+<li>路由器是在计算机网络之间转发数据包的联网设备。通过互联网发送的数据（例如网页或电子邮件）以数据包的形式出现</li>
+</ul>
+<h4 id="8-面向连接的服务-Connection-oriented-service"><a href="#8-面向连接的服务-Connection-oriented-service" class="headerlink" title="8. 面向连接的服务(Connection-oriented service)"></a>8. 面向连接的服务(Connection-oriented service)</h4><ul>
+<li>面向连接的服务是一种在数据通信开始之前在通信实体之间建立专用连接的服务。要使用面向连接的服务，用户首先建立一个连接，使用它，然后释放它。TCP 就是一种面向连接的服务，在发送数据包之前需要经过握手操作</li>
+</ul>
+<h4 id="9-无连接的服务-Connectionless-service"><a href="#9-无连接的服务-Connectionless-service" class="headerlink" title="9. 无连接的服务(Connectionless service)"></a>9. 无连接的服务(Connectionless service)</h4><ul>
+<li>无连接服务是两个节点之间的数据通信，其中发送方在不确保接收方是否可以接收数据的情况下发送数据。此处，每个数据包都具有目标地址，并且与其他数据包无关地独立路由。UDP 就是一种无连接的服务，发送数据包不需要经过握手连接</li>
+</ul>
+<h4 id="10-服务质量-quality-of-service-QoS"><a href="#10-服务质量-quality-of-service-QoS" class="headerlink" title="10. 服务质量(quality of service, QoS)"></a>10. 服务质量(quality of service, QoS)</h4><ul>
+<li>服务质量是对服务整体性能的描述或度量，尤其是网络用户看到的性能</li>
+</ul>
+<h4 id="11-确认包-acknowledgement-packet"><a href="#11-确认包-acknowledgement-packet" class="headerlink" title="11. 确认包(acknowledgement packet)"></a>11. 确认包(acknowledgement packet)</h4><ul>
+<li>在数据网络，电信和计算机总线中，确认（ACK）是作为通信协议一部分在通信过程，计算机或设备之间传递以表示确认或消息接收的信号</li>
+</ul>
+<h4 id="12-请求-响应服务-request-reply-service"><a href="#12-请求-响应服务-request-reply-service" class="headerlink" title="12. 请求-响应服务(request-reply service)"></a>12. 请求-响应服务(request-reply service)</h4><ul>
+<li><p>请求-响应是计算机彼此通信的基本方法之一，其中第一台计算机发送对某些数据的请求，第二台计算机对请求进行响应</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gvejhml88mj61960ccmyi02.jpg" alt=""></p>
+</li>
+</ul>
+<h4 id="13-协议栈-protocol-stack"><a href="#13-协议栈-protocol-stack" class="headerlink" title="13. 协议栈(protocol stack)"></a>13. 协议栈(protocol stack)</h4><ul>
+<li><p>所有现代网络都使用所谓的协议栈把不同的协议一层一层叠加起来。每一层解决不同的问题</p>
+<p>  <img src="https://tva1.sinaimg.cn/large/008i3skNly1gveji0w7v3j60ky0cuq3f02.jpg" alt=""></p>
+</li>
+</ul>
+<h4 id="14-IP地址"><a href="#14-IP地址" class="headerlink" title="14. IP地址"></a>14. IP地址</h4><ul>
+<li>标示互联网上每一台主机有两种方式，一种是 IPv4 ，一种是 IPv6</li>
+</ul>
+<h4 id="15-超链接-hyperlink"><a href="#15-超链接-hyperlink" class="headerlink" title="15. 超链接(hyperlink)"></a>15. 超链接(hyperlink)</h4><ul>
+<li>超链接是可以单击以跳到新文档或当前文档中新部分的单词，短语或图像。 几乎在所有网页中都可以找到超链接，从而允许用户单击页面之间的方式。 文本超链接通常为蓝色并带有下划线</li>
+</ul>
+<h4 id="16-Web-页面-Web-page"><a href="#16-Web-页面-Web-page" class="headerlink" title="16. Web 页面(Web page)"></a>16. Web 页面(Web page)</h4><ul>
+<li>网页是一个适用于万维网和网页浏览器的文件</li>
+</ul>
+<h4 id="17-Web浏览器"><a href="#17-Web浏览器" class="headerlink" title="17. Web浏览器"></a>17. Web浏览器</h4><ul>
+<li>Web浏览器（通常称为浏览器）是一种用于访问 Internet 上的信息的软件应用程序。 当用户请求特定网站时，Web 浏览器从 Web 服务器检索必要的内容，然后在用户的设备上显示结果网页</li>
+</ul>
 
     </div>
 
@@ -362,7 +428,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-AAA"><span class="nav-text">1. AAA</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-分布式系统-distributed-system"><span class="nav-text">1. 分布式系统(distributed system)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-局域网-LANs-Local-Area-Networks"><span class="nav-text">2. 局域网(LANs, Local Area Networks)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-广域网-WAN-Wide-Area-Network"><span class="nav-text">3. 广域网(WAN,Wide Area Network)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-以太网-Ethernet"><span class="nav-text">4. 以太网(Ethernet)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-桥接器-bridge"><span class="nav-text">5. 桥接器(bridge)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-主机-host"><span class="nav-text">6. 主机(host)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-路由器-router"><span class="nav-text">7. 路由器(router)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-面向连接的服务-Connection-oriented-service"><span class="nav-text">8. 面向连接的服务(Connection-oriented service)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-无连接的服务-Connectionless-service"><span class="nav-text">9. 无连接的服务(Connectionless service)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-服务质量-quality-of-service-QoS"><span class="nav-text">10. 服务质量(quality of service, QoS)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-确认包-acknowledgement-packet"><span class="nav-text">11. 确认包(acknowledgement packet)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-请求-响应服务-request-reply-service"><span class="nav-text">12. 请求-响应服务(request-reply service)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-协议栈-protocol-stack"><span class="nav-text">13. 协议栈(protocol stack)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-IP地址"><span class="nav-text">14. IP地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#15-超链接-hyperlink"><span class="nav-text">15. 超链接(hyperlink)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#16-Web-页面-Web-page"><span class="nav-text">16. Web 页面(Web page)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#17-Web浏览器"><span class="nav-text">17. Web浏览器</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -467,7 +533,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">23:46</span>
+    <span title="站点阅读时长">23:47</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
