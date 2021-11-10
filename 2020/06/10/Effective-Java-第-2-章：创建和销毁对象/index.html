@@ -30,7 +30,7 @@
 <meta property="og:description" content="第 1 条：用静态工厂方法代替构造器">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-06-09T18:43:45.000Z">
-<meta property="article:modified_time" content="2021-03-25T18:02:32.395Z">
+<meta property="article:modified_time" content="2021-11-10T12:25:30.901Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Effective Java 3th">
 <meta property="article:tag" content="创建和销毁对象">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-26 02:02:32" itemprop="dateModified" datetime="2021-03-26T02:02:32+08:00">2021-03-26</time>
+                <time title="修改时间：2021-11-10 20:25:30" itemprop="dateModified" datetime="2021-11-10T20:25:30+08:00">2021-11-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,14 +233,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>185</span>
+              <span>2.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -254,8 +254,104 @@
       
         <h4 id="第-1-条：用静态工厂方法代替构造器"><a href="#第-1-条：用静态工厂方法代替构造器" class="headerlink" title="第 1 条：用静态工厂方法代替构造器"></a>第 1 条：用静态工厂方法代替构造器</h4><a id="more"></a>
 
-
-
+<ul>
+<li><p>静态工厂方法的优点一：它们有名称</p>
+<ul>
+<li>如果构造器的参数本身没有确切地描述正被返回的对象，那么具有<strong>适当名称</strong>的静态工厂会更容易使用，产生的客户端代码也<strong>更易于阅读</strong></li>
+<li><strong>重载的类的构造器</strong>实际上并不是一个好主意，面对这样的 API，用户永远也记不住该用哪个构造器，结构常常会调用错误的构造器。并且在读到使用了这些构造器的代码时，如果没有参考类的文档，往往不知所云</li>
+<li>当一个类<strong>需要多个带有相同签名的构造器</strong>时，就用静态工厂方法代替构造器，并且仔细选择名称以便突出静态工厂方法之间的区别</li>
+</ul>
+</li>
+<li><p>静态工厂方法的优点二：不必在每次调用它们的时候都创建一个新对象</p>
+<ul>
+<li>这使得<strong>不可变类</strong>可以使用预先构建好的实例，或者将构建好的实例缓存起来，进行重复利用，从而避免创建不必要的对象。类似<strong>享元（Flyweight）模式</strong>，如果程序经常请求创建相同的对象，并且创建对象的代价很高，那么该技术可以极大提升<strong>性能</strong></li>
+<li>静态工厂方法能够为重复的调用返回相同的对象，这样有助于类总能严格控制在某个时刻哪些实例应该存在，这种类被称作<strong>实例受控的类（instance-controlled）</strong>。实例受控使得类可以确保它是一个 Singleton 或者是不可实例化的。它还使得不可变的值类可以确保不会存在两个相等的实例</li>
+</ul>
+</li>
+<li><p>静态工厂方法的优点三：它们可以返回原返回类型的任何子类型的对象</p>
+<ul>
+<li>这种灵活性的一种应用是，API 可以返回对象，同时又不会使对象的类变成公有的，以这种方式隐藏实现类会使 API 变得非常简洁。这项技术适用于<strong>基于接口的框架（interface-based framework）</strong>，因为在这种框架中，接口为静态工厂方法提供了自然返回类型</li>
+<li>在 Java 8 之前，接口不能有静态方法，因此按照惯例，接口 Type 的静态工厂方法被放在一个名为 Types 的<strong>不可实例化的伴生类</strong>中。<strong>Java 8</strong> 要求接口的所有静态成员都必须是公有的；<strong>Java 9</strong> 允许接口有私有的静态方法，但是静态域和静态成员类仍然需要是公有的</li>
+</ul>
+</li>
+<li><p>静态工厂方法的优点四：所返回的对象的类可以随着每次调用而发生变化，这取决于静态工厂方法的参数值</p>
+<ul>
+<li>只要是已声明的返回类型的<strong>子类型</strong>，都是允许的。返回对象的类也可能随着发行版本的不同而不同</li>
+<li>举例，<strong><code>EnumSet</code></strong> 没有公有的构造器，只有静态工厂方法。在 OpenJDK 实现中，它们返回两种子类之一的一个实例，具体则取决于底层枚举类型的大小</li>
+</ul>
+</li>
+<li><p>静态工厂方法的优点五：方法返回的对象所属的类，在编写包含静态工厂方法的类时可以不存在</p>
+<ul>
+<li>这种灵活的静态工厂方法构成了<strong>服务提供者框架（Service Provider Framework）</strong>的基础。服务提供者框架是指这样一个系统：多个服务提供者实现一个服务，系统为服务提供者的客户端提供多个实现，并把它们从多个实现中解耦出来</li>
+<li>服务提供者框架中有三个重要的组件：<strong>服务接口（Service Interface）</strong>，这是提供者实现的；<strong>提供者注册 API(Provider Registration API)</strong>，这是提供者用来注册实现的；<strong>服务访问 API(Service Access API)</strong>，这是客户端用来获取服务的实例</li>
+<li>服务提供者框架的第四个组件<strong>服务提供者接口（Service Provider Interface）</strong>是可选的，它表示产生服务接口之实例的工厂对象。如果没有服务提供者接口，实现就通过反射方式进行实例化</li>
+<li>服务提供者框架模式有着无数种变体。例如，服务访问 API 可以返回比提供者需要的更丰富的服务接口，这就是<strong>桥接（Bridge）模式</strong>；<strong>依赖注入框架</strong>可以被看作是一个强大的服务提供者；从 <strong>Java 6</strong> 版本开始，Java 平台就提供了一个通用的服务提供者框架 <strong><code>java.util.ServiceLoader</code></strong></li>
+</ul>
+</li>
+<li><p>静态工厂方法的缺点一：类如果不含有公有的或者受保护的构造器，就不能被子类化</p>
+<ul>
+<li>例如，要想将 <code>Collection Framework</code> 中的任何便利的实现类子类化，这是不可能的</li>
+<li>这样也因祸得福，因为它鼓励我们使用<strong>复合（composition）</strong>，而不是继承</li>
+</ul>
+</li>
+<li><p>静态工厂方法的缺点二：程序员很难发现它们</p>
+<ul>
+<li><p>在 API 文档中，它们没有像构造器那样在 API 文档中明确标识出来</p>
+</li>
+<li><p>同时，通过在类或者接口注释中关注静态工厂，并遵守标准的命名习惯，也可以弥补这一劣势</p>
+<table>
+<thead>
+<tr>
+<th align="center">静态工厂方法惯用名称</th>
+<th align="center">含义</th>
+<th align="center">举例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>from</code></td>
+<td align="center">类型转换方法，它只有单个参数，返回该类型的一个相对应的实例</td>
+<td align="center"><code>Date d = Data.from(instant);</code></td>
+</tr>
+<tr>
+<td align="center"><code>of</code></td>
+<td align="center">聚合方法，带有多个参数，返回该类型的一个实例，把它们合并起来</td>
+<td align="center"><code>Set&lt;Rank&gt; faceCards = EnumSet.of(JACK, QUEEN, KING);</code></td>
+</tr>
+<tr>
+<td align="center"><code>valueOf</code></td>
+<td align="center">比 <code>from</code> 和 <code>of</code> 更繁琐的一种替代方法</td>
+<td align="center"><code>BigInteger prime = BigInteger.valueOf(Integer.MAX_VALUE);</code></td>
+</tr>
+<tr>
+<td align="center"><code>instance</code> 或者 <code>getInstance</code></td>
+<td align="center">返回的实例是通过方法的（如有）参数来描述的，但是不能说与参数具有同样的值</td>
+<td align="center"><code>StackWalker luke = StackWalker.getInstance(options);</code></td>
+</tr>
+<tr>
+<td align="center"><code>create</code> 或者 <code>newInstance</code></td>
+<td align="center">像 <code>instance</code> 或者 <code>getInstance</code> 一样，但 <code>create</code> 或者 <code>newInstance</code> 能够确保每次调用都返回一个新的实例</td>
+<td align="center"><code>Object newArray = Array.newInstance(classObject, arrayLen);</code></td>
+</tr>
+<tr>
+<td align="center"><code>getType</code></td>
+<td align="center">像 <code>getInstance</code> 一样，但是在工厂方法处于不同的类中的时候使用。<code>Type</code> 表示工厂方法所返回的对象类型</td>
+<td align="center"><code>FileStore fs = Files.getFileStore(path);</code></td>
+</tr>
+<tr>
+<td align="center"><code>newType</code></td>
+<td align="center">像 <code>newInstance</code> 一样，但是在工厂方法处于不同的类中的时候使用。<code>Type</code> 表示工厂方法所返回的对象类型</td>
+<td align="center"><code>BufferedReader br = Files.newBufferedReader(path);</code></td>
+</tr>
+<tr>
+<td align="center"><code>type</code></td>
+<td align="center"><code>getType</code> 和 <code>newType</code> 的简版</td>
+<td align="center"><code>List&lt;Complaint&gt; litany = Collections.list(legacyLitany);</code></td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+</li>
+</ul>
 <h4 id="第-2-条：遇到多个构造器参数时要考虑使用构造器"><a href="#第-2-条：遇到多个构造器参数时要考虑使用构造器" class="headerlink" title="第 2 条：遇到多个构造器参数时要考虑使用构造器"></a>第 2 条：遇到多个构造器参数时要考虑使用构造器</h4><h4 id="第-3-条：用私有构造器或者枚举类型强化-Singleton-属性"><a href="#第-3-条：用私有构造器或者枚举类型强化-Singleton-属性" class="headerlink" title="第 3 条：用私有构造器或者枚举类型强化 Singleton 属性"></a>第 3 条：用私有构造器或者枚举类型强化 Singleton 属性</h4><h4 id="第-4-条：通过私有构造器强化不可实例化的能力"><a href="#第-4-条：通过私有构造器强化不可实例化的能力" class="headerlink" title="第 4 条：通过私有构造器强化不可实例化的能力"></a>第 4 条：通过私有构造器强化不可实例化的能力</h4><h4 id="第-5-条：优先考虑依赖注入来引用资源"><a href="#第-5-条：优先考虑依赖注入来引用资源" class="headerlink" title="第 5 条：优先考虑依赖注入来引用资源"></a>第 5 条：优先考虑依赖注入来引用资源</h4><h4 id="第-6-条：避免创建不必要的对象"><a href="#第-6-条：避免创建不必要的对象" class="headerlink" title="第 6 条：避免创建不必要的对象"></a>第 6 条：避免创建不必要的对象</h4><h4 id="第-7-条：消除过期的对象引用"><a href="#第-7-条：消除过期的对象引用" class="headerlink" title="第 7 条：消除过期的对象引用"></a>第 7 条：消除过期的对象引用</h4><h4 id="第-8-条：避免使用终结方法和清除方法"><a href="#第-8-条：避免使用终结方法和清除方法" class="headerlink" title="第 8 条：避免使用终结方法和清除方法"></a>第 8 条：避免使用终结方法和清除方法</h4><h4 id="第-9-条：try-with-resources-优先于-try-finally"><a href="#第-9-条：try-with-resources-优先于-try-finally" class="headerlink" title="第 9 条：try-with-resources 优先于 try-finally"></a>第 9 条：<code>try-with-resources</code> 优先于 <code>try-finally</code></h4>
     </div>
 
@@ -474,7 +570,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">23:57</span>
+    <span title="站点阅读时长">24:01</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
