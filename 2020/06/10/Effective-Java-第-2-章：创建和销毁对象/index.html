@@ -30,7 +30,7 @@
 <meta property="og:description" content="第 1 条：用静态工厂方法代替构造器">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-06-09T18:43:45.000Z">
-<meta property="article:modified_time" content="2021-11-14T01:53:09.587Z">
+<meta property="article:modified_time" content="2021-12-01T00:59:28.339Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Effective Java 3th">
 <meta property="article:tag" content="创建和销毁对象">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-14 09:53:09" itemprop="dateModified" datetime="2021-11-14T09:53:09+08:00">2021-11-14</time>
+                <time title="修改时间：2021-12-01 08:59:28" itemprop="dateModified" datetime="2021-12-01T08:59:28+08:00">2021-12-01</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,14 +233,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>11k</span>
+              <span>16k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>10 分钟</span>
+              <span>15 分钟</span>
             </span>
 
         </div>
@@ -264,19 +264,22 @@
 </li>
 <li><p><strong>静态工厂方法的优点二：不必在每次调用它们的时候都创建一个新对象</strong></p>
 <ul>
-<li>这使得<strong>不可变类</strong>可以使用预先构建好的实例，或者将构建好的实例缓存起来，进行重复利用，从而避免创建不必要的对象。类似<strong>享元（Flyweight）模式</strong>，如果程序经常请求创建相同的对象，并且创建对象的代价很高，那么该技术可以极大提升<strong>性能</strong></li>
-<li>静态工厂方法能够为重复的调用返回相同的对象，这样有助于类总能严格控制在某个时刻哪些实例应该存在，这种类被称作<strong>实例受控的类（instance-controlled）</strong>。实例受控使得类可以确保它是一个 Singleton 或者是不可实例化的。它还使得不可变的值类可以确保不会存在两个相等的实例</li>
+<li>这使得<strong>不可变类</strong>（详见第 17 条）可以使用预先构建好的实例，或者将构建好的实例缓存起来，进行重复利用，从而避免创建不必要的对象。类似<strong>享元（Flyweight）模式</strong>，如果程序经常请求创建相同的对象，并且创建对象的代价很高，那么该技术可以极大提升<strong>性能</strong></li>
+<li>静态工厂方法能够为重复的调用返回相同的对象，这样有助于类总能严格控制在某个时刻哪些实例应该存在，这种类被称作<strong>实例受控的类（instance-controlled）</strong>。实例受控使得类可以确保它是一个 Singleton （详见第 3 条）或者是不可实例化的（详见第 4 条）</li>
+<li>它还使得不可变的值类可以确保不会存在两个相等的实例，即当且仅当 <code>a == b</code> 时，<code>a.equals(b)</code> 才为 <code>true</code>。这是享元模式的基础，枚举类型（详见第 34 条）保证了这一点</li>
 </ul>
 </li>
 <li><p><strong>静态工厂方法的优点三：它们可以返回原返回类型的任何子类型的对象</strong></p>
 <ul>
-<li>这种灵活性的一种应用是，API 可以返回对象，同时又不会使对象的类变成公有的，以这种方式隐藏实现类会使 API 变得非常简洁。这项技术适用于<strong>基于接口的框架（interface-based framework）</strong>，因为在这种框架中，接口为静态工厂方法提供了自然返回类型</li>
-<li>在 Java 8 之前，接口不能有静态方法，因此按照惯例，接口 Type 的静态工厂方法被放在一个名为 Types 的<strong>不可实例化的伴生类</strong>中。<strong>Java 8</strong> 要求接口的所有静态成员都必须是公有的；<strong>Java 9</strong> 允许接口有私有的静态方法，但是静态域和静态成员类仍然需要是公有的</li>
+<li>这种灵活性的一种应用是，API 可以返回对象，同时又不会使对象的类变成公有的，以这种方式隐藏实现类会使 API 变得非常简洁。这项技术适用于<strong>基于接口的框架（interface-based framework）</strong>（详见第 20 条），因为在这种框架中，接口为静态工厂方法提供了自然返回类型</li>
+<li>在 Java 8 之前，接口不能有静态方法，因此按照惯例，接口 Type 的静态工厂方法被放在一个名为 Types 的<strong>不可实例化的伴生类</strong>（详见第 4 条）中</li>
+<li>使用这种静态工厂方法时，甚至要求客户端<strong>通过接口来引用被返回的对象</strong>，而不是通过它的实现类来引用被返回的对象，这是一种良好的习惯（详见第 64 条）</li>
+<li><strong>Java 8</strong> 要求接口的所有静态成员都必须是公有的；<strong>Java 9</strong> 允许接口有私有的静态方法，但是静态域和静态成员类仍然需要是公有的</li>
 </ul>
 </li>
 <li><p><strong>静态工厂方法的优点四：所返回的对象的类可以随着每次调用而发生变化，这取决于静态工厂方法的参数值</strong></p>
 <ul>
-<li>只要是已声明的返回类型的<strong>子类型</strong>，都是允许的。返回对象的类也可能随着发行版本的不同而不同</li>
+<li>只要是已声明的返回类型的<strong>子类型</strong>，都是允许的。返回对象的类也可能随着发行版本的不同而不同。比如，<code>EnumSet</code> （详见第 36 条）没有共有的构造器，只有静态工厂方法</li>
 <li>举例，<strong><code>EnumSet</code></strong> 没有公有的构造器，只有静态工厂方法。在 OpenJDK 实现中，它们返回两种子类之一的一个实例，具体则取决于底层枚举类型的大小</li>
 </ul>
 </li>
@@ -284,14 +287,14 @@
 <ul>
 <li>这种灵活的静态工厂方法构成了<strong>服务提供者框架（Service Provider Framework）</strong>的基础。服务提供者框架是指这样一个系统：多个服务提供者实现一个服务，系统为服务提供者的客户端提供多个实现，并把它们从多个实现中解耦出来</li>
 <li>服务提供者框架中有三个重要的组件：<strong>服务接口（Service Interface）</strong>，这是提供者实现的；<strong>提供者注册 API(Provider Registration API)</strong>，这是提供者用来注册实现的；<strong>服务访问 API(Service Access API)</strong>，这是客户端用来获取服务的实例</li>
-<li>服务提供者框架的第四个组件<strong>服务提供者接口（Service Provider Interface）</strong>是可选的，它表示产生服务接口之实例的工厂对象。如果没有服务提供者接口，实现就通过反射方式进行实例化</li>
-<li>服务提供者框架模式有着无数种变体。例如，服务访问 API 可以返回比提供者需要的更丰富的服务接口，这就是<strong>桥接（Bridge）模式</strong>；<strong>依赖注入框架</strong>可以被看作是一个强大的服务提供者；从 <strong>Java 6</strong> 版本开始，Java 平台就提供了一个通用的服务提供者框架 <strong><code>java.util.ServiceLoader</code></strong></li>
+<li>服务提供者框架的第四个组件<strong>服务提供者接口（Service Provider Interface）</strong>是可选的，它表示产生服务接口之实例的工厂对象。如果没有服务提供者接口，实现就通过反射方式进行实例化（详见第 65 条）</li>
+<li>服务提供者框架模式有着无数种变体。例如，服务访问 API 可以返回比提供者需要的更丰富的服务接口，这就是<strong>桥接（Bridge）模式</strong>；<strong>依赖注入框架</strong>（详见第 5 条）可以被看作是一个强大的服务提供者；从 <strong>Java 6</strong> 版本开始，Java 平台就提供了一个通用的服务提供者框架 <strong><code>java.util.ServiceLoader</code></strong>（详见第 59 条）</li>
 </ul>
 </li>
 <li><p><strong>静态工厂方法的缺点一：类如果不含有公有的或者受保护的构造器，就不能被子类化</strong></p>
 <ul>
 <li>例如，要想将 <code>Collection Framework</code> 中的任何便利的实现类子类化，这是不可能的</li>
-<li>这样也因祸得福，因为它鼓励我们使用<strong>复合（composition）</strong>，而不是继承</li>
+<li>这样也因祸得福，因为它鼓励我们使用<strong>复合（composition）</strong>而不是继承（详见第 18 条），这正是不可变类型所需要的（详见第 17 条）</li>
 </ul>
 </li>
 <li><p><strong>静态工厂方法的缺点二：程序员很难发现它们</strong></p>
@@ -367,7 +370,7 @@
 <li><p>特点</p>
 <ul>
 <li><strong>重叠构造器模式可行，但当有许多参数的时候，客户端代码会很难编写，并且仍然较难以阅读</strong></li>
-<li>比如，如果客户端不小心颠倒了其中两个相同类型参数的顺序，不会编译报错但往往会有运行时报错</li>
+<li>比如，如果客户端不小心颠倒了其中两个相同类型参数的顺序，不会编译报错但往往会有运行时报错（详见第 51 条）</li>
 </ul>
 </li>
 </ul>
@@ -386,7 +389,7 @@
 <li><p>缺点</p>
 <ul>
 <li>因为构造过程被分到了几个调用中，<strong>在构造过程中 JavaBean 可能处于不一致的状态</strong>，调试起来很困难</li>
-<li><strong>JavaBeans 模式使得把类做成不可变的可能性不复存在</strong>，这就需要付出额外的努力来确保它的线程安全</li>
+<li><strong>JavaBeans 模式使得把类做成不可变的可能性不复存在</strong>（详见第 17 条），这就需要付出额外的努力来确保它的线程安全</li>
 </ul>
 </li>
 </ul>
@@ -397,7 +400,7 @@
 <ul>
 <li>它不直接生成想要的对象，而是让客户端利用所有必要的参数调用构造器（或者静态工厂），得到一个 <code>builder</code> 对象</li>
 <li>然后客户端在 <code>builder</code> 对象上调用类似于 <code>setter</code> 的方法，来设置每个相关的可选参数</li>
-<li>最后，客户端调用无参的 <code>build</code> 方法来生成通常是不可变的对象。这个 <code>builder</code> 通常是它构建的类的静态成员类</li>
+<li>最后，客户端调用无参的 <code>build</code> 方法来生成通常是不可变的对象。这个 <code>builder</code> 通常是它构建的类的静态成员类（详见第 24 条）</li>
 </ul>
 </li>
 <li><p>Demo</p>
@@ -407,6 +410,12 @@
 <ul>
 <li>这是一个<strong>流式 API</strong>，这样的代码容易编写，更为重要的是容易阅读</li>
 <li><strong>Builder 模式模拟了具名的可选参数</strong>，就像 Python 和 Scala 编程语言中的一样</li>
+<li>如果想尽快检测到无效的参数，可以在 builder 的构造器和方法中<strong>检查参数的有效性</strong><ul>
+<li>查看不可变量，包括 build 方法调用的构造器中的多个参数</li>
+<li>为了确保这些不变量免受攻击，从 builder 复制完参数之后，要检查对象域（详见第 50 条）</li>
+<li>如果检查失败，就抛出 <code>IllegalArgumentException</code> 异常（详见第 72 条），其中的详细信息会说明哪些参数是无效的（详见第 75 条）</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -425,7 +434,7 @@
   <figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> effectivejava.chapter2.item2.hierarchicalbuilcer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Builder pattern for class hierarchies (Page 14)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Note that the underlying "simulated self-type" idiom allows for arbitrary fluid hierarchies, not just builders</span></span><br><span class="line"></span><br><span class="line">public <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Pizza</span> </span>&#123;</span><br><span class="line">	public enum <span class="type">Topping</span> &#123; <span class="type">HAM</span>, <span class="type">MUSHROOM</span>, <span class="type">ONION</span>, <span class="type">PEPPER</span>, <span class="type">SAUSAGE</span> &#125;</span><br><span class="line">	<span class="keyword">final</span> <span class="type">Set</span>&lt;<span class="type">Topping</span>&gt; toppings;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">abstract</span> static <span class="class"><span class="keyword">class</span> <span class="title">Builder&lt;T</span> <span class="keyword">extends</span> <span class="title">Builder&lt;T&gt;&gt;</span> </span>&#123;</span><br><span class="line">		<span class="type">EnumSet</span>&lt;<span class="type">Topping</span>&gt; toppings = <span class="type">EnumSet</span>.noneOf(<span class="type">Topping</span><span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">		public <span class="type">T</span> addTopping(<span class="type">Topping</span> topping) &#123;</span><br><span class="line">			toppings.add(<span class="type">Objects</span>.requireNonNull(topping));</span><br><span class="line">			<span class="keyword">return</span> self();</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">abstract</span> <span class="type">Pizza</span> build();</span><br><span class="line">		</span><br><span class="line">		<span class="comment">// Subclasses must override this method to return "this"</span></span><br><span class="line">		<span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="type">T</span> self();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="type">Pizza</span>(<span class="type">Builder</span>&lt;?&gt; builder) &#123;</span><br><span class="line">		topping = builder.topping.clone(); <span class="comment">// See Item 50</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li><code>Pizza.Builder</code> 的类型是<strong>泛型（generic type）</strong>，带有一个<strong>递归类型参数（recursive type parameter）</strong></li>
+<li><code>Pizza.Builder</code> 的类型是<strong>泛型（generic type）</strong>，带有一个<strong>递归类型参数（recursive type parameter）</strong>（详见第 30 条）</li>
 <li>它和抽象的 <code>self</code> 方法一样，允许在子类中适当地进行方法链接，不需要类型转换。这个针对 Java 缺乏 <code>self</code> 类型的解决方案，被称作<strong>模拟的 <code>self</code> 类型（simulated self-type）</strong></li>
 </ul>
 </li>
@@ -455,7 +464,133 @@
 </ul>
 </li>
 </ul>
-<h4 id="第-3-条：用私有构造器或者枚举类型强化-Singleton-属性"><a href="#第-3-条：用私有构造器或者枚举类型强化-Singleton-属性" class="headerlink" title="第 3 条：用私有构造器或者枚举类型强化 Singleton 属性"></a>第 3 条：用私有构造器或者枚举类型强化 Singleton 属性</h4><h4 id="第-4-条：通过私有构造器强化不可实例化的能力"><a href="#第-4-条：通过私有构造器强化不可实例化的能力" class="headerlink" title="第 4 条：通过私有构造器强化不可实例化的能力"></a>第 4 条：通过私有构造器强化不可实例化的能力</h4><h4 id="第-5-条：优先考虑依赖注入来引用资源"><a href="#第-5-条：优先考虑依赖注入来引用资源" class="headerlink" title="第 5 条：优先考虑依赖注入来引用资源"></a>第 5 条：优先考虑依赖注入来引用资源</h4><h4 id="第-6-条：避免创建不必要的对象"><a href="#第-6-条：避免创建不必要的对象" class="headerlink" title="第 6 条：避免创建不必要的对象"></a>第 6 条：避免创建不必要的对象</h4><h4 id="第-7-条：消除过期的对象引用"><a href="#第-7-条：消除过期的对象引用" class="headerlink" title="第 7 条：消除过期的对象引用"></a>第 7 条：消除过期的对象引用</h4><h4 id="第-8-条：避免使用终结方法和清除方法"><a href="#第-8-条：避免使用终结方法和清除方法" class="headerlink" title="第 8 条：避免使用终结方法和清除方法"></a>第 8 条：避免使用终结方法和清除方法</h4><h4 id="第-9-条：try-with-resources-优先于-try-finally"><a href="#第-9-条：try-with-resources-优先于-try-finally" class="headerlink" title="第 9 条：try-with-resources 优先于 try-finally"></a>第 9 条：<code>try-with-resources</code> 优先于 <code>try-finally</code></h4>
+<h4 id="第-3-条：用私有构造器或者枚举类型强化-Singleton-属性"><a href="#第-3-条：用私有构造器或者枚举类型强化-Singleton-属性" class="headerlink" title="第 3 条：用私有构造器或者枚举类型强化 Singleton 属性"></a>第 3 条：用私有构造器或者枚举类型强化 Singleton 属性</h4><ul>
+<li><p>概念</p>
+<ul>
+<li><strong>Singleton 是指仅仅被实例化一次的类</strong>。Singleton 通常被认为用来代表一个<strong>无状态的对象</strong>，如函数（详见第 24 条），或者那些<strong>本质上唯一的系统组件</strong></li>
+<li><strong>使类成为 Singleton 会使它的客户端测试变得十分困难</strong>，因为不可能给 Singleton 替换模拟实现，除非实现一个充当其类型的接口</li>
+</ul>
+</li>
+<li><p>方法一：公有静态成员是个 <code>final</code> 域</p>
+<ul>
+<li><p>Demo</p>
+  <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">package effectivejava.chapter2.item3.field;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Singleton with public final field (Page 15)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Elvis</span> &#123;</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Elvis INSTANCE = <span class="keyword">new</span> Elvis();</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="title">Elvis</span><span class="params">()</span> </span>&#123;  &#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">leaveTheBuilding</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"Whoa baby, I'm outta here!"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// This code would normally appear outside the class!</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">		Elvis elvis = Elvis.INSTANCE;</span><br><span class="line">		elvis.leaveTheBuilding();	</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>由于缺少公有的或者受保护的构造器，所以保证了 <code>Elvis</code> 的全局唯一性：一旦 <code>Elvis</code> 类被实例化，将只会存在一个 <code>Elvis</code> 实例，不多也不少</li>
+<li>享有特权的客户端可以借助 <strong><code>AccessibleObject.setAccessible</code></strong> 方法，通过反射机制（详见第 65 条）调用私有构造器。如果需要抵御这种攻击，可以修改构造器，让它在被要求创建第二个实例的时候抛出异常</li>
+</ul>
+</li>
+<li><p>优点</p>
+<ul>
+<li>API 很清楚地表明了这个类是一个 Singleton：公有的静态域是 <code>final</code> 的，所以该域总是包含相同的对象引用</li>
+<li>更简单，优先考虑</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>方法二：公有的成员是个静态工厂方法</p>
+<ul>
+<li><p>Demo</p>
+  <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">package effectivejava.chapter2.item3.staticfactory;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Singleton with static factory (Page 17)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Elvis</span> &#123;</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Elvis INSTANCE = <span class="keyword">new</span> Elvis();</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="title">Elvis</span><span class="params">()</span> </span>&#123;  &#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Elvis <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> INSTANCE;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">leaveTheBuilding</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.<span class="built_in">println</span>(<span class="string">"Whoa baby, I'm outta here!"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// This code would normally appear outside the class!</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">		Elvis elvis = Elvis.getInstance();</span><br><span class="line">		elvis.leaveTheBuilding();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>优点</p>
+<ul>
+<li>它提供了<strong>灵活性</strong>：在不改变其 API 的前提下，我们可以改变该类是否应该为 Singleton 的想法。工厂方法返回该类的唯一实例，但是，它很容易被修改，比如改成为每个调用该方法的线程返回一个唯一的实例</li>
+<li>如果应用程序需要，可以编写一个 <strong>泛型 Singleton 工厂（generic singleton factory）</strong>（详见第 30 条）</li>
+<li>可以通过<strong>方法引用（method reference）</strong>作为提供者，比如 <code>Elvis::instance</code> 就是一个 <code>Supplier&lt;Elvis&gt;</code></li>
+</ul>
+</li>
+<li><p>注意</p>
+<ul>
+<li><p>将方法一和方法二实现的 Singleton 类变成是<strong>可序列化的（Serializable）</strong>（详见第 12 章），仅仅在声明中加上 <code>implements Serializable</code> 是不够的</p>
+</li>
+<li><p>为了维护并保证 Singleton，必须声明所有实例域都是 <strong><code>transient</code></strong> 的，并提供一个 <strong><code>readResolve</code></strong> 方法（详见第 89 条）。否则，每次反序列化一个序列化的实例时，都会创建一个新的实例</p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// readResolve method to preserve singleton property</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> Object <span class="title">readResolve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="comment">// Return the one true Elvis and let the garbage collector</span></span><br><span class="line">	<span class="comment">// take care of the Elvis impersonator</span></span><br><span class="line">	<span class="keyword">return</span> INSTANCE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>方法三：声明一个包含单个元素的枚举类型</p>
+<ul>
+<li><p>Demo</p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Enum singleton - the preferred approach</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Elvis &#123;</span><br><span class="line">	INSTANCE;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">leaveTheBuilding</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>特点</p>
+<ul>
+<li>枚举单例方式在功能上与公有域相似，但<strong>更加简洁</strong>，无偿地<strong>提供了序列化机制</strong>，绝对防止多次实例化，即使是在面对复杂的序列化或者反射攻击的时候</li>
+<li>虽然这种方法还没有广泛采用，但是<strong>单元素的枚举类型经常成为实现 Singleton 的最佳方法</strong></li>
+<li>如果 Singleton 必须扩展一个超类，而不是扩展 <code>Enum</code> 的时候，则不宜使用这个方法（虽然可以声明枚举去实现接口）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="第-4-条：通过私有构造器强化不可实例化的能力"><a href="#第-4-条：通过私有构造器强化不可实例化的能力" class="headerlink" title="第 4 条：通过私有构造器强化不可实例化的能力"></a>第 4 条：通过私有构造器强化不可实例化的能力</h4><ul>
+<li><p>概要</p>
+<ul>
+<li>通常，工具类（utility class）不希望被实例化，因为实例化对它没有任何意义</li>
+<li>在缺少显示构造器的情况下，编译器会自动提供一个共有的、无参的缺省构造器（default constructor）</li>
+<li><strong>企图通过将类做成抽象类来强制该类不可被实例化时行不通的</strong></li>
+<li>由于只有当类不包含显式的构造器时，编译器才会生成缺省的构造器，因此只要<strong>让这个类包含一个私有构造器，它就不能被实例化</strong></li>
+</ul>
+</li>
+<li><p>Demo</p>
+  <figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> effectivejava.chapter2.item4;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Noninstantiable utility class</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UtilityClass</span> </span>&#123;</span><br><span class="line">	<span class="comment">// Suppress default constructor for noninstantiability</span></span><br><span class="line">	<span class="keyword">private</span> UtilityClass() &#123;</span><br><span class="line">		<span class="keyword">throw</span> <span class="keyword">new</span> <span class="type">AssertionError</span>();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// Remainder omitted</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>AssertionError</code> 不是必需的，但是它可以避免不小心在类的内部调用构造器</li>
+<li>这种习惯用法也有副作用，它使得一个类不能被子类化</li>
+</ul>
+</li>
+</ul>
+<h4 id="第-5-条：优先考虑依赖注入来引用资源"><a href="#第-5-条：优先考虑依赖注入来引用资源" class="headerlink" title="第 5 条：优先考虑依赖注入来引用资源"></a>第 5 条：优先考虑依赖注入来引用资源</h4><ul>
+<li><p>背景</p>
+<ul>
+<li><p>有许多类会依赖一个或多个底层的资源。例如，拼写检查器一般需要依赖多个词典</p>
+</li>
+<li><p><strong>静态工具类和 Singleton 类不适合于需要引用底层资源的类</strong></p>
+  <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Inappropriate use of static utility - inflexible &amp; untestable!</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpellChecker</span> &#123;</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Lexicon dictionary = ...;</span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="title">SpellChecker</span><span class="params">()</span> </span>&#123;&#125; <span class="comment">// Noninstantiable</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isValid</span><span class="params">(<span class="keyword">String</span> <span class="keyword">word</span>)</span> </span>&#123; ... &#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;<span class="keyword">String</span>&gt; <span class="title">suggestions</span><span class="params">(<span class="keyword">String</span> typo)</span> </span>&#123; ... &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+  <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Inappropriate use of singleton - inflexible &amp; untestable!</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpellChecker</span> &#123;</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> Lexicon dictionary = ...;</span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="title">SpellChecker</span><span class="params">(...)</span> </span>&#123;&#125;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> INSTANCE = <span class="keyword">new</span> SpellChecker(...);</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isValid</span><span class="params">(<span class="keyword">String</span> <span class="keyword">word</span>)</span> </span>&#123; ... &#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> List&lt;<span class="keyword">String</span>&gt; <span class="title">suggestions</span><span class="params">(<span class="keyword">String</span> typo)</span> </span>&#123; ... &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><strong>依赖注入</strong></p>
+<ul>
+<li><p>场景：能够支持类的多个实例（在本例中是指 <code>SpellChecker</code>），每一个实例都能使用客户端指定的资源（在本例中是指词典）</p>
+</li>
+<li><p>最简单的模式：<strong>当创建一个新的实例时，就将该资源传到构造器中</strong>。这是<strong>依赖注入（dependency injection）</strong>的一种形式：词典（dictionary）是拼写检查器的一个依赖（dependency），在创建拼写检查器时就将词典注入（injected）其中</p>
+  <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Dependency injection provides flexibility and testability</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpellChecker</span> &#123;</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">final</span> Lexicon dictionary;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">SpellChecker</span><span class="params">(Lexicon dictionary)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.dictionary = Objects.requireNonNull(dictionary);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isValid</span><span class="params">(<span class="keyword">String</span> <span class="keyword">word</span>)</span> </span>&#123; ... &#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> List&lt;<span class="keyword">String</span>&gt; <span class="title">suggestions</span><span class="params">(<span class="keyword">String</span> typo)</span> </span>&#123; ... &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>优点</p>
+<ul>
+<li>虽然这个拼写检查器的范例中只有一个资源（词典），但是依赖注入却适用于<strong>任意数量的资源</strong>，以及<strong>任意的依赖形式</strong></li>
+<li>依赖注入的对象资源具有<strong>不可变性</strong>（详见第 17 条），因此多个客户端可以<strong>共享依赖对象</strong>（假设客户端们想要的是同一个底层资源）</li>
+<li>依赖注入也同样适用于<strong>构造器</strong>、<strong>静态工厂</strong>（详见第 1 条）和<strong>构建器</strong>（详见第 2 条）</li>
+</ul>
+</li>
+<li><p>变体</p>
+<ul>
+<li><p>依赖注入模式的另一种有用的变体是：<strong>将资源工厂（factory）传给构造器</strong>。工厂是可以被重复调用来创建类型实例的一个对象。这类工厂具体表现为<strong>工厂方法（Factory Method）</strong>模式</p>
+</li>
+<li><p>在 Java 8 中增加的接口 <strong><code>Supplier&lt;T&gt;</code></strong>，最适合用于表示工厂。带有 <strong><code>Supplier&lt;T&gt;</code></strong>的方法，通常应该限制输入工厂的类型参数使用<strong>有限通配符类型（bounded wildcard type）</strong>（详见第 31 条），以便客户端能够传入一个工厂，来创建指定类型的任意子类型</p>
+  <figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这是一个生产马赛克的方法，它利用客户端提供的工厂来生产每一片马赛克</span></span><br><span class="line"><span class="function">Mosaic <span class="title">create</span><span class="params">(Supplier&lt;? <span class="keyword">extends</span> Tile&gt; tileFactory)</span> </span>&#123; ... &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>总结</p>
+<ul>
+<li>不要用 Singleton 或静态工具类来实现依赖一个或多个底层资源的类，且该资源的行为会影响到该类的行为。也不要直接用这个类来创建这些资源</li>
+<li>应该将这些资源或者工厂传给构造器（或者静态工厂，或者构建器），通过它们来创建类。<strong>这个实践被称作依赖注入，它极大地提升了类的灵活性、可重用性和可测试性</strong></li>
+<li>虽然依赖注入极大地提升了灵活性和可测试性，但它会导致大型项目凌乱不堪，因为它通常包含上千个依赖。一般通过<strong>依赖注入框架（dependency injection framework）</strong>可以解决这个问题，比如 Dagger[Dagger]、Guice[Guice] 或者 Spring[Spring]</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="第-6-条：避免创建不必要的对象"><a href="#第-6-条：避免创建不必要的对象" class="headerlink" title="第 6 条：避免创建不必要的对象"></a>第 6 条：避免创建不必要的对象</h4><h4 id="第-7-条：消除过期的对象引用"><a href="#第-7-条：消除过期的对象引用" class="headerlink" title="第 7 条：消除过期的对象引用"></a>第 7 条：消除过期的对象引用</h4><h4 id="第-8-条：避免使用终结方法和清除方法"><a href="#第-8-条：避免使用终结方法和清除方法" class="headerlink" title="第 8 条：避免使用终结方法和清除方法"></a>第 8 条：避免使用终结方法和清除方法</h4><h4 id="第-9-条：try-with-resources-优先于-try-finally"><a href="#第-9-条：try-with-resources-优先于-try-finally" class="headerlink" title="第 9 条：try-with-resources 优先于 try-finally"></a>第 9 条：<code>try-with-resources</code> 优先于 <code>try-finally</code></h4>
     </div>
 
     
@@ -673,7 +808,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">24:07</span>
+    <span title="站点阅读时长">24:12</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
