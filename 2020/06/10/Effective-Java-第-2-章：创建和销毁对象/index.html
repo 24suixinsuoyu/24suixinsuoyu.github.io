@@ -30,7 +30,7 @@
 <meta property="og:description" content="第 1 条：用静态工厂方法代替构造器">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-06-09T18:43:45.000Z">
-<meta property="article:modified_time" content="2021-12-02T01:56:03.498Z">
+<meta property="article:modified_time" content="2021-12-09T00:27:38.344Z">
 <meta property="article:author" content="隋钟元">
 <meta property="article:tag" content="Effective Java 3th">
 <meta property="article:tag" content="创建和销毁对象">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-02 09:56:03" itemprop="dateModified" datetime="2021-12-02T09:56:03+08:00">2021-12-02</time>
+                <time title="修改时间：2021-12-09 08:27:38" itemprop="dateModified" datetime="2021-12-09T08:27:38+08:00">2021-12-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,14 +233,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>17k</span>
+              <span>19k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>15 分钟</span>
+              <span>17 分钟</span>
             </span>
 
         </div>
@@ -615,6 +615,40 @@
 <li>除了重用不可变的对象外，也可以重用那些已知不会被修改的可变对象</li>
 </ul>
 </li>
+<li><p>有些对象创建的<strong>成本</strong>比其他对象高很多，如果重复地需要这类<strong>“昂贵的对象”</strong>，最好是<strong>缓存</strong>下来重用</p>
+<ul>
+<li><p><strong>判断一个字符串是否为一个有效的罗马数字</strong></p>
+  <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">package effectivejava.chapter2.item6;</span><br><span class="line"><span class="keyword">import</span> java.util.regex.Pattern;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Reusing expensive object for improved performance</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RomanNumerals</span> &#123;</span></span><br><span class="line">	<span class="comment">// Performance can be greatly improved!</span></span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isRomanNumeralSlow</span><span class="params">(<span class="keyword">String</span> s)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> s.matches(<span class="string">"^(?=.)M*(C[MD]|D?C&#123;0,3&#125;)(X[CL]|L?X&#123;0,3&#125;)(I[XV]|V?I&#123;0,3&#125;)$"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// Reusing expensive object for improved performance</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Pattern ROMAN = Pattern.compile(<span class="string">"^(?=.)M*(C[MD]|D?C&#123;0,3&#125;)(X[CL]|L?X&#123;0,3&#125;)(I[XV]|V?I&#123;0,3&#125;)$"</span>);</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isRomanNumeralFast</span><span class="params">(<span class="keyword">String</span> s)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> ROMAN.matcher(s).matches();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> numSets = Integer.<span class="built_in">parseInt</span>(args[<span class="number">0</span>]);</span><br><span class="line">		<span class="keyword">int</span> numReps = Integer.<span class="built_in">parseInt</span>(args[<span class="number">1</span>]);</span><br><span class="line">		<span class="keyword">boolean</span> b = <span class="literal">false</span>;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numSets; i++) &#123;</span><br><span class="line">			<span class="keyword">long</span> start = System.nanoTime();</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; numReps; j++) &#123;</span><br><span class="line">				b ^= isRomanNumeralSlow(<span class="string">"MCMLXXVI"</span>); <span class="comment">// Change Slow to Fast to see performance difference</span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">long</span> <span class="built_in">end</span> = System.nanotime();</span><br><span class="line">			System.out.<span class="built_in">println</span>((<span class="built_in">end</span> - start) / (<span class="number">1</span>_000. * numReps)) + <span class="string">"μs."</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="comment">// Prevents VM from optimizing away everything.</span></span><br><span class="line">		<span class="keyword">if</span>(!b) &#123;</span><br><span class="line">			System.out.<span class="built_in">println</span>();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>SLOW 方法实现的问题在于它依赖 <code>String.matches</code> 方法。<strong>虽然 String.matches 方法最易于查看一个字符串是否与正则表达式相匹配，但并不适合在注重性能的情形中重复使用</strong></p>
+<ul>
+<li>问题在于，它在内部为正则表达式创建了一个 <code>Pattern</code> 实例，却只用了一次，之后就可以进行垃圾回收了</li>
+<li><strong>创建 <code>Pattern</code> 实例的成本很高，因为需要将正则表达式编译成一个有限状态机（finite state machine）</strong></li>
+</ul>
+</li>
+<li><p>为了提升性能，应该显示地将正则表达式编译成一个 <code>Pattern</code> 实例（不可变），让它成为类初始化的一部分，并将它<strong>缓存</strong>起来，每当调用 <code>isRomanNumeral</code> 方法的时候就<strong>重用</strong>同一个实例</p>
+<ul>
+<li>改进后的 <code>isRomanNumeral</code> 方法如果被<strong>频繁调用</strong>，会显示出明显的性能优势</li>
+<li>除了提高性能之外，代码也<strong>更清晰</strong>了，将不可见的 <code>Pattern</code> 实例做成 <code>final</code> 静态域时，可以给它起个名字，这样会比正则表达式本身<strong>更有可读性</strong></li>
+</ul>
+</li>
+<li><p>如果包含改进后的 <code>isRomanNumeral</code> 方法的类被初始化了，但是该方法没有被调用，那就没必要初始化 <code>ROMAN</code> 域</p>
+<ul>
+<li>通过在 <code>isRomanNumeral</code> 方法第一次被调用的时候<strong>延迟初始化（lazily initializing）</strong>（详见第 83 条）这个域，有可能消除这个不必要的初始化工作，但是<strong>不建议</strong>这样做</li>
+<li>正如延迟初始化中常见的情况一样，这样做会使方法的实现<strong>更加复杂</strong>，从而无法将性能显著提高到超过已经达到的水平（详见第 67 条）</li>
+</ul>
+</li>
+<li><p>如果一个对象是不变的，那么它显然能够被安全地重用，但其他有些情形则并不总是这么明显。考虑<strong>适配器（adapter）</strong>的情形，有时也叫作<strong>视图（view）</strong></p>
+<ul>
+<li>适配器是指这样一个对象：它把功能委托给一个<strong>后备对象（backing object）</strong>，从而为后备对象提供一个可以替代的接口</li>
+<li>由于适配器除了后备对象之外，没有其他的状态信息，所以针对某个给定对象的特定适配器而言，它不需要创建多个适配器实例</li>
+<li>例如，<code>Map</code> 接口的 <code>keySet</code> 方法返回该 <code>Map</code> 对象的 <code>Set</code> 视图，其中包含该 <code>Map</code> 中所有的键（key）。<strong>对于一个给定的 <code>Map</code> 对象，实际上每次调用 <code>keySet</code> 都返回同样的 <code>Set</code> 实例</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>自动装箱（autoboxing）</strong></p>
+</li>
 </ul>
 <h4 id="第-7-条：消除过期的对象引用"><a href="#第-7-条：消除过期的对象引用" class="headerlink" title="第 7 条：消除过期的对象引用"></a>第 7 条：消除过期的对象引用</h4><h4 id="第-8-条：避免使用终结方法和清除方法"><a href="#第-8-条：避免使用终结方法和清除方法" class="headerlink" title="第 8 条：避免使用终结方法和清除方法"></a>第 8 条：避免使用终结方法和清除方法</h4><h4 id="第-9-条：try-with-resources-优先于-try-finally"><a href="#第-9-条：try-with-resources-优先于-try-finally" class="headerlink" title="第 9 条：try-with-resources 优先于 try-finally"></a>第 9 条：<code>try-with-resources</code> 优先于 <code>try-finally</code></h4>
     </div>
@@ -834,7 +868,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">24:12</span>
+    <span title="站点阅读时长">24:14</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
   </div>
